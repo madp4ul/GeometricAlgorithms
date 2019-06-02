@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometricAlgorithms", "GeometricAlgorithms\GeometricAlgorithms.csproj", "{9AF23AB6-2AA4-48EB-BD44-6C5D218A711B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "View", "View\View.csproj", "{6189E0FA-F80A-4E76-9A8E-3BAB8E239812}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometricAlgorithms", "GeometricAlgorithms\GeometricAlgorithms.csproj", "{615C8A2D-7642-4F2E-8C44-482294A4E87E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9AF23AB6-2AA4-48EB-BD44-6C5D218A711B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9AF23AB6-2AA4-48EB-BD44-6C5D218A711B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9AF23AB6-2AA4-48EB-BD44-6C5D218A711B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9AF23AB6-2AA4-48EB-BD44-6C5D218A711B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6189E0FA-F80A-4E76-9A8E-3BAB8E239812}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6189E0FA-F80A-4E76-9A8E-3BAB8E239812}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6189E0FA-F80A-4E76-9A8E-3BAB8E239812}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6189E0FA-F80A-4E76-9A8E-3BAB8E239812}.Release|Any CPU.Build.0 = Release|Any CPU
+		{615C8A2D-7642-4F2E-8C44-482294A4E87E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{615C8A2D-7642-4F2E-8C44-482294A4E87E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{615C8A2D-7642-4F2E-8C44-482294A4E87E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{615C8A2D-7642-4F2E-8C44-482294A4E87E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
