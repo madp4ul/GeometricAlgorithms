@@ -10,8 +10,11 @@ namespace GeometricAlgorithms
 {
     public interface IModel<out TVertex> where TVertex : Vertex
     {
-        IEnumerable<TVertex> Vertices { get; }
-        IEnumerable<int> Indices { get; }
+        TVertex[] Vertices { get; }
+        int[] Indices { get; }
+
+        IReadOnlyList<TVertex> FindNearestVertices(Vector3 searchPosition, int pointAmount);
+        IReadOnlyList<TVertex> FindInRadius(Vector3 seachCenter, float searchRadius);
     }
 
     //Default
