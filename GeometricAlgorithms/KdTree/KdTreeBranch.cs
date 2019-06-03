@@ -13,17 +13,17 @@ namespace GeometricAlgorithms.KdTree
         public KdTreeNode<TVertex> MinimumChild { get; set; }
         public KdTreeNode<TVertex> MaximumChild { get; set; }
 
-        private Dimension HalfedDimension;
+        private Dimension HalvedDimension;
         private Func<Vector3, float> DimensionSelector;
 
-        public KdTreeBranch(BoundingBox boundingBox, Range<TVertex> vertices, KdTreeConfiguration configuration, Dimension halfedDimension = Dimension.X)
+        public KdTreeBranch(BoundingBox boundingBox, Range<TVertex> vertices, KdTreeConfiguration configuration, Dimension halvedDimension = Dimension.X)
             : base(boundingBox, vertices.Length)
         {
-            HalfedDimension = halfedDimension;
+            HalvedDimension = halvedDimension;
 
             int halfIndex = vertices.Length / 2;
 
-            DimensionSelector = GetDimensionSelector(halfedDimension);
+            DimensionSelector = GetDimensionSelector(halvedDimension);
 
             //Sort values along current dimension
             var comparer = new VertexComparer(DimensionSelector);
@@ -33,8 +33,8 @@ namespace GeometricAlgorithms.KdTree
             float halfSpace = DimensionSelector(vertices[halfIndex].Position);
 
             //Create bounding box halves along median
-            BoundingBox minChildBox = boundingBox.GetMinHalfAlongDimension(halfedDimension, halfSpace);
-            BoundingBox maxChildBox = boundingBox.GetMaxHalfAlongDimension(halfedDimension, halfSpace);
+            BoundingBox minChildBox = boundingBox.GetMinHalfAlongDimension(halvedDimension, halfSpace);
+            BoundingBox maxChildBox = boundingBox.GetMaxHalfAlongDimension(halvedDimension, halfSpace);
 
             //split value range into to sections, one for each child
             Range<TVertex> minChildVertices = vertices.GetRange(0, halfIndex);
@@ -43,7 +43,7 @@ namespace GeometricAlgorithms.KdTree
             //If more vertices than what fits into to leafs, create more branches
             if (vertices.Length > configuration.MaximumPointsPerLeaf * 2)
             {
-                Dimension nextDimension = GetNextDimension(halfedDimension);
+                Dimension nextDimension = GetNextDimension(halvedDimension);
 
                 MinimumChild = new KdTreeBranch<TVertex>(minChildBox, minChildVertices, configuration, nextDimension);
                 MaximumChild = new KdTreeBranch<TVertex>(maxChildBox, maxChildVertices, configuration, nextDimension);
@@ -67,52 +67,35 @@ namespace GeometricAlgorithms.KdTree
             return (Dimension)((int)(dimension + 1) % (int)Dimension.Count);
         }
 
-        public override IReadOnlyList<TVertex> FindInRadius(Vector3 seachCenter, float searchRadius, RadiusQueryData data)
+        public override void FindInRadius(InRadiusQuery<TVertex> query)
         {
-            float positionAlongDimension = DimensionSelector(seachCenter);
 
-            float distanceAboveMinimum = MinimumChild.BoundingBox.GetDistanceAboveDimension(positionAlongDimension, DimensionSelector);
-
-            if (distanceAboveMinimum > 0)
+            if (MinimumChild.BoundingBox.GetMinimumDistance(query.SeachCenter) < query.SearchRadius)
             {
-
+                MinimumChild.FindInRadius(query);
             }
 
-            //update for minimum
-
-            float previousDistance = data.GetDistance(HalfedDimension, true);
-
-            //When going down a level in the tree, the bounding box shrinks.
-            //So the distance only grows or stays the same.
-            data.UpdateDistance(HalfedDimension, true, BoundingBox.GetDistanceAboveDimension(positionAlongDimension, DimensionSelector));
-
-            //If distance is smaller than seach radius, it may contain points in radius
-            if (data.MaximumDistance < searchRadius)
+            if (MaximumChild.BoundingBox.GetMinimumDistance(query.SeachCenter) < query.SearchRadius)
             {
-                MinimumChild.FindInRadius(seachCenter, searchRadius, data);
+                MaximumChild.FindInRadius(query);
             }
-            //reset update
-            data.UpdateDistance(HalfedDimension, true, previousDistance);
-
-            //update for maximum
-
-            previousDistance = data.GetDistance(HalfedDimension, false);
-            //When going down a level in the tree, the bounding box shrinks.
-            //So the distance only grows or stays the same.
-            data.UpdateDistance(HalfedDimension, false, BoundingBox.GetDistanceBelowDimension(positionAlongDimension, DimensionSelector));
-
-            //If distance is smaller than seach radius, it may contain points in radius
-            if (data.MaximumDistance < searchRadius)
-            {
-                MaximumChild.FindInRadius(seachCenter, searchRadius, data);
-            }
-            //reset update
-            data.UpdateDistance(HalfedDimension, false, previousDistance);
         }
 
-        protected override IReadOnlyList<TVertex> FindNearestVertices(Vector3 searchPosition, int pointAmount)
+        public override void FindNearestVertices(NearestVerticesQuery<TVertex> query)
         {
-            throw new NotImplementedException();
+            //Enter child if still more more required to fill result or if distance is smaller than maxSearchRadius
+            //which means that child potentially contains better points
+            if (query.ResultSet.Count < query.PointAmount
+                || MinimumChild.BoundingBox.GetMinimumDistance(query.SearchPosition) < query.MaxSearchRadius)
+            {
+                MinimumChild.FindNearestVertices(query);
+            }
+
+            if (query.ResultSet.Count < query.PointAmount
+                || MaximumChild.BoundingBox.GetMinimumDistance(query.SearchPosition) < query.MaxSearchRadius)
+            {
+                MaximumChild.FindNearestVertices(query);
+            }
         }
 
         private static Func<Vector3, float> GetDimensionSelector(Dimension dimension)

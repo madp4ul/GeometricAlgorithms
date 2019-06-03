@@ -37,8 +37,6 @@ namespace GeometricAlgorithms
         public float GetDistanceAlongDimension(Vector3 position, Func<Vector3, float> dimensionSelector)
         {
             float positionAlongDimension = dimensionSelector(position);
-            float minimumAlongDimension = dimensionSelector(Minimum);
-            float maximumAlongDimension = dimensionSelector(Maximum);
 
             float distance = GetDistanceAboveDimension(positionAlongDimension, dimensionSelector);
             if (distance > 0)

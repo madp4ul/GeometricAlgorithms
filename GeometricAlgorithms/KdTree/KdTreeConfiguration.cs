@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.KdTree
 {
-    class KdTreeConfiguration
+    public class KdTreeConfiguration
     {
         public int MaximumPointsPerLeaf { get; set; }
 

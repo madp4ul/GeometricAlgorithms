@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.KdTree
 {
-    class KdTree<TVertex> : I3DQueryable<TVertex> where TVertex : Vertex
+    public class KdTree<TVertex> : I3DQueryable<TVertex> where TVertex : Vertex
     {
         private KdTreeNode<TVertex> Root;
 
@@ -32,14 +32,28 @@ namespace GeometricAlgorithms.KdTree
             }
         }
 
-        public IReadOnlyList<TVertex> FindInRadius(Vector3 seachCenter, float searchRadius)
+        public List<TVertex> FindInRadius(Vector3 seachCenter, float searchRadius)
         {
-            throw new NotImplementedException();
+            var resultList = new List<TVertex>();
+
+            Root.FindInRadius(new InRadiusQuery<TVertex>(seachCenter, searchRadius, resultList));
+
+            return resultList;
         }
 
-        public IReadOnlyList<TVertex> FindNearestVertices(Vector3 searchPosition, int pointAmount)
+        public SortedList<float, TVertex> FindNearestVertices(Vector3 searchPosition, int pointAmount)
         {
-            throw new NotImplementedException();
+            var resultSet = new SortedList<float, TVertex>(new DistanceComparer());
+
+            Root.FindNearestVertices(new NearestVerticesQuery<TVertex>
+            {
+                MaxSearchRadius = float.PositiveInfinity,
+                PointAmount = pointAmount,
+                SearchPosition = searchPosition,
+                ResultSet = resultSet
+            });
+
+            return resultSet;
         }
     }
 }

@@ -18,14 +18,39 @@ namespace GeometricAlgorithms.KdTree
             Vertices = vertices ?? throw new ArgumentNullException(nameof(vertices));
         }
 
-        protected override IReadOnlyList<TVertex> FindInRadius(Vector3 seachCenter, float searchRadius)
+        public override void FindInRadius(InRadiusQuery<TVertex> query)
         {
-            throw new NotImplementedException();
+            foreach (var vertex in Vertices)
+            {
+                if (Vector3.DistanceSquared(vertex.Position, query.SeachCenter) < query.SearchRadiusSquared)
+                {
+                    query.ResultSet.Add(vertex);
+                }
+            }
         }
 
-        protected override IReadOnlyList<TVertex> FindNearestVertices(Vector3 searchPosition, int pointAmount)
+        public override void FindNearestVertices(NearestVerticesQuery<TVertex> query)
         {
-            throw new NotImplementedException();
+            foreach (TVertex vertex in Vertices)
+            {
+                float distance = Vector3.Distance(vertex.Position, query.SearchPosition);
+                if (distance < query.MaxSearchRadius)
+                {
+                    //If list is full, remove last element to be replaced with new point
+                    if (query.ResultSet.Count == query.PointAmount)
+                    {
+                        query.ResultSet.RemoveAt(query.ResultSet.Count - 1);
+                    }
+
+                    query.ResultSet.Add(distance, vertex);
+
+                    //If list is full after adding point refresh max search radius with last
+                    if (query.ResultSet.Count == query.PointAmount)
+                    {
+                        query.MaxSearchRadius = query.ResultSet.Keys[query.ResultSet.Count - 1];
+                    }
+                }
+            }
         }
     }
 }

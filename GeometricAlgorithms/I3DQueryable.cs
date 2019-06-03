@@ -10,8 +10,8 @@ namespace GeometricAlgorithms
 {
     public interface I3DQueryable<TVertex> where TVertex : Vertex
     {
-        IReadOnlyList<TVertex> FindNearestVertices(Vector3 searchPosition, int pointAmount);
-        IReadOnlyList<TVertex> FindInRadius(Vector3 seachCenter, float searchRadius);
+        SortedList<float, TVertex> FindNearestVertices(Vector3 searchPosition, int pointAmount);
+        List<TVertex> FindInRadius(Vector3 seachCenter, float searchRadius);
     }
 
     //Default generic param

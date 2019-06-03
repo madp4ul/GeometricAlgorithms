@@ -21,9 +21,8 @@ namespace GeometricAlgorithms.KdTree
             BoundingBox = boundingBox ?? throw new ArgumentNullException(nameof(boundingBox));
         }
 
+        public abstract void FindInRadius(InRadiusQuery<TVertex> query);
 
-
-        protected abstract IReadOnlyList<TVertex> FindNearestVertices(Vector3 searchPosition, int pointAmount);
-        public abstract IReadOnlyList<TVertex> FindInRadius(Vector3 seachCenter, float searchRadius, RadiusQueryData data);
+        public abstract void FindNearestVertices(NearestVerticesQuery<TVertex> query);
     }
 }
