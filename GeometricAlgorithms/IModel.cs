@@ -8,13 +8,11 @@ using GeometricAlgorithms.VertexTypes;
 
 namespace GeometricAlgorithms
 {
-    public interface IModel<out TVertex> where TVertex : Vertex
+    public interface IModel<TVertex> : I3DQueryable<TVertex>
+        where TVertex : Vertex
     {
         TVertex[] Vertices { get; }
         int[] Indices { get; }
-
-        IReadOnlyList<TVertex> FindNearestVertices(Vector3 searchPosition, int pointAmount);
-        IReadOnlyList<TVertex> FindInRadius(Vector3 seachCenter, float searchRadius);
     }
 
     //Default

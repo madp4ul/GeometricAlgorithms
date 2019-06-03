@@ -99,5 +99,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GeometricAlgorithms\GeometricAlgorithms.csproj">
+      <Project>{615c8a2d-7642-4f2e-8c44-482294a4e87e}</Project>
+      <Name>GeometricAlgorithms</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
