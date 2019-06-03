@@ -10,12 +10,10 @@ namespace GeometricAlgorithms.KdTree
 {
     abstract class KdTreeNode<TVertex> where TVertex : Vertex
     {
-
-
         public int VertexCount { get; set; }
 
         public BoundingBox BoundingBox { get; private set; }
-        
+
 
         protected KdTreeNode(BoundingBox boundingBox, int verticesCount)
         {
@@ -26,6 +24,6 @@ namespace GeometricAlgorithms.KdTree
 
 
         protected abstract IReadOnlyList<TVertex> FindNearestVertices(Vector3 searchPosition, int pointAmount);
-        protected abstract IReadOnlyList<TVertex> FindInRadius(Vector3 seachCenter, float searchRadius);
+        public abstract IReadOnlyList<TVertex> FindInRadius(Vector3 seachCenter, float searchRadius, RadiusQueryData data);
     }
 }

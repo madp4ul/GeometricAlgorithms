@@ -67,9 +67,47 @@ namespace GeometricAlgorithms.KdTree
             return (Dimension)((int)(dimension + 1) % (int)Dimension.Count);
         }
 
-        protected override IReadOnlyList<TVertex> FindInRadius(Vector3 seachCenter, float searchRadius)
+        public override IReadOnlyList<TVertex> FindInRadius(Vector3 seachCenter, float searchRadius, RadiusQueryData data)
         {
-            throw new NotImplementedException();
+            float positionAlongDimension = DimensionSelector(seachCenter);
+
+            float distanceAboveMinimum = MinimumChild.BoundingBox.GetDistanceAboveDimension(positionAlongDimension, DimensionSelector);
+
+            if (distanceAboveMinimum > 0)
+            {
+
+            }
+
+            //update for minimum
+
+            float previousDistance = data.GetDistance(HalfedDimension, true);
+
+            //When going down a level in the tree, the bounding box shrinks.
+            //So the distance only grows or stays the same.
+            data.UpdateDistance(HalfedDimension, true, BoundingBox.GetDistanceAboveDimension(positionAlongDimension, DimensionSelector));
+
+            //If distance is smaller than seach radius, it may contain points in radius
+            if (data.MaximumDistance < searchRadius)
+            {
+                MinimumChild.FindInRadius(seachCenter, searchRadius, data);
+            }
+            //reset update
+            data.UpdateDistance(HalfedDimension, true, previousDistance);
+
+            //update for maximum
+
+            previousDistance = data.GetDistance(HalfedDimension, false);
+            //When going down a level in the tree, the bounding box shrinks.
+            //So the distance only grows or stays the same.
+            data.UpdateDistance(HalfedDimension, false, BoundingBox.GetDistanceBelowDimension(positionAlongDimension, DimensionSelector));
+
+            //If distance is smaller than seach radius, it may contain points in radius
+            if (data.MaximumDistance < searchRadius)
+            {
+                MaximumChild.FindInRadius(seachCenter, searchRadius, data);
+            }
+            //reset update
+            data.UpdateDistance(HalfedDimension, false, previousDistance);
         }
 
         protected override IReadOnlyList<TVertex> FindNearestVertices(Vector3 searchPosition, int pointAmount)

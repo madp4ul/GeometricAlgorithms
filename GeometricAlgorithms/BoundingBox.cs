@@ -34,17 +34,40 @@ namespace GeometricAlgorithms
             return Math.Max(Math.Max(distanceX, distanceY), distanceZ);
         }
 
-        private float GetDistanceAlongDimension(Vector3 position, Func<Vector3, float> dimensionSelector)
+        public float GetDistanceAlongDimension(Vector3 position, Func<Vector3, float> dimensionSelector)
         {
             float positionAlongDimension = dimensionSelector(position);
             float minimumAlongDimension = dimensionSelector(Minimum);
+            float maximumAlongDimension = dimensionSelector(Maximum);
+
+            float distance = GetDistanceAboveDimension(positionAlongDimension, dimensionSelector);
+            if (distance > 0)
+            {
+                return distance;
+            }
+
+            return GetDistanceBelowDimension(positionAlongDimension, dimensionSelector);
+        }
+
+        public float GetDistanceAboveDimension(float positionAlongDimension, Func<Vector3, float> dimensionSelector)
+        {
             float maximumAlongDimension = dimensionSelector(Maximum);
 
             if (positionAlongDimension > maximumAlongDimension)
             {
                 return positionAlongDimension - maximumAlongDimension;
             }
-            else if (positionAlongDimension < minimumAlongDimension)
+            else
+            {
+                return 0;
+            }
+        }
+
+        public float GetDistanceBelowDimension(float positionAlongDimension, Func<Vector3, float> dimensionSelector)
+        {
+            float minimumAlongDimension = dimensionSelector(Minimum);
+
+            if (positionAlongDimension < minimumAlongDimension)
             {
                 return minimumAlongDimension - positionAlongDimension;
             }
