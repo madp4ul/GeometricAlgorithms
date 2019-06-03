@@ -13,39 +13,58 @@ namespace GeometricAlgorithms.KdTree
         public KdTreeNode<TVertex> MinimumChild { get; set; }
         public KdTreeNode<TVertex> MaximumChild { get; set; }
 
-        private Dimension HalfedDimension { get; set; }
+        private Dimension HalfedDimension;
+        private Func<Vector3, float> DimensionSelector;
 
         public KdTreeBranch(BoundingBox boundingBox, Range<TVertex> vertices, KdTreeConfiguration configuration, Dimension halfedDimension = Dimension.X)
-            : base(boundingBox, vertices.Length, halfedDimension)
+            : base(boundingBox, vertices.Length)
         {
             HalfedDimension = halfedDimension;
+
+            int halfIndex = vertices.Length / 2;
+
+            DimensionSelector = GetDimensionSelector(halfedDimension);
+
+            //Sort values along current dimension
+            var comparer = new VertexComparer(DimensionSelector);
+            vertices.NthElement(halfIndex, comparer.Compare);
+
+            //Split space at median along halved dimension
+            float halfSpace = DimensionSelector(vertices[halfIndex].Position);
+
+            //Create bounding box halves along median
+            BoundingBox minChildBox = boundingBox.GetMinHalfAlongDimension(halfedDimension, halfSpace);
+            BoundingBox maxChildBox = boundingBox.GetMaxHalfAlongDimension(halfedDimension, halfSpace);
+
+            //split value range into to sections, one for each child
+            Range<TVertex> minChildVertices = vertices.GetRange(0, halfIndex);
+            Range<TVertex> maxChildVertices = vertices.GetRange(halfIndex, vertices.Length - halfIndex);
 
             //If more vertices than what fits into to leafs, create more branches
             if (vertices.Length > configuration.MaximumPointsPerLeaf * 2)
             {
+                Dimension nextDimension = GetNextDimension(halfedDimension);
 
+                MinimumChild = new KdTreeBranch<TVertex>(minChildBox, minChildVertices, configuration, nextDimension);
+                MaximumChild = new KdTreeBranch<TVertex>(maxChildBox, maxChildVertices, configuration, nextDimension);
             }
             else //create leafs
             {
-                //Sort values along current dimension
-                var comparer = new VertexComparer(halfedDimension);
-                vertices.Sort(comparer);
+                MinimumChild = new KdTreeLeaf<TVertex>(
+                    minChildBox,
+                    minChildVertices,
+                    configuration);
 
-                //split value range into to sections, one for each child
-                int halfIndex = vertices.Length / 2;
-                MinimumChild = new KdTreeLeaf<TVertex>(boundingBox, vertices.GetRange(0, halfIndex), configuration);
-                MaximumChild = new KdTreeLeaf<TVertex>(boundingBox, vertices.GetRange(halfIndex, vertices.Length - halfIndex), configuration);
+                MaximumChild = new KdTreeLeaf<TVertex>(
+                    maxChildBox,
+                    maxChildVertices,
+                    configuration);
             }
         }
 
-        private int FindMedianIndex(Range<TVertex> vertices)
+        protected virtual Dimension GetNextDimension(Dimension dimension)
         {
-
-        }
-
-        private void CreateChildren(Range<TVertex> vertices, KdTreeConfiguration config,)
-        {
-
+            return (Dimension)((int)(dimension + 1) % (int)Dimension.Count);
         }
 
         protected override IReadOnlyList<TVertex> FindInRadius(Vector3 seachCenter, float searchRadius)
@@ -58,31 +77,33 @@ namespace GeometricAlgorithms.KdTree
             throw new NotImplementedException();
         }
 
+        private static Func<Vector3, float> GetDimensionSelector(Dimension dimension)
+        {
+            switch (dimension)
+            {
+                case Dimension.X:
+                    return v => v.X;
+                case Dimension.Y:
+                    return v => v.Y;
+                case Dimension.Z:
+                    return v => v.Z;
+                default:
+                    throw new ArgumentException("No valid dimension");
+            }
+        }
+
         private class VertexComparer : IComparer<TVertex>
         {
-            private Func<TVertex, float> DimensionSelector;
+            public Func<Vector3, float> DimensionSelector { get; private set; }
 
-            public VertexComparer(Dimension dimension)
+            public VertexComparer(Func<Vector3, float> dimensionSelector)
             {
-                switch (dimension)
-                {
-                    case Dimension.X:
-                        DimensionSelector = v => v.Position.X;
-                        break;
-                    case Dimension.Y:
-                        DimensionSelector = v => v.Position.Y;
-                        break;
-                    case Dimension.Z:
-                        DimensionSelector = v => v.Position.Z;
-                        break;
-                    default:
-                        throw new ArgumentException("No valid dimension");
-                }
+                DimensionSelector = dimensionSelector;
             }
 
             public int Compare(TVertex v1, TVertex v2)
             {
-                float diff = DimensionSelector(v1) - DimensionSelector(v2);
+                float diff = DimensionSelector(v1.Position) - DimensionSelector(v2.Position);
 
                 if (diff > 0)
                 {

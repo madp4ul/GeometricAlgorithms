@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeometricAlgorithms.VertexTypes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms
 {
-    public class BoundingBox
+    public class BoundingBox : ICloneable
     {
         public Vector3 Minimum { get; private set; }
         public Vector3 Maximum { get; private set; }
@@ -51,6 +52,77 @@ namespace GeometricAlgorithms
             {
                 return 0;
             }
+        }
+
+        object ICloneable.Clone()
+        {
+            return Clone();
+        }
+
+        public BoundingBox Clone()
+        {
+            return new BoundingBox(Minimum, Maximum);
+        }
+
+        public BoundingBox GetMinHalfAlongDimension(Dimension dimension, float upperBound)
+        {
+            return new BoundingBox(Minimum,
+                 new Vector3(
+                    dimension == Dimension.X ? upperBound : Maximum.X,
+                    dimension == Dimension.Y ? upperBound : Maximum.Y,
+                    dimension == Dimension.Z ? upperBound : Maximum.Z));
+        }
+
+        public BoundingBox GetMaxHalfAlongDimension(Dimension dimension, float lowerBound)
+        {
+            return new BoundingBox(
+                new Vector3(
+                    dimension == Dimension.X ? lowerBound : Minimum.X,
+                    dimension == Dimension.Y ? lowerBound : Minimum.Y,
+                    dimension == Dimension.Z ? lowerBound : Minimum.Z),
+                 Maximum);
+        }
+
+        public static BoundingBox CreateContainer<TVertex>(IEnumerable<TVertex> vertices) where TVertex : Vertex
+        {
+            float minX = float.MaxValue;
+            float minY = float.MaxValue;
+            float minZ = float.MaxValue;
+
+            float maxX = float.MinValue;
+            float maxY = float.MinValue;
+            float maxZ = float.MinValue;
+
+            foreach (TVertex vertex in vertices)
+            {
+                if (vertex.Position.X < minX)
+                {
+                    minX = vertex.Position.X;
+                }
+                if (vertex.Position.Y < minY)
+                {
+                    minY = vertex.Position.Y;
+                }
+                if (vertex.Position.Z < minZ)
+                {
+                    minZ = vertex.Position.Z;
+                }
+
+                if (vertex.Position.X > maxX)
+                {
+                    maxX = vertex.Position.X;
+                }
+                if (vertex.Position.Y > maxY)
+                {
+                    maxY = vertex.Position.Y;
+                }
+                if (vertex.Position.Z > maxZ)
+                {
+                    maxZ = vertex.Position.Z;
+                }
+            }
+
+            return new BoundingBox(new Vector3(minX, minY, minZ), new Vector3(maxX, maxY, maxZ));
         }
     }
 }
