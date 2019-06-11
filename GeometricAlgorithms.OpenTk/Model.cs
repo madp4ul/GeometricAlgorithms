@@ -16,7 +16,7 @@ namespace GeometricAlgorithms.OpenTk
         public TVertex[] Vertices;
         public uint[] Indices;
 
-        internal RenderData<TVertex> Buffers;
+        internal RenderObject<TVertex> Buffers;
 
         public Model(TVertex[] vertices, uint[] indices, Shader shader,
                 PrimitiveType primitiveType,
@@ -26,12 +26,12 @@ namespace GeometricAlgorithms.OpenTk
             Vertices = vertices ?? throw new ArgumentNullException(nameof(vertices));
             Indices = indices ?? throw new ArgumentNullException(nameof(indices));
 
-            Buffers = new RenderData<TVertex>(Vertices, Indices, shader, primitiveType, polygonMode, materialFace);
+            Buffers = new RenderObject<TVertex>(Vertices, Indices, shader, primitiveType, polygonMode, materialFace);
         }
 
         public void Draw()
         {
-            Buffers.Draw();
+            Buffers.Render();
         }
     }
 }

@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.OpenTk.Rendering
 {
-    class RenderData<TVertex> where TVertex : struct, IVertex
+    class RenderObject<TVertex> : IRenderable, IDisposable
+        where TVertex : struct, IVertex
     {
         public bool IsInitialized { get; set; }
 
@@ -23,7 +24,7 @@ namespace GeometricAlgorithms.OpenTk.Rendering
         public PolygonMode PolygonMode;
         public MaterialFace MaterialFace;
 
-        public RenderData(TVertex[] vertices, uint[] indices, Shader shader,
+        public RenderObject(TVertex[] vertices, uint[] indices, Shader shader,
             PrimitiveType primitiveType,
             PolygonMode polygonMode,
             MaterialFace materialFace)
@@ -38,8 +39,9 @@ namespace GeometricAlgorithms.OpenTk.Rendering
             IndexBuffer = new IndexBuffer(indices);
         }
 
-        public void Draw()
+        public void Render()
         {
+            Shader.Use();
             VertexBuffer.Use();
             IndexBuffer.Use();
             VertexDeclaration.Use();
@@ -47,6 +49,14 @@ namespace GeometricAlgorithms.OpenTk.Rendering
             GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode);
 
             GL.DrawElements(PrimitiveType, IndexBuffer.Length, DrawElementsType.UnsignedInt, 0);
+        }
+
+        //Dispose exclusive ressources
+        public void Dispose()
+        {
+            VertexBuffer.Dispose();
+            IndexBuffer.Dispose();
+            VertexDeclaration.Dispose();
         }
     }
 }

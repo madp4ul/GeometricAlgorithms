@@ -13,7 +13,8 @@ namespace GeometricAlgorithms.OpenTk.Rendering
     /// <summary>
     /// 
     /// </summary>
-    class VertexDeclaration<TVertex> : IVertexDeclaration where TVertex : struct, IVertex
+    class VertexDeclaration<TVertex> : IVertexDeclaration, IDisposable
+        where TVertex : struct, IVertex
     {
         private readonly int OpenGLPointer;
 
@@ -51,10 +52,14 @@ namespace GeometricAlgorithms.OpenTk.Rendering
             GL.VertexAttribPointer(address, valueCount, vertexAttribPointerType, false, VertexSize, OffsetForNextAttribute);
             GL.EnableVertexAttribArray(address);
 
-
             OffsetForNextAttribute += size;
 
             return this;
+        }
+
+        public void Dispose()
+        {
+            GL.DeleteVertexArray(OpenGLPointer);
         }
 
         public void Use()

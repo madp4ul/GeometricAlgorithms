@@ -32,9 +32,14 @@ namespace GeometricAlgorithms.OpenTk
 
         Model<Vertex> MyModel;
 
-        public CustomGLControl() : base()
+        public CustomGLControl() : base(new GraphicsMode(new ColorFormat(32), 32, 32))
         {
             InitializeComponent();
+
+            var timer = new Timer();
+            timer.Tick += T_Tick;
+            timer.Interval = 5;
+            timer.Start();
         }
 
         private void T_Tick(object sender, EventArgs e)
@@ -69,13 +74,12 @@ namespace GeometricAlgorithms.OpenTk
 
         protected override void OnResize(EventArgs e)
         {
+            //base.OnResize(e);
+
             this.MakeCurrent();
             GL.Viewport(0, 0, Width, Height);
 
-            base.OnResize(e);
-
-            //GL.Clear(ClearBufferMask.ColorBufferBit);
-            //this.SwapBuffers();
+            RedrawScene();
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -84,32 +88,37 @@ namespace GeometricAlgorithms.OpenTk
 
             if (!this.DesignMode)
             {
-                MakeCurrent();
-
-                //var r = new Random();
-                //GL.ClearColor(Color.FromArgb(r.Next(256), r.Next(256), r.Next(256)));
-
-
-                //Clear buffer with color
-                GL.Clear(ClearBufferMask.ColorBufferBit);
-                //Draw models
-                Draw();
-
-                SwapBuffers();
+                if (!IsDrawing)
+                {
+                    IsDrawing = true;
+                    RedrawScene();
+                    IsDrawing = false;
+                }
             }
         }
 
         public override void Refresh()
         {
-            if (!IsDrawing)
-            {
-                IsDrawing = true;
-                base.Refresh();
-                IsDrawing = false;
-            }
+            base.Refresh();
         }
 
-        private void Draw()
+        private void RedrawScene()
+        {
+            MakeCurrent();
+
+            var r = new Random();
+            GL.ClearColor(Color.FromArgb(r.Next(256), r.Next(256), r.Next(256)));
+
+
+            //Clear buffer with color
+            GL.Clear(ClearBufferMask.ColorBufferBit);
+            //Draw models
+            DrawModels();
+
+            SwapBuffers();
+        }
+
+        private void DrawModels()
         {
             this.MakeCurrent();
             //TODO draw models

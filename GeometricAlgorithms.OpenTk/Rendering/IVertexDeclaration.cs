@@ -1,6 +1,8 @@
-﻿namespace GeometricAlgorithms.OpenTk.Rendering
+﻿using System;
+
+namespace GeometricAlgorithms.OpenTk.Rendering
 {
-    internal interface IVertexDeclaration
+    internal interface IVertexDeclaration : IDisposable
     {
         void Use();
     }

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.OpenTk.Rendering
+namespace GeometricAlgorithms.OpenTk
 {
-    interface IVertexBuffer : IDisposable
+    public interface IRenderable : IDisposable
     {
-        void Use();
+        void Render();
     }
 }
