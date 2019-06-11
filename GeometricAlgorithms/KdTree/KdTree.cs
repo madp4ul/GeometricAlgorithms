@@ -1,4 +1,4 @@
-﻿using GeometricAlgorithms.Domain.VertexTypes;
+﻿using GeometricAlgorithms.Domain;
 using OpenTK;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.KdTree
 {
-    public class KdTree<TVertex> : I3DQueryable<TVertex> where TVertex : Vertex
+    public class KdTree<TVertex> : I3DQueryable<TVertex> where TVertex : IVertex
     {
         private KdTreeNode<TVertex> Root;
 

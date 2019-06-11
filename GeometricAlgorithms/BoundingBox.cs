@@ -1,4 +1,4 @@
-﻿using GeometricAlgorithms.Domain.VertexTypes;
+﻿using GeometricAlgorithms.Domain;
 using OpenTK;
 using System;
 using System.Collections.Generic;
@@ -104,7 +104,7 @@ namespace GeometricAlgorithms
                  Maximum);
         }
 
-        public static BoundingBox CreateContainer<TVertex>(IEnumerable<TVertex> vertices) where TVertex : Vertex
+        public static BoundingBox CreateContainer<TVertex>(IEnumerable<TVertex> vertices) where TVertex : IVertex
         {
             float minX = float.MaxValue;
             float minY = float.MaxValue;

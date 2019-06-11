@@ -57,17 +57,25 @@
     </Compile>
     <Compile Include="Model.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Rendering\BufferContainer.cs" />
+    <Compile Include="Rendering\RenderData.cs" />
     <Compile Include="Rendering\IndexBuffer.cs" />
+    <Compile Include="Rendering\IVertexBuffer.cs" />
+    <Compile Include="Rendering\IVertexDeclaration.cs" />
+    <Compile Include="Rendering\VertexDeclaration.cs" />
     <Compile Include="Rendering\VertexBuffer.cs" />
+    <Compile Include="Rendering\VertexDeclarations.cs" />
     <Compile Include="Shaders\PointShader.cs" />
     <Compile Include="Shaders\Shader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
-    <None Include="Shaders\glsl\pointshader\shader.frag" />
-    <None Include="Shaders\glsl\pointshader\shader.vert" />
+    <None Include="Shaders\glsl\pointshader\shader.frag">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Shaders\glsl\pointshader\shader.vert">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GeometricAlgorithms.Domain\GeometricAlgorithms.Domain.csproj">

@@ -10,6 +10,8 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using System.Windows.Forms;
+using GeometricAlgorithms.Domain.VertexTypes;
+using GeometricAlgorithms.OpenTk.Shaders;
 
 namespace GeometricAlgorithms.OpenTk
 {
@@ -28,20 +30,12 @@ namespace GeometricAlgorithms.OpenTk
 
         private bool IsDrawing = false;
 
+        Model<Vertex> MyModel;
+
         public CustomGLControl() : base()
         {
             InitializeComponent();
-
-
-            var t = new Timer();
-            t.Interval = 100;
-
-            t.Tick += T_Tick;
-
-            t.Start();
         }
-
-
 
         private void T_Tick(object sender, EventArgs e)
         {
@@ -51,6 +45,20 @@ namespace GeometricAlgorithms.OpenTk
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+
+            var shader = new PointShader();
+
+            MyModel = new Model<Vertex>(new Vertex[]
+                {
+                    new Vertex(new Vector3(-0.5f, -0.5f, 0.0f)),
+                    new Vertex(new Vector3(0.5f, -0.5f, 0.0f)),
+                    new Vertex(new Vector3(0.0f,  0.5f, 0.0f))
+                },
+                new uint[] { 0, 1, 2 },
+                shader,
+                PrimitiveType.Triangles,
+                PolygonMode.Fill,
+                MaterialFace.FrontAndBack);
 
             // Ensure the Viewport is set up correctly
             OnResize(EventArgs.Empty);
@@ -101,8 +109,8 @@ namespace GeometricAlgorithms.OpenTk
         private void Draw()
         {
             //TODO draw models
+            MyModel.Draw();
 
-         
         }
     }
 }

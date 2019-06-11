@@ -1,4 +1,5 @@
-﻿using GeometricAlgorithms.Domain.VertexTypes;
+﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.Domain.VertexTypes;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using System;
@@ -9,12 +10,14 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.OpenTk.Rendering
 {
-    class VertexBuffer<TData> : IDisposable where TData : struct
+    class VertexBuffer<TVertex> : IVertexBuffer, IDisposable where TVertex : struct, IVertex
     {
         private int OpenGlPointer;
 
-        public VertexBuffer(TData[] dataArray, int elementSize, BufferUsageHint bufferUsage = BufferUsageHint.StaticDraw)
+        public VertexBuffer(TVertex[] vertices, BufferUsageHint bufferUsage = BufferUsageHint.StaticDraw)
         {
+            int vertexSize = System.Runtime.InteropServices.Marshal.SizeOf(typeof(TVertex));
+
             OpenGlPointer = GL.GenBuffer();
 
             GL.BindBuffer(
@@ -23,18 +26,9 @@ namespace GeometricAlgorithms.OpenTk.Rendering
 
             GL.BufferData(
                 BufferTarget.ArrayBuffer,
-                dataArray.Length * elementSize,
-                dataArray,
+                vertices.Length * vertexSize,
+                vertices,
                 bufferUsage);
-        }
-
-        public static VertexBuffer<Vector3> GetVectorBuffer(Vector3[] vectors)
-        {
-            return new VertexBuffer<Vector3>(vectors, Vector3.SizeInBytes);
-        }
-        public static VertexBuffer<float> GetFloatBuffer(float[] floats)
-        {
-            return new VertexBuffer<float>(floats, sizeof(float));
         }
 
         public void Dispose()
@@ -44,6 +38,13 @@ namespace GeometricAlgorithms.OpenTk.Rendering
 
             //Delete buffer
             GL.DeleteBuffer(OpenGlPointer);
+        }
+
+        public void Use()
+        {
+            GL.BindBuffer(
+                BufferTarget.ArrayBuffer,
+                OpenGlPointer);
         }
     }
 }

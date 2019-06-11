@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.Domain.VertexTypes
 {
-    public class Vertex
+    public struct Vertex : IVertex
     {
         public Vector3 Position { get; set; }
 

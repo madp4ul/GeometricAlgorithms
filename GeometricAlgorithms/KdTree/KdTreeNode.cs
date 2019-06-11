@@ -1,4 +1,5 @@
-﻿using GeometricAlgorithms.Domain.VertexTypes;
+﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.Domain.VertexTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.KdTree
 {
-    abstract class KdTreeNode<TVertex> where TVertex : Vertex
+    abstract class KdTreeNode<TVertex> where TVertex : IVertex
     {
         public int VertexCount { get; set; }
 

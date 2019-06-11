@@ -1,4 +1,5 @@
-﻿using GeometricAlgorithms.Domain.VertexTypes;
+﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.Domain.VertexTypes;
 using OpenTK;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms
 {
-    public interface I3DQueryable<TVertex> where TVertex : Vertex
+    public interface I3DQueryable<TVertex> where TVertex : IVertex
     {
         SortedList<float, TVertex> FindNearestVertices(Vector3 searchPosition, int pointAmount);
         List<TVertex> FindInRadius(Vector3 seachCenter, float searchRadius);

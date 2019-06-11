@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.OpenTk.Rendering
 {
-    class BufferContainer
+    interface IVertexBuffer
     {
+        void Use();
     }
 }

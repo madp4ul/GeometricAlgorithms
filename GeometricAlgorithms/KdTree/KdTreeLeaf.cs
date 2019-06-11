@@ -1,4 +1,5 @@
-﻿using GeometricAlgorithms.Domain.VertexTypes;
+﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.Domain.VertexTypes;
 using OpenTK;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.KdTree
 {
-    class KdTreeLeaf<TVertex> : KdTreeNode<TVertex> where TVertex : Vertex
+    class KdTreeLeaf<TVertex> : KdTreeNode<TVertex> where TVertex : IVertex
     {
         public Range<TVertex> Vertices { get; set; }
 

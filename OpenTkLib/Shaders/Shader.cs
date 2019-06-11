@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.OpenTk.Shaders
 {
-    class Shader : IDisposable
+    public class Shader : IDisposable
     {
-        protected readonly int Handle;
+        internal readonly int Handle;
 
         public Shader(string vertexPath, string fragmentPath)
         {
