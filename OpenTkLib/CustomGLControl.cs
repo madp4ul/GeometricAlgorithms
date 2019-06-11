@@ -15,9 +15,23 @@ namespace GeometricAlgorithms.OpenTk
 {
     public partial class CustomGLControl : GLControl
     {
+        private Color _ClearColor = Color.CornflowerBlue;
+        public Color ClearColor
+        {
+            get { return _ClearColor; }
+            set
+            {
+                _ClearColor = value;
+                GL.ClearColor(value);
+            }
+        }
+
+        private bool IsDrawing = false;
+
         public CustomGLControl() : base()
         {
             InitializeComponent();
+
 
             var t = new Timer();
             t.Interval = 100;
@@ -38,19 +52,19 @@ namespace GeometricAlgorithms.OpenTk
         {
             base.OnLoad(e);
 
-            GL.ClearColor(Color.MidnightBlue);
+            // Ensure the Viewport is set up correctly
+            OnResize(EventArgs.Empty);
 
-            OnResize(e);
+            //Set color to clear buffer to
+            GL.ClearColor(ClearColor);
         }
 
         protected override void OnResize(EventArgs e)
         {
-            //base.OnResize(e);
+            this.MakeCurrent();
 
-            if (ClientSize.Height == 0)
-                ClientSize = new System.Drawing.Size(ClientSize.Width, 1);
-
-            GL.Viewport(0, 0, ClientSize.Width, ClientSize.Height);
+            GL.Clear(ClearBufferMask.ColorBufferBit);
+            this.SwapBuffers();
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -61,13 +75,34 @@ namespace GeometricAlgorithms.OpenTk
             {
                 MakeCurrent();
 
-                var r = new Random();
-                GL.ClearColor(Color.FromArgb(r.Next(256), r.Next(256), r.Next(256)));
+                //var r = new Random();
+                //GL.ClearColor(Color.FromArgb(r.Next(256), r.Next(256), r.Next(256)));
 
-                //MakeCurrent();
+
+                //Clear buffer with color
                 GL.Clear(ClearBufferMask.ColorBufferBit);
+                //Draw models
+                Draw();
+
                 SwapBuffers();
             }
+        }
+
+        public override void Refresh()
+        {
+            if (!IsDrawing)
+            {
+                IsDrawing = true;
+                base.Refresh();
+                IsDrawing = false;
+            }
+        }
+
+        private void Draw()
+        {
+            //TODO draw models
+
+         
         }
     }
 }

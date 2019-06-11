@@ -6,7 +6,15 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.OpenTk.Shaders
 {
-    class PointShader
+    class PointShader : Shader
     {
+        private const string ShaderFolder = "Shaders/glsl/pointshader";
+
+        public PointShader()
+            : base(ShaderFolder + "/shader.vert", ShaderFolder + "/shader.frag")
+        {
+            //TODO add properties for attributes
+            //set VertexAttribPointers
+        }
     }
 }

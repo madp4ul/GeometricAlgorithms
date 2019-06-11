@@ -18,5 +18,10 @@ namespace GeometricAlgorithms.OpenTk
         public PolygonMode PolygonMode;
 
         internal BufferContainer Buffers;
+
+        public void Draw()
+        {
+
+        }
     }
 }
