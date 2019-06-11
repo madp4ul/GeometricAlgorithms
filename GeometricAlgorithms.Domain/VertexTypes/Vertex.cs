@@ -1,11 +1,11 @@
-﻿using System;
+﻿using OpenTK;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.VertexTypes
+namespace GeometricAlgorithms.Domain.VertexTypes
 {
     public class Vertex
     {
@@ -18,8 +18,7 @@ namespace GeometricAlgorithms.VertexTypes
 
         public override bool Equals(object obj)
         {
-            var vertex = obj as Vertex;
-            return vertex != null &&
+            return obj is Vertex vertex &&
                    Position.Equals(vertex.Position);
         }
 

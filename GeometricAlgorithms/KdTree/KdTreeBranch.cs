@@ -1,8 +1,8 @@
-﻿using GeometricAlgorithms.VertexTypes;
+﻿using GeometricAlgorithms.Domain.VertexTypes;
+using OpenTK;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,8 +13,8 @@ namespace GeometricAlgorithms.KdTree
         public KdTreeNode<TVertex> MinimumChild { get; set; }
         public KdTreeNode<TVertex> MaximumChild { get; set; }
 
-        private Dimension HalvedDimension;
-        private Func<Vector3, float> DimensionSelector;
+        private readonly Dimension HalvedDimension;
+        private readonly Func<Vector3, float> DimensionSelector;
 
         public KdTreeBranch(BoundingBox boundingBox, Range<TVertex> vertices, KdTreeConfiguration configuration, Dimension halvedDimension = Dimension.X)
             : base(boundingBox, vertices.Length)

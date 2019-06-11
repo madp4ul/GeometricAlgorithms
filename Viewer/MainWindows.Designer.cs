@@ -1,4 +1,4 @@
-﻿namespace Viewer
+﻿namespace GeometricAlgorithms.Viewer
 {
     partial class MainWindows
     {
@@ -28,13 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.customGLControl1 = new Viewer.Rendering.CustomGLControl();
+            this.customGLControl1 = new GeometricAlgorithms.OpenTk.CustomGLControl();
             this.SuspendLayout();
             // 
             // customGLControl1
             // 
-            this.customGLControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.customGLControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.customGLControl1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.customGLControl1.BackColor = System.Drawing.Color.Black;
             this.customGLControl1.Location = new System.Drawing.Point(3, 3);
@@ -58,7 +59,7 @@
 
         #endregion
 
-        private Rendering.CustomGLControl customGLControl1;
+        private GeometricAlgorithms.OpenTk.CustomGLControl customGLControl1;
     }
 }
 

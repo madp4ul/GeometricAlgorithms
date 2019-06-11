@@ -1,11 +1,11 @@
-﻿using System;
+﻿using OpenTK;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.VertexTypes
+namespace GeometricAlgorithms.Domain.VertexTypes
 {
     public class VertexNormal : Vertex
     {

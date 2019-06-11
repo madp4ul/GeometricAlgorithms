@@ -1,4 +1,4 @@
-﻿namespace Viewer.Rendering
+﻿namespace GeometricAlgorithms.OpenTk
 {
     partial class CustomGLControl
     {
