@@ -70,9 +70,12 @@ namespace GeometricAlgorithms.OpenTk
         protected override void OnResize(EventArgs e)
         {
             this.MakeCurrent();
+            GL.Viewport(0, 0, Width, Height);
 
-            GL.Clear(ClearBufferMask.ColorBufferBit);
-            this.SwapBuffers();
+            base.OnResize(e);
+
+            //GL.Clear(ClearBufferMask.ColorBufferBit);
+            //this.SwapBuffers();
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -108,6 +111,7 @@ namespace GeometricAlgorithms.OpenTk
 
         private void Draw()
         {
+            this.MakeCurrent();
             //TODO draw models
             MyModel.Draw();
 

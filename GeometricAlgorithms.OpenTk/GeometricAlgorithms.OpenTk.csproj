@@ -70,10 +70,10 @@
   <ItemGroup>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
-    <None Include="Shaders\glsl\pointshader\shader.frag">
+    <None Include="Shaders\glsl\PointShader\shader.frag">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Shaders\glsl\pointshader\shader.vert">
+    <None Include="Shaders\glsl\PointShader\shader.vert">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

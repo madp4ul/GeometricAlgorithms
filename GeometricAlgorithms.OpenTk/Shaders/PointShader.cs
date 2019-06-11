@@ -8,7 +8,7 @@ namespace GeometricAlgorithms.OpenTk.Shaders
 {
     class PointShader : Shader
     {
-        private const string ShaderFolder = "Shaders/glsl/pointshader";
+        private const string ShaderFolder = "Shaders/glsl/PointShader";
 
         public PointShader()
             : base(ShaderFolder + "/shader.vert", ShaderFolder + "/shader.frag")

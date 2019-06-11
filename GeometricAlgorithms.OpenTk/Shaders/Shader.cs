@@ -74,9 +74,5 @@ namespace GeometricAlgorithms.OpenTk.Shaders
             }
             GC.SuppressFinalize(this);
         }
-        ~Shader()
-        {
-            GL.DeleteProgram(Handle);
-        }
     }
 }
