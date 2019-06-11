@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometricAlgorithms", "Geom
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometricAlgorithms.Viewer", "Viewer\GeometricAlgorithms.Viewer.csproj", "{89D2F60E-1D7B-426C-A783-D03A5D80B817}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometricAlgorithms.OpenTk", "OpenTkLib\GeometricAlgorithms.OpenTk.csproj", "{5853246C-EA7E-4363-A004-F64BA852DEF5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometricAlgorithms.OpenTk", "GeometricAlgorithms.OpenTk\GeometricAlgorithms.OpenTk.csproj", "{5853246C-EA7E-4363-A004-F64BA852DEF5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometricAlgorithms.Domain", "GeometricAlgorithms.Domain\GeometricAlgorithms.Domain.csproj", "{B2B4F93C-4CDA-43BE-9963-4CA03C459065}"
 EndProject
