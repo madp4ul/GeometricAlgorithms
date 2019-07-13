@@ -9,5 +9,9 @@ namespace GeometricAlgorithms.MonoGame.Forms
 {
     public class MonoGameControl : InvalidationControl
     {
+        public MonoGameControl()
+        {
+            
+        }
     }
 }
