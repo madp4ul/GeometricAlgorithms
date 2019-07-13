@@ -85,9 +85,9 @@
       <Project>{b2b4f93c-4cda-43be-9963-4ca03c459065}</Project>
       <Name>GeometricAlgorithms.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\GeometricAlgorithms.MonoGame\GeometricAlgorithms.MonoGame.csproj">
-      <Project>{f3823803-829f-410a-ad8e-f266e6ac6010}</Project>
-      <Name>GeometricAlgorithms.MonoGame</Name>
+    <ProjectReference Include="..\GeometricAlgorithms.MonoGame.Forms\GeometricAlgorithms.MonoGame.Forms.csproj">
+      <Project>{d7278f8e-4373-4948-ae93-af5696867c6f}</Project>
+      <Name>GeometricAlgorithms.MonoGame.Forms</Name>
     </ProjectReference>
     <ProjectReference Include="..\GeometricAlgorithms\GeometricAlgorithms.csproj">
       <Project>{615c8a2d-7642-4f2e-8c44-482294a4e87e}</Project>

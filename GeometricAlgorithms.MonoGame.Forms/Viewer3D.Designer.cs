@@ -1,6 +1,6 @@
-﻿namespace GeometricAlgorithms.Viewer
+﻿namespace GeometricAlgorithms.MonoGame.Forms
 {
-    partial class MainWindows
+    partial class Viewer3D
     {
         /// <summary>
         /// Erforderliche Designervariable.
@@ -20,43 +20,41 @@
             base.Dispose(disposing);
         }
 
-        #region Vom Windows Form-Designer generierter Code
+        #region Vom Komponenten-Designer generierter Code
 
         /// <summary>
-        /// Erforderliche Methode für die Designerunterstützung.
+        /// Erforderliche Methode für die Designerunterstützung. 
         /// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
         /// </summary>
         private void InitializeComponent()
         {
-            this.viewer3D1 = new GeometricAlgorithms.MonoGame.Forms.Viewer3D();
+            this.monoGameControl1 = new GeometricAlgorithms.MonoGame.Forms.MonoGameControl();
             this.SuspendLayout();
             // 
-            // viewer3D1
+            // monoGameControl1
             // 
-            this.viewer3D1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.monoGameControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.viewer3D1.Location = new System.Drawing.Point(12, 12);
-            this.viewer3D1.Name = "viewer3D1";
-            this.viewer3D1.Size = new System.Drawing.Size(810, 613);
-            this.viewer3D1.TabIndex = 0;
+            this.monoGameControl1.Location = new System.Drawing.Point(3, 3);
+            this.monoGameControl1.Name = "monoGameControl1";
+            this.monoGameControl1.Size = new System.Drawing.Size(794, 444);
+            this.monoGameControl1.TabIndex = 0;
+            this.monoGameControl1.Text = "monoGameControl1";
             // 
-            // MainWindows
+            // UserControl1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(977, 637);
-            this.Controls.Add(this.viewer3D1);
-            this.MinimumSize = new System.Drawing.Size(700, 400);
-            this.Name = "MainWindows";
-            this.Text = "Point Viewer";
+            this.Controls.Add(this.monoGameControl1);
+            this.Name = "UserControl1";
+            this.Size = new System.Drawing.Size(800, 450);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private MonoGame.Forms.Viewer3D viewer3D1;
+        private MonoGameControl monoGameControl1;
     }
 }
-

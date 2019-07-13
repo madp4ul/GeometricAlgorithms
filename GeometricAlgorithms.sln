@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29102.190
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.757
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometricAlgorithms", "GeometricAlgorithms\GeometricAlgorithms.csproj", "{615C8A2D-7642-4F2E-8C44-482294A4E87E}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometricAlgorithms.Domain", "GeometricAlgorithms.Domain\GeometricAlgorithms.Domain.csproj", "{B2B4F93C-4CDA-43BE-9963-4CA03C459065}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometricAlgorithms.MonoGame", "GeometricAlgorithms.MonoGame\GeometricAlgorithms.MonoGame.csproj", "{F3823803-829F-410A-AD8E-F266E6AC6010}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometricAlgorithms.MonoGame.Forms", "GeometricAlgorithms.MonoGame.Forms\GeometricAlgorithms.MonoGame.Forms.csproj", "{D7278F8E-4373-4948-AE93-AF5696867C6F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,14 @@ Global
 		{F3823803-829F-410A-AD8E-F266E6AC6010}.Release|Any CPU.ActiveCfg = Release|x86
 		{F3823803-829F-410A-AD8E-F266E6AC6010}.Release|x86.ActiveCfg = Release|x86
 		{F3823803-829F-410A-AD8E-F266E6AC6010}.Release|x86.Build.0 = Release|x86
+		{D7278F8E-4373-4948-AE93-AF5696867C6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7278F8E-4373-4948-AE93-AF5696867C6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7278F8E-4373-4948-AE93-AF5696867C6F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D7278F8E-4373-4948-AE93-AF5696867C6F}.Debug|x86.Build.0 = Debug|Any CPU
+		{D7278F8E-4373-4948-AE93-AF5696867C6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7278F8E-4373-4948-AE93-AF5696867C6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7278F8E-4373-4948-AE93-AF5696867C6F}.Release|x86.ActiveCfg = Release|Any CPU
+		{D7278F8E-4373-4948-AE93-AF5696867C6F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
