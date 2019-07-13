@@ -28,13 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            
+            this.SuspendLayout();
             // 
             // MainWindows
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1054, 732);
+            this.ClientSize = new System.Drawing.Size(977, 637);
             this.MinimumSize = new System.Drawing.Size(700, 400);
             this.Name = "MainWindows";
             this.Text = "Point Viewer";
@@ -43,7 +43,6 @@
         }
 
         #endregion
-
     }
 }
 
