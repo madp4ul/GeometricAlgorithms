@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -31,6 +32,11 @@ namespace GeometricAlgorithms.MonoGame
             base.Initialize();
         }
 
+        public void Init()
+        {
+            Initialize();
+        }
+
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
@@ -39,8 +45,11 @@ namespace GeometricAlgorithms.MonoGame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
             // TODO: use this.Content to load your game content here
+        }
+
+        public void LoadContent(ContentManager content)
+        {
         }
 
         /// <summary>
