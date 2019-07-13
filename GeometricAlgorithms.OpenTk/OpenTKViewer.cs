@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace GeometricAlgorithms.Viewer
+namespace GeometricAlgorithms.OpenTk
 {
-    public partial class MainWindows : Form
+    public partial class OpenTKViewer : UserControl
     {
-        public MainWindows()
+        public OpenTKViewer()
         {
             InitializeComponent();
         }
