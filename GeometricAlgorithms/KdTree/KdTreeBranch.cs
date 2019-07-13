@@ -1,6 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
 using GeometricAlgorithms.Domain.VertexTypes;
-using OpenTK;
 using System;
 using System.Collections.Generic;
 using System.Linq;

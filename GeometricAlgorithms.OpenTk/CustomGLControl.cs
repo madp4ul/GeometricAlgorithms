@@ -55,9 +55,9 @@ namespace GeometricAlgorithms.OpenTk
 
             MyModel = new Model<Vertex>(new Vertex[]
                 {
-                    new Vertex(new Vector3(-0.5f, -0.5f, 0.0f)),
-                    new Vertex(new Vector3(0.5f, -0.5f, 0.0f)),
-                    new Vertex(new Vector3(0.0f,  0.5f, 0.0f))
+                    new Vertex(new Domain.Vector3(-0.5f, -0.5f, 0.0f)),
+                    new Vertex(new Domain.Vector3(0.5f, -0.5f, 0.0f)),
+                    new Vertex(new Domain.Vector3(0.0f,  0.5f, 0.0f))
                 },
                 new uint[] { 0, 1, 2 },
                 shader,

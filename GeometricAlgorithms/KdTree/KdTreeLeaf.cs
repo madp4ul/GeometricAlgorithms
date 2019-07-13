@@ -1,6 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
 using GeometricAlgorithms.Domain.VertexTypes;
-using OpenTK;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +22,7 @@ namespace GeometricAlgorithms.KdTree
         {
             foreach (var vertex in Vertices)
             {
-                if (Vector3.DistanceSquared(vertex.Position, query.SeachCenter) < query.SearchRadiusSquared)
+                if ((vertex.Position - query.SeachCenter).LengthSquared < query.SearchRadiusSquared)
                 {
                     query.ResultSet.Add(vertex);
                 }
@@ -34,7 +33,7 @@ namespace GeometricAlgorithms.KdTree
         {
             foreach (TVertex vertex in Vertices)
             {
-                float distance = Vector3.Distance(vertex.Position, query.SearchPosition);
+                float distance = (vertex.Position - query.SearchPosition).Length;
                 if (distance < query.MaxSearchRadius)
                 {
                     //If list is full, remove last element to be replaced with new point
