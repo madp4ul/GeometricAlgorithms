@@ -9,7 +9,7 @@ namespace GeometricAlgorithms.MonoGame.Forms
 {
     public class MonoGameControl : InvalidationControl
     {
-        Game Game;
+        public readonly Game Game;
 
         public MonoGameControl()
         {
@@ -21,14 +21,13 @@ namespace GeometricAlgorithms.MonoGame.Forms
             base.Initialize();
 
             Game.Init();
-            Game.LoadContent(Editor.Content);
         }
 
         protected override void Draw()
         {
             base.Draw();
 
-            
+            Game.Draw();
         }
     }
 }

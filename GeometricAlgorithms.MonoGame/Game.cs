@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GeometricAlgorithms.MonoGame.Shader;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -12,6 +13,7 @@ namespace GeometricAlgorithms.MonoGame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        private PointEffect PointEffect;
 
         public Game()
         {
@@ -35,6 +37,7 @@ namespace GeometricAlgorithms.MonoGame
         public void Init()
         {
             Initialize();
+            LoadContent();
         }
 
         /// <summary>
@@ -46,10 +49,8 @@ namespace GeometricAlgorithms.MonoGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             // TODO: use this.Content to load your game content here
-        }
+            PointEffect = PointEffect.FromEffect(Content.Load<Effect>("PointShader"));
 
-        public void LoadContent(ContentManager content)
-        {
         }
 
         /// <summary>
@@ -82,11 +83,16 @@ namespace GeometricAlgorithms.MonoGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            Draw();
+
+            base.Draw(gameTime);
+        }
+
+        public void Draw()
+        {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
-            base.Draw(gameTime);
         }
     }
 }
