@@ -14,7 +14,7 @@ namespace GeometricAlgorithms.MonoGame
         [STAThread]
         public static void Main()
         {
-            using (var game = new Game())
+            using (var game = new Demo.Game())
                 game.Run();
         }
     }

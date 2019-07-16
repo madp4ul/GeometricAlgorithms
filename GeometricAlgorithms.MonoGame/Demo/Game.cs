@@ -3,21 +3,21 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
-namespace GeometricAlgorithms.MonoGame
+namespace GeometricAlgorithms.MonoGame.Demo
 {
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class Game : Microsoft.Xna.Framework.Game
+    class Game : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
         private PointEffect PointEffect;
+        private PointCloud Points;
 
         public Game()
         {
-            graphics = new GraphicsDeviceManager(this);
+            new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
 
@@ -29,15 +29,7 @@ namespace GeometricAlgorithms.MonoGame
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             base.Initialize();
-        }
-
-        public void Init()
-        {
-            Initialize();
-            LoadContent();
         }
 
         /// <summary>
@@ -46,11 +38,21 @@ namespace GeometricAlgorithms.MonoGame
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-            // TODO: use this.Content to load your game content here
-            PointEffect = PointEffect.FromEffect(Content.Load<Effect>("PointShader"));
+            var cm = new ResourceContentManager(Services, Properties.Resources.ResourceManager);
 
+            PointEffect = PointEffect.FromEffect(cm.Load<Effect>("PointShader"));
+            
+            var rand = new Random();
+            Vector3[] points = new Vector3[400000];
+            for (int i = 0; i < points.Length; i++)
+            {
+                points[i] = new Vector3(
+                        (float)rand.NextDouble(),
+                        (float)rand.NextDouble(),
+                        (float)rand.NextDouble());
+            }
+
+            Points = new PointCloud(GraphicsDevice, points, pixelWidth: 1);
         }
 
         /// <summary>
@@ -69,11 +71,6 @@ namespace GeometricAlgorithms.MonoGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-            // TODO: Add your update logic here
-
             base.Update(gameTime);
         }
 
@@ -83,16 +80,30 @@ namespace GeometricAlgorithms.MonoGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            Draw();
+            GraphicsDevice.Clear(Color.Black);
+
+            GraphicsDevice.RasterizerState = new RasterizerState
+            {
+                CullMode = CullMode.None
+            };
+
+            Matrix projection = Matrix.CreatePerspectiveFieldOfView(
+                (float)Math.PI / 3,
+                GraphicsDevice.Viewport.Width / GraphicsDevice.Viewport.Height,
+                0.0001f, 1000f);
+            Matrix view = Matrix.CreateLookAt(new Vector3((float)Math.Sin(gameTime.TotalGameTime.TotalSeconds * 3), 1f, 3f),
+                new Vector3(0.0f, 0.0f, 0.0f), Vector3.Up);
+            Matrix world = Matrix.CreateTranslation(new Vector3(-0.5f, -0.5f, 0));
+
+            // projection = Matrix.CreateOrthographic(2, 2, 0.001f, 1000f);
+
+            var wvp = world * view * projection;
+
+            PointEffect.WorldViewProjection = wvp;
+
+            Points.Draw(PointEffect);
 
             base.Draw(gameTime);
-        }
-
-        public void Draw()
-        {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
         }
     }
 }

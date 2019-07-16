@@ -46,6 +46,17 @@ namespace GeometricAlgorithms.MonoGame.Shader
         {
         }
 
+
+        public void DrawForEachPass(Action draw)
+        {
+            foreach (var pass in Techniques["BasicColorDrawing"].Passes)
+            {
+                pass.Apply();
+
+                draw();
+            }
+        }
+
         public static PointEffect FromEffect(Effect effect)
         {
             return new PointEffect(effect);

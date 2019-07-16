@@ -1,4 +1,5 @@
-﻿using MonoGame.Forms.Controls;
+﻿using GeometricAlgorithms.MonoGame;
+using MonoGame.Forms.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,25 +10,21 @@ namespace GeometricAlgorithms.MonoGame.Forms
 {
     public class MonoGameControl : InvalidationControl
     {
-        public readonly Game Game;
 
         public MonoGameControl()
         {
-            Game = new Game();
         }
 
         protected override void Initialize()
         {
             base.Initialize();
 
-            Game.Init();
         }
 
         protected override void Draw()
         {
             base.Draw();
 
-            Game.Draw();
         }
     }
 }
