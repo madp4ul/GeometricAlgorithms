@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.MonoGame.Shader
 {
-    class PointEffect : Effect
+    public class PointEffect : Effect
     {
         public Matrix WorldViewProjection
         {

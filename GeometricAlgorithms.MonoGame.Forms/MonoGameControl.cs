@@ -1,4 +1,5 @@
 ﻿using GeometricAlgorithms.MonoGame;
+using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Forms.Controls;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace GeometricAlgorithms.MonoGame.Forms
 
         public MonoGameControl()
         {
+            Effect e;
         }
 
         protected override void Initialize()

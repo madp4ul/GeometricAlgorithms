@@ -41,6 +41,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ContentProvider.cs" />
     <Compile Include="Demo\Game.cs" />
     <Compile Include="PointCloud.cs" />
     <Compile Include="Program.cs" />
