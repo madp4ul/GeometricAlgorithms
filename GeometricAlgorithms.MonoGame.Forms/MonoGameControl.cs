@@ -14,7 +14,6 @@ namespace GeometricAlgorithms.MonoGame.Forms
 
         public MonoGameControl()
         {
-            Effect e;
         }
 
         protected override void Initialize()

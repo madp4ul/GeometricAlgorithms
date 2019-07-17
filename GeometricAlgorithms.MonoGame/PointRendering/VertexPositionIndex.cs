@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.MonoGame
+namespace GeometricAlgorithms.MonoGame.PointRendering
 {
-    struct VertexPositionIndex
+    public struct VertexPositionIndex
     {
         public static readonly VertexDeclaration VertexDeclaration = new VertexDeclaration(
             new VertexElement(0, VertexElementFormat.Vector3, VertexElementUsage.Position, 0),
@@ -29,7 +29,7 @@ namespace GeometricAlgorithms.MonoGame
         }
     }
 
-    enum Corner : int
+    public enum Corner : int
     {
         TopLeft = 0,
         TopRight = 1,

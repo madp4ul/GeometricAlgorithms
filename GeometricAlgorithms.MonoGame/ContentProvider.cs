@@ -1,4 +1,4 @@
-﻿using GeometricAlgorithms.MonoGame.Shader;
+﻿using GeometricAlgorithms.MonoGame.PointRendering;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -17,11 +17,15 @@ namespace GeometricAlgorithms.MonoGame
         public ContentProvider(GameServiceContainer services)
         {
             ContentManager = new ResourceContentManager(services, Properties.Resources.ResourceManager);
+
+            PointEffect = new Lazy<PointEffect>(LoadPointEffect);
         }
 
-        public PointEffect LoadPointEffect()
+        public Lazy<PointEffect> PointEffect { get; private set; }
+
+        private PointEffect LoadPointEffect()
         {
-            return PointEffect.FromEffect(ContentManager.Load<Effect>("PointShader"));
+            return PointRendering.PointEffect.FromEffect(ContentManager.Load<Effect>("PointShader"));
         }
     }
 }

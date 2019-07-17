@@ -1,4 +1,4 @@
-﻿using GeometricAlgorithms.MonoGame.Shader;
+﻿using GeometricAlgorithms.MonoGame.PointRendering;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.MonoGame.Shader
+namespace GeometricAlgorithms.MonoGame.PointRendering
 {
     public class PointEffect : Effect
     {

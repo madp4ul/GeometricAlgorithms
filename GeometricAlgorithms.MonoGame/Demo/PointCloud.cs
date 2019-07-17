@@ -1,4 +1,4 @@
-﻿using GeometricAlgorithms.MonoGame.Shader;
+﻿using GeometricAlgorithms.MonoGame.PointRendering;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.MonoGame
+namespace GeometricAlgorithms.MonoGame.Demo
 {
     class PointCloud
     {

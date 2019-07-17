@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.MonoGame
+namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 {
-    class MonoGameViewer//: InvalidationControl
+    public interface IDrawable
     {
-        
+        void Draw();
     }
 }
