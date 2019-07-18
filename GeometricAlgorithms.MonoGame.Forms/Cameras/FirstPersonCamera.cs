@@ -1,6 +1,7 @@
 ﻿namespace GeometricAlgorithms.MonoGame.Forms.Cameras
 {
     using GeometricAlgorithms.Domain;
+    using System;
 
     public class FirstPersonCamera : ICamera
     {
@@ -8,6 +9,9 @@
         internal override ICameraData Data => Camera;
 
         public Vector3 Position { get; set; }
+
+        public Vector3 Forward => new Vector3(Camera.LookAt.X, Camera.LookAt.Y, Camera.LookAt.Z);
+        public Vector3 Up => new Vector3(Camera.Up.X, Camera.Up.Y, Camera.Up.Z);
 
         public float RotationY { get; private set; }
 
@@ -44,7 +48,11 @@
 
         public void SetRotation(float x, float y)
         {
-            RotationX = x;
+
+            const float maxVerticalRotation = (float)Math.PI / 2f - 0.01f;
+
+            RotationX = Microsoft.Xna.Framework.MathHelper.Clamp(x, -maxVerticalRotation, maxVerticalRotation);
+
             RotationY = y;
 
             UpdateMatrix();
@@ -74,13 +82,15 @@ namespace GeometricAlgorithms.MonoGame.Forms.Cameras.FirstPerson
     class InternalFirstPersonCamera : ICameraData
     {
         public Matrix ViewProjectionMatrix { get; private set; }
-        public IViewProjectionEffect Effect { get; set; }
+
+        public Vector3 LookAt { get; private set; }
+        public readonly Vector3 Up = Vector3.Up;
 
         public void UpdateMatrix(Vector3 position, float rotX, float rotY, float fov, float aspect, float near, float far)
         {
-            Vector3 lookAt = Vector3.Transform(-Vector3.UnitZ, Matrix.CreateRotationX(rotX) * Matrix.CreateRotationY(rotY));
+            LookAt = Vector3.Transform(-Vector3.UnitZ, Matrix.CreateRotationX(rotX) * Matrix.CreateRotationY(rotY));
 
-            Matrix view = Matrix.CreateLookAt(position, position + lookAt, Vector3.Up);
+            Matrix view = Matrix.CreateLookAt(position, position + LookAt, Up);
             Matrix projection = Matrix.CreatePerspectiveFieldOfView(fov, aspect, near, far);
 
             ViewProjectionMatrix = view * projection;

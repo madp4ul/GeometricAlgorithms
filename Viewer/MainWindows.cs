@@ -22,7 +22,9 @@ namespace GeometricAlgorithms.Viewer
         {
             InitializeComponent();
 
-            //Controls.Add(new GeometricAlgorithmViewer());
+            Configuration = new Configuration();//todo load or somethign
+
+            viewer.Configuration = Configuration.ViewerConfiguration;
         }
     }
 }

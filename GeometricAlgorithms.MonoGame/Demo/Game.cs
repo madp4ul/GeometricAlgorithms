@@ -41,9 +41,9 @@ namespace GeometricAlgorithms.MonoGame.Demo
             var cm = new ResourceContentManager(Services, Properties.Resources.ResourceManager);
 
             PointEffect = PointEffect.FromEffect(cm.Load<Effect>("PointShader"));
-            
+
             var rand = new Random();
-            Vector3[] points = new Vector3[400000];
+            Vector3[] points = new Vector3[1000];
             for (int i = 0; i < points.Length; i++)
             {
                 points[i] = new Vector3(
@@ -52,7 +52,7 @@ namespace GeometricAlgorithms.MonoGame.Demo
                         (float)rand.NextDouble());
             }
 
-            Points = new PointCloud(GraphicsDevice, points, pixelWidth: 1);
+            Points = new PointCloud(GraphicsDevice, points, pixelWidth: 3);
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace GeometricAlgorithms.MonoGame.Demo
                 (float)Math.PI / 3,
                 GraphicsDevice.Viewport.Width / GraphicsDevice.Viewport.Height,
                 0.0001f, 1000f);
-            Matrix view = Matrix.CreateLookAt(new Vector3((float)Math.Sin(gameTime.TotalGameTime.TotalSeconds * 3), 1f, 3f),
+            Matrix view = Matrix.CreateLookAt(new Vector3((float)Math.Sin(gameTime.TotalGameTime.TotalSeconds * 1.5f), 1f, 3f),
                 new Vector3(0.0f, 0.0f, 0.0f), Vector3.Up);
             Matrix world = Matrix.CreateTranslation(new Vector3(-0.5f, -0.5f, 0));
 

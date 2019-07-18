@@ -9,7 +9,7 @@ namespace GeometricAlgorithms.MonoGame.Forms
 {
     public class Scene
     {
-        public List<Drawables.IDrawable> Drawables { get; set; }
+        public List<Drawables.IDrawable> Drawables { get; private set; }
         public ICamera Camera { get; set; }
 
         public Scene()

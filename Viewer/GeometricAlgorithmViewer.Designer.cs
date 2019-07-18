@@ -38,7 +38,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.viewer.Location = new System.Drawing.Point(0, 0);
             this.viewer.Name = "viewer";
-            this.viewer.Size = new System.Drawing.Size(529, 378);
+            this.viewer.Size = new System.Drawing.Size(533, 383);
             this.viewer.TabIndex = 0;
             this.viewer.Load += new System.EventHandler(this.Viewer_Load);
             // 
@@ -48,7 +48,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.viewer);
             this.Name = "GeometricAlgorithmViewer";
-            this.Size = new System.Drawing.Size(529, 378);
+            this.Size = new System.Drawing.Size(533, 383);
             this.ResumeLayout(false);
 
         }

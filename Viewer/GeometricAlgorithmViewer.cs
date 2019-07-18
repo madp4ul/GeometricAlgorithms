@@ -31,7 +31,12 @@ namespace GeometricAlgorithms.Viewer
 
             ViewerDragger = new MouseDragger(viewer.Display);
             ViewerDragger.OnMouseDrag += ViewerDragger_OnMouseDrag;
+
+            viewer.Display.KeyDown += Display_KeyDown;
+            
         }
+
+
 
         private void Viewer_Load(object sender, EventArgs e)
         {
@@ -61,12 +66,43 @@ namespace GeometricAlgorithms.Viewer
 
         private void ViewerDragger_OnMouseDrag(Size size)
         {
-            const float Sensitivity = 0.005f;
+            float Sensitivity = 0.015f * Configuration.MouseSensitivity;
 
             Camera.SetRotation(Camera.RotationX + size.Height * Sensitivity, Camera.RotationY + size.Width * Sensitivity);
             viewer.Invalidate();
         }
 
+        private void Display_KeyDown(object sender, KeyEventArgs e)
+        {
 
+            Vector3 movement;
+
+            switch (e.KeyCode)
+            {
+                case Keys.W:
+                    movement = Camera.Forward;
+                    break;
+                case Keys.A:
+                    movement = -Vector3.Cross(Camera.Forward, Camera.Up);
+                    break;
+                case Keys.D:
+                    movement = Vector3.Cross(Camera.Forward, Camera.Up);
+                    break;
+                case Keys.S:
+                    movement = -Camera.Forward;
+                    break;
+                default:
+                    movement = Vector3.Zero;
+                    break;
+            }
+
+            movement *= 0.1f;
+
+            Camera.SetPosition(Camera.Position + movement);
+
+
+
+            viewer.Invalidate();
+        }
     }
 }

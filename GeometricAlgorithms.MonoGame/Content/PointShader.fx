@@ -13,6 +13,8 @@ int ViewportWidth;
 int ViewportHeight;
 int PointPixels;
 
+const float FadeoffDistance = 0.1;
+
 struct VertexShaderInput
 {
 	float4 Position : POSITION0;
@@ -54,8 +56,10 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 
 	output.Position = float4(output.Position.x + offsetWidth, output.Position.y + offsetHeight, output.Position.z, output.Position.w);
 
+	float fadeoff = FadeoffDistance / output.Position.z;
 
-	output.Color = float4(offsetWidth / 2.0 + 0.5, offsetHeight / 2.0 + 0.5, 0, 1);
+	output.Color = float4(1 - fadeoff, 1 - fadeoff, 1, 1);
+	//output.Color = float4(offsetWidth / 2.0 + 0.5, offsetHeight / 2.0 + 0.5, 0, 1);
 
 	return output;
 }
