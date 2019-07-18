@@ -95,11 +95,8 @@ namespace GeometricAlgorithms.MonoGame.Demo
                 new Vector3(0.0f, 0.0f, 0.0f), Vector3.Up);
             Matrix world = Matrix.CreateTranslation(new Vector3(-0.5f, -0.5f, 0));
 
-            // projection = Matrix.CreateOrthographic(2, 2, 0.001f, 1000f);
-
-            var wvp = world * view * projection;
-
-            PointEffect.WorldViewProjection = wvp;
+            PointEffect.ViewProjectionMatrix = view * projection;
+            PointEffect.WorldMatrix = world;
 
             Points.Draw(PointEffect);
 

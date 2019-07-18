@@ -8,12 +8,11 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.MonoGame.PointRendering
 {
-    public class PointEffect : Effect
+    public class PointEffect : Effect, IViewProjectionEffect, IWorldEffect
     {
-        public Matrix WorldViewProjection
+        private void SetWorldViewProjection(Matrix value)
         {
-            get { return Parameters["WorldViewProjection"].GetValueMatrix(); }
-            set { Parameters["WorldViewProjection"].SetValue(value); }
+            Parameters["WorldViewProjection"].SetValue(value);
         }
 
         public int PointPixels
@@ -34,18 +33,31 @@ namespace GeometricAlgorithms.MonoGame.PointRendering
             set { Parameters["ViewportHeight"].SetValue(value); }
         }
 
-        public PointEffect(GraphicsDevice graphicsDevice, byte[] effectCode) : base(graphicsDevice, effectCode)
+        private Matrix _ViewProjectionMatrix = Matrix.Identity;
+        public Matrix ViewProjectionMatrix
         {
+            get => _ViewProjectionMatrix;
+            set
+            {
+                _ViewProjectionMatrix = value;
+                SetWorldViewProjection(WorldMatrix * ViewProjectionMatrix);
+            }
         }
 
-        public PointEffect(GraphicsDevice graphicsDevice, byte[] effectCode, int index, int count) : base(graphicsDevice, effectCode, index, count)
+        private Matrix _WorldMatrix = Matrix.Identity;
+        public Matrix WorldMatrix
         {
+            get => _WorldMatrix;
+            set
+            {
+                _WorldMatrix = value;
+                SetWorldViewProjection(WorldMatrix * ViewProjectionMatrix);
+            }
         }
 
         protected PointEffect(Effect cloneSource) : base(cloneSource)
         {
         }
-
 
         public void DrawForEachPass(Action draw)
         {

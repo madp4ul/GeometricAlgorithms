@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.MonoGame.PointRendering
 {
-    public struct VertexPositionIndex
+    public struct VertexPositionIndex : IVertexType
     {
         public static readonly VertexDeclaration VertexDeclaration = new VertexDeclaration(
             new VertexElement(0, VertexElementFormat.Vector3, VertexElementUsage.Position, 0),
@@ -23,6 +23,7 @@ namespace GeometricAlgorithms.MonoGame.PointRendering
             Corner = corner;
         }
 
+        VertexDeclaration IVertexType.VertexDeclaration => VertexDeclaration;
         public override string ToString()
         {
             return $"Pos: {Position} Corner: {Corner.ToString()}";

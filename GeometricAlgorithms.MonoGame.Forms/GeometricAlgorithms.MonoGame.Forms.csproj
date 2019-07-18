@@ -63,7 +63,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cameras\FirstPersonCamera.cs" />
+    <Compile Include="Cameras\ICamera.cs" />
+    <Compile Include="Cameras\IInternalCamera.cs" />
     <Compile Include="Drawables\DrawableFactory.cs" />
+    <Compile Include="Drawables\ToggleableDrawable.cs" />
     <Compile Include="Drawables\PointCloud.cs" />
     <Compile Include="MonoGameControl.cs">
       <SubType>Component</SubType>
@@ -74,6 +78,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Drawables\IDrawable.cs" />
+    <Compile Include="Scene.cs" />
     <Compile Include="Viewer3D.cs">
       <SubType>UserControl</SubType>
     </Compile>

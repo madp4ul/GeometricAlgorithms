@@ -10,7 +10,7 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 {
     public class DrawableFactory
     {
-        public ContentProvider ContentProvider { get; set; }
+        internal ContentProvider ContentProvider { get; set; }
 
         public DrawableFactory(GameServiceContainer services)
         {
@@ -25,5 +25,6 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 
             return new PointCloud(ContentProvider.PointEffect.Value, xnaPoints, radius);
         }
+
     }
 }

@@ -19,6 +19,7 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 
 
         public int PixelWidth { get; set; }
+        public Domain.Vector3 Position { get; set; }
 
         public PointCloud(PointEffect effect, Vector3[] positions, int pixelWidth = 2)
         {
@@ -70,7 +71,18 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             Effect.ViewportWidth = Device.Viewport.Width;
             Effect.ViewportHeight = Device.Viewport.Height;
 
-            Effect.DrawForEachPass(() => Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, Indices.IndexCount / 3));
+    //        Matrix projection = Matrix.CreatePerspectiveFieldOfView(
+    //(float)Math.PI / 3,
+    //    1,
+    //0.0001f, 1000f);
+    //        Matrix view = Matrix.CreateLookAt(new Vector3(0, 1f, 3f),
+    //new Vector3(0.0f, 0.0f, 0.0f), Vector3.Up);
+    //        Matrix world = Matrix.CreateTranslation(new Vector3(-0.5f, -0.5f, 0));
+
+    //        Effect.ViewProjectionMatrix = view * projection;
+    //        Effect.WorldMatrix = world;
+
+    //        Effect.DrawForEachPass(() => Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, Indices.IndexCount / 3));
         }
     }
 }
