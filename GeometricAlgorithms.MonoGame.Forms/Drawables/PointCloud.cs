@@ -63,7 +63,6 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             }
         }
 
-        int i = 0;
         public void Draw(ICamera camera)
         {
             Device.SetVertexBuffer(Vertices);

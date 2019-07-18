@@ -23,17 +23,11 @@ namespace GeometricAlgorithms.MonoGame.Forms
         {
             Scene = new Scene();
         }
-
         protected override void Initialize()
         {
             base.Initialize();
 
             DrawableFactory = new DrawableFactory(Editor.services);
-
-            var t = new Timer();
-            t.Interval = 100;
-            t.Tick += (o, e) => Draw();
-            t.Start();
         }
 
         protected override void Draw()

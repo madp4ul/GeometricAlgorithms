@@ -28,31 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            GeometricAlgorithms.MonoGame.Forms.Scene scene1 = new GeometricAlgorithms.MonoGame.Forms.Scene();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindows));
-            this.viewer = new GeometricAlgorithms.MonoGame.Forms.Viewer3D();
+            this.geometricAlgorithmViewer1 = new GeometricAlgorithms.Viewer.GeometricAlgorithmViewer();
             this.SuspendLayout();
             // 
-            // viewer
+            // geometricAlgorithmViewer1
             // 
-            this.viewer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.viewer.Location = new System.Drawing.Point(12, 12);
-            this.viewer.Name = "viewer";
-            scene1.Camera = null;
-            scene1.Drawables = ((System.Collections.Generic.List<GeometricAlgorithms.MonoGame.Forms.Drawables.IDrawable>)(resources.GetObject("scene1.Drawables")));
-            this.viewer.Scene = scene1;
-            this.viewer.Size = new System.Drawing.Size(810, 613);
-            this.viewer.TabIndex = 0;
-            this.viewer.Load += new System.EventHandler(this.Viewer3D_Load);
+            this.geometricAlgorithmViewer1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.geometricAlgorithmViewer1.Location = new System.Drawing.Point(12, 12);
+            this.geometricAlgorithmViewer1.Name = "geometricAlgorithmViewer1";
+            this.geometricAlgorithmViewer1.Size = new System.Drawing.Size(562, 523);
+            this.geometricAlgorithmViewer1.TabIndex = 0;
             // 
             // MainWindows
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(977, 637);
-            this.Controls.Add(this.viewer);
+            this.ClientSize = new System.Drawing.Size(935, 547);
+            this.Controls.Add(this.geometricAlgorithmViewer1);
             this.MinimumSize = new System.Drawing.Size(700, 400);
             this.Name = "MainWindows";
             this.Text = "Point Viewer";
@@ -62,7 +55,7 @@
 
         #endregion
 
-        private MonoGame.Forms.Viewer3D viewer;
+        private GeometricAlgorithmViewer geometricAlgorithmViewer1;
     }
 }
 

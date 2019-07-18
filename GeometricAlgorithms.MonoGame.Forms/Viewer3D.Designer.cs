@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            GeometricAlgorithms.MonoGame.Forms.Scene scene1 = new GeometricAlgorithms.MonoGame.Forms.Scene();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Viewer3D));
             this.monoGameControl = new GeometricAlgorithms.MonoGame.Forms.MonoGameControl();
             this.SuspendLayout();
@@ -37,11 +38,14 @@
             this.monoGameControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.monoGameControl.Location = new System.Drawing.Point(3, 3);
+            this.monoGameControl.Location = new System.Drawing.Point(0, 0);
+            this.monoGameControl.Margin = new System.Windows.Forms.Padding(0);
             this.monoGameControl.Name = "monoGameControl";
-            this.monoGameControl.Size = new System.Drawing.Size(794, 444);
+            scene1.Camera = null;
+            this.monoGameControl.Scene = scene1;
+            this.monoGameControl.Size = new System.Drawing.Size(800, 450);
             this.monoGameControl.TabIndex = 0;
-            this.monoGameControl.Text = "monoGameControl1";
+            this.monoGameControl.Text = "monoGameViewer";
             // 
             // Viewer3D
             // 

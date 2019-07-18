@@ -46,6 +46,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigurationModel\Configuration.cs" />
+    <Compile Include="ConfigurationModel\ViewerConfiguration.cs" />
+    <Compile Include="GeometricAlgorithmViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GeometricAlgorithmViewer.Designer.cs">
+      <DependentUpon>GeometricAlgorithmViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainWindows.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -55,6 +63,9 @@
     <Compile Include="MouseDragger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="GeometricAlgorithmViewer.resx">
+      <DependentUpon>GeometricAlgorithmViewer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainWindows.resx">
       <DependentUpon>MainWindows.cs</DependentUpon>
     </EmbeddedResource>
