@@ -1,4 +1,5 @@
-﻿using GeometricAlgorithms.MonoGame.PointRendering;
+﻿using GeometricAlgorithms.MonoGame.Forms.Cameras;
+using GeometricAlgorithms.MonoGame.PointRendering;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -62,27 +63,35 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             }
         }
 
-        public void Draw()
+        int i = 0;
+        public void Draw(ICamera camera)
         {
             Device.SetVertexBuffer(Vertices);
             Device.Indices = Indices;
 
+            Effect.ViewProjectionMatrix = camera.Data.ViewProjectionMatrix;
             Effect.PointPixels = PixelWidth;
             Effect.ViewportWidth = Device.Viewport.Width;
             Effect.ViewportHeight = Device.Viewport.Height;
 
-    //        Matrix projection = Matrix.CreatePerspectiveFieldOfView(
-    //(float)Math.PI / 3,
-    //    1,
-    //0.0001f, 1000f);
-    //        Matrix view = Matrix.CreateLookAt(new Vector3(0, 1f, 3f),
-    //new Vector3(0.0f, 0.0f, 0.0f), Vector3.Up);
-    //        Matrix world = Matrix.CreateTranslation(new Vector3(-0.5f, -0.5f, 0));
+            //        Matrix projection = Matrix.CreatePerspectiveFieldOfView(
+            //(float)Math.PI / 3,
+            //    1,
+            //0.0001f, 1000f);
+            //        Matrix view = Matrix.CreateLookAt(new Vector3(0, 1f, 3f),
+            //new Vector3(0.0f, 0.0f, 0.0f), Vector3.Up);
+            Matrix world = Matrix.CreateTranslation(new Vector3(-0.5f, -0.5f, 0));
 
-    //        Effect.ViewProjectionMatrix = view * projection;
-    //        Effect.WorldMatrix = world;
+            //        Effect.ViewProjectionMatrix = view * projection;
+            Effect.WorldMatrix = world;
 
-    //        Effect.DrawForEachPass(() => Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, Indices.IndexCount / 3));
+            Matrix projection = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 3, 1, 0.0001f, 1000f);
+            Matrix view = Matrix.CreateLookAt(new Vector3((float)Math.Sin(i++), 1f, 3f),
+                new Vector3(0.0f, 0.0f, 0.0f), Vector3.Up);
+
+            Effect.ViewProjectionMatrix = view * projection;
+
+            Effect.DrawForEachPass(() => Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, Indices.IndexCount / 3));
         }
     }
 }

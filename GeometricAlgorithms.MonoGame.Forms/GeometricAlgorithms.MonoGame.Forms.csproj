@@ -65,7 +65,7 @@
   <ItemGroup>
     <Compile Include="Cameras\FirstPersonCamera.cs" />
     <Compile Include="Cameras\ICamera.cs" />
-    <Compile Include="Cameras\IInternalCamera.cs" />
+    <Compile Include="Cameras\ICameraData.cs" />
     <Compile Include="Drawables\DrawableFactory.cs" />
     <Compile Include="Drawables\ToggleableDrawable.cs" />
     <Compile Include="Drawables\PointCloud.cs" />
@@ -98,6 +98,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Viewer3D.resx">
       <DependentUpon>Viewer3D.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

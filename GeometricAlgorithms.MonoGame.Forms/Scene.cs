@@ -11,5 +11,18 @@ namespace GeometricAlgorithms.MonoGame.Forms
     {
         public List<Drawables.IDrawable> Drawables { get; set; }
         public ICamera Camera { get; set; }
+
+        public Scene()
+        {
+            Drawables = new List<Drawables.IDrawable>();
+        }
+
+        public void Draw()
+        {
+            foreach (var drawable in Drawables)
+            {
+                drawable.Draw(Camera);
+            }
+        }
     }
 }

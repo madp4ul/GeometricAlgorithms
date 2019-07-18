@@ -28,26 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.monoGameControl1 = new GeometricAlgorithms.MonoGame.Forms.MonoGameControl();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Viewer3D));
+            this.monoGameControl = new GeometricAlgorithms.MonoGame.Forms.MonoGameControl();
             this.SuspendLayout();
             // 
-            // monoGameControl1
+            // monoGameControl
             // 
-            this.monoGameControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.monoGameControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.monoGameControl1.Location = new System.Drawing.Point(3, 3);
-            this.monoGameControl1.Name = "monoGameControl1";
-            this.monoGameControl1.Size = new System.Drawing.Size(794, 444);
-            this.monoGameControl1.TabIndex = 0;
-            this.monoGameControl1.Text = "monoGameControl1";
+            this.monoGameControl.Location = new System.Drawing.Point(3, 3);
+            this.monoGameControl.Name = "monoGameControl";
+            this.monoGameControl.Size = new System.Drawing.Size(794, 444);
+            this.monoGameControl.TabIndex = 0;
+            this.monoGameControl.Text = "monoGameControl1";
             // 
-            // UserControl1
+            // Viewer3D
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.monoGameControl1);
-            this.Name = "UserControl1";
+            this.Controls.Add(this.monoGameControl);
+            this.Name = "Viewer3D";
             this.Size = new System.Drawing.Size(800, 450);
             this.ResumeLayout(false);
 
@@ -55,6 +56,6 @@
 
         #endregion
 
-        private MonoGameControl monoGameControl1;
+        private MonoGameControl monoGameControl;
     }
 }

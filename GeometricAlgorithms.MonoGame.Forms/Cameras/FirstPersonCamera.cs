@@ -5,7 +5,7 @@
     public class FirstPersonCamera : ICamera
     {
         private readonly FirstPerson.InternalFirstPersonCamera Camera;
-        internal override IInternalCamera Data => Camera;
+        internal override ICameraData Data => Camera;
 
         public Vector3 Position { get; set; }
 
@@ -24,6 +24,22 @@
         public FirstPersonCamera()
         {
             Camera = new FirstPerson.InternalFirstPersonCamera();
+
+            //set defaults
+            Position = new Vector3(0, 0, 0);
+            RotationX = 0;
+            RotationY = 0;
+            FieldOfView = Microsoft.Xna.Framework.MathHelper.ToRadians(60);
+            AspectRatio = 1;
+            NearPlane = 0.001f;
+            FarPlane = 100f;
+        }
+
+        public void SetPosition(Vector3 position)
+        {
+            Position = position;
+
+            UpdateMatrix();
         }
 
         public void SetRotation(float x, float y)
@@ -32,6 +48,14 @@
             RotationY = y;
 
             UpdateMatrix();
+        }
+
+        public void SetProjection(float fov, float aspect, float near, float far)
+        {
+            FieldOfView = fov;
+            AspectRatio = aspect;
+            NearPlane = near;
+            FarPlane = far;
         }
 
         private void UpdateMatrix()
@@ -47,9 +71,10 @@ namespace GeometricAlgorithms.MonoGame.Forms.Cameras.FirstPerson
 {
     using Microsoft.Xna.Framework;
 
-    class InternalFirstPersonCamera : IInternalCamera
+    class InternalFirstPersonCamera : ICameraData
     {
         public Matrix ViewProjectionMatrix { get; private set; }
+        public IViewProjectionEffect Effect { get; set; }
 
         public void UpdateMatrix(Vector3 position, float rotX, float rotY, float fov, float aspect, float near, float far)
         {

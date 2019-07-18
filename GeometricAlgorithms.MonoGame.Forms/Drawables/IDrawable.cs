@@ -1,4 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.MonoGame.Forms.Cameras;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 {
     public interface IDrawable
     {
-        void Draw();
+        void Draw(ICamera camera);
     }
 }

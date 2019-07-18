@@ -9,6 +9,6 @@ namespace GeometricAlgorithms.MonoGame.Forms.Cameras
 {
     public abstract class ICamera
     {
-        internal abstract IInternalCamera Data { get; }
+        internal abstract ICameraData Data { get; }
     }
 }

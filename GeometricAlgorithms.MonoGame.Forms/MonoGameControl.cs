@@ -15,12 +15,13 @@ namespace GeometricAlgorithms.MonoGame.Forms
 {
     public class MonoGameControl : InvalidationControl
     {
-        public List<Drawables.IDrawable> Drawables { get; set; }
         public DrawableFactory DrawableFactory { get; private set; }
+
+        public Scene Scene { get; set; }
 
         public MonoGameControl()
         {
-            Drawables = new List<Drawables.IDrawable>();
+            Scene = new Scene();
         }
 
         protected override void Initialize()
@@ -28,18 +29,6 @@ namespace GeometricAlgorithms.MonoGame.Forms
             base.Initialize();
 
             DrawableFactory = new DrawableFactory(Editor.services);
-
-            var rand = new Random();
-            Domain.Vector3[] points = new Domain.Vector3[4000];
-            for (int i = 0; i < points.Length; i++)
-            {
-                points[i] = new Domain.Vector3(
-                        (float)rand.NextDouble(),
-                        (float)rand.NextDouble(),
-                        (float)rand.NextDouble());
-            }
-
-            Drawables.Add(DrawableFactory.CreatePointCloud(points, 2));
 
             var t = new Timer();
             t.Interval = 100;
@@ -53,15 +42,12 @@ namespace GeometricAlgorithms.MonoGame.Forms
 
             Editor.graphics.Clear(Color.Black);
 
-            Editor.graphics.RasterizerState = new RasterizerState
-            {
-                CullMode = CullMode.None
-            };
+            //Editor.graphics.RasterizerState = new RasterizerState
+            //{
+            //    CullMode = CullMode.None
+            //};
 
-            foreach (var drawable in Drawables)
-            {
-                drawable.Draw();
-            }
+            Scene.Draw();
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GeometricAlgorithms.MonoGame.Forms.Cameras;
 
 namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 {
@@ -17,11 +18,11 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             ToToggle = inner;
         }
 
-        public void Draw()
+        public void Draw(ICamera camera)
         {
             if (EnableDraw)
             {
-                ToToggle.Draw();
+                ToToggle.Draw(camera);
             }
         }
     }

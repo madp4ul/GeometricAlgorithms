@@ -7,8 +7,14 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.MonoGame.Forms.Cameras
 {
-    public interface IInternalCamera
+    /// <summary>
+    /// Wrap viewprojection data to hide it away from outside
+    /// </summary>
+    public interface ICameraData
     {
+        /// <summary>
+        /// Retrieve view projection from camera
+        /// </summary>
         Matrix ViewProjectionMatrix { get; }
     }
 }
