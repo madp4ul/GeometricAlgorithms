@@ -61,7 +61,7 @@ namespace GeometricAlgorithms.Viewer
             const float Sensitivity = 0.01f;
 
             Camera.SetRotation(size.Width * Sensitivity, size.Height * Sensitivity);
-
+            viewer.Invalidate();
         }
     }
 }

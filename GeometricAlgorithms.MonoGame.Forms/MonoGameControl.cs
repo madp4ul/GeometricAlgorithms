@@ -39,6 +39,7 @@ namespace GeometricAlgorithms.MonoGame.Forms
         protected override void Draw()
         {
             base.Draw();
+            Invalidate();
 
             Editor.graphics.Clear(Color.Black);
 
