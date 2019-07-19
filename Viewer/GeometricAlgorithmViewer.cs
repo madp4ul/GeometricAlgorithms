@@ -26,6 +26,8 @@ namespace GeometricAlgorithms.Viewer
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         private FirstPersonCamera Camera;
 
+        private readonly System.Timers.Timer KeyEventTimer;
+
         public GeometricAlgorithmViewer()
         {
             InitializeComponent();
@@ -33,7 +35,7 @@ namespace GeometricAlgorithms.Viewer
             ViewerDragger = new MouseDragger(viewer.Display);
             ViewerDragger.OnMouseDrag += ViewerDragger_OnMouseDrag;
 
-            viewer.Display.KeyDown += Display_KeyDown;
+            KeyEventTimer = new System.Timers.Timer();
         }
 
         private void Viewer_Load(object sender, EventArgs e)
@@ -48,20 +50,12 @@ namespace GeometricAlgorithms.Viewer
                 Camera.SetProjection((float)Math.PI / 3, 1, 0.0001f, 1000f);
 
                 scene.Camera = Camera;
-
-                //var rand = new Random();
-                //Vector3[] points = new Vector3[4000];
-                //for (int i = 0; i < points.Length; i++)
-                //{
-                //    points[i] = new Domain.Vector3(
-                //            (float)rand.NextDouble(),
-                //            (float)rand.NextDouble(),
-                //            (float)rand.NextDouble());
-                //}
-
-                //scene.Drawables.Add(viewer.DrawableFactory.CreatePointCloud(points, 2));
-
                 viewer.Scene = scene;
+
+                KeyEventTimer.Elapsed += KeyEventTimer_Elapsed;
+                KeyEventTimer.Enabled = true;
+                KeyEventTimer.Interval = 16;
+                KeyEventTimer.Start();
             }
         }
 
@@ -73,35 +67,24 @@ namespace GeometricAlgorithms.Viewer
             viewer.Invalidate();
         }
 
-        private void Display_KeyDown(object sender, KeyEventArgs e)
+        private void KeyEventTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
+            Keys[] keys = viewer.GetPressedKeys();
 
-            Vector3 movement;
+            Vector3 movement = Vector3.Zero;
 
-            switch (e.KeyCode)
-            {
-                case Keys.W:
-                    movement = Camera.Forward;
-                    break;
-                case Keys.A:
-                    movement = -Vector3.Cross(Camera.Forward, Camera.Up);
-                    break;
-                case Keys.D:
-                    movement = Vector3.Cross(Camera.Forward, Camera.Up);
-                    break;
-                case Keys.S:
-                    movement = -Camera.Forward;
-                    break;
-                default:
-                    movement = Vector3.Zero;
-                    break;
-            }
+            if (keys.Contains(Keys.W))
+                movement = Camera.Forward;
+            else if (keys.Contains(Keys.A))
+                movement = -Vector3.Cross(Camera.Forward, Camera.Up);
+            else if (keys.Contains(Keys.D))
+                movement = Vector3.Cross(Camera.Forward, Camera.Up);
+            else if (keys.Contains(Keys.S))
+                movement = -Camera.Forward;
 
-            movement *= 0.1f;
+            movement *= 0.003f * (float)KeyEventTimer.Interval;
 
             Camera.SetPosition(Camera.Position + movement);
-
-
 
             viewer.Invalidate();
         }
