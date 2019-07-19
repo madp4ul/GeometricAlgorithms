@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.Viewer.ConfigurationModel
+namespace GeometricAlgorithms.Viewer.Model
 {
-    public class Configuration
+    public class ViewerModel
     {
         public ViewerConfiguration ViewerConfiguration { get; set; }
 
-        public Configuration()
+        public ViewerModel()
         {
             ViewerConfiguration = new ViewerConfiguration();
         }

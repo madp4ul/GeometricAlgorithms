@@ -28,34 +28,28 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.viewer = new GeometricAlgorithms.Viewer.GeometricAlgorithmViewer();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.neuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.öffnenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuStrip1.SuspendLayout();
+            this.viewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewer = new GeometricAlgorithms.Viewer.GeometricAlgorithmViewer();
+            this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // viewer
+            // menuStrip
             // 
-            this.viewer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.viewer.Location = new System.Drawing.Point(12, 27);
-            this.viewer.Name = "viewer";
-            this.viewer.Size = new System.Drawing.Size(562, 508);
-            this.viewer.TabIndex = 0;
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuStrip.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.menuStrip.Dock = System.Windows.Forms.DockStyle.None;
+            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.neuToolStripMenuItem,
             this.viewerToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(935, 24);
-            this.menuStrip1.TabIndex = 1;
-            this.menuStrip1.Text = "menuStrip1";
+            this.menuStrip.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(99, 24);
+            this.menuStrip.TabIndex = 1;
+            this.menuStrip.Text = "menuStrip1";
             // 
             // neuToolStripMenuItem
             // 
@@ -71,12 +65,7 @@
             this.öffnenToolStripMenuItem.Name = "öffnenToolStripMenuItem";
             this.öffnenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.öffnenToolStripMenuItem.Text = "Open";
-            // 
-            // viewerToolStripMenuItem
-            // 
-            this.viewerToolStripMenuItem.Name = "viewerToolStripMenuItem";
-            this.viewerToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
-            this.viewerToolStripMenuItem.Text = "Viewer";
+            this.öffnenToolStripMenuItem.Click += new System.EventHandler(this.ÖffnenToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
@@ -84,19 +73,35 @@
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveToolStripMenuItem.Text = "Save";
             // 
+            // viewerToolStripMenuItem
+            // 
+            this.viewerToolStripMenuItem.Name = "viewerToolStripMenuItem";
+            this.viewerToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
+            this.viewerToolStripMenuItem.Text = "Viewer";
+            // 
+            // viewer
+            // 
+            this.viewer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.viewer.Location = new System.Drawing.Point(12, 27);
+            this.viewer.Name = "viewer";
+            this.viewer.Size = new System.Drawing.Size(562, 508);
+            this.viewer.TabIndex = 0;
+            // 
             // MainWindows
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(935, 547);
             this.Controls.Add(this.viewer);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
+            this.Controls.Add(this.menuStrip);
+            this.MainMenuStrip = this.menuStrip;
             this.MinimumSize = new System.Drawing.Size(700, 400);
             this.Name = "MainWindows";
             this.Text = "Point Viewer";
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
+            this.menuStrip.ResumeLayout(false);
+            this.menuStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -105,7 +110,7 @@
         #endregion
 
         private GeometricAlgorithmViewer viewer;
-        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem neuToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem öffnenToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewerToolStripMenuItem;

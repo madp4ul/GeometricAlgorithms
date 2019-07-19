@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using GeometricAlgorithms.Viewer.ConfigurationModel;
+using GeometricAlgorithms.Viewer.Model;
 using GeometricAlgorithms.MonoGame.Forms.Cameras;
 using GeometricAlgorithms.MonoGame.Forms;
 using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.MonoGame.Forms.Drawables;
 
 namespace GeometricAlgorithms.Viewer
 {
@@ -33,35 +34,35 @@ namespace GeometricAlgorithms.Viewer
             ViewerDragger.OnMouseDrag += ViewerDragger_OnMouseDrag;
 
             viewer.Display.KeyDown += Display_KeyDown;
-            
         }
-
-
 
         private void Viewer_Load(object sender, EventArgs e)
         {
-            var scene = new Scene();
-            Camera = new FirstPersonCamera();
-
-            Camera.SetPosition(new Vector3(0, 0f, 3f));
-            Camera.SetRotation(0, 0);
-            Camera.SetProjection((float)Math.PI / 3, 1, 0.0001f, 1000f);
-
-            scene.Camera = Camera;
-
-            var rand = new Random();
-            Vector3[] points = new Vector3[4000];
-            for (int i = 0; i < points.Length; i++)
+            if (!this.DesignMode)
             {
-                points[i] = new Domain.Vector3(
-                        (float)rand.NextDouble(),
-                        (float)rand.NextDouble(),
-                        (float)rand.NextDouble());
+                var scene = new Scene();
+                Camera = new FirstPersonCamera();
+
+                Camera.SetPosition(new Vector3(0, 0f, 3f));
+                Camera.SetRotation(0, 0);
+                Camera.SetProjection((float)Math.PI / 3, 1, 0.0001f, 1000f);
+
+                scene.Camera = Camera;
+
+                //var rand = new Random();
+                //Vector3[] points = new Vector3[4000];
+                //for (int i = 0; i < points.Length; i++)
+                //{
+                //    points[i] = new Domain.Vector3(
+                //            (float)rand.NextDouble(),
+                //            (float)rand.NextDouble(),
+                //            (float)rand.NextDouble());
+                //}
+
+                //scene.Drawables.Add(viewer.DrawableFactory.CreatePointCloud(points, 2));
+
+                viewer.Scene = scene;
             }
-
-            scene.Drawables.Add(viewer.DrawableFactory.CreatePointCloud(points, 2));
-
-            viewer.Scene = scene;
         }
 
         private void ViewerDragger_OnMouseDrag(Size size)
@@ -103,6 +104,33 @@ namespace GeometricAlgorithms.Viewer
 
 
             viewer.Invalidate();
+        }
+
+        private void GeometricAlgorithmViewer_Resize(object sender, EventArgs e)
+        {
+            if (Camera != null)
+            {
+                Camera.SetProjection(
+                    Camera.FieldOfView,
+                    (float)viewer.Display.Width / (float)viewer.Display.Height,
+                    Camera.NearPlane,
+                    Camera.FarPlane);
+                viewer.Invalidate();
+            }
+        }
+
+        public void RemoveFromScene(IDrawable drawable)
+        {
+            viewer.Scene.Drawables.Remove(drawable);
+            viewer.Invalidate();
+        }
+
+        public IDrawable AddToScene(Vector3[] pointCloud)
+        {
+            var drawable = viewer.DrawableFactory.CreatePointCloud(pointCloud, 2);
+            viewer.Scene.Drawables.Add(drawable);
+            viewer.Invalidate();
+            return drawable;
         }
     }
 }

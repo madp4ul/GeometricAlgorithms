@@ -46,8 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfigurationModel\Configuration.cs" />
-    <Compile Include="ConfigurationModel\ViewerConfiguration.cs" />
+    <Compile Include="Model\ViewerModel.cs" />
+    <Compile Include="Model\ViewerConfiguration.cs" />
     <Compile Include="GeometricAlgorithmViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -97,6 +97,10 @@
       <Project>{b2b4f93c-4cda-43be-9963-4ca03c459065}</Project>
       <Name>GeometricAlgorithms.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GeometricAlgorithms.FileProcessing\GeometricAlgorithms.FileProcessing.csproj">
+      <Project>{4b78d9e8-676a-43ff-a866-c670f7ec028e}</Project>
+      <Name>GeometricAlgorithms.FileProcessing</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GeometricAlgorithms.MonoGame.Forms\GeometricAlgorithms.MonoGame.Forms.csproj">
       <Project>{d7278f8e-4373-4948-ae93-af5696867c6f}</Project>
       <Name>GeometricAlgorithms.MonoGame.Forms</Name>
@@ -106,5 +110,6 @@
       <Name>GeometricAlgorithms</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -49,6 +49,7 @@
             this.Controls.Add(this.viewer);
             this.Name = "GeometricAlgorithmViewer";
             this.Size = new System.Drawing.Size(533, 383);
+            this.Resize += new System.EventHandler(this.GeometricAlgorithmViewer_Resize);
             this.ResumeLayout(false);
 
         }

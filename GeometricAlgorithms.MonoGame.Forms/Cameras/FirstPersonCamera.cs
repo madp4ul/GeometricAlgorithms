@@ -64,6 +64,8 @@
             AspectRatio = aspect;
             NearPlane = near;
             FarPlane = far;
+
+            UpdateMatrix();
         }
 
         private void UpdateMatrix()
