@@ -24,7 +24,7 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
                 .Select(v => v.ToXna())
                 .ToArray();
 
-            return new PointCloud(ContentProvider.PointEffect.Value, xnaPoints, radius);
+            return new PointCloud(ContentProvider.PointEffect, xnaPoints, radius);
         }
 
         public IDrawable CreateBoundingBoxRepresentation(Domain.BoundingBox[] boxes)

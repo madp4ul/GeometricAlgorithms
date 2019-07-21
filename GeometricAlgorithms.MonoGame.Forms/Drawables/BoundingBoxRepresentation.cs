@@ -80,6 +80,24 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 
                     indices[i * LinesPerBox + index++] = offset + 4;
                     indices[i * LinesPerBox + index++] = offset + 7; //  6/12
+
+                    indices[i * LinesPerBox + index++] = offset + 1;
+                    indices[i * LinesPerBox + index++] = offset + 6;
+
+                    indices[i * LinesPerBox + index++] = offset + 1;
+                    indices[i * LinesPerBox + index++] = offset + 7;
+
+                    indices[i * LinesPerBox + index++] = offset + 2;
+                    indices[i * LinesPerBox + index++] = offset + 5;
+
+                    indices[i * LinesPerBox + index++] = offset + 2;
+                    indices[i * LinesPerBox + index++] = offset + 7;
+
+                    indices[i * LinesPerBox + index++] = offset + 3;
+                    indices[i * LinesPerBox + index++] = offset + 5;
+
+                    indices[i * LinesPerBox + index++] = offset + 3;
+                    indices[i * LinesPerBox + index++] = offset + 6;
                 }
 
                 Indices = new IndexBuffer(Device, IndexElementSize.ThirtyTwoBits, indices.Length, BufferUsage.None);
@@ -107,7 +125,6 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
         {
             Vertices.Dispose();
             Indices.Dispose();
-            Effect.Dispose();
         }
     }
 }

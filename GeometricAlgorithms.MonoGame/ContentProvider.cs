@@ -18,11 +18,9 @@ namespace GeometricAlgorithms.MonoGame
         {
             ContentManager = new ResourceContentManager(services, Properties.Resources.ResourceManager);
             GraphicsDevice = device;
-
-            PointEffect = new Lazy<PointEffect>(LoadPointEffect);
         }
 
-        public Lazy<PointEffect> PointEffect { get; private set; }
+        public PointEffect PointEffect { get => LoadPointEffect(); }
 
         private PointEffect LoadPointEffect()
         {
