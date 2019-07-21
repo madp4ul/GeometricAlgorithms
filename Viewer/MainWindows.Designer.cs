@@ -29,10 +29,12 @@
         private void InitializeComponent()
         {
             this.menuStrip = new System.Windows.Forms.MenuStrip();
-            this.neuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.öffnenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showPointCloudToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showKdTreeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewer = new GeometricAlgorithms.Viewer.GeometricAlgorithmViewer();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -43,7 +45,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.menuStrip.Dock = System.Windows.Forms.DockStyle.None;
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.neuToolStripMenuItem,
+            this.fileToolStripMenuItem,
             this.viewerToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
@@ -51,33 +53,49 @@
             this.menuStrip.TabIndex = 1;
             this.menuStrip.Text = "menuStrip1";
             // 
-            // neuToolStripMenuItem
+            // fileToolStripMenuItem
             // 
-            this.neuToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.öffnenToolStripMenuItem,
-            this.saveToolStripMenuItem});
-            this.neuToolStripMenuItem.Name = "neuToolStripMenuItem";
-            this.neuToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.neuToolStripMenuItem.Text = "File";
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openFileToolStripMenuItem,
+            this.saveFileToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
             // 
-            // öffnenToolStripMenuItem
+            // openFileToolStripMenuItem
             // 
-            this.öffnenToolStripMenuItem.Name = "öffnenToolStripMenuItem";
-            this.öffnenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.öffnenToolStripMenuItem.Text = "Open";
-            this.öffnenToolStripMenuItem.Click += new System.EventHandler(this.ÖffnenToolStripMenuItem_Click);
+            this.openFileToolStripMenuItem.Name = "openFileToolStripMenuItem";
+            this.openFileToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.openFileToolStripMenuItem.Text = "Open";
             // 
-            // saveToolStripMenuItem
+            // saveFileToolStripMenuItem
             // 
-            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.saveToolStripMenuItem.Text = "Save";
+            this.saveFileToolStripMenuItem.Name = "saveFileToolStripMenuItem";
+            this.saveFileToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.saveFileToolStripMenuItem.Text = "Save";
             // 
             // viewerToolStripMenuItem
             // 
+            this.viewerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showPointCloudToolStripMenuItem,
+            this.showKdTreeToolStripMenuItem});
             this.viewerToolStripMenuItem.Name = "viewerToolStripMenuItem";
             this.viewerToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
             this.viewerToolStripMenuItem.Text = "Viewer";
+            // 
+            // showPointCloudToolStripMenuItem
+            // 
+            this.showPointCloudToolStripMenuItem.Checked = true;
+            this.showPointCloudToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showPointCloudToolStripMenuItem.Name = "showPointCloudToolStripMenuItem";
+            this.showPointCloudToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.showPointCloudToolStripMenuItem.Text = "Show point cloud";
+            // 
+            // showKdTreeToolStripMenuItem
+            // 
+            this.showKdTreeToolStripMenuItem.Name = "showKdTreeToolStripMenuItem";
+            this.showKdTreeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.showKdTreeToolStripMenuItem.Text = "Show Kd-Tree";
             // 
             // viewer
             // 
@@ -86,7 +104,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.viewer.Location = new System.Drawing.Point(12, 27);
             this.viewer.Name = "viewer";
-            this.viewer.Size = new System.Drawing.Size(562, 508);
+            this.viewer.Size = new System.Drawing.Size(646, 508);
             this.viewer.TabIndex = 0;
             // 
             // MainWindows
@@ -111,10 +129,12 @@
 
         private GeometricAlgorithmViewer viewer;
         private System.Windows.Forms.MenuStrip menuStrip;
-        private System.Windows.Forms.ToolStripMenuItem neuToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem öffnenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewerToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveFileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showKdTreeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showPointCloudToolStripMenuItem;
     }
 }
 

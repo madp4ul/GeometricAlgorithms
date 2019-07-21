@@ -9,10 +9,11 @@ namespace GeometricAlgorithms.Viewer.Model
     public class ViewerConfiguration
     {
         public float MouseSensitivity { get; set; }
-
+        public int PointRadius { get; set; }
         public ViewerConfiguration()
         {
             MouseSensitivity = 0.1f;
+            PointRadius = 2;
         }
     }
 }

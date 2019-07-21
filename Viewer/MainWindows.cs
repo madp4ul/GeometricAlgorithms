@@ -3,6 +3,7 @@ using GeometricAlgorithms.FileProcessing;
 using GeometricAlgorithms.MonoGame.Forms;
 using GeometricAlgorithms.MonoGame.Forms.Cameras;
 using GeometricAlgorithms.Viewer.Model;
+using GeometricAlgorithms.Viewer.ToolStrip;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,37 +18,18 @@ namespace GeometricAlgorithms.Viewer
 {
     public partial class MainWindows : Form
     {
-        readonly ViewerModel Configuration;
-
-        MonoGame.Forms.Drawables.IDrawable PointCloud;
+        private readonly DataModel Model;
 
         public MainWindows()
         {
             InitializeComponent();
-            
-            Configuration = new ViewerModel();//todo load or somethign
 
-            viewer.Configuration = Configuration.ViewerConfiguration;
-        }
+            Model = new DataModel();//todo load or somethign
 
-        private void ÖffnenToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var openFileDialog = new OpenFileDialog();
+            viewer.Configuration = Model.ViewerConfiguration;
+            viewer.Workspace = Model.Workspace;
 
-            openFileDialog.Filter = "Off-Dateien|*.off";
-
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                var reader = new OFFReader();
-                var points = reader.ReadPoints(openFileDialog.FileName);
-
-                if (PointCloud != null)
-                {
-                    viewer.RemoveFromScene(PointCloud);
-                }
-                PointCloud = viewer.AddToScene(points);
-            }
-
+            new ToolStripActionConfigurator(menuStrip, viewer, Model).Configure();
 
         }
     }

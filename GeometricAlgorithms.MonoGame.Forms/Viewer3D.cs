@@ -14,7 +14,7 @@ namespace GeometricAlgorithms.MonoGame.Forms
     public partial class Viewer3D : UserControl
     {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public DrawableFactory DrawableFactory => monoGameControl.DrawableFactory;
+        public static DrawableFactory DrawableFactory => Instance.monoGameControl.DrawableFactory;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Scene Scene { get => monoGameControl.Scene; set => monoGameControl.Scene = value; }
@@ -22,9 +22,22 @@ namespace GeometricAlgorithms.MonoGame.Forms
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Control Display => monoGameControl;
 
+        private static Viewer3D Instance = null;
+
         public Viewer3D()
         {
+            if (Instance != null)
+            {
+                throw new InvalidOperationException("Con not use this control twice at the same time");
+            }
+            Instance = this;
+
             InitializeComponent();
+        }
+
+        ~Viewer3D()
+        {
+            Instance = null;
         }
 
         public Keys[] GetPressedKeys()

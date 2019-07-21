@@ -9,20 +9,21 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 {
     public class ToggleableDrawable : IDrawable
     {
-        public readonly IDrawable ToToggle;
+        public IDrawable Drawable { get; set; }
 
         public bool EnableDraw { get; set; }
 
         public ToggleableDrawable(IDrawable inner)
         {
-            ToToggle = inner;
+            Drawable = inner;
+            EnableDraw = true;
         }
 
         public void Draw(ICamera camera)
         {
             if (EnableDraw)
             {
-                ToToggle.Draw(camera);
+                Drawable.Draw(camera);
             }
         }
     }

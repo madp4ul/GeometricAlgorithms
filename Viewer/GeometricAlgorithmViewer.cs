@@ -21,6 +21,12 @@ namespace GeometricAlgorithms.Viewer
         public ViewerConfiguration Configuration { get; set; }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Workspace Workspace { get; set; }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public static DrawableFactory DrawableFactory => Viewer3D.DrawableFactory;
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         private readonly MouseDragger ViewerDragger;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -42,15 +48,14 @@ namespace GeometricAlgorithms.Viewer
         {
             if (!this.DesignMode)
             {
-                var scene = new Scene();
                 Camera = new FirstPersonCamera();
 
                 Camera.SetPosition(new Vector3(0, 0f, 3f));
                 Camera.SetRotation(0, 0);
                 Camera.SetProjection((float)Math.PI / 3, 1, 0.0001f, 1000f);
 
-                scene.Camera = Camera;
-                viewer.Scene = scene;
+                viewer.Scene.Camera = Camera;
+                viewer.Scene.Drawables.Add(Workspace.PointCloud);
 
                 KeyEventTimer.Elapsed += KeyEventTimer_Elapsed;
                 KeyEventTimer.Enabled = true;
@@ -102,18 +107,5 @@ namespace GeometricAlgorithms.Viewer
             }
         }
 
-        public void RemoveFromScene(IDrawable drawable)
-        {
-            viewer.Scene.Drawables.Remove(drawable);
-            viewer.Invalidate();
-        }
-
-        public IDrawable AddToScene(Vector3[] pointCloud)
-        {
-            var drawable = viewer.DrawableFactory.CreatePointCloud(pointCloud, 2);
-            viewer.Scene.Drawables.Add(drawable);
-            viewer.Invalidate();
-            return drawable;
-        }
     }
 }

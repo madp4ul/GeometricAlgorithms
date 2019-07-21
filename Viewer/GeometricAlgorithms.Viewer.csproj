@@ -46,7 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\ViewerModel.cs" />
+    <Compile Include="Model\DataModel.cs" />
     <Compile Include="Model\ViewerConfiguration.cs" />
     <Compile Include="GeometricAlgorithmViewer.cs">
       <SubType>UserControl</SubType>
@@ -60,9 +60,13 @@
     <Compile Include="MainWindows.Designer.cs">
       <DependentUpon>MainWindows.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\Workspace.cs" />
     <Compile Include="MouseDragger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ToolStrip\FileMenuTools.cs" />
+    <Compile Include="ToolStrip\ToolStripActionConfigurator.cs" />
+    <Compile Include="ToolStrip\ViewerMenuTools.cs" />
     <EmbeddedResource Include="GeometricAlgorithmViewer.resx">
       <DependentUpon>GeometricAlgorithmViewer.cs</DependentUpon>
     </EmbeddedResource>

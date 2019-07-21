@@ -6,13 +6,16 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.Viewer.Model
 {
-    public class ViewerModel
+    public class DataModel
     {
         public ViewerConfiguration ViewerConfiguration { get; set; }
 
-        public ViewerModel()
+        public Workspace Workspace { get; set; }
+
+        public DataModel()
         {
             ViewerConfiguration = new ViewerConfiguration();
+            Workspace = new Workspace();
         }
     }
 }
