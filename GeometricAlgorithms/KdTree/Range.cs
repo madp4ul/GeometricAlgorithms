@@ -103,7 +103,7 @@ namespace GeometricAlgorithms.KdTree
             nthToSeek += Offset;
 
             int from = Offset;
-            int to = Offset + Length;
+            int to = Offset + Length - 1;
 
             // if from == to we reached the kth element
             while (from < to)

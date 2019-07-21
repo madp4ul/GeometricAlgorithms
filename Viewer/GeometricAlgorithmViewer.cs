@@ -55,7 +55,8 @@ namespace GeometricAlgorithms.Viewer
                 Camera.SetProjection((float)Math.PI / 3, 1, 0.0001f, 1000f);
 
                 viewer.Scene.Camera = Camera;
-                viewer.Scene.Drawables.Add(Workspace.PointCloud);
+                viewer.Scene.Drawables.Add(Workspace.PointData);
+                viewer.Scene.Drawables.Add(Workspace.PointData.KdTreeData);
 
                 KeyEventTimer.Elapsed += KeyEventTimer_Elapsed;
                 KeyEventTimer.Enabled = true;

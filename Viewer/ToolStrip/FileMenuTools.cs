@@ -30,9 +30,7 @@ namespace GeometricAlgorithms.Viewer.ToolStrip
                 var reader = new OFFReader();
                 var points = reader.ReadPoints(openFileDialog.FileName);
 
-
-                ViewerModel.Workspace.PointCloud.Drawable = GeometricAlgorithmViewer.DrawableFactory
-                    .CreatePointCloud(points, (int)ViewerModel.ViewerConfiguration.PointRadius);
+                ViewerModel.Workspace.PointData.Reset(points, ViewerModel.ViewerConfiguration.PointRadius);
             }
         }
 

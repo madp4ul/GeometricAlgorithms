@@ -4,11 +4,12 @@ namespace GeometricAlgorithms.Viewer.Model
 {
     public class Workspace
     {
-        public ToggleableDrawable PointCloud { get; private set; }
+        public readonly PointData PointData;
+
 
         public Workspace()
         {
-            PointCloud = new ToggleableDrawable(new EmptyDrawable());
+            PointData = new PointData();
         }
     }
 }

@@ -54,5 +54,12 @@ namespace GeometricAlgorithms.KdTree
 
             return resultSet;
         }
+
+        public List<BoundingBox> GetBoundingBoxes()
+        {
+            var boxes = new List<BoundingBox>();
+            Root.AddBoundingBoxes(boxes);
+            return boxes;
+        }
     }
 }

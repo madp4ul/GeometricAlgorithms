@@ -24,5 +24,10 @@ namespace GeometricAlgorithms.KdTree
         public abstract void FindInRadius(InRadiusQuery<TVertex> query);
 
         public abstract void FindNearestVertices(NearestVerticesQuery<TVertex> query);
+
+        public virtual void AddBoundingBoxes(List<BoundingBox> boundingBoxes)
+        {
+            boundingBoxes.Add(BoundingBox);
+        }
     }
 }

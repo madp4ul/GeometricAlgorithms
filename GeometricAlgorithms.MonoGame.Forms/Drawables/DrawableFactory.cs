@@ -16,7 +16,6 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
         public DrawableFactory(GameServiceContainer services, GraphicsDevice device)
         {
             ContentProvider = new ContentProvider(services, device);
-
         }
 
         public IDrawable CreatePointCloud(Domain.Vector3[] points, int radius)

@@ -45,9 +45,9 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
                     vertices[vOffset + 3] = new VertexPositionColor((box.Minimum + diff.ComponentZ()).ToXna(), Color);
 
                     vertices[vOffset + 4] = new VertexPositionColor(box.Maximum.ToXna(), Color);
-                    vertices[vOffset + 5] = new VertexPositionColor((box.Minimum - diff.ComponentX()).ToXna(), Color);
-                    vertices[vOffset + 6] = new VertexPositionColor((box.Minimum - diff.ComponentY()).ToXna(), Color);
-                    vertices[vOffset + 7] = new VertexPositionColor((box.Minimum - diff.ComponentZ()).ToXna(), Color);
+                    vertices[vOffset + 5] = new VertexPositionColor((box.Maximum - diff.ComponentX()).ToXna(), Color);
+                    vertices[vOffset + 6] = new VertexPositionColor((box.Maximum - diff.ComponentY()).ToXna(), Color);
+                    vertices[vOffset + 7] = new VertexPositionColor((box.Maximum - diff.ComponentZ()).ToXna(), Color);
 
                 }
                 Vertices = new VertexBuffer(Device, VertexPositionColor.VertexDeclaration, vertices.Length, BufferUsage.None);
@@ -95,6 +95,10 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             Effect.World = Transformation.GetWorldMatrix();
             Effect.View = camera.Data.ViewProjectionMatrix;
             Effect.Projection = Microsoft.Xna.Framework.Matrix.Identity;
+
+            Effect.VertexColorEnabled = true;
+
+            Effect.CurrentTechnique.Passes[0].Apply();
 
             Device.DrawIndexedPrimitives(PrimitiveType.LineList, 0, 0, Indices.IndexCount / 2);
         }

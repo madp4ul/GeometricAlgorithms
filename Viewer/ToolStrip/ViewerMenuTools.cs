@@ -18,7 +18,7 @@ namespace GeometricAlgorithms.Viewer.ToolStrip
 
         public void SetPointCloudVisibility(bool showPointCloud)
         {
-            Workspace.PointCloud.EnableDraw = showPointCloud;
+            Workspace.PointData.EnableDraw = showPointCloud;
         }
     }
 }

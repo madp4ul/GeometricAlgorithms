@@ -13,14 +13,11 @@ namespace GeometricAlgorithms.KdTree
         public KdTreeNode<TVertex> MinimumChild { get; set; }
         public KdTreeNode<TVertex> MaximumChild { get; set; }
 
-        private readonly Dimension HalvedDimension;
         private readonly Func<Vector3, float> DimensionSelector;
 
         public KdTreeBranch(BoundingBox boundingBox, Range<TVertex> vertices, KdTreeConfiguration configuration, Dimension halvedDimension = Dimension.X)
             : base(boundingBox, vertices.Length)
         {
-            HalvedDimension = halvedDimension;
-
             int halfIndex = vertices.Length / 2;
 
             DimensionSelector = GetDimensionSelector(halvedDimension);
@@ -111,6 +108,13 @@ namespace GeometricAlgorithms.KdTree
                 default:
                     throw new ArgumentException("No valid dimension");
             }
+        }
+
+        public override void AddBoundingBoxes(List<BoundingBox> boundingBoxes)
+        {
+            base.AddBoundingBoxes(boundingBoxes);
+            MinimumChild.AddBoundingBoxes(boundingBoxes);
+            MaximumChild.AddBoundingBoxes(boundingBoxes);
         }
 
         private class VertexComparer : IComparer<TVertex>

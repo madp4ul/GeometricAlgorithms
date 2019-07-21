@@ -9,10 +9,16 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 {
     public class ToggleableDrawable : IDrawable
     {
-        public IDrawable Drawable { get; set; }
+        public IDrawable Drawable { get; protected set; }
 
         public bool EnableDraw { get; set; }
         public Transformation Transformation { get => Drawable.Transformation; set => Drawable.Transformation = value; }
+
+        public ToggleableDrawable()
+        {
+            Drawable = new EmptyDrawable();
+            EnableDraw = true;
+        }
 
         public ToggleableDrawable(IDrawable inner)
         {
