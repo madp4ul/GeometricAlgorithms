@@ -13,22 +13,26 @@ namespace GeometricAlgorithms.Viewer.Model
     public class KdTreeData : ToggleableDrawable
     {
         public KdTree<GenericVertex> KdTree { get; set; }
+        public KdTreeConfiguration Configuration { get; set; }
 
         public KdTreeData()
         {
             Drawable = new ToggleableDrawable();
 
-            KdTree = new KdTree<GenericVertex>(new GenericVertex[0]);
+            Configuration = KdTreeConfiguration.Default;
+            KdTree = new KdTree<GenericVertex>(new GenericVertex[0], Configuration);
         }
 
         public KdTreeData(Vector3[] points)
         {
+            Configuration = KdTreeConfiguration.Default;
             Reset(points);
         }
 
         public void Reset(Vector3[] points)
         {
-            KdTree = new KdTree<GenericVertex>(points.Select(v => new GenericVertex(v)).ToArray());
+            Configuration.MaximumPointsPerLeaf = 50;
+            KdTree = new KdTree<GenericVertex>(points.Select(v => new GenericVertex(v)).ToArray(), Configuration);
 
             if (Drawable != null)
             {

@@ -27,14 +27,20 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             Effect = new BasicEffect(device);
             Transformation = new Transformation();
 
-            const int PointsPerBox = 8;
+            boxes = new BoundingBox[] {
+                new BoundingBox(Vector3.One*1,Vector3.One*2),
+                new BoundingBox(Vector3.One*3,Vector3.One*4),
+                new BoundingBox(Vector3.One*5,Vector3.One*6),
+            };
+
+            const int pointsPerBox = 8;
 
             {
-                var vertices = new VertexPositionColor[boxes.Length * PointsPerBox];
+                var vertices = new VertexPositionColor[boxes.Length * pointsPerBox];
 
                 for (int i = 0; i < boxes.Length; i++)
                 {
-                    int vOffset = i * PointsPerBox;
+                    int vOffset = i * pointsPerBox;
                     BoundingBox box = boxes[i];
 
                     Vector3 diff = box.Maximum - box.Minimum;
@@ -55,49 +61,50 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             }
 
             {
-                const int LinesPerBox = 12;
-                const int IndicesPerBox = LinesPerBox * 2;
-                var indices = new int[boxes.Length * IndicesPerBox];
+                const int linesPerBox = 12;
+                const int indicesPerBox = linesPerBox * 2;
+                var indices = new int[boxes.Length * indicesPerBox];
 
                 for (int i = 0; i < boxes.Length; i++)
                 {
                     int index = 0;
-                    int offset = i * PointsPerBox;
-                    indices[i * LinesPerBox + index++] = offset;
-                    indices[i * LinesPerBox + index++] = offset + 1;
+                    int indexOffset = i * indicesPerBox;
+                    int vertexOffset = i * pointsPerBox;
+                    indices[indexOffset + index++] = vertexOffset;
+                    indices[indexOffset + index++] = vertexOffset + 1;
 
-                    indices[i * LinesPerBox + index++] = offset;
-                    indices[i * LinesPerBox + index++] = offset + 2;
+                    indices[indexOffset + index++] = vertexOffset;
+                    indices[indexOffset + index++] = vertexOffset + 2;
 
-                    indices[i * LinesPerBox + index++] = offset;
-                    indices[i * LinesPerBox + index++] = offset + 3;
+                    indices[indexOffset + index++] = vertexOffset;
+                    indices[indexOffset + index++] = vertexOffset + 3;
 
-                    indices[i * LinesPerBox + index++] = offset + 4;
-                    indices[i * LinesPerBox + index++] = offset + 5;
+                    indices[indexOffset + index++] = vertexOffset + 4;
+                    indices[indexOffset + index++] = vertexOffset + 5;
 
-                    indices[i * LinesPerBox + index++] = offset + 4;
-                    indices[i * LinesPerBox + index++] = offset + 6;
+                    indices[indexOffset + index++] = vertexOffset + 4;
+                    indices[indexOffset + index++] = vertexOffset + 6;
 
-                    indices[i * LinesPerBox + index++] = offset + 4;
-                    indices[i * LinesPerBox + index++] = offset + 7; //  6/12
+                    indices[indexOffset + index++] = vertexOffset + 4;
+                    indices[indexOffset + index++] = vertexOffset + 7; //  6/12
 
-                    indices[i * LinesPerBox + index++] = offset + 1;
-                    indices[i * LinesPerBox + index++] = offset + 6;
+                    indices[indexOffset + index++] = vertexOffset + 1;
+                    indices[indexOffset + index++] = vertexOffset + 6;
 
-                    indices[i * LinesPerBox + index++] = offset + 1;
-                    indices[i * LinesPerBox + index++] = offset + 7;
+                    indices[indexOffset + index++] = vertexOffset + 1;
+                    indices[indexOffset + index++] = vertexOffset + 7;
 
-                    indices[i * LinesPerBox + index++] = offset + 2;
-                    indices[i * LinesPerBox + index++] = offset + 5;
+                    indices[indexOffset + index++] = vertexOffset + 2;
+                    indices[indexOffset + index++] = vertexOffset + 5;
 
-                    indices[i * LinesPerBox + index++] = offset + 2;
-                    indices[i * LinesPerBox + index++] = offset + 7;
+                    indices[indexOffset + index++] = vertexOffset + 2;
+                    indices[indexOffset + index++] = vertexOffset + 7;
 
-                    indices[i * LinesPerBox + index++] = offset + 3;
-                    indices[i * LinesPerBox + index++] = offset + 5;
+                    indices[indexOffset + index++] = vertexOffset + 3;
+                    indices[indexOffset + index++] = vertexOffset + 5;
 
-                    indices[i * LinesPerBox + index++] = offset + 3;
-                    indices[i * LinesPerBox + index++] = offset + 6;
+                    indices[indexOffset + index++] = vertexOffset + 3;
+                    indices[indexOffset + index++] = vertexOffset + 6;
                 }
 
                 Indices = new IndexBuffer(Device, IndexElementSize.ThirtyTwoBits, indices.Length, BufferUsage.None);
