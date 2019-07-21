@@ -16,11 +16,11 @@ using System.Windows.Forms;
 
 namespace GeometricAlgorithms.Viewer
 {
-    public partial class MainWindows : Form
+    public partial class MainWindow : Form
     {
         private readonly DataModel Model;
 
-        public MainWindows()
+        public MainWindow()
         {
             InitializeComponent();
 
@@ -29,8 +29,7 @@ namespace GeometricAlgorithms.Viewer
             viewer.Configuration = Model.ViewerConfiguration;
             viewer.Workspace = Model.Workspace;
 
-            new ToolStripActionConfigurator(menuStrip, viewer, Model).Configure();
-
+            new ToolStripActionConfigurator(this, menuStrip, viewer, Model).Configure();
         }
     }
 }

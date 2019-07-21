@@ -17,14 +17,14 @@ namespace GeometricAlgorithms.Viewer.Model
 
         public KdTreeData()
         {
-            Drawable = new ToggleableDrawable();
-
+            EnableDraw = false;
             Configuration = KdTreeConfiguration.Default;
             KdTree = new KdTree<GenericVertex>(new GenericVertex[0], Configuration);
         }
 
         public KdTreeData(Vector3[] points)
         {
+            EnableDraw = false;
             Configuration = KdTreeConfiguration.Default;
             Reset(points);
         }

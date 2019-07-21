@@ -27,12 +27,6 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             Effect = new BasicEffect(device);
             Transformation = new Transformation();
 
-            boxes = new BoundingBox[] {
-                new BoundingBox(Vector3.One*1,Vector3.One*2),
-                new BoundingBox(Vector3.One*3,Vector3.One*4),
-                new BoundingBox(Vector3.One*5,Vector3.One*6),
-            };
-
             const int pointsPerBox = 8;
 
             {
@@ -54,7 +48,6 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
                     vertices[vOffset + 5] = new VertexPositionColor((box.Maximum - diff.ComponentX()).ToXna(), Color);
                     vertices[vOffset + 6] = new VertexPositionColor((box.Maximum - diff.ComponentY()).ToXna(), Color);
                     vertices[vOffset + 7] = new VertexPositionColor((box.Maximum - diff.ComponentZ()).ToXna(), Color);
-
                 }
                 Vertices = new VertexBuffer(Device, VertexPositionColor.VertexDeclaration, vertices.Length, BufferUsage.None);
                 Vertices.SetData(vertices);

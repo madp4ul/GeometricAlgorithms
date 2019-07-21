@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\KdTreeSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\KdTreeSettings.Designer.cs">
+      <DependentUpon>KdTreeSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\DataModel.cs" />
     <Compile Include="Model\KdTreeData.cs" />
     <Compile Include="Model\PointData.cs" />
@@ -56,24 +62,28 @@
     <Compile Include="GeometricAlgorithmViewer.Designer.cs">
       <DependentUpon>GeometricAlgorithmViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainWindows.cs">
+    <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainWindows.Designer.cs">
-      <DependentUpon>MainWindows.cs</DependentUpon>
+    <Compile Include="MainWindow.Designer.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\Workspace.cs" />
     <Compile Include="MouseDragger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ToolStrip\FileMenuTools.cs" />
+    <Compile Include="ToolStrip\KdTreeMenuTools.cs" />
     <Compile Include="ToolStrip\ToolStripActionConfigurator.cs" />
     <Compile Include="ToolStrip\ViewerMenuTools.cs" />
+    <EmbeddedResource Include="Forms\KdTreeSettings.resx">
+      <DependentUpon>KdTreeSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GeometricAlgorithmViewer.resx">
       <DependentUpon>GeometricAlgorithmViewer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainWindows.resx">
-      <DependentUpon>MainWindows.cs</DependentUpon>
+    <EmbeddedResource Include="MainWindow.resx">
+      <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
