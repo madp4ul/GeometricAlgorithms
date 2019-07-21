@@ -723,6 +723,20 @@ namespace GeometricAlgorithms.Domain
                 Y == other.Y &&
                 Z == other.Z;
         }
+
+
+        public Vector3 ComponentX()
+        {
+            return new Vector3(X, 0, 0);
+        }
+        public Vector3 ComponentY()
+        {
+            return new Vector3(0, Y, 0);
+        }
+        public Vector3 ComponentZ()
+        {
+            return new Vector3(0, 0, Z);
+        }
     }
 }
 

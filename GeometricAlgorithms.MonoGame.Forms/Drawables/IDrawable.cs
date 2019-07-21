@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 {
-    public interface IDrawable
+    public interface IDrawable : IDisposable
     {
+        Transformation Transformation { get; set; }
         void Draw(ICamera camera);
     }
 }

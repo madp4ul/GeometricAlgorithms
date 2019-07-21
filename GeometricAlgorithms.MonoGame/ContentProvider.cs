@@ -14,9 +14,10 @@ namespace GeometricAlgorithms.MonoGame
     {
         private readonly ResourceContentManager ContentManager;
 
-        public ContentProvider(GameServiceContainer services)
+        public ContentProvider(GameServiceContainer services, GraphicsDevice device)
         {
             ContentManager = new ResourceContentManager(services, Properties.Resources.ResourceManager);
+            GraphicsDevice = device;
 
             PointEffect = new Lazy<PointEffect>(LoadPointEffect);
         }
@@ -27,5 +28,7 @@ namespace GeometricAlgorithms.MonoGame
         {
             return PointRendering.PointEffect.FromEffect(ContentManager.Load<Effect>("PointShader"));
         }
+
+        public GraphicsDevice GraphicsDevice { get; private set; }
     }
 }

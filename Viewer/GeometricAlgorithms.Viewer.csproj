@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\DataModel.cs" />
+    <Compile Include="Model\KdTreeData.cs" />
     <Compile Include="Model\ViewerConfiguration.cs" />
     <Compile Include="GeometricAlgorithmViewer.cs">
       <SubType>UserControl</SubType>

@@ -26,8 +26,8 @@ namespace GeometricAlgorithms.MonoGame.Forms
         protected override void Initialize()
         {
             base.Initialize();
-            
-            DrawableFactory = new DrawableFactory(Editor.services);
+
+            DrawableFactory = new DrawableFactory(Editor.services, Editor.graphics);
         }
 
         protected override void Draw()

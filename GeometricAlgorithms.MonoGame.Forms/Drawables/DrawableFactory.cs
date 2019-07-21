@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GeometricAlgorithms.MonoGame.Forms.Extensions;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -12,18 +13,24 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
     {
         internal ContentProvider ContentProvider { get; set; }
 
-        public DrawableFactory(GameServiceContainer services)
+        public DrawableFactory(GameServiceContainer services, GraphicsDevice device)
         {
-            ContentProvider = new ContentProvider(services);
+            ContentProvider = new ContentProvider(services, device);
+
         }
 
         public IDrawable CreatePointCloud(Domain.Vector3[] points, int radius)
         {
             var xnaPoints = points
-                .Select(v => new Microsoft.Xna.Framework.Vector3(v.X, v.Y, v.Z))
+                .Select(v => v.ToXna())
                 .ToArray();
 
             return new PointCloud(ContentProvider.PointEffect.Value, xnaPoints, radius);
+        }
+
+        public IDrawable CreateBoundingBoxRepresentation(Domain.BoundingBox[] boxes)
+        {
+            return new BoundingBoxRepresentation(ContentProvider.GraphicsDevice, boxes);
         }
 
     }

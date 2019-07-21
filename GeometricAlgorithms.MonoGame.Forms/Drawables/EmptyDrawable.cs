@@ -9,6 +9,13 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 {
     public class EmptyDrawable : IDrawable
     {
+        public Transformation Transformation { get; set; }
+
+        public void Dispose()
+        {
+
+        }
+
         public void Draw(ICamera camera)
         {
         }

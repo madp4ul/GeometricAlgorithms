@@ -47,14 +47,12 @@
   <ItemGroup>
     <Compile Include="I3DQueryable.cs" />
     <Compile Include="IModel.cs" />
-    <Compile Include="Dimension.cs" />
     <Compile Include="KdTree\DistanceComparer.cs" />
     <Compile Include="KdTree\KdTree.cs" />
     <Compile Include="KdTree\KdTreeBranch.cs" />
     <Compile Include="KdTree\KdTreeConfiguration.cs" />
     <Compile Include="KdTree\KdTreeLeaf.cs" />
     <Compile Include="KdTree\KdTreeNode.cs" />
-    <Compile Include="BoundingBox.cs" />
     <Compile Include="KdTree\Queries.cs" />
     <Compile Include="KdTree\Range.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

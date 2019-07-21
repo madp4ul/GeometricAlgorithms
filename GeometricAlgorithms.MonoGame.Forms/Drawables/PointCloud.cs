@@ -21,9 +21,11 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 
         public int PixelWidth { get; set; }
         public Domain.Vector3 Position { get; set; }
+        public Transformation Transformation { get; set; }
 
         public PointCloud(PointEffect effect, Vector3[] positions, int pixelWidth = 2)
         {
+            Transformation = new Transformation();
             Effect = effect;
             PixelWidth = pixelWidth;
 
@@ -68,29 +70,20 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             Device.SetVertexBuffer(Vertices);
             Device.Indices = Indices;
 
+            Effect.WorldMatrix = Transformation.GetWorldMatrix();
             Effect.ViewProjectionMatrix = camera.Data.ViewProjectionMatrix;
             Effect.PointPixels = PixelWidth;
             Effect.ViewportWidth = Device.Viewport.Width;
             Effect.ViewportHeight = Device.Viewport.Height;
 
-            ////        Matrix projection = Matrix.CreatePerspectiveFieldOfView(
-            ////(float)Math.PI / 3,
-            ////    1,
-            ////0.0001f, 1000f);
-            ////        Matrix view = Matrix.CreateLookAt(new Vector3(0, 1f, 3f),
-            ////new Vector3(0.0f, 0.0f, 0.0f), Vector3.Up);
-            //Matrix world = Matrix.CreateTranslation(new Vector3(-0.5f, -0.5f, 0));
-
-            ////        Effect.ViewProjectionMatrix = view * projection;
-            //Effect.WorldMatrix = world;
-
-            //Matrix projection = Matrix.CreatePerspectiveFieldOfView((float)Math.PI / 3, 1, 0.0001f, 1000f);
-            //Matrix view = Matrix.CreateLookAt(new Vector3((float)Math.Sin(i++), 1f, 3f),
-            //    new Vector3(0.0f, 0.0f, 0.0f), Vector3.Up);
-
-            //Effect.ViewProjectionMatrix = view * projection;
-
             Effect.DrawForEachPass(() => Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, Indices.IndexCount / 3));
+        }
+
+        public void Dispose()
+        {
+            Vertices.Dispose();
+            Indices.Dispose();
+            Effect.Dispose();
         }
     }
 }

@@ -12,6 +12,7 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
         public IDrawable Drawable { get; set; }
 
         public bool EnableDraw { get; set; }
+        public Transformation Transformation { get => Drawable.Transformation; set => Drawable.Transformation = value; }
 
         public ToggleableDrawable(IDrawable inner)
         {
@@ -25,6 +26,11 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             {
                 Drawable.Draw(camera);
             }
+        }
+
+        public void Dispose()
+        {
+            Drawable.Dispose();
         }
     }
 }
