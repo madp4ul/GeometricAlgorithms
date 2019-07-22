@@ -1,4 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.Domain.VertexTypes;
 using GeometricAlgorithms.MonoGame.Forms.Cameras;
 using GeometricAlgorithms.MonoGame.Forms.Drawables;
 using System;
@@ -11,25 +12,25 @@ namespace GeometricAlgorithms.Viewer.Model
 {
     public class PointData : ToggleableDrawable
     {
-        public Vector3[] Points { get; set; }
+        public GenericVertex[] Points { get; set; }
 
         public readonly KdTreeData KdTreeData;
 
 
         public PointData()
         {
-            Points = new Vector3[0];
+            Points = new GenericVertex[0];
             Drawable = new EmptyDrawable();
             KdTreeData = new KdTreeData();
         }
 
-        public PointData(Vector3[] points, int radius)
+        public PointData(GenericVertex[] points, int radius)
         {
             Reset(points, radius);
             KdTreeData = new KdTreeData(points);
         }
 
-        public void Reset(Vector3[] points, int radius)
+        public void Reset(GenericVertex[] points, int radius)
         {
             Points = points ?? throw new ArgumentNullException(nameof(points));
 
@@ -37,7 +38,7 @@ namespace GeometricAlgorithms.Viewer.Model
             {
                 Drawable.Dispose();
             }
-            Drawable = GeometricAlgorithmViewer.DrawableFactory.CreatePointCloud(points, radius);
+            Drawable = GeometricAlgorithmViewer.DrawableFactory.CreatePointCloud(points.Select(v => v.Position).ToArray(), radius);
 
             KdTreeData.Reset(Points);
         }

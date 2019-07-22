@@ -12,7 +12,7 @@ namespace GeometricAlgorithms.KdTree
     {
         public Range<TVertex> Vertices { get; set; }
 
-        public KdTreeLeaf(BoundingBox boundingBox, Range<TVertex> vertices, KdTreeConfiguration configuration)
+        public KdTreeLeaf(BoundingBox boundingBox, Range<TVertex> vertices)
                : base(boundingBox, vertices.Length)
         {
             Vertices = vertices ?? throw new ArgumentNullException(nameof(vertices));

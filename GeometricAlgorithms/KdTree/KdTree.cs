@@ -9,7 +9,9 @@ namespace GeometricAlgorithms.KdTree
 {
     public class KdTree<TVertex> : I3DQueryable<TVertex> where TVertex : IVertex
     {
-        private KdTreeNode<TVertex> Root;
+        private readonly KdTreeNode<TVertex> Root;
+
+        public IReadOnlyCollection<TVertex> Vertices { get; set; }
 
         public KdTree(TVertex[] vertices, KdTreeConfiguration configuration = null)
         {
@@ -18,6 +20,7 @@ namespace GeometricAlgorithms.KdTree
                 configuration = KdTreeConfiguration.Default;
             }
 
+            Vertices = vertices;
             var range = Range<TVertex>.FromArray(vertices, 0, vertices.Length);
             var rootBoundingBox = BoundingBox.CreateContainer(vertices);
 
@@ -27,8 +30,13 @@ namespace GeometricAlgorithms.KdTree
             }
             else
             {
-                Root = new KdTreeLeaf<TVertex>(rootBoundingBox, range, configuration);
+                Root = new KdTreeLeaf<TVertex>(rootBoundingBox, range);
             }
+        }
+
+        public KdTree<TVertex> Reshape(KdTreeConfiguration configuration)
+        {
+            return new KdTree<TVertex>(Vertices.ToArray(), configuration);
         }
 
         public List<TVertex> FindInRadius(Vector3 seachCenter, float searchRadius)

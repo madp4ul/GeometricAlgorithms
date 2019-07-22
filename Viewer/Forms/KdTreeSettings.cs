@@ -20,6 +20,14 @@ namespace GeometricAlgorithms.Viewer.Forms
             InitializeComponent();
 
             KdTreeData = kdTreeData;
+
+            pointsPerTreeLeafNumericUpDown.Value = kdTreeData.Configuration.MaximumPointsPerLeaf;
+        }
+
+        private void BtnApplySettings_Click(object sender, EventArgs e)
+        {
+            KdTreeData.Configuration.MaximumPointsPerLeaf = (int)pointsPerTreeLeafNumericUpDown.Value;
+            KdTreeData.Reset();
         }
     }
 }

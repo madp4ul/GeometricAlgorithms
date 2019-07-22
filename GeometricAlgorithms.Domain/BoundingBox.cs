@@ -11,6 +11,15 @@ namespace GeometricAlgorithms.Domain
         public Vector3 Minimum { get; private set; }
         public Vector3 Maximum { get; private set; }
 
+        public float Volume
+        {
+            get
+            {
+                Vector3 diff = (Maximum - Minimum);
+                return diff.X * diff.Y * diff.Z;
+            }
+        }
+
         public BoundingBox(Vector3 minimum, Vector3 maximum)
         {
             Minimum = minimum;

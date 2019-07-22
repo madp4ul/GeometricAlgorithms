@@ -49,13 +49,11 @@ namespace GeometricAlgorithms.KdTree
             {
                 MinimumChild = new KdTreeLeaf<TVertex>(
                     minChildBox,
-                    minChildVertices,
-                    configuration);
+                    minChildVertices);
 
                 MaximumChild = new KdTreeLeaf<TVertex>(
                     maxChildBox,
-                    maxChildVertices,
-                    configuration);
+                    maxChildVertices);
             }
         }
 

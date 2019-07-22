@@ -1,4 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.Domain.VertexTypes;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -17,7 +18,7 @@ namespace GeometricAlgorithms.FileProcessing
             FileReader = new FileReader();
         }
 
-        public Vector3[] ReadPoints(string offFilePath)
+        public GenericVertex[] ReadPoints(string offFilePath)
         {
             string[] lines = FileReader.ReadFile(offFilePath);
 
@@ -26,7 +27,7 @@ namespace GeometricAlgorithms.FileProcessing
                 string[] itemCounts = lines[1].Split(' ');
                 int pointCount = int.Parse(itemCounts[0]);
 
-                Vector3[] points = new Vector3[pointCount];
+                GenericVertex[] points = new GenericVertex[pointCount];
                 for (int i = 0; i < pointCount; i++)
                 {
                     string[] vertexDimensions = lines[i + 2].Split(' ');
@@ -36,7 +37,7 @@ namespace GeometricAlgorithms.FileProcessing
                         float.Parse(vertexDimensions[1], CultureInfo.InvariantCulture),
                         float.Parse(vertexDimensions[2], CultureInfo.InvariantCulture));
 
-                    points[i] = vertex;
+                    points[i] = new GenericVertex(vertex);
                 }
 
                 return points;

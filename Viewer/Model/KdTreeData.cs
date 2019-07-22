@@ -4,6 +4,7 @@ using GeometricAlgorithms.KdTree;
 using GeometricAlgorithms.MonoGame.Forms.Drawables;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,24 +23,41 @@ namespace GeometricAlgorithms.Viewer.Model
             KdTree = new KdTree<GenericVertex>(new GenericVertex[0], Configuration);
         }
 
-        public KdTreeData(Vector3[] points)
+        public KdTreeData(GenericVertex[] points)
         {
             EnableDraw = false;
             Configuration = KdTreeConfiguration.Default;
             Reset(points);
         }
 
-        public void Reset(Vector3[] points)
+        public void Reset()
         {
-            Configuration.MaximumPointsPerLeaf = 50;
-            KdTree = new KdTree<GenericVertex>(points.Select(v => new GenericVertex(v)).ToArray(), Configuration);
+            Reset(KdTree.Vertices.ToArray());
+        }
+
+        public void Reset(GenericVertex[] points)
+        {
+            KdTree = new KdTree<GenericVertex>(points.ToArray(), Configuration);
 
             if (Drawable != null)
             {
                 Drawable.Dispose();
             }
-            Drawable = GeometricAlgorithmViewer.DrawableFactory.CreateBoundingBoxRepresentation(
-                KdTree.GetBoundingBoxes().ToArray());
+
+            var boxes = KdTree.GetBoundingBoxes().ToArray();
+
+            if (boxes.Length == 0)
+            {
+                Drawable = new EmptyDrawable();
+            }
+            else
+            {
+                float maxVolume = boxes[0].Volume;
+
+                Color colorGenerator(BoundingBox box) => Color.FromArgb(255, (int)(255 * (box.Volume / maxVolume)), 0, 0);
+
+                Drawable = GeometricAlgorithmViewer.DrawableFactory.CreateBoundingBoxRepresentation(boxes, colorGenerator);
+            }
         }
     }
 }

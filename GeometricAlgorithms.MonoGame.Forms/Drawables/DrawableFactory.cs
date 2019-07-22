@@ -1,8 +1,9 @@
-﻿using GeometricAlgorithms.MonoGame.Forms.Extensions;
-using Microsoft.Xna.Framework;
+﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.MonoGame.Forms.Extensions;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,12 +14,12 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
     {
         internal ContentProvider ContentProvider { get; set; }
 
-        public DrawableFactory(GameServiceContainer services, GraphicsDevice device)
+        public DrawableFactory(Microsoft.Xna.Framework.GameServiceContainer services, GraphicsDevice device)
         {
             ContentProvider = new ContentProvider(services, device);
         }
 
-        public IDrawable CreatePointCloud(Domain.Vector3[] points, int radius)
+        public IDrawable CreatePointCloud(Vector3[] points, int radius)
         {
             var xnaPoints = points
                 .Select(v => v.ToXna())
@@ -27,9 +28,19 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             return new PointCloud(ContentProvider.PointEffect, xnaPoints, radius);
         }
 
-        public IDrawable CreateBoundingBoxRepresentation(Domain.BoundingBox[] boxes)
+        public IDrawable CreateBoundingBoxRepresentation(BoundingBox[] boxes, Func<BoundingBox, Color> colorGenerator = null)
         {
-            return new BoundingBoxRepresentation(ContentProvider.GraphicsDevice, boxes);
+            Func<BoundingBox, Microsoft.Xna.Framework.Color> xnaColorGenerator = null;
+            if (colorGenerator != null)
+            {
+                xnaColorGenerator = (box) =>
+                {
+                    var c = colorGenerator(box);
+                    return new Microsoft.Xna.Framework.Color(c.R, c.G, c.B, c.A);
+                };
+            }
+
+            return new BoundingBoxRepresentation(ContentProvider.GraphicsDevice, boxes, xnaColorGenerator);
         }
 
     }

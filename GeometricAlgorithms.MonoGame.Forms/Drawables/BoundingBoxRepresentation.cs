@@ -12,20 +12,27 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 {
     class BoundingBoxRepresentation : IDrawable
     {
-        public static Microsoft.Xna.Framework.Color Color = Microsoft.Xna.Framework.Color.OrangeRed;
-
         private readonly VertexBuffer Vertices;
         private readonly IndexBuffer Indices;
         private readonly BasicEffect Effect;
 
         private GraphicsDevice Device { get { return Effect.GraphicsDevice; } }
 
+
         public Transformation Transformation { get; set; }
 
-        public BoundingBoxRepresentation(GraphicsDevice device, BoundingBox[] boxes)
+        public BoundingBoxRepresentation(
+            GraphicsDevice device,
+            BoundingBox[] boxes,
+            Func<BoundingBox, Microsoft.Xna.Framework.Color> colorGenerator = null)
         {
             Effect = new BasicEffect(device);
             Transformation = new Transformation();
+
+            if (colorGenerator == null)
+            {
+                colorGenerator = (box) => Microsoft.Xna.Framework.Color.OrangeRed;
+            }
 
             const int pointsPerBox = 8;
 
@@ -36,18 +43,18 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
                 {
                     int vOffset = i * pointsPerBox;
                     BoundingBox box = boxes[i];
-
+                    var color = colorGenerator(box);
                     Vector3 diff = box.Maximum - box.Minimum;
 
-                    vertices[vOffset + 0] = new VertexPositionColor(box.Minimum.ToXna(), Color);
-                    vertices[vOffset + 1] = new VertexPositionColor((box.Minimum + diff.ComponentX()).ToXna(), Color);
-                    vertices[vOffset + 2] = new VertexPositionColor((box.Minimum + diff.ComponentY()).ToXna(), Color);
-                    vertices[vOffset + 3] = new VertexPositionColor((box.Minimum + diff.ComponentZ()).ToXna(), Color);
+                    vertices[vOffset + 0] = new VertexPositionColor(box.Minimum.ToXna(), color);
+                    vertices[vOffset + 1] = new VertexPositionColor((box.Minimum + diff.ComponentX()).ToXna(), color);
+                    vertices[vOffset + 2] = new VertexPositionColor((box.Minimum + diff.ComponentY()).ToXna(), color);
+                    vertices[vOffset + 3] = new VertexPositionColor((box.Minimum + diff.ComponentZ()).ToXna(), color);
 
-                    vertices[vOffset + 4] = new VertexPositionColor(box.Maximum.ToXna(), Color);
-                    vertices[vOffset + 5] = new VertexPositionColor((box.Maximum - diff.ComponentX()).ToXna(), Color);
-                    vertices[vOffset + 6] = new VertexPositionColor((box.Maximum - diff.ComponentY()).ToXna(), Color);
-                    vertices[vOffset + 7] = new VertexPositionColor((box.Maximum - diff.ComponentZ()).ToXna(), Color);
+                    vertices[vOffset + 4] = new VertexPositionColor(box.Maximum.ToXna(), color);
+                    vertices[vOffset + 5] = new VertexPositionColor((box.Maximum - diff.ComponentX()).ToXna(), color);
+                    vertices[vOffset + 6] = new VertexPositionColor((box.Maximum - diff.ComponentY()).ToXna(), color);
+                    vertices[vOffset + 7] = new VertexPositionColor((box.Maximum - diff.ComponentZ()).ToXna(), color);
                 }
                 Vertices = new VertexBuffer(Device, VertexPositionColor.VertexDeclaration, vertices.Length, BufferUsage.None);
                 Vertices.SetData(vertices);
@@ -107,18 +114,37 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 
         public void Draw(ICamera camera)
         {
+            //Set buffers
             Device.SetVertexBuffer(Vertices);
             Device.Indices = Indices;
 
+            //Set states
+            var prevDepthStencilState = Effect.GraphicsDevice.DepthStencilState;
+            Effect.GraphicsDevice.DepthStencilState = new DepthStencilState()
+            {
+                DepthBufferEnable = false,
+
+            };
+
+            var prevBlendState = Effect.GraphicsDevice.BlendState;
+            Effect.GraphicsDevice.BlendState = BlendState.Additive;
+
+            //set effect values
             Effect.World = Transformation.GetWorldMatrix();
             Effect.View = camera.Data.ViewProjectionMatrix;
             Effect.Projection = Microsoft.Xna.Framework.Matrix.Identity;
 
+
+            //Effect config and drawing
             Effect.VertexColorEnabled = true;
 
             Effect.CurrentTechnique.Passes[0].Apply();
 
             Device.DrawIndexedPrimitives(PrimitiveType.LineList, 0, 0, Indices.IndexCount / 2);
+
+            //Reset states
+            Effect.GraphicsDevice.DepthStencilState = prevDepthStencilState;
+            Effect.GraphicsDevice.BlendState = prevBlendState;
         }
 
         public void Dispose()
