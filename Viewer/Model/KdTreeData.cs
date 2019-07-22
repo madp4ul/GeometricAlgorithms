@@ -54,7 +54,8 @@ namespace GeometricAlgorithms.Viewer.Model
             {
                 float maxVolume = boxes[0].Volume;
 
-                Color colorGenerator(BoundingBox box) => Color.FromArgb(255, (int)(255 * (box.Volume / maxVolume)), 0, 0);
+                //have a minimum lightness and let the rest be dictated by box volume relative to the root box
+                Color colorGenerator(BoundingBox box) => Color.FromArgb(255, (int)(25 + 230 * (box.Volume / maxVolume)), 0, 0);
 
                 Drawable = GeometricAlgorithmViewer.DrawableFactory.CreateBoundingBoxRepresentation(boxes, colorGenerator);
             }
