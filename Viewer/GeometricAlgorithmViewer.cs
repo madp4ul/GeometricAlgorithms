@@ -12,10 +12,11 @@ using GeometricAlgorithms.MonoGame.Forms.Cameras;
 using GeometricAlgorithms.MonoGame.Forms;
 using GeometricAlgorithms.Domain;
 using GeometricAlgorithms.MonoGame.Forms.Drawables;
+using GeometricAlgorithms.Viewer.Providers;
 
 namespace GeometricAlgorithms.Viewer
 {
-    public partial class GeometricAlgorithmViewer : UserControl
+    public partial class GeometricAlgorithmViewer : UserControl, IDrawableFactoryProvider
     {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ViewerConfiguration Configuration { get; set; }
@@ -24,7 +25,7 @@ namespace GeometricAlgorithms.Viewer
         public Workspace Workspace { get; set; }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public static DrawableFactory DrawableFactory => Viewer3D.DrawableFactory;
+        public DrawableFactory DrawableFactory => Viewer3D.DrawableFactory;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         private readonly MouseDragger ViewerDragger;

@@ -11,9 +11,9 @@ namespace GeometricAlgorithms.Viewer.ToolStrip
 {
     class FileMenuTools
     {
-        public DataModel ViewerModel { get; set; }
+        public ModelData ViewerModel { get; set; }
 
-        public FileMenuTools(Model.DataModel viewerModel)
+        public FileMenuTools(Model.ModelData viewerModel)
         {
             ViewerModel = viewerModel ?? throw new ArgumentNullException(nameof(viewerModel));
         }

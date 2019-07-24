@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeometricAlgorithms.Viewer.Providers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.Viewer.Model
 {
-    public class DataModel
+    public class ModelData
     {
         public ViewerConfiguration ViewerConfiguration { get; set; }
 
         public Workspace Workspace { get; set; }
 
-        public DataModel()
+        public ModelData(IDrawableFactoryProvider drawableFactoryProvider)
         {
             ViewerConfiguration = new ViewerConfiguration();
-            Workspace = new Workspace();
+            Workspace = new Workspace(drawableFactoryProvider);
         }
     }
 }

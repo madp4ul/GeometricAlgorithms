@@ -13,11 +13,11 @@ namespace GeometricAlgorithms.Viewer.ToolStrip
         public MainWindow MainWindow { get; set; }
         public MenuStrip MenuStrip { get; set; }
 
-        public DataModel Model { get; set; }
+        public ModelData Model { get; set; }
 
         public GeometricAlgorithmViewer Viewer { get; set; }
 
-        public ToolStripActionConfigurator(MainWindow mainWindow, MenuStrip menuStrip, GeometricAlgorithmViewer viewer, DataModel model)
+        public ToolStripActionConfigurator(MainWindow mainWindow, MenuStrip menuStrip, GeometricAlgorithmViewer viewer, ModelData model)
         {
             MainWindow = mainWindow ?? throw new ArgumentNullException(nameof(mainWindow));
             MenuStrip = menuStrip ?? throw new ArgumentNullException(nameof(menuStrip));

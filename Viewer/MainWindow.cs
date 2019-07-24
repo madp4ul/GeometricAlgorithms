@@ -18,13 +18,13 @@ namespace GeometricAlgorithms.Viewer
 {
     public partial class MainWindow : Form
     {
-        private readonly DataModel Model;
+        private readonly ModelData Model;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            Model = new DataModel();//todo load or somethign
+            Model = new ModelData(drawableFactoryProvider: viewer);
 
             viewer.Configuration = Model.ViewerConfiguration;
             viewer.Workspace = Model.Workspace;

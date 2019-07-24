@@ -2,6 +2,7 @@
 using GeometricAlgorithms.Domain.VertexTypes;
 using GeometricAlgorithms.KdTree;
 using GeometricAlgorithms.MonoGame.Forms.Drawables;
+using GeometricAlgorithms.Viewer.Providers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,20 +14,22 @@ namespace GeometricAlgorithms.Viewer.Model
 {
     public class KdTreeData : ToggleableDrawable
     {
+        readonly IDrawableFactoryProvider DrawableFactoryProvider;
+
         public KdTree<GenericVertex> KdTree { get; set; }
         public KdTreeConfiguration Configuration { get; set; }
 
-        public KdTreeData()
+        public KdTreeData(IDrawableFactoryProvider drawableFactoryProvider)
         {
+            DrawableFactoryProvider = drawableFactoryProvider;
+
             EnableDraw = false;
             Configuration = KdTreeConfiguration.Default;
             KdTree = new KdTree<GenericVertex>(new GenericVertex[0], Configuration);
         }
 
-        public KdTreeData(GenericVertex[] points)
+        public KdTreeData(GenericVertex[] points, IDrawableFactoryProvider drawableFactoryProvider) : this(drawableFactoryProvider)
         {
-            EnableDraw = false;
-            Configuration = KdTreeConfiguration.Default;
             Reset(points);
         }
 
@@ -57,7 +60,7 @@ namespace GeometricAlgorithms.Viewer.Model
                 //have a minimum lightness and let the rest be dictated by box volume relative to the root box
                 Color colorGenerator(BoundingBox box) => Color.FromArgb(255, (int)(25 + 230 * (box.Volume / maxVolume)), 0, 0);
 
-                Drawable = GeometricAlgorithmViewer.DrawableFactory.CreateBoundingBoxRepresentation(boxes, colorGenerator);
+                Drawable = DrawableFactoryProvider.DrawableFactory.CreateBoundingBoxRepresentation(boxes, colorGenerator);
             }
         }
     }

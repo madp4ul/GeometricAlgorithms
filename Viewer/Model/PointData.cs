@@ -2,6 +2,7 @@
 using GeometricAlgorithms.Domain.VertexTypes;
 using GeometricAlgorithms.MonoGame.Forms.Cameras;
 using GeometricAlgorithms.MonoGame.Forms.Drawables;
+using GeometricAlgorithms.Viewer.Providers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,22 +13,26 @@ namespace GeometricAlgorithms.Viewer.Model
 {
     public class PointData : ToggleableDrawable
     {
+        readonly IDrawableFactoryProvider DrawableFactoryProvider;
+
         public GenericVertex[] Points { get; set; }
 
         public readonly KdTreeData KdTreeData;
 
 
-        public PointData()
+        public PointData(IDrawableFactoryProvider drawableFactoryProvider)
         {
+            DrawableFactoryProvider = drawableFactoryProvider;
             Points = new GenericVertex[0];
             Drawable = new EmptyDrawable();
-            KdTreeData = new KdTreeData();
+            KdTreeData = new KdTreeData(drawableFactoryProvider);
         }
 
-        public PointData(GenericVertex[] points, int radius)
+        public PointData(GenericVertex[] points, int radius, IDrawableFactoryProvider drawableFactoryProvider)
+            : this(drawableFactoryProvider)
         {
             Reset(points, radius);
-            KdTreeData = new KdTreeData(points);
+            KdTreeData.Reset(points);
         }
 
         public void Reset(GenericVertex[] points, int radius)
@@ -38,7 +43,7 @@ namespace GeometricAlgorithms.Viewer.Model
             {
                 Drawable.Dispose();
             }
-            Drawable = GeometricAlgorithmViewer.DrawableFactory.CreatePointCloud(points.Select(v => v.Position).ToArray(), radius);
+            Drawable = DrawableFactoryProvider.DrawableFactory.CreatePointCloud(points.Select(v => v.Position).ToArray(), radius);
 
             KdTreeData.Reset(Points);
         }
