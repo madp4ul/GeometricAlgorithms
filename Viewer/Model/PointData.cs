@@ -48,5 +48,10 @@ namespace GeometricAlgorithms.Viewer.Model
             KdTreeData.Reset(Points);
         }
 
+        public override void Draw(ICamera camera)
+        {
+            base.Draw(camera);
+            KdTreeData.Draw(camera);
+        }
     }
 }
