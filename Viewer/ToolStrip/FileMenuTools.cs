@@ -20,17 +20,19 @@ namespace GeometricAlgorithms.Viewer.ToolStrip
 
         public void OpenFile()
         {
-            var openFileDialog = new OpenFileDialog
+            using (var openFileDialog =
+                new OpenFileDialog
+                {
+                    Filter = "Off-Dateien|*.off"
+                })
             {
-                Filter = "Off-Dateien|*.off"
-            };
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    var reader = new ModelReader();
+                    var points = reader.ReadPoints(openFileDialog.FileName);
 
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                var reader = new OFFReader();
-                var points = reader.ReadPoints(openFileDialog.FileName);
-
-                ViewerModel.Workspace.PointData.Reset(points, ViewerModel.ViewerConfiguration.PointRadius);
+                    ViewerModel.Workspace.PointData.Reset(points, ViewerModel.ViewerConfiguration.PointRadius);
+                }
             }
         }
 

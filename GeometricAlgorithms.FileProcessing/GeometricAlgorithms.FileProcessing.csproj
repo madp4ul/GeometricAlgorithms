@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileReader.cs" />
+    <Compile Include="IReader.cs" />
+    <Compile Include="ModelReader.cs" />
     <Compile Include="OFFReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

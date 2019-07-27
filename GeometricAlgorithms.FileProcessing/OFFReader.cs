@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.FileProcessing
 {
-    public class OFFReader
+    public class OFFReader : IReader
     {
         private readonly FileReader FileReader;
 
