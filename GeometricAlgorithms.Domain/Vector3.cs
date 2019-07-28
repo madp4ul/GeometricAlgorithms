@@ -136,6 +136,15 @@ namespace GeometricAlgorithms.Domain
             Z *= scale;
         }
 
+        public Vector3 Normalized()
+        {
+            float scale = 1.0f / this.Length;
+            X *= scale;
+            Y *= scale;
+            Z *= scale;
+            return this;
+        }
+
         /// <summary>
         /// Defines a unit-length Vector3 that points towards the X-axis.
         /// </summary>
@@ -466,8 +475,7 @@ namespace GeometricAlgorithms.Domain
         /// <returns>The cross product of the two inputs</returns>
         public static Vector3 Cross(Vector3 left, Vector3 right)
         {
-            Vector3 result;
-            Cross(ref left, ref right, out result);
+            Cross(ref left, ref right, out Vector3 result);
             return result;
         }
 
@@ -569,8 +577,7 @@ namespace GeometricAlgorithms.Domain
         /// <remarks>Note that the returned angle is never bigger than the constant Pi.</remarks>
         public static void CalculateAngle(ref Vector3 first, ref Vector3 second, out float result)
         {
-            float temp;
-            Vector3.Dot(ref first, ref second, out temp);
+            Vector3.Dot(ref first, ref second, out float temp);
             result = (float)System.Math.Acos(temp / (first.Length * second.Length));
         }
 

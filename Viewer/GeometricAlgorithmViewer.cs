@@ -51,7 +51,7 @@ namespace GeometricAlgorithms.Viewer
             {
                 Camera = new FirstPersonCamera();
 
-                Camera.SetPosition(new Vector3(0, 0f, 3f));
+                Camera.SetPosition(new Vector3(0.5f, 0.5f, 1.3f));
                 Camera.SetRotation(0, 0);
                 Camera.SetProjection((float)Math.PI / 3, 1, 0.0001f, 1000f);
 
@@ -80,15 +80,19 @@ namespace GeometricAlgorithms.Viewer
             Vector3 movement = Vector3.Zero;
 
             if (keys.Contains(Keys.W))
-                movement = Camera.Forward;
-            else if (keys.Contains(Keys.A))
-                movement = -Vector3.Cross(Camera.Forward, Camera.Up);
-            else if (keys.Contains(Keys.D))
-                movement = Vector3.Cross(Camera.Forward, Camera.Up);
-            else if (keys.Contains(Keys.S))
-                movement = -Camera.Forward;
+                movement += Camera.Forward.Normalized();
+            if (keys.Contains(Keys.A))
+                movement -= Vector3.Cross(Camera.Forward, Camera.Up).Normalized();
+            if (keys.Contains(Keys.D))
+                movement += Vector3.Cross(Camera.Forward, Camera.Up).Normalized();
+            if (keys.Contains(Keys.S))
+                movement -= Camera.Forward.Normalized();
+            if (keys.Contains(Keys.Space))
+                movement += Camera.Up.Normalized();
+            if (keys.Contains(Keys.LControlKey))
+                movement -= Camera.Up.Normalized();
 
-            movement *= 0.003f * (float)KeyEventTimer.Interval;
+            movement *= 0.0003f * (float)KeyEventTimer.Interval;
 
             Camera.SetPosition(Camera.Position + movement);
 

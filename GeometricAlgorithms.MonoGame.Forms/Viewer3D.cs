@@ -44,7 +44,18 @@ namespace GeometricAlgorithms.MonoGame.Forms
         {
             var state = Microsoft.Xna.Framework.Input.Keyboard.GetState();
 
-            return state.GetPressedKeys().Select(k => (Keys)Enum.Parse(typeof(Keys), k.ToString())).ToArray();
+            return state.GetPressedKeys().Select(k =>
+            {
+                if (Enum.TryParse(k.ToString(), out Keys result))
+                {
+                    return result;
+                }
+                else
+                {
+                    int numValue = (int)k;
+                    return (Keys)numValue;
+                }
+            }).ToArray();
         }
     }
 }
