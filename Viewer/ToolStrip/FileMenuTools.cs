@@ -20,20 +20,30 @@ namespace GeometricAlgorithms.Viewer.ToolStrip
 
         public void OpenFile()
         {
-            using (var openFileDialog =
+            try
+            {
+                using (var openFileDialog =
                 new OpenFileDialog
                 {
                     Filter = "Off-Dateien|*.off"
                 })
-            {
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    var reader = new ModelReader();
-                    var points = reader.ReadPoints(openFileDialog.FileName);
+                    if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        var reader = new ModelReader();
+                        var points = reader.ReadPoints(openFileDialog.FileName);
 
-                    ViewerModel.Workspace.PointData.Reset(points, ViewerModel.ViewerConfiguration.PointRadius);
+                        ViewerModel.Workspace.PointData.Reset(points, ViewerModel.ViewerConfiguration.PointRadius);
+                    }
                 }
             }
+            catch (AccessViolationException ex)
+            {
+
+                throw;
+            }
+
+
         }
 
         public void SaveToFile()

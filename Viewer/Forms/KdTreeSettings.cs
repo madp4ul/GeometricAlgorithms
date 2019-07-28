@@ -29,5 +29,19 @@ namespace GeometricAlgorithms.Viewer.Forms
             KdTreeData.Configuration.MaximumPointsPerLeaf = (int)pointsPerTreeLeafNumericUpDown.Value;
             KdTreeData.Reset();
         }
+
+
+
+        private void SearchRadiusNumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            KdTreeData.RadiusQuerydata.SetRadius((float)searchRadiusNumericUpDown.Value);
+        }
+
+        private void BtnStartRadiusSearch_Click(object sender, EventArgs e)
+        {
+            KdTreeData.RadiusQuerydata.SetRadius((float)searchRadiusNumericUpDown.Value);
+            KdTreeData.RadiusQuerydata.CalculateQueryResult();
+            KdTreeData.RadiusQuerydata.EnableDraw = true;
+        }
     }
 }

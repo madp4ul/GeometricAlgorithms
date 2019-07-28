@@ -9,7 +9,14 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 {
     public class EmptyDrawable : IDrawable
     {
+
+
         public Transformation Transformation { get; set; }
+
+        public EmptyDrawable()
+        {
+            Transformation = Transformation.Identity;
+        }
 
         public void Dispose()
         {

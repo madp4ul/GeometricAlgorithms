@@ -52,9 +52,9 @@
     <Compile Include="Forms\KdTreeSettings.Designer.cs">
       <DependentUpon>KdTreeSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\KdTreeModels\KdTreeQueryData.cs" />
     <Compile Include="Model\KdTreeModels\KdTreeQueryResult.cs" />
     <Compile Include="Model\KdTreeModels\KdTreeRadiusQueryData.cs" />
+    <Compile Include="Model\KdTreeModels\QueryCenterPoint.cs" />
     <Compile Include="Model\ModelData.cs" />
     <Compile Include="Model\KdTreeModels\KdTreeData.cs" />
     <Compile Include="Model\PointData.cs" />

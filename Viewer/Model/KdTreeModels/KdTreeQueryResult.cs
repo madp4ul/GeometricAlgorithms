@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
 {
-    class KdTreeQueryResult : ToggleableDrawable
+    public class KdTreeQueryResult : ToggleableDrawable
     {
         readonly IDrawableFactoryProvider DrawableFactoryProvider;
 
@@ -18,6 +18,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
         public KdTreeQueryResult(IDrawableFactoryProvider drawableFactoryProvider)
         {
             DrawableFactoryProvider = drawableFactoryProvider;
+            PointRadius = 10;
         }
 
         public void Reset(IEnumerable<GenericVertex> vertices)

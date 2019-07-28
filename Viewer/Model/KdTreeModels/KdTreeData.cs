@@ -1,6 +1,7 @@
 ﻿using GeometricAlgorithms.Domain;
 using GeometricAlgorithms.Domain.VertexTypes;
 using GeometricAlgorithms.KdTree;
+using GeometricAlgorithms.MonoGame.Forms.Cameras;
 using GeometricAlgorithms.MonoGame.Forms.Drawables;
 using GeometricAlgorithms.Viewer.Providers;
 using System;
@@ -16,8 +17,10 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
     {
         readonly IDrawableFactoryProvider DrawableFactoryProvider;
 
-        public KdTree<GenericVertex> KdTree { get; set; }
+        public KdTree<GenericVertex> KdTree { get; private set; }
         public KdTreeConfiguration Configuration { get; set; }
+
+        public KdTreeRadiusQueryData RadiusQuerydata { get; private set; }
 
         public KdTreeData(IDrawableFactoryProvider drawableFactoryProvider)
         {
@@ -26,6 +29,8 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
             EnableDraw = false;
             Configuration = KdTreeConfiguration.Default;
             KdTree = new KdTree<GenericVertex>(new GenericVertex[0], Configuration);
+
+            RadiusQuerydata = new KdTreeRadiusQueryData(drawableFactoryProvider);
         }
 
         public KdTreeData(GenericVertex[] points, IDrawableFactoryProvider drawableFactoryProvider) : this(drawableFactoryProvider)
@@ -62,6 +67,15 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
 
                 Drawable = DrawableFactoryProvider.DrawableFactory.CreateBoundingBoxRepresentation(boxes, colorGenerator);
             }
+
+            RadiusQuerydata.Reset(KdTree);
+        }
+
+        public override void Draw(ICamera camera)
+        {
+            base.Draw(camera);
+
+            RadiusQuerydata.Draw(camera);
         }
     }
 }
