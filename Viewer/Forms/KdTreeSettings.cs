@@ -1,4 +1,4 @@
-﻿using GeometricAlgorithms.Viewer.Model;
+﻿using GeometricAlgorithms.Viewer.Model.KdTreeModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

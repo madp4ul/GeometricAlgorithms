@@ -19,7 +19,7 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             ContentProvider = new ContentProvider(services, device);
         }
 
-        public IDrawable CreatePointCloud(Vector3[] points, int radius)
+        public IDrawable CreatePointCloud(IEnumerable<Vector3> points, int radius)
         {
             var xnaPoints = points
                 .Select(v => v.ToXna())
@@ -43,5 +43,13 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             return new BoundingBoxRepresentation(ContentProvider.GraphicsDevice, boxes, xnaColorGenerator);
         }
 
+        public IDrawable CreateHighlightedPointCloud(IEnumerable<Vector3> points, int radius)
+        {
+            var xnaPoints = points
+                .Select(v => v.ToXna())
+                .ToArray();
+
+            return new HighlightedPointCloud(ContentProvider.PointEffect, xnaPoints, radius);
+        }
     }
 }

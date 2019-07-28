@@ -67,8 +67,10 @@
     <Compile Include="Cameras\ICamera.cs" />
     <Compile Include="Cameras\ICameraData.cs" />
     <Compile Include="Drawables\BoundingBoxRepresentation.cs" />
+    <Compile Include="Drawables\CompositeDrawable.cs" />
     <Compile Include="Drawables\DrawableFactory.cs" />
     <Compile Include="Drawables\EmptyDrawable.cs" />
+    <Compile Include="Drawables\HighlightedPointCloud.cs" />
     <Compile Include="Drawables\ToggleableDrawable.cs" />
     <Compile Include="Drawables\PointCloud.cs" />
     <Compile Include="Drawables\Transformation.cs" />

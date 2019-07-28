@@ -12,9 +12,9 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 {
     class PointCloud : IDrawable
     {
-        private readonly VertexBuffer Vertices;
-        private readonly IndexBuffer Indices;
-        private readonly PointEffect Effect;
+        protected readonly VertexBuffer Vertices;
+        protected readonly IndexBuffer Indices;
+        protected readonly PointEffect Effect;
 
         private GraphicsDevice Device { get { return Effect.GraphicsDevice; } }
 
@@ -65,7 +65,7 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             }
         }
 
-        public void Draw(ICamera camera)
+        public virtual void Draw(ICamera camera)
         {
             Device.SetVertexBuffer(Vertices);
             Device.Indices = Indices;

@@ -15,6 +15,8 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 
         public float Scale { get; set; }
 
+        public static Transformation Identity => new Transformation();
+
         public Transformation(Domain.Vector3 position, float scale)
         {
             Position = position;
@@ -30,6 +32,18 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
         internal Matrix GetWorldMatrix()
         {
             return Matrix.CreateScale(Scale) * Matrix.CreateTranslation(Position.ToXna());
+        }
+
+        public void AddTransformation(Transformation t)
+        {
+            Position += t.Position;
+            Scale *= t.Scale;
+        }
+
+        public void SubtractTransformation(Transformation t)
+        {
+            Position -= t.Position;
+            Scale /= t.Scale;
         }
     }
 }

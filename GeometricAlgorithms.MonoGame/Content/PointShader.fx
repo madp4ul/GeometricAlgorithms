@@ -12,6 +12,7 @@ matrix WorldViewProjection;
 int ViewportWidth;
 int ViewportHeight;
 int PointPixels;
+bool IsHighlighted;
 
 const float FadeoffDistance = 0.1;
 
@@ -56,17 +57,29 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 
 	output.Position = float4(output.Position.x + offsetWidth, output.Position.y + offsetHeight, output.Position.z, output.Position.w);
 
-	float fadeoff = FadeoffDistance / output.Position.z;
+	if (IsHighlighted) {
+		//No colors needed as highlight color will be used instead
+		//Also move position infront of their usual position to make them override other points that would have the same position
+		output.Position = output.Position + float4(0, 0, -0.001, 0);
+	}
+	else {
 
+	}
+	float fadeoff = FadeoffDistance / output.Position.z;
 	output.Color = float4(1 - fadeoff, 1 - fadeoff, 1, 1);
-	//output.Color = float4(offsetWidth / 2.0 + 0.5, offsetHeight / 2.0 + 0.5, 0, 1);
 
 	return output;
 }
 
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
-	return input.Color;//float4(1,0,0,1);
+	if (IsHighlighted) {
+		//Change to highlight color
+		return float4(0, 1, 1, 1);
+	}
+	else {
+		return input.Color;
+	}
 }
 
 technique BasicColorDrawing

@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GeometricAlgorithms.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +10,10 @@ namespace GeometricAlgorithms.MonoGame.Forms.Cameras
     public abstract class ICamera
     {
         internal abstract ICameraData Data { get; }
+
+        public abstract Vector3 Position { get; set; }
+
+        public abstract Vector3 Forward { get; }
+        public abstract Vector3 Up { get; }
     }
 }

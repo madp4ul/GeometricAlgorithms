@@ -8,10 +8,10 @@
         private readonly FirstPerson.InternalFirstPersonCamera Camera;
         internal override ICameraData Data => Camera;
 
-        public Vector3 Position { get; set; }
+        public override Vector3 Position { get; set; }
 
-        public Vector3 Forward => new Vector3(Camera.LookAt.X, Camera.LookAt.Y, Camera.LookAt.Z);
-        public Vector3 Up => new Vector3(Camera.Up.X, Camera.Up.Y, Camera.Up.Z);
+        public override Vector3 Forward => new Vector3(Camera.LookAt.X, Camera.LookAt.Y, Camera.LookAt.Z);
+        public override Vector3 Up => new Vector3(Camera.Up.X, Camera.Up.Y, Camera.Up.Z);
 
         public float RotationY { get; private set; }
 

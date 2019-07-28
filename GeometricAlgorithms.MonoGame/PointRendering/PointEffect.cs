@@ -33,6 +33,12 @@ namespace GeometricAlgorithms.MonoGame.PointRendering
             set { Parameters["ViewportHeight"].SetValue(value); }
         }
 
+        public bool IsHighlighted
+        {
+            get { return Parameters["IsHighlighted"].GetValueBoolean(); }
+            set { Parameters["IsHighlighted"].SetValue(value); }
+        }
+
         private Matrix _ViewProjectionMatrix = Matrix.Identity;
         public Matrix ViewProjectionMatrix
         {

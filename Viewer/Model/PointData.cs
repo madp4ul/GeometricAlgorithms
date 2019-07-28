@@ -2,6 +2,7 @@
 using GeometricAlgorithms.Domain.VertexTypes;
 using GeometricAlgorithms.MonoGame.Forms.Cameras;
 using GeometricAlgorithms.MonoGame.Forms.Drawables;
+using GeometricAlgorithms.Viewer.Model.KdTreeModels;
 using GeometricAlgorithms.Viewer.Providers;
 using System;
 using System.Collections.Generic;
@@ -43,7 +44,8 @@ namespace GeometricAlgorithms.Viewer.Model
             {
                 Drawable.Dispose();
             }
-            Drawable = DrawableFactoryProvider.DrawableFactory.CreatePointCloud(points.Select(v => v.Position).ToArray(), radius);
+            Drawable = DrawableFactoryProvider.DrawableFactory.CreatePointCloud(
+                points.Select(v => v.Position), radius);
 
             KdTreeData.Reset(Points);
         }
