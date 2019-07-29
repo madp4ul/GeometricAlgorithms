@@ -33,6 +33,9 @@ namespace GeometricAlgorithms.Viewer
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         private FirstPersonCamera Camera;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Control Display => viewer.Display;
+
         private readonly System.Timers.Timer KeyEventTimer;
 
         public GeometricAlgorithmViewer()
@@ -111,6 +114,5 @@ namespace GeometricAlgorithms.Viewer
                 viewer.Invalidate();
             }
         }
-
     }
 }

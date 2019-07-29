@@ -59,7 +59,7 @@ namespace GeometricAlgorithms.Viewer.ToolStrip
 
         private void ConfigureKdTreeOptions(ToolStripMenuItem kdTreeOptionItem)
         {
-            var treeMenuTools = new KdTreeMenuTools(Model.Workspace.PointData.KdTreeData);
+            var treeMenuTools = new KdTreeMenuTools(Model.Workspace.PointData.KdTreeData, Viewer);
 
             GetItem(kdTreeOptionItem.DropDownItems, "showKdTreeToolStripMenuItem")
                 .Click += RefreshAfter((o, e) =>

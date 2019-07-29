@@ -12,28 +12,34 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
 {
-    public class KdTreeRadiusQueryData : ToggleableDrawable
+    public class KdTreeRadiusQueryData : IDrawable
     {
         private KdTree<GenericVertex> KdTree;
+
+        private readonly ToggleableDrawable Drawable;
 
         public Vector3 QueryCenter { get; set; }
 
         public float Radius { get; private set; }
 
 
-        public QueryCenterPoint QueryCenterDrawable { get; set; }
-        public KdTreeQueryResult QueryResultDrawable { get; set; }
+        private QueryCenterPoint QueryCenterDrawable { get; set; }
+        private KdTreeQueryResult QueryResultDrawable { get; set; }
+
+
+        public bool ShowQueryHelper { get => QueryCenterDrawable.EnableDraw; set => QueryCenterDrawable.EnableDraw = value; }
+        public bool ShowQueryResult { get => QueryResultDrawable.EnableDraw; set => QueryResultDrawable.EnableDraw = value; }
+        public Transformation Transformation { get; set; }
 
         public KdTreeRadiusQueryData(IDrawableFactoryProvider drawableFactoryProvider)
         {
+            Transformation = Transformation.Identity;
             Radius = 0.1f;
-            EnableDraw = true;
-
             QueryCenterDrawable = new QueryCenterPoint(drawableFactoryProvider);
 
             QueryResultDrawable = new KdTreeQueryResult(drawableFactoryProvider);
 
-            Drawable = new CompositeDrawable(QueryCenterDrawable, QueryResultDrawable);
+            Drawable = new ToggleableDrawable(new CompositeDrawable(QueryCenterDrawable, QueryResultDrawable));
         }
 
 
@@ -42,6 +48,12 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
             KdTree = kdTree;
 
             QueryCenterDrawable.Reset();
+        }
+
+        public void HideAll()
+        {
+            ShowQueryHelper = false;
+            ShowQueryResult = false;
         }
 
         public void SetRadius(float radius)
@@ -56,13 +68,20 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
             QueryResultDrawable.Reset(vertices);
         }
 
-        public override void Draw(ICamera camera)
+        public void Draw(ICamera camera)
         {
+            //Refresh query center based on camera position - can only happen in draw
             float centerDistance = Radius + 0.1f;
+            QueryCenter = camera.Position + (camera.Forward.Normalized() * centerDistance);
+            QueryCenterDrawable.SetPosition(QueryCenter);
 
-            QueryCenterDrawable.SetPosition(camera.Position + (camera.Forward.Normalized() * centerDistance));
+            QueryCenterDrawable.Draw(camera);
+            QueryResultDrawable.Draw(camera);
+        }
 
-            base.Draw(camera);
+        public void Dispose()
+        {
+            Drawable.Dispose();
         }
     }
 }

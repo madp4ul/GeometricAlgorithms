@@ -1,6 +1,6 @@
 ﻿namespace GeometricAlgorithms.Viewer.Forms
 {
-    partial class KdTreeSettings
+    partial class KdTreeOptions
     {
         /// <summary>
         /// Required designer variable.
@@ -34,20 +34,16 @@
             this.label3 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.radiusSeachPage = new System.Windows.Forms.TabPage();
-            this.btnAbortRadiusSearch = new System.Windows.Forms.Button();
-            this.btnStartRadiusSearch = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.searchRadiusNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.kNearestSearchPage = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.closestPointCountNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.generationSettingsPage = new System.Windows.Forms.TabPage();
+            this.radiusQueryControl = new GeometricAlgorithms.Viewer.Forms.KdTreeControls.RadiusQueryControl();
             ((System.ComponentModel.ISupportInitialize)(this.pointsPerTreeLeafNumericUpDown)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.radiusSeachPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.searchRadiusNumericUpDown)).BeginInit();
             this.kNearestSearchPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.closestPointCountNumericUpDown)).BeginInit();
             this.generationSettingsPage.SuspendLayout();
@@ -104,80 +100,20 @@
             this.tabControl1.Location = new System.Drawing.Point(3, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(369, 108);
+            this.tabControl1.Size = new System.Drawing.Size(370, 140);
             this.tabControl1.TabIndex = 5;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.TabControl1_SelectedIndexChanged);
             // 
             // radiusSeachPage
             // 
-            this.radiusSeachPage.Controls.Add(this.btnAbortRadiusSearch);
-            this.radiusSeachPage.Controls.Add(this.btnStartRadiusSearch);
-            this.radiusSeachPage.Controls.Add(this.label2);
-            this.radiusSeachPage.Controls.Add(this.searchRadiusNumericUpDown);
+            this.radiusSeachPage.Controls.Add(this.radiusQueryControl);
             this.radiusSeachPage.Location = new System.Drawing.Point(4, 22);
             this.radiusSeachPage.Name = "radiusSeachPage";
             this.radiusSeachPage.Padding = new System.Windows.Forms.Padding(3);
-            this.radiusSeachPage.Size = new System.Drawing.Size(361, 82);
+            this.radiusSeachPage.Size = new System.Drawing.Size(362, 114);
             this.radiusSeachPage.TabIndex = 1;
             this.radiusSeachPage.Text = "In Radius Seach";
             this.radiusSeachPage.UseVisualStyleBackColor = true;
-            // 
-            // btnAbortRadiusSearch
-            // 
-            this.btnAbortRadiusSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnAbortRadiusSearch.Location = new System.Drawing.Point(90, 53);
-            this.btnAbortRadiusSearch.Name = "btnAbortRadiusSearch";
-            this.btnAbortRadiusSearch.Size = new System.Drawing.Size(60, 23);
-            this.btnAbortRadiusSearch.TabIndex = 3;
-            this.btnAbortRadiusSearch.Text = "Cancel";
-            this.btnAbortRadiusSearch.UseVisualStyleBackColor = true;
-            // 
-            // btnStartRadiusSearch
-            // 
-            this.btnStartRadiusSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnStartRadiusSearch.Location = new System.Drawing.Point(9, 53);
-            this.btnStartRadiusSearch.Name = "btnStartRadiusSearch";
-            this.btnStartRadiusSearch.Size = new System.Drawing.Size(75, 23);
-            this.btnStartRadiusSearch.TabIndex = 2;
-            this.btnStartRadiusSearch.Text = "Start Search";
-            this.btnStartRadiusSearch.UseVisualStyleBackColor = true;
-            this.btnStartRadiusSearch.Click += new System.EventHandler(this.BtnStartRadiusSearch_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 19);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(40, 13);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Radius";
-            // 
-            // searchRadiusNumericUpDown
-            // 
-            this.searchRadiusNumericUpDown.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.searchRadiusNumericUpDown.Location = new System.Drawing.Point(52, 17);
-            this.searchRadiusNumericUpDown.Maximum = new decimal(new int[] {
-            1000000,
-            0,
-            0,
-            0});
-            this.searchRadiusNumericUpDown.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            262144});
-            this.searchRadiusNumericUpDown.Name = "searchRadiusNumericUpDown";
-            this.searchRadiusNumericUpDown.Size = new System.Drawing.Size(120, 20);
-            this.searchRadiusNumericUpDown.TabIndex = 0;
-            this.searchRadiusNumericUpDown.Value = new decimal(new int[] {
-            6,
-            0,
-            0,
-            65536});
-            this.searchRadiusNumericUpDown.ValueChanged += new System.EventHandler(this.SearchRadiusNumericUpDown_ValueChanged);
             // 
             // kNearestSearchPage
             // 
@@ -187,7 +123,7 @@
             this.kNearestSearchPage.Controls.Add(this.closestPointCountNumericUpDown);
             this.kNearestSearchPage.Location = new System.Drawing.Point(4, 22);
             this.kNearestSearchPage.Name = "kNearestSearchPage";
-            this.kNearestSearchPage.Size = new System.Drawing.Size(361, 82);
+            this.kNearestSearchPage.Size = new System.Drawing.Size(362, 114);
             this.kNearestSearchPage.TabIndex = 2;
             this.kNearestSearchPage.Text = "Number Of Closest Search";
             this.kNearestSearchPage.UseVisualStyleBackColor = true;
@@ -251,25 +187,37 @@
             this.generationSettingsPage.Location = new System.Drawing.Point(4, 22);
             this.generationSettingsPage.Name = "generationSettingsPage";
             this.generationSettingsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.generationSettingsPage.Size = new System.Drawing.Size(361, 82);
+            this.generationSettingsPage.Size = new System.Drawing.Size(362, 114);
             this.generationSettingsPage.TabIndex = 0;
             this.generationSettingsPage.Text = "Tree Generation Settings";
             this.generationSettingsPage.UseVisualStyleBackColor = true;
             // 
-            // KdTreeSettings
+            // radiusQueryControl
+            // 
+            this.radiusQueryControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.radiusQueryControl.Location = new System.Drawing.Point(6, 7);
+            this.radiusQueryControl.Name = "radiusQueryControl";
+            this.radiusQueryControl.QueryData = null;
+            this.radiusQueryControl.Size = new System.Drawing.Size(350, 101);
+            this.radiusQueryControl.TabIndex = 0;
+            this.radiusQueryControl.Viewer = null;
+            // 
+            // KdTreeOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(378, 115);
+            this.ClientSize = new System.Drawing.Size(379, 147);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.label3);
-            this.Name = "KdTreeSettings";
+            this.Name = "KdTreeOptions";
             this.Text = "KdTreeSettings";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.KdTreeSettings_FormClosed);
+            this.Load += new System.EventHandler(this.KdTreeOptions_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pointsPerTreeLeafNumericUpDown)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.radiusSeachPage.ResumeLayout(false);
-            this.radiusSeachPage.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.searchRadiusNumericUpDown)).EndInit();
             this.kNearestSearchPage.ResumeLayout(false);
             this.kNearestSearchPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.closestPointCountNumericUpDown)).EndInit();
@@ -290,13 +238,10 @@
         private System.Windows.Forms.TabPage radiusSeachPage;
         private System.Windows.Forms.TabPage kNearestSearchPage;
         private System.Windows.Forms.TabPage generationSettingsPage;
-        private System.Windows.Forms.Button btnStartRadiusSearch;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.NumericUpDown searchRadiusNumericUpDown;
-        private System.Windows.Forms.Button btnAbortRadiusSearch;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown closestPointCountNumericUpDown;
+        private KdTreeControls.RadiusQueryControl radiusQueryControl;
     }
 }

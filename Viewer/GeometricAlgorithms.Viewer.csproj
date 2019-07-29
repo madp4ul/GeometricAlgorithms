@@ -46,11 +46,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Forms\KdTreeSettings.cs">
+    <Compile Include="Forms\KdTreeControls\RadiusQueryControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\KdTreeControls\RadiusQueryControl.Designer.cs">
+      <DependentUpon>RadiusQueryControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\KdTreeOptions.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\KdTreeSettings.Designer.cs">
-      <DependentUpon>KdTreeSettings.cs</DependentUpon>
+    <Compile Include="Forms\KdTreeOptions.Designer.cs">
+      <DependentUpon>KdTreeOptions.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\KdTreeModels\KdTreeQueryResult.cs" />
     <Compile Include="Model\KdTreeModels\KdTreeRadiusQueryData.cs" />
@@ -81,8 +87,11 @@
     <Compile Include="ToolStrip\KdTreeMenuTools.cs" />
     <Compile Include="ToolStrip\ToolStripActionConfigurator.cs" />
     <Compile Include="ToolStrip\ViewerMenuTools.cs" />
-    <EmbeddedResource Include="Forms\KdTreeSettings.resx">
-      <DependentUpon>KdTreeSettings.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\KdTreeControls\RadiusQueryControl.resx">
+      <DependentUpon>RadiusQueryControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\KdTreeOptions.resx">
+      <DependentUpon>KdTreeOptions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GeometricAlgorithmViewer.resx">
       <DependentUpon>GeometricAlgorithmViewer.cs</DependentUpon>

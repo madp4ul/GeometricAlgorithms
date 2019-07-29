@@ -15,7 +15,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
 
         public int PointRadius { get; set; }
 
-        public KdTreeQueryResult(IDrawableFactoryProvider drawableFactoryProvider)
+        public KdTreeQueryResult(IDrawableFactoryProvider drawableFactoryProvider) : base(false)
         {
             DrawableFactoryProvider = drawableFactoryProvider;
             PointRadius = 10;

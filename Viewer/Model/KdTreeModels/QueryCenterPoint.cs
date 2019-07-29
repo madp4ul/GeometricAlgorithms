@@ -13,7 +13,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
     {
         readonly IDrawableFactoryProvider DrawableFactoryProvider;
 
-        public QueryCenterPoint(IDrawableFactoryProvider drawableFactoryProvider)
+        public QueryCenterPoint(IDrawableFactoryProvider drawableFactoryProvider) : base(false)
         {
             DrawableFactoryProvider = drawableFactoryProvider ?? throw new ArgumentNullException(nameof(drawableFactoryProvider));
         }

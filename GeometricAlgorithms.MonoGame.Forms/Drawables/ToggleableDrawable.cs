@@ -14,16 +14,15 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
         public bool EnableDraw { get; set; }
         public virtual Transformation Transformation { get => Drawable.Transformation; set => Drawable.Transformation = value; }
 
-        public ToggleableDrawable()
+        public ToggleableDrawable(bool enable = true)
+            : this(new EmptyDrawable(), enable)
         {
-            Drawable = new EmptyDrawable();
-            EnableDraw = true;
         }
 
-        public ToggleableDrawable(IDrawable inner)
+        public ToggleableDrawable(IDrawable inner, bool enable = true)
         {
             Drawable = inner;
-            EnableDraw = true;
+            EnableDraw = enable;
         }
 
         public virtual void Draw(ICamera camera)

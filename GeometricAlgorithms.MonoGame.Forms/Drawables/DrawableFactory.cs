@@ -25,6 +25,11 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
                 .Select(v => v.ToXna())
                 .ToArray();
 
+            if (!xnaPoints.Any())
+            {
+                return new EmptyDrawable();
+            }
+
             return new PointCloud(ContentProvider.PointEffect, xnaPoints, radius);
         }
 
@@ -49,7 +54,18 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
                 .Select(v => v.ToXna())
                 .ToArray();
 
+            if (!xnaPoints.Any())
+            {
+                return new EmptyDrawable();
+            }
+
             return new HighlightedPointCloud(ContentProvider.PointEffect, xnaPoints, radius);
+        }
+
+        public IDrawable CreateSphere(float radius)
+        {
+            //TODO
+            throw new NotImplementedException();
         }
     }
 }

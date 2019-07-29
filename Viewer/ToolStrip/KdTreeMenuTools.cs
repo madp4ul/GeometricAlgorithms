@@ -11,10 +11,14 @@ namespace GeometricAlgorithms.Viewer.ToolStrip
     class KdTreeMenuTools
     {
         public KdTreeData KdTreeData { get; set; }
+        public GeometricAlgorithmViewer Viewer { get; set; }
 
-        public KdTreeMenuTools(KdTreeData kdTreeData)
+        private KdTreeOptions SettingsWindow = null;
+
+        public KdTreeMenuTools(KdTreeData kdTreeData, GeometricAlgorithmViewer viewer)
         {
             KdTreeData = kdTreeData ?? throw new ArgumentNullException(nameof(kdTreeData));
+            Viewer = viewer ?? throw new ArgumentNullException(nameof(viewer));
         }
 
         public void SetKdTreeVisibility(bool visible)
@@ -22,12 +26,11 @@ namespace GeometricAlgorithms.Viewer.ToolStrip
             KdTreeData.EnableDraw = visible;
         }
 
-        private KdTreeSettings SettingsWindow = null;
         public void OpenKdTreeSettings(System.Windows.Forms.IWin32Window owner)
         {
             if (SettingsWindow == null)
             {
-                SettingsWindow = new KdTreeSettings(KdTreeData);
+                SettingsWindow = new KdTreeOptions(KdTreeData, Viewer);
                 SettingsWindow.FormClosed += (o, e) => SettingsWindow = null;
                 SettingsWindow.Show(owner);
             }
