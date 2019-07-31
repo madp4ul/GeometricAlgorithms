@@ -3,6 +3,7 @@ using GeometricAlgorithms.MonoGame.Forms.Drawables;
 using GeometricAlgorithms.Viewer.Providers;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,7 +27,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
             Drawable.Dispose();
 
             Drawable = DrawableFactoryProvider.DrawableFactory.CreateHighlightedPointCloud(
-                vertices.Select(v => v.Position), PointRadius);
+                vertices.Select(v => v.Position), Color.Yellow, PointRadius);
         }
     }
 }

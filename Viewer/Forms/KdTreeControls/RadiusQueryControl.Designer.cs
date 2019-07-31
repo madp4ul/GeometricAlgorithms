@@ -122,6 +122,7 @@
             this.Controls.Add(this.queryRadiusNumericUpDown);
             this.Name = "RadiusQueryControl";
             this.Size = new System.Drawing.Size(236, 109);
+            this.Load += new System.EventHandler(this.RadiusQueryControl_Load);
             ((System.ComponentModel.ISupportInitialize)(this.queryRadiusNumericUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

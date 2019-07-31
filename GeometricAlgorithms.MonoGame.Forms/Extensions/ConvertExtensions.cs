@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.MonoGame.Forms.Extensions
 {
-    static class Vector3Extensions
+    static class ConvertExtensions
     {
         public static Microsoft.Xna.Framework.Vector3 ToXna(this Domain.Vector3 v)
         {

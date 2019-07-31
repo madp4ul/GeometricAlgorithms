@@ -65,6 +65,11 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             }
         }
 
+        protected virtual void ApplyEffectPass()
+        {
+            Effect.ApplyPointDrawing();
+        }
+
         public virtual void Draw(ICamera camera)
         {
             Device.SetVertexBuffer(Vertices);
@@ -76,7 +81,8 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             Effect.ViewportWidth = Device.Viewport.Width;
             Effect.ViewportHeight = Device.Viewport.Height;
 
-            Effect.DrawForEachPass(() => Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, Indices.IndexCount / 3));
+            ApplyEffectPass();
+            Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, Indices.IndexCount / 3);
         }
 
         public void Dispose()

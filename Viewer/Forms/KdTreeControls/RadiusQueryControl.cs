@@ -21,6 +21,14 @@ namespace GeometricAlgorithms.Viewer.Forms.KdTreeControls
             InitializeComponent();
         }
 
+        private void RadiusQueryControl_Load(object sender, EventArgs e)
+        {
+            if (!DesignMode)
+            {
+                queryRadiusNumericUpDown.Value = (decimal)QueryData.Radius;
+            }
+        }
+
         private void BtnStartRadiusSearch_Click(object sender, EventArgs e)
         {
             QueryData.CalculateQueryResult();

@@ -12,7 +12,7 @@ matrix WorldViewProjection;
 int ViewportWidth;
 int ViewportHeight;
 int PointPixels;
-bool IsHighlighted;
+float3 HighlightColor;
 
 const float FadeoffDistance = 0.1;
 
@@ -23,19 +23,21 @@ struct VertexShaderInput
 	int Index : TEXCOORD0;
 };
 
-struct VertexShaderOutput
+struct PointDrawingVertexShaderOutput
 {
 	float4 Position : SV_POSITION;
 	float4 Color : COLOR0;
 };
 
-VertexShaderOutput MainVS(in VertexShaderInput input)
+struct PointHighlightVertexShaderOutput
 {
-	VertexShaderOutput output = (VertexShaderOutput)0;
+	float4 Position : SV_POSITION;
+};
 
-	output.Position = input.Position;
+float4 ComputePointPosition(VertexShaderInput input) {
+	float4 position = input.Position;
 
-	output.Position = mul(output.Position, WorldViewProjection);
+	position = mul(position, WorldViewProjection);
 
 	/*if (output.Position.x != input.Position.x) {
 		return output;
@@ -50,43 +52,60 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 	if (input.Index == 0 || input.Index == 3)
 		offsetWidth = -offsetWidth;
 
-	offsetWidth *= output.Position.w;
-	offsetHeight *= output.Position.w;
+	offsetWidth *= position.w;
+	offsetHeight *= position.w;
 
+	position = float4(position.x + offsetWidth, position.y + offsetHeight, position.z, position.w);
 
+	return position;
+}
 
-	output.Position = float4(output.Position.x + offsetWidth, output.Position.y + offsetHeight, output.Position.z, output.Position.w);
+PointDrawingVertexShaderOutput MainPointDrawingVS(in VertexShaderInput input)
+{
+	PointDrawingVertexShaderOutput output = (PointDrawingVertexShaderOutput)0;
 
-	if (IsHighlighted) {
-		//No colors needed as highlight color will be used instead
-		//Also move position infront of their usual position to make them override other points that would have the same position
-		output.Position = output.Position + float4(0, 0, -0.001, 0);
-	}
-	else {
+	output.Position = ComputePointPosition(input);
 
-	}
 	float fadeoff = FadeoffDistance / output.Position.z;
 	output.Color = float4(1 - fadeoff, 1 - fadeoff, 1, 1);
 
 	return output;
 }
 
-float4 MainPS(VertexShaderOutput input) : COLOR
+float4 MainPointDrawingPS(PointDrawingVertexShaderOutput input) : COLOR
 {
-	if (IsHighlighted) {
-		//Change to highlight color
-		return float4(0, 1, 1, 1);
-	}
-	else {
 		return input.Color;
-	}
 }
 
-technique BasicColorDrawing
+technique PointDrawing
 {
 	pass P0
 	{
-		VertexShader = compile VS_SHADERMODEL MainVS();
-		PixelShader = compile PS_SHADERMODEL MainPS();
+		VertexShader = compile VS_SHADERMODEL MainPointDrawingVS();
+		PixelShader = compile PS_SHADERMODEL MainPointDrawingPS();
+	}
+};
+
+PointHighlightVertexShaderOutput MainPointHighlightVS(in VertexShaderInput input)
+{
+	PointHighlightVertexShaderOutput output = (PointHighlightVertexShaderOutput)0;
+
+	//move position infront of their usual position to make them override other points that would have the same position
+	output.Position = ComputePointPosition(input) + float4(0, 0, -0.001, 0);
+
+	return output;
+}
+
+float4 MainPointHighlightPS(PointHighlightVertexShaderOutput input) : COLOR
+{
+		return float4(HighlightColor, 1);
+}
+
+technique PointHighlight
+{
+	pass P0
+	{
+		VertexShader = compile VS_SHADERMODEL MainPointHighlightVS();
+		PixelShader = compile PS_SHADERMODEL MainPointHighlightPS();
 	}
 };

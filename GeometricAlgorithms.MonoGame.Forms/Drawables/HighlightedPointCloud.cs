@@ -11,19 +11,27 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 {
     class HighlightedPointCloud : PointCloud
     {
-        public HighlightedPointCloud(PointEffect effect, Vector3[] positions, int pixelWidth = 2)
+        public Color HighlightColor { get; set; }
+
+        public HighlightedPointCloud(PointEffect effect, Vector3[] positions, Color highlightColor, int pixelWidth = 2)
             : base(effect, positions, pixelWidth)
         {
+            HighlightColor = highlightColor;
+        }
+
+        protected override void ApplyEffectPass()
+        {
+            Effect.ApplyPointHighlight();
         }
 
         public override void Draw(ICamera camera)
         {
-            var previous = Effect.IsHighlighted;
-            Effect.IsHighlighted = true;
+            var previous = Effect.HighlightColor;
+            Effect.HighlightColor = HighlightColor.ToVector3();
 
             base.Draw(camera);
 
-            Effect.IsHighlighted = previous;
+            Effect.HighlightColor = previous;
         }
     }
 }

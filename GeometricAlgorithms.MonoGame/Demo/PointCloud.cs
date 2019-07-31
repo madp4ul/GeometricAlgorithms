@@ -70,7 +70,8 @@ namespace GeometricAlgorithms.MonoGame.Demo
             effect.ViewportWidth = Device.Viewport.Width;
             effect.ViewportHeight = Device.Viewport.Height;
 
-            effect.DrawForEachPass(() => Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, Indices.IndexCount / 3));
+            effect.ApplyPointDrawing();
+            Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, Indices.IndexCount / 3);
         }
     }
 

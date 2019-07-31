@@ -48,7 +48,7 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             return new BoundingBoxRepresentation(ContentProvider.GraphicsDevice, boxes, xnaColorGenerator);
         }
 
-        public IDrawable CreateHighlightedPointCloud(IEnumerable<Vector3> points, int radius)
+        public IDrawable CreateHighlightedPointCloud(IEnumerable<Vector3> points, Color highlightColor, int radius)
         {
             var xnaPoints = points
                 .Select(v => v.ToXna())
@@ -59,7 +59,14 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
                 return new EmptyDrawable();
             }
 
-            return new HighlightedPointCloud(ContentProvider.PointEffect, xnaPoints, radius);
+            Microsoft.Xna.Framework.Color xnaColor =
+                new Microsoft.Xna.Framework.Color(
+                    highlightColor.R,
+                    highlightColor.G,
+                    highlightColor.B,
+                    highlightColor.A);
+
+            return new HighlightedPointCloud(ContentProvider.PointEffect, xnaPoints, xnaColor, radius);
         }
 
         public IDrawable CreateSphere(float radius)

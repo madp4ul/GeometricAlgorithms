@@ -33,10 +33,10 @@ namespace GeometricAlgorithms.MonoGame.PointRendering
             set { Parameters["ViewportHeight"].SetValue(value); }
         }
 
-        public bool IsHighlighted
+        public Vector3 HighlightColor
         {
-            get { return Parameters["IsHighlighted"].GetValueBoolean(); }
-            set { Parameters["IsHighlighted"].SetValue(value); }
+            get { return Parameters["HighlightColor"].GetValueVector3(); }
+            set { Parameters["HighlightColor"].SetValue(value); }
         }
 
         private Matrix _ViewProjectionMatrix = Matrix.Identity;
@@ -65,14 +65,14 @@ namespace GeometricAlgorithms.MonoGame.PointRendering
         {
         }
 
-        public void DrawForEachPass(Action draw)
+        public void ApplyPointDrawing()
         {
-            foreach (var pass in Techniques["BasicColorDrawing"].Passes)
-            {
-                pass.Apply();
+            Techniques["PointDrawing"].Passes["P0"].Apply();
+        }
 
-                draw();
-            }
+        public void ApplyPointHighlight()
+        {
+            Techniques["PointHighlight"].Passes["P0"].Apply();
         }
 
         public static PointEffect FromEffect(Effect effect)
