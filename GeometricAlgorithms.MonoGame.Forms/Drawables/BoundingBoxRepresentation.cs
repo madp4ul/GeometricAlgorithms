@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.Domain.Cameras;
+using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.MonoGame.Forms.Cameras;
 using GeometricAlgorithms.MonoGame.Forms.Extensions;
 using Microsoft.Xna.Framework.Graphics;
@@ -24,14 +26,14 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
         public BoundingBoxRepresentation(
             GraphicsDevice device,
             BoundingBox[] boxes,
-            Func<BoundingBox, Microsoft.Xna.Framework.Color> colorGenerator = null)
+            Func<BoundingBox, Microsoft.Xna.Framework.Vector3> colorGenerator = null)
         {
             Effect = new BasicEffect(device);
             Transformation = new Transformation();
 
             if (colorGenerator == null)
             {
-                colorGenerator = (box) => Microsoft.Xna.Framework.Color.OrangeRed;
+                colorGenerator = (box) => Microsoft.Xna.Framework.Color.OrangeRed.ToVector3();
             }
 
             const int pointsPerBox = 8;
@@ -43,7 +45,7 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
                 {
                     int vOffset = i * pointsPerBox;
                     BoundingBox box = boxes[i];
-                    var color = colorGenerator(box);
+                    var color = new Microsoft.Xna.Framework.Color(colorGenerator(box));
                     Vector3 diff = box.Maximum - box.Minimum;
 
                     vertices[vOffset + 0] = new VertexPositionColor(box.Minimum.ToXna(), color);
@@ -112,7 +114,7 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             }
         }
 
-        public void Draw(ICamera camera)
+        public void Draw(ACamera camera)
         {
             //Set buffers
             Device.SetVertexBuffer(Vertices);
@@ -131,7 +133,7 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 
             //set effect values
             Effect.World = Transformation.GetWorldMatrix();
-            Effect.View = camera.Data.ViewProjectionMatrix;
+            Effect.View = camera.ViewProjection.ToXna();
             Effect.Projection = Microsoft.Xna.Framework.Matrix.Identity;
 
 

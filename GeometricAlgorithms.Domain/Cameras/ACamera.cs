@@ -5,15 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.MonoGame.Forms.Cameras
+namespace GeometricAlgorithms.Domain.Cameras
 {
-    public abstract class ICamera
+    public abstract class ACamera
     {
-        internal abstract ICameraData Data { get; }
-
         public abstract Vector3 Position { get; set; }
 
         public abstract Vector3 Forward { get; }
         public abstract Vector3 Up { get; }
+
+        public abstract Matrix4x4 ViewProjection { get; }
     }
 }

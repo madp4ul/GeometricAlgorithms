@@ -1,9 +1,9 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.Domain.Cameras;
+using GeometricAlgorithms.Domain.Drawables;
+using GeometricAlgorithms.Domain.Providers;
 using GeometricAlgorithms.Domain.VertexTypes;
 using GeometricAlgorithms.KdTree;
-using GeometricAlgorithms.MonoGame.Forms.Cameras;
-using GeometricAlgorithms.MonoGame.Forms.Drawables;
-using GeometricAlgorithms.Viewer.Providers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -63,7 +63,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
                 float maxVolume = boxes[0].Volume;
 
                 //have a minimum lightness and let the rest be dictated by box volume relative to the root box
-                Color colorGenerator(BoundingBox box) => Color.FromArgb(255, (int)(25 + 230 * (box.Volume / maxVolume)), 0, 0);
+                Vector3 colorGenerator(BoundingBox box) => new Vector3(1, 0.2f + 0.8f * (box.Volume / maxVolume), 0);
 
                 Drawable = DrawableFactoryProvider.DrawableFactory.CreateBoundingBoxRepresentation(boxes, colorGenerator);
             }
@@ -71,7 +71,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
             RadiusQuerydata.Reset(KdTree);
         }
 
-        public override void Draw(ICamera camera)
+        public override void Draw(ACamera camera)
         {
             base.Draw(camera);
 

@@ -1,4 +1,5 @@
-﻿using GeometricAlgorithms.MonoGame.Forms.Cameras;
+﻿using GeometricAlgorithms.Domain.Cameras;
+using GeometricAlgorithms.Domain.Drawables;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,12 @@ namespace GeometricAlgorithms.MonoGame.Forms
 {
     public class Scene
     {
-        public List<Drawables.IDrawable> Drawables { get; private set; }
-        public ICamera Camera { get; set; }
+        public List<IDrawable> Drawables { get; private set; }
+        public ACamera Camera { get; set; }
 
         public Scene()
         {
-            Drawables = new List<Drawables.IDrawable>();
+            Drawables = new List<IDrawable>();
         }
 
         public void Draw()

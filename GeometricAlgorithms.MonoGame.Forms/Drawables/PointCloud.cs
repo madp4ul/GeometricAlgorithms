@@ -1,4 +1,6 @@
-﻿using GeometricAlgorithms.MonoGame.Forms.Cameras;
+﻿using GeometricAlgorithms.Domain.Cameras;
+using GeometricAlgorithms.Domain.Drawables;
+using GeometricAlgorithms.MonoGame.Forms.Extensions;
 using GeometricAlgorithms.MonoGame.PointRendering;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 {
-    class PointCloud : IDrawable
+    class PointCloud : Domain.Drawables.IDrawable
     {
         protected readonly VertexBuffer Vertices;
         protected readonly IndexBuffer Indices;
@@ -70,13 +72,13 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             Effect.ApplyPointDrawing();
         }
 
-        public virtual void Draw(ICamera camera)
+        public virtual void Draw(ACamera camera)
         {
             Device.SetVertexBuffer(Vertices);
             Device.Indices = Indices;
 
             Effect.WorldMatrix = Transformation.GetWorldMatrix();
-            Effect.ViewProjectionMatrix = camera.Data.ViewProjectionMatrix;
+            Effect.ViewProjectionMatrix = camera.ViewProjection.ToXna();
             Effect.PointPixels = PixelWidth;
             Effect.ViewportWidth = Device.Viewport.Width;
             Effect.ViewportHeight = Device.Viewport.Height;

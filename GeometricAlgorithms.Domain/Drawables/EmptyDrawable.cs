@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GeometricAlgorithms.MonoGame.Forms.Cameras;
+using GeometricAlgorithms.Domain.Cameras;
 
-namespace GeometricAlgorithms.MonoGame.Forms.Drawables
+namespace GeometricAlgorithms.Domain.Drawables
 {
     public class EmptyDrawable : IDrawable
     {
@@ -23,7 +23,7 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 
         }
 
-        public void Draw(ICamera camera)
+        public void Draw(ACamera camera)
         {
         }
     }

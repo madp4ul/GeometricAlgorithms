@@ -1,4 +1,7 @@
-﻿using GeometricAlgorithms.MonoGame.Forms.Cameras;
+﻿using GeometricAlgorithms.Domain.Cameras;
+using GeometricAlgorithms.Domain.Drawables;
+using GeometricAlgorithms.Domain.Providers;
+using GeometricAlgorithms.MonoGame.Forms.Cameras;
 using GeometricAlgorithms.MonoGame.Forms.Drawables;
 using GeometricAlgorithms.Viewer.Providers;
 
@@ -21,7 +24,7 @@ namespace GeometricAlgorithms.Viewer.Model
             PointData.Dispose();
         }
 
-        public void Draw(ICamera camera)
+        public void Draw(ACamera camera)
         {
             PointData.Draw(camera);
         }

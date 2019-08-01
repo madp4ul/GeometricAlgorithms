@@ -1,11 +1,11 @@
-﻿using System;
+﻿using GeometricAlgorithms.Domain.Cameras;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GeometricAlgorithms.MonoGame.Forms.Cameras;
 
-namespace GeometricAlgorithms.MonoGame.Forms.Drawables
+namespace GeometricAlgorithms.Domain.Drawables
 {
     public class CompositeDrawable : IDrawable
     {
@@ -27,7 +27,7 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             }
         }
 
-        public void Draw(ICamera camera)
+        public void Draw(ACamera camera)
         {
             foreach (var drawable in Drawables)
             {

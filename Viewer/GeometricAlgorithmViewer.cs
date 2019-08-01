@@ -13,6 +13,8 @@ using GeometricAlgorithms.MonoGame.Forms;
 using GeometricAlgorithms.Domain;
 using GeometricAlgorithms.MonoGame.Forms.Drawables;
 using GeometricAlgorithms.Viewer.Providers;
+using GeometricAlgorithms.Domain.Providers;
+using GeometricAlgorithms.Domain.Drawables;
 
 namespace GeometricAlgorithms.Viewer
 {
@@ -25,7 +27,7 @@ namespace GeometricAlgorithms.Viewer
         public Workspace Workspace { get; set; }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public DrawableFactory DrawableFactory => Viewer3D.DrawableFactory;
+        public IDrawableFactory DrawableFactory => Viewer3D.DrawableFactory;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         private readonly MouseDragger ViewerDragger;

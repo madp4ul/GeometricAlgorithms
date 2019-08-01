@@ -1,13 +1,11 @@
 ﻿using GeometricAlgorithms.Domain;
-using GeometricAlgorithms.MonoGame.Forms.Extensions;
-using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.MonoGame.Forms.Drawables
+namespace GeometricAlgorithms.Domain.Drawables
 {
     public class Transformation
     {
@@ -27,11 +25,6 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
         {
             Position = new Domain.Vector3();
             Scale = 1;
-        }
-
-        internal Matrix GetWorldMatrix()
-        {
-            return Matrix.CreateScale(Scale) * Matrix.CreateTranslation(Position.ToXna());
         }
 
         public void AddTransformation(Transformation t)

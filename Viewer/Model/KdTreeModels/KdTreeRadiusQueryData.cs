@@ -1,4 +1,7 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.Domain.Cameras;
+using GeometricAlgorithms.Domain.Drawables;
+using GeometricAlgorithms.Domain.Providers;
 using GeometricAlgorithms.Domain.VertexTypes;
 using GeometricAlgorithms.KdTree;
 using GeometricAlgorithms.MonoGame.Forms.Cameras;
@@ -68,7 +71,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
             QueryResultDrawable.Reset(vertices);
         }
 
-        public void Draw(ICamera camera)
+        public void Draw(ACamera camera)
         {
             //Refresh query center based on camera position - can only happen in draw
             float centerDistance = Radius + 0.1f;

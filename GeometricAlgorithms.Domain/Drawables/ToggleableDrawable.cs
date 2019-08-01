@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GeometricAlgorithms.MonoGame.Forms.Cameras;
+using GeometricAlgorithms.Domain.Cameras;
+using GeometricAlgorithms.Domain.Drawables;
 
-namespace GeometricAlgorithms.MonoGame.Forms.Drawables
+namespace GeometricAlgorithms.Domain.Drawables
 {
     public class ToggleableDrawable : IDrawable
     {
@@ -25,7 +26,7 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             EnableDraw = enable;
         }
 
-        public virtual void Draw(ICamera camera)
+        public virtual void Draw(ACamera camera)
         {
             if (EnableDraw)
             {

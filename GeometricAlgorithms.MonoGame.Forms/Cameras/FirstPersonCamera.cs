@@ -1,12 +1,13 @@
 ﻿namespace GeometricAlgorithms.MonoGame.Forms.Cameras
 {
     using GeometricAlgorithms.Domain;
+    using GeometricAlgorithms.Domain.Cameras;
+    using GeometricAlgorithms.MonoGame.Forms.Extensions;
     using System;
 
-    public class FirstPersonCamera : ICamera
+    public class FirstPersonCamera : ACamera
     {
         private readonly FirstPerson.InternalFirstPersonCamera Camera;
-        internal override ICameraData Data => Camera;
 
         public override Vector3 Position { get; set; }
 
@@ -24,6 +25,14 @@
         public float NearPlane { get; private set; }
 
         public float FarPlane { get; private set; }
+
+        public override Matrix4x4 ViewProjection
+        {
+            get
+            {
+                return Camera.ViewProjectionMatrix.ToDomain();
+            }
+        }
 
         public FirstPersonCamera()
         {
@@ -81,7 +90,7 @@ namespace GeometricAlgorithms.MonoGame.Forms.Cameras.FirstPerson
 {
     using Microsoft.Xna.Framework;
 
-    class InternalFirstPersonCamera : ICameraData
+    class InternalFirstPersonCamera
     {
         public Matrix ViewProjectionMatrix { get; private set; }
 

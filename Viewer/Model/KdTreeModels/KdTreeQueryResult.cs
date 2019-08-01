@@ -1,5 +1,9 @@
-﻿using GeometricAlgorithms.Domain.VertexTypes;
+﻿using GeometricAlgorithms.Domain.Drawables;
+using GeometricAlgorithms.Domain.Providers;
+using GeometricAlgorithms.Domain.VertexTypes;
 using GeometricAlgorithms.MonoGame.Forms.Drawables;
+using GeometricAlgorithms.MonoGame.Forms.Extensions;
+using GeometricAlgorithms.Viewer.Extensions;
 using GeometricAlgorithms.Viewer.Providers;
 using System;
 using System.Collections.Generic;
@@ -27,7 +31,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
             Drawable.Dispose();
 
             Drawable = DrawableFactoryProvider.DrawableFactory.CreateHighlightedPointCloud(
-                vertices.Select(v => v.Position), Color.Yellow, PointRadius);
+                vertices.Select(v => v.Position), Color.LightBlue.ToVector3(), PointRadius);
         }
     }
 }

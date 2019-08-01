@@ -1,4 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.MonoGame.Forms.Extensions;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 {
-    public class DrawableFactory
+    public class DrawableFactory : IDrawableFactory
     {
         internal ContentProvider ContentProvider { get; set; }
 
@@ -33,22 +34,22 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             return new PointCloud(ContentProvider.PointEffect, xnaPoints, radius);
         }
 
-        public IDrawable CreateBoundingBoxRepresentation(BoundingBox[] boxes, Func<BoundingBox, Color> colorGenerator = null)
+        public IDrawable CreateBoundingBoxRepresentation(BoundingBox[] boxes, Func<BoundingBox, Vector3> colorGenerator = null)
         {
-            Func<BoundingBox, Microsoft.Xna.Framework.Color> xnaColorGenerator = null;
+            Func<BoundingBox, Microsoft.Xna.Framework.Vector3> xnaColorGenerator = null;
             if (colorGenerator != null)
             {
                 xnaColorGenerator = (box) =>
                 {
                     var c = colorGenerator(box);
-                    return new Microsoft.Xna.Framework.Color(c.R, c.G, c.B, c.A);
+                    return c.ToXna();
                 };
             }
 
             return new BoundingBoxRepresentation(ContentProvider.GraphicsDevice, boxes, xnaColorGenerator);
         }
 
-        public IDrawable CreateHighlightedPointCloud(IEnumerable<Vector3> points, Color highlightColor, int radius)
+        public IDrawable CreateHighlightedPointCloud(IEnumerable<Vector3> points, Vector3 highlightColor, int radius)
         {
             var xnaPoints = points
                 .Select(v => v.ToXna())
@@ -59,17 +60,10 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
                 return new EmptyDrawable();
             }
 
-            Microsoft.Xna.Framework.Color xnaColor =
-                new Microsoft.Xna.Framework.Color(
-                    highlightColor.R,
-                    highlightColor.G,
-                    highlightColor.B,
-                    highlightColor.A);
-
-            return new HighlightedPointCloud(ContentProvider.PointEffect, xnaPoints, xnaColor, radius);
+            return new HighlightedPointCloud(ContentProvider.PointEffect, xnaPoints, highlightColor.ToXna(), radius);
         }
 
-        public IDrawable CreateSphere(float radius)
+        public IDrawable CreateWireframeSphere(float radius)
         {
             //TODO
             throw new NotImplementedException();

@@ -1,4 +1,7 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.Domain.Cameras;
+using GeometricAlgorithms.Domain.Drawables;
+using GeometricAlgorithms.Domain.Providers;
 using GeometricAlgorithms.Domain.VertexTypes;
 using GeometricAlgorithms.MonoGame.Forms.Cameras;
 using GeometricAlgorithms.MonoGame.Forms.Drawables;
@@ -50,7 +53,7 @@ namespace GeometricAlgorithms.Viewer.Model
             KdTreeData.Reset(Points);
         }
 
-        public override void Draw(ICamera camera)
+        public override void Draw(ACamera camera)
         {
             base.Draw(camera);
             KdTreeData.Draw(camera);
