@@ -59,7 +59,8 @@ namespace GeometricAlgorithms.Viewer
                 Camera.SetPosition(new Vector3(0.5f, 0.5f, 1.3f));
                 Camera.SetRotation(0, 0);
                 Camera.SetProjection((float)Math.PI / 3, 1, 0.0001f, 1000f);
-
+                SetAspectRatio();
+                
                 viewer.Scene.Camera = Camera;
                 viewer.Scene.Drawables.Add(Workspace);
 
@@ -108,13 +109,18 @@ namespace GeometricAlgorithms.Viewer
         {
             if (Camera != null)
             {
-                Camera.SetProjection(
+                SetAspectRatio();
+                viewer.Invalidate();
+            }
+        }
+
+        private void SetAspectRatio()
+        {
+            Camera.SetProjection(
                     Camera.FieldOfView,
                     (float)viewer.Display.Width / (float)viewer.Display.Height,
                     Camera.NearPlane,
                     Camera.FarPlane);
-                viewer.Invalidate();
-            }
         }
     }
 }
