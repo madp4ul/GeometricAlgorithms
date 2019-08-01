@@ -1,8 +1,5 @@
 ﻿using GeometricAlgorithms.Domain.Drawables;
-using GeometricAlgorithms.Domain.Providers;
 using GeometricAlgorithms.Domain.VertexTypes;
-using GeometricAlgorithms.MonoGame.Forms.Drawables;
-using GeometricAlgorithms.MonoGame.Forms.Extensions;
 using GeometricAlgorithms.Viewer.Extensions;
 using GeometricAlgorithms.Viewer.Providers;
 using System;

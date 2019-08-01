@@ -79,10 +79,16 @@
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\Workspace.cs" />
-    <Compile Include="MouseDragger.cs" />
+    <Compile Include="Utilities\BackgroundWorkerFuncExecutor.cs" />
+    <Compile Include="Utilities\BackgroundWorkerFunctions\BackgroundWorkerExecution.cs" />
+    <Compile Include="Utilities\BackgroundWorkerFunctions\FunctionProgress.cs" />
+    <Compile Include="Utilities\BackgroundWorkerFunctions\FunctionResult.cs" />
+    <Compile Include="Utilities\BackgroundWorkerFunctions\IWorkerProgressUpdate.cs" />
+    <Compile Include="Utilities\BackgroundWorkerFunctions\WorkerStatusUpdater.cs" />
+    <Compile Include="Utilities\MouseDragger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Providers\IProgressTrackerProvider.cs" />
+    <Compile Include="Providers\IDrawableFactoryProvider.cs" />
     <Compile Include="ToolStrip\FileMenuTools.cs" />
     <Compile Include="ToolStrip\KdTreeMenuTools.cs" />
     <Compile Include="ToolStrip\ToolStripActionConfigurator.cs" />

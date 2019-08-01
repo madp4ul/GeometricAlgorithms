@@ -39,6 +39,10 @@ namespace GeometricAlgorithms.Viewer.ToolStrip
             }
             catch (AccessViolationException ex)
             {
+                //TODO find error and add proper handling
+                System.Diagnostics.Debugger.Break();
+
+                MessageBox.Show("Error: " + ex.Message);
 
                 throw;
             }

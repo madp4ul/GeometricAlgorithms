@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.Domain.Providers
+namespace GeometricAlgorithms.Viewer.Providers
 {
     public interface IDrawableFactoryProvider
     {

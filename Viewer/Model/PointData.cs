@@ -1,10 +1,6 @@
-﻿using GeometricAlgorithms.Domain;
-using GeometricAlgorithms.Domain.Cameras;
+﻿using GeometricAlgorithms.Domain.Cameras;
 using GeometricAlgorithms.Domain.Drawables;
-using GeometricAlgorithms.Domain.Providers;
 using GeometricAlgorithms.Domain.VertexTypes;
-using GeometricAlgorithms.MonoGame.Forms.Cameras;
-using GeometricAlgorithms.MonoGame.Forms.Drawables;
 using GeometricAlgorithms.Viewer.Model.KdTreeModels;
 using GeometricAlgorithms.Viewer.Providers;
 using System;

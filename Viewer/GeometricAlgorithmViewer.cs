@@ -11,10 +11,9 @@ using GeometricAlgorithms.Viewer.Model;
 using GeometricAlgorithms.MonoGame.Forms.Cameras;
 using GeometricAlgorithms.MonoGame.Forms;
 using GeometricAlgorithms.Domain;
-using GeometricAlgorithms.MonoGame.Forms.Drawables;
 using GeometricAlgorithms.Viewer.Providers;
-using GeometricAlgorithms.Domain.Providers;
 using GeometricAlgorithms.Domain.Drawables;
+using GeometricAlgorithms.Viewer.Utilities;
 
 namespace GeometricAlgorithms.Viewer
 {

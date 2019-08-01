@@ -1,7 +1,7 @@
 ﻿using GeometricAlgorithms.Domain;
 using GeometricAlgorithms.Domain.Drawables;
-using GeometricAlgorithms.Domain.Providers;
 using GeometricAlgorithms.Viewer.Extensions;
+using GeometricAlgorithms.Viewer.Providers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
