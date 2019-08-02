@@ -38,29 +38,17 @@ namespace GeometricAlgorithms.Viewer.Utilities.BackgroundWorkerFunctions
 
         public void GetResult(Action<T> action)
         {
-            T value = default;
-            bool wasDone = false;
-
-            //Dont allow writing result to field while checking if the value is there.
-            lock (Result)
+            //Because in both cases action will be executed be the main thread,
+            //We can be sure that FuncDone will not be called after IsDone evaluated to false
+            //but before the action was added.
+            //For that reason nothing complicated is needed here
+            if (IsDone)
             {
-                if (IsDone)
-                {
-                    value = Result;
-                    wasDone = true;
-                }
-                else
-                {
-                    //If still waiting for value, add action to listeners.
-                    //The blocking of result guarantees that listeners were not executed in the meantime.
-                    FuncDone += action;
-                }
+                action(Result);
             }
-
-            //Is the value was already there: execute action immediatly
-            if (wasDone)
+            else
             {
-                action(value);
+                FuncDone += action;
             }
         }
     }

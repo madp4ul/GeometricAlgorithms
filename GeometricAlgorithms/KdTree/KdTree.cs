@@ -1,4 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.Domain.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace GeometricAlgorithms.KdTree
 
         public IReadOnlyCollection<TVertex> Vertices { get; set; }
 
-        public KdTree(TVertex[] vertices, KdTreeConfiguration configuration = null)
+        public KdTree(TVertex[] vertices, KdTreeConfiguration configuration = null, IProgressUpdater progressUpdater = null)
         {
             if (configuration == null)
             {
@@ -24,14 +25,21 @@ namespace GeometricAlgorithms.KdTree
             var range = Range<TVertex>.FromArray(vertices, 0, vertices.Length);
             var rootBoundingBox = BoundingBox.CreateContainer(vertices);
 
+            var updater = new KdTreeProgressUpdater(
+                progressUpdater,
+                (2 * vertices.Length) / configuration.MaximumPointsPerLeaf,
+                "Building Kd-Tree");
+
             if (vertices.Length > configuration.MaximumPointsPerLeaf)
             {
-                Root = new KdTreeBranch<TVertex>(rootBoundingBox, range, configuration);
+                Root = new KdTreeBranch<TVertex>(rootBoundingBox, range, configuration, updater);
             }
             else
             {
-                Root = new KdTreeLeaf<TVertex>(rootBoundingBox, range);
+                Root = new KdTreeLeaf<TVertex>(rootBoundingBox, range, updater);
             }
+
+            updater.UpdateIsDone();
         }
 
         public KdTree<TVertex> Reshape(KdTreeConfiguration configuration)

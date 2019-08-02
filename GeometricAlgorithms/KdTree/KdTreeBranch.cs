@@ -15,7 +15,12 @@ namespace GeometricAlgorithms.KdTree
 
         private readonly Func<Vector3, float> DimensionSelector;
 
-        public KdTreeBranch(BoundingBox boundingBox, Range<TVertex> vertices, KdTreeConfiguration configuration, Dimension halvedDimension = Dimension.X)
+        public KdTreeBranch(
+            BoundingBox boundingBox,
+            Range<TVertex> vertices,
+            KdTreeConfiguration configuration,
+            KdTreeProgressUpdater progressUpdater,
+            Dimension halvedDimension = Dimension.X)
             : base(boundingBox, vertices.Length)
         {
             int halfIndex = vertices.Length / 2;
@@ -42,18 +47,20 @@ namespace GeometricAlgorithms.KdTree
             {
                 Dimension nextDimension = GetNextDimension(halvedDimension);
 
-                MinimumChild = new KdTreeBranch<TVertex>(minChildBox, minChildVertices, configuration, nextDimension);
-                MaximumChild = new KdTreeBranch<TVertex>(maxChildBox, maxChildVertices, configuration, nextDimension);
+                MinimumChild = new KdTreeBranch<TVertex>(minChildBox, minChildVertices, configuration, progressUpdater, nextDimension);
+                MaximumChild = new KdTreeBranch<TVertex>(maxChildBox, maxChildVertices, configuration, progressUpdater, nextDimension);
             }
             else //create leafs
             {
                 MinimumChild = new KdTreeLeaf<TVertex>(
                     minChildBox,
-                    minChildVertices);
+                    minChildVertices,
+                    progressUpdater);
 
                 MaximumChild = new KdTreeLeaf<TVertex>(
                     maxChildBox,
-                    maxChildVertices);
+                    maxChildVertices,
+                    progressUpdater);
             }
         }
 

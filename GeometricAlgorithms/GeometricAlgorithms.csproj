@@ -53,6 +53,7 @@
     <Compile Include="KdTree\KdTreeConfiguration.cs" />
     <Compile Include="KdTree\KdTreeLeaf.cs" />
     <Compile Include="KdTree\KdTreeNode.cs" />
+    <Compile Include="KdTree\KdTreeProgressUpdater.cs" />
     <Compile Include="KdTree\Queries.cs" />
     <Compile Include="KdTree\Range.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

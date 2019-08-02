@@ -1,6 +1,7 @@
 ﻿using GeometricAlgorithms.Domain;
 using GeometricAlgorithms.Domain.Cameras;
 using GeometricAlgorithms.Domain.Drawables;
+using GeometricAlgorithms.Domain.Tasks;
 using GeometricAlgorithms.Domain.VertexTypes;
 using GeometricAlgorithms.KdTree;
 using GeometricAlgorithms.Viewer.Providers;
@@ -15,16 +16,18 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
 {
     public class KdTreeData : ToggleableDrawable
     {
-        readonly IDrawableFactoryProvider DrawableFactoryProvider;
+        private readonly IDrawableFactoryProvider DrawableFactoryProvider;
+        private readonly IFuncExecutor FuncExecutor;
 
         public KdTree<GenericVertex> KdTree { get; private set; }
         public KdTreeConfiguration Configuration { get; set; }
 
         public KdTreeRadiusQueryData RadiusQuerydata { get; private set; }
 
-        public KdTreeData(IDrawableFactoryProvider drawableFactoryProvider)
+        public KdTreeData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {
             DrawableFactoryProvider = drawableFactoryProvider;
+            FuncExecutor = funcExecutor;
 
             EnableDraw = false;
             Configuration = KdTreeConfiguration.Default;
@@ -33,7 +36,11 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
             RadiusQuerydata = new KdTreeRadiusQueryData(drawableFactoryProvider);
         }
 
-        public KdTreeData(GenericVertex[] points, IDrawableFactoryProvider drawableFactoryProvider) : this(drawableFactoryProvider)
+        public KdTreeData(
+            GenericVertex[] points,
+            IDrawableFactoryProvider drawableFactoryProvider,
+            IFuncExecutor funcExecutor)
+            : this(drawableFactoryProvider, funcExecutor)
         {
             Reset(points);
         }
@@ -45,30 +52,39 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
 
         public void Reset(GenericVertex[] points)
         {
-            KdTree = new KdTree<GenericVertex>(points.ToArray(), Configuration);
+            var buildKdTree = FuncExecutor.Execute((progress) =>
+              {
+                  return new KdTree<GenericVertex>(points, Configuration, progress);
+              });
 
-            if (Drawable != null)
+
+            buildKdTree.GetResult(kdTree =>
             {
-                Drawable.Dispose();
-            }
+                KdTree = kdTree;
 
-            var boxes = KdTree.GetBoundingBoxes().ToArray();
+                if (Drawable != null)
+                {
+                    Drawable.Dispose();
+                }
 
-            if (boxes.Length == 0)
-            {
-                Drawable = new EmptyDrawable();
-            }
-            else
-            {
-                float maxVolume = boxes[0].Volume;
+                var boxes = KdTree.GetBoundingBoxes().ToArray();
 
-                //have a minimum lightness and let the rest be dictated by box volume relative to the root box
-                Vector3 colorGenerator(BoundingBox box) => new Vector3(1, 0.2f + 0.8f * (box.Volume / maxVolume), 0);
+                if (boxes.Length == 0)
+                {
+                    Drawable = new EmptyDrawable();
+                }
+                else
+                {
+                    float maxVolume = boxes[0].Volume;
 
-                Drawable = DrawableFactoryProvider.DrawableFactory.CreateBoundingBoxRepresentation(boxes, colorGenerator);
-            }
+                    //have a minimum lightness and let the rest be dictated by box volume relative to the root box
+                    Vector3 colorGenerator(BoundingBox box) => new Vector3(1, 0.2f + 0.8f * (box.Volume / maxVolume), 0);
 
-            RadiusQuerydata.Reset(KdTree);
+                    Drawable = DrawableFactoryProvider.DrawableFactory.CreateBoundingBoxRepresentation(boxes, colorGenerator);
+                }
+
+                RadiusQuerydata.Reset(KdTree);
+            });
         }
 
         public override void Draw(ACamera camera)

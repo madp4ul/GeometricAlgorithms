@@ -17,7 +17,7 @@ namespace GeometricAlgorithms.Viewer.Model
         public ModelData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {
             ViewerConfiguration = new ViewerConfiguration();
-            Workspace = new Workspace(drawableFactoryProvider);
+            Workspace = new Workspace(drawableFactoryProvider, funcExecutor);
         }
     }
 }

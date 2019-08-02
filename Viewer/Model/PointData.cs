@@ -1,5 +1,6 @@
 ﻿using GeometricAlgorithms.Domain.Cameras;
 using GeometricAlgorithms.Domain.Drawables;
+using GeometricAlgorithms.Domain.Tasks;
 using GeometricAlgorithms.Domain.VertexTypes;
 using GeometricAlgorithms.Viewer.Model.KdTreeModels;
 using GeometricAlgorithms.Viewer.Providers;
@@ -20,16 +21,20 @@ namespace GeometricAlgorithms.Viewer.Model
         public readonly KdTreeData KdTreeData;
 
 
-        public PointData(IDrawableFactoryProvider drawableFactoryProvider)
+        public PointData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {
             DrawableFactoryProvider = drawableFactoryProvider;
             Points = new GenericVertex[0];
             Drawable = new EmptyDrawable();
-            KdTreeData = new KdTreeData(drawableFactoryProvider);
+            KdTreeData = new KdTreeData(drawableFactoryProvider, funcExecutor);
         }
 
-        public PointData(GenericVertex[] points, int radius, IDrawableFactoryProvider drawableFactoryProvider)
-            : this(drawableFactoryProvider)
+        public PointData(
+            GenericVertex[] points,
+            int radius,
+            IDrawableFactoryProvider drawableFactoryProvider,
+            IFuncExecutor funcExecutor)
+            : this(drawableFactoryProvider, funcExecutor)
         {
             Reset(points, radius);
             KdTreeData.Reset(points);

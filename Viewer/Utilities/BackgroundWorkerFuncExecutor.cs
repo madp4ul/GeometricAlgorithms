@@ -16,14 +16,14 @@ namespace GeometricAlgorithms.Viewer.Utilities
         private readonly BackgroundWorker Worker;
         private readonly ConcurrentQueue<Action> FunctionQueue;
         private readonly BackgroundWorkerProgressUpdater WorkerStatusUpdater;
-        private readonly IProgressUpdater UserProgressUpdater;
+        private readonly IProgressUpdater ProgressUpdater;
 
         private bool IsDisposed;
 
 
         public BackgroundWorkerFuncExecutor(IProgressUpdater progressUpdater)
         {
-            UserProgressUpdater = progressUpdater;
+            ProgressUpdater = new RateLimitProgressUpdate(progressUpdater);
 
             Worker = new BackgroundWorker();
             Worker.DoWork += ExecuteQueue;
@@ -66,7 +66,7 @@ namespace GeometricAlgorithms.Viewer.Utilities
 
         public IFuncExecution<T> Execute<T>(Func<IProgressUpdater, T> function)
         {
-            BackgroundWorkerExecution<T> execution = new BackgroundWorkerExecution<T>(function, UserProgressUpdater);
+            BackgroundWorkerExecution<T> execution = new BackgroundWorkerExecution<T>(function, ProgressUpdater);
 
             void backgroundWork()
             {

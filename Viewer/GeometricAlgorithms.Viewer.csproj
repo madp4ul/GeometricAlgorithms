@@ -85,6 +85,7 @@
     <Compile Include="Utilities\BackgroundWorkerFunctions\FunctionResult.cs" />
     <Compile Include="Utilities\BackgroundWorkerFunctions\IWorkerProgressUpdate.cs" />
     <Compile Include="Utilities\BackgroundWorkerFunctions\BackgroundWorkerProgressUpdater.cs" />
+    <Compile Include="Utilities\BackgroundWorkerFunctions\RateLimitProgressUpdate.cs" />
     <Compile Include="Utilities\FormProgressUpdater.cs" />
     <Compile Include="Utilities\MouseDragger.cs" />
     <Compile Include="Program.cs" />

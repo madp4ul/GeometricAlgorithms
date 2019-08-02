@@ -12,10 +12,11 @@ namespace GeometricAlgorithms.KdTree
     {
         public Range<TVertex> Vertices { get; set; }
 
-        public KdTreeLeaf(BoundingBox boundingBox, Range<TVertex> vertices)
+        public KdTreeLeaf(BoundingBox boundingBox, Range<TVertex> vertices, KdTreeProgressUpdater progressUpdater)
                : base(boundingBox, vertices.Length)
         {
             Vertices = vertices ?? throw new ArgumentNullException(nameof(vertices));
+            progressUpdater.UpdateStatus();
         }
 
         public override void FindInRadius(InRadiusQuery<TVertex> query)
