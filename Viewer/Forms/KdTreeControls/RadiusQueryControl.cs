@@ -22,17 +22,7 @@ namespace GeometricAlgorithms.Viewer.Forms.KdTreeControls
         {
             InitializeComponent();
 
-            LiveUpdateTimer.Interval = 100;
-            LiveUpdateTimer.Tick += LiveUpdateTimer_Tick;
-            LiveUpdateTimer.Start();
-        }
-
-        private void LiveUpdateTimer_Tick(object sender, EventArgs e)
-        {
-            if (QueryData.QueryHasChangedSinceLastCalculation && !QueryData.IsCalculating)
-            {
-                QueryData.CalculateQueryResult();
-            }
+            AutoRefreshTimer.Enabled = cbAutoRefresh.Checked;
         }
 
         private void RadiusQueryControl_Load(object sender, EventArgs e)
@@ -41,6 +31,19 @@ namespace GeometricAlgorithms.Viewer.Forms.KdTreeControls
             {
                 queryRadiusNumericUpDown.Value = (decimal)QueryData.Radius;
             }
+        }
+
+        private void AutoRefreshTimer_Tick(object sender, EventArgs e)
+        {
+            if (QueryData.QueryHasChangedSinceLastCalculation && !QueryData.IsCalculating)
+            {
+                QueryData.CalculateQueryResult();
+            }
+        }
+
+        private void CbAutoRefresh_CheckedChanged(object sender, EventArgs e)
+        {
+            AutoRefreshTimer.Enabled = cbAutoRefresh.Checked;
         }
 
         private void BtnStartRadiusSearch_Click(object sender, EventArgs e)

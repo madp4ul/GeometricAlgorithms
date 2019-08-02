@@ -19,6 +19,8 @@ namespace GeometricAlgorithms.Viewer
 {
     public partial class GeometricAlgorithmViewer : UserControl, IDrawableFactoryProvider
     {
+        public const int AutoInvalidationMilliseconds = 500;
+
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ViewerConfiguration Configuration { get; set; }
 
@@ -61,6 +63,7 @@ namespace GeometricAlgorithms.Viewer
             }
         }
 
+        private bool DraggedMouseSinceLastUpdate = false;
         private void ViewerDragger_OnMouseDrag(Size size)
         {
             float Sensitivity = 0.015f * Configuration.MouseSensitivity;
@@ -68,11 +71,34 @@ namespace GeometricAlgorithms.Viewer
             if (!size.IsEmpty)
             {
                 Camera.SetRotation(Camera.RotationX + size.Height * Sensitivity, Camera.RotationY + size.Width * Sensitivity);
+                DraggedMouseSinceLastUpdate = true;
+            }
+        }
+
+        private DateTime LastInvalidationTime;
+        private void InputProcessingTimer_Tick(object sender, EventArgs e)
+        {
+            if (ProcessKeyboardInput()
+                || ProcessedMouseInput()
+                || ProcessAutoInvalidation())
+            {
+                DraggedMouseSinceLastUpdate = false;
+                LastInvalidationTime = DateTime.Now;
                 Display.Invalidate();
             }
         }
 
-        private void KeyEventTimer_Tick(object sender, EventArgs e)
+        private bool ProcessedMouseInput()
+        {
+            return DraggedMouseSinceLastUpdate;
+        }
+
+        private bool ProcessAutoInvalidation()
+        {
+            return (DateTime.Now - LastInvalidationTime).TotalMilliseconds > AutoInvalidationMilliseconds;
+        }
+
+        private bool ProcessKeyboardInput()
         {
             Keys[] keys = viewer.GetPressedKeys();
 
@@ -91,12 +117,16 @@ namespace GeometricAlgorithms.Viewer
             if (keys.Contains(Keys.LControlKey))
                 movement -= Camera.Up.Normalized();
 
-            movement *= 0.0003f * (float)inputEventTimer.Interval;
+            movement *= 0.0003f * (float)inputProcessingTimer.Interval;
 
             if (!movement.Equals(Vector3.Zero))
             {
                 Camera.SetPosition(Camera.Position + movement);
-                Display.Invalidate();
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 

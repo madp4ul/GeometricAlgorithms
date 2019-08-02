@@ -23,6 +23,11 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
             PointRadius = 10;
         }
 
+        public void Reset()
+        {
+            Reset(Enumerable.Empty<GenericVertex>());
+        }
+
         public void Reset(IEnumerable<GenericVertex> vertices)
         {
             Drawable.Dispose();

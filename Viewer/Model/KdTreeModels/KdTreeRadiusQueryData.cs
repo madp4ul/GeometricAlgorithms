@@ -55,6 +55,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
             KdTree = kdTree;
 
             QueryCenterDrawable.Reset();
+            QueryResultDrawable.Reset();
         }
 
         public void HideAll()

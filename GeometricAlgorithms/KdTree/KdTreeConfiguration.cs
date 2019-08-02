@@ -17,7 +17,7 @@ namespace GeometricAlgorithms.KdTree
             {
                 return new KdTreeConfiguration
                 {
-                    MaximumPointsPerLeaf = 10,
+                    MaximumPointsPerLeaf = 2,
                 };
             }
         }

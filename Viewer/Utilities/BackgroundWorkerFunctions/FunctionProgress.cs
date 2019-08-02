@@ -25,7 +25,7 @@ namespace GeometricAlgorithms.Viewer.Utilities.BackgroundWorkerFunctions
 
         public void ExecuteUpdate()
         {
-            StatusUpdater.UpdateStatus(PercentDone, Message);
+            StatusUpdater?.UpdateStatus(PercentDone, Message);
         }
     }
 }

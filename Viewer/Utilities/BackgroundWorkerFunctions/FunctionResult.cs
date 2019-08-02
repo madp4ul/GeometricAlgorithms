@@ -18,12 +18,12 @@ namespace GeometricAlgorithms.Viewer.Utilities.BackgroundWorkerFunctions
         public FunctionResult(T result, Action<T> resultListener)
         {
             Result = result;
-            ResultListener = resultListener ?? throw new ArgumentNullException(nameof(resultListener));
+            ResultListener = resultListener;
         }
 
         public void ExecuteUpdate()
         {
-            ResultListener(Result);
+            ResultListener?.Invoke(Result);
         }
     }
 }

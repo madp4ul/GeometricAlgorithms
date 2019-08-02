@@ -34,7 +34,8 @@
             this.queryRadiusNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.cbShowQueryResult = new System.Windows.Forms.CheckBox();
             this.cbShowQueryCenter = new System.Windows.Forms.CheckBox();
-            this.LiveUpdateTimer = new System.Windows.Forms.Timer(this.components);
+            this.AutoRefreshTimer = new System.Windows.Forms.Timer(this.components);
+            this.cbAutoRefresh = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.queryRadiusNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
@@ -43,7 +44,7 @@
             this.btnStartRadiusQuery.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnStartRadiusQuery.Location = new System.Drawing.Point(12, 74);
             this.btnStartRadiusQuery.Name = "btnStartRadiusQuery";
-            this.btnStartRadiusQuery.Size = new System.Drawing.Size(86, 23);
+            this.btnStartRadiusQuery.Size = new System.Drawing.Size(85, 23);
             this.btnStartRadiusQuery.TabIndex = 6;
             this.btnStartRadiusQuery.Text = "Start Query";
             this.btnStartRadiusQuery.UseVisualStyleBackColor = true;
@@ -113,15 +114,31 @@
             this.cbShowQueryCenter.UseVisualStyleBackColor = true;
             this.cbShowQueryCenter.CheckedChanged += new System.EventHandler(this.CbShowQueryCenter_CheckedChanged);
             // 
-            // LiveUpdateTimer
+            // AutoRefreshTimer
             // 
-            this.LiveUpdateTimer.Enabled = true;
-            this.LiveUpdateTimer.Tick += new System.EventHandler(this.LiveUpdateTimer_Tick);
+            this.AutoRefreshTimer.Enabled = true;
+            this.AutoRefreshTimer.Interval = 50;
+            this.AutoRefreshTimer.Tick += new System.EventHandler(this.AutoRefreshTimer_Tick);
+            // 
+            // cbAutoRefresh
+            // 
+            this.cbAutoRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbAutoRefresh.AutoSize = true;
+            this.cbAutoRefresh.Checked = true;
+            this.cbAutoRefresh.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbAutoRefresh.Location = new System.Drawing.Point(136, 78);
+            this.cbAutoRefresh.Name = "cbAutoRefresh";
+            this.cbAutoRefresh.Size = new System.Drawing.Size(83, 17);
+            this.cbAutoRefresh.TabIndex = 9;
+            this.cbAutoRefresh.Text = "Auto refresh";
+            this.cbAutoRefresh.UseVisualStyleBackColor = true;
+            this.cbAutoRefresh.CheckedChanged += new System.EventHandler(this.CbAutoRefresh_CheckedChanged);
             // 
             // RadiusQueryControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.cbAutoRefresh);
             this.Controls.Add(this.cbShowQueryCenter);
             this.Controls.Add(this.cbShowQueryResult);
             this.Controls.Add(this.btnStartRadiusQuery);
@@ -143,6 +160,7 @@
         private System.Windows.Forms.NumericUpDown queryRadiusNumericUpDown;
         private System.Windows.Forms.CheckBox cbShowQueryResult;
         private System.Windows.Forms.CheckBox cbShowQueryCenter;
-        private System.Windows.Forms.Timer LiveUpdateTimer;
+        private System.Windows.Forms.Timer AutoRefreshTimer;
+        private System.Windows.Forms.CheckBox cbAutoRefresh;
     }
 }
