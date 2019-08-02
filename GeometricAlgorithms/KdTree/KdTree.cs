@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.KdTree
 {
-    public class KdTree<TVertex> : I3DQueryable<TVertex> where TVertex : IVertex
+    public class KdTree<TVertex> where TVertex : IVertex
     {
         private readonly KdTreeNode<TVertex> Root;
 
@@ -39,7 +39,7 @@ namespace GeometricAlgorithms.KdTree
                 Root = new KdTreeLeaf<TVertex>(rootBoundingBox, range, updater);
             }
 
-            updater.UpdateIsDone();
+            updater.IsCompleted();
         }
 
         public KdTree<TVertex> Reshape(KdTreeConfiguration configuration)
@@ -47,11 +47,15 @@ namespace GeometricAlgorithms.KdTree
             return new KdTree<TVertex>(Vertices.ToArray(), configuration);
         }
 
-        public List<TVertex> FindInRadius(Vector3 seachCenter, float searchRadius)
+        public List<TVertex> FindInRadius(Vector3 seachCenter, float searchRadius, IProgressUpdater progressUpdater)
         {
             var resultList = new List<TVertex>();
 
-            Root.FindInRadius(new InRadiusQuery<TVertex>(seachCenter, searchRadius, resultList));
+            var kdTreeProgress = new KdTreeProgressUpdater(progressUpdater, Root.LeafCount, "Looking for vertices in radius");
+
+            Root.FindInRadius(new InRadiusQuery<TVertex>(seachCenter, searchRadius, resultList, kdTreeProgress));
+
+            kdTreeProgress.IsCompleted();
 
             return resultList;
         }

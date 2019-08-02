@@ -11,12 +11,15 @@ namespace GeometricAlgorithms.KdTree
     class KdTreeLeaf<TVertex> : KdTreeNode<TVertex> where TVertex : IVertex
     {
         public Range<TVertex> Vertices { get; set; }
+        public override int NodeCount { get => 1; protected set { } }
+
+        public override int LeafCount { get => 1; protected set { } }
 
         public KdTreeLeaf(BoundingBox boundingBox, Range<TVertex> vertices, KdTreeProgressUpdater progressUpdater)
                : base(boundingBox, vertices.Length)
         {
             Vertices = vertices ?? throw new ArgumentNullException(nameof(vertices));
-            progressUpdater.UpdateStatus();
+            progressUpdater.UpdateAddOperation();
         }
 
         public override void FindInRadius(InRadiusQuery<TVertex> query)
@@ -28,6 +31,7 @@ namespace GeometricAlgorithms.KdTree
                     query.ResultSet.Add(vertex);
                 }
             }
+            query.ProgressUpdater.UpdateAddOperation();
         }
 
         public override void FindNearestVertices(NearestVerticesQuery<TVertex> query)

@@ -14,6 +14,8 @@ namespace GeometricAlgorithms.KdTree
 
         public BoundingBox BoundingBox { get; private set; }
 
+        public abstract int NodeCount { get; protected set; }
+        public abstract int LeafCount { get; protected set; }
 
         protected KdTreeNode(BoundingBox boundingBox, int verticesCount)
         {

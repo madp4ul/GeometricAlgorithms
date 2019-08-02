@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             GeometricAlgorithms.MonoGame.Forms.Scene scene1 = new GeometricAlgorithms.MonoGame.Forms.Scene();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Viewer3D));
             this.monoGameControl = new GeometricAlgorithms.MonoGame.Forms.MonoGameControl();
             this.SuspendLayout();
             // 

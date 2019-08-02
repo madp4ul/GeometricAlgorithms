@@ -1,6 +1,7 @@
 ﻿using GeometricAlgorithms.Domain;
 using GeometricAlgorithms.Domain.Cameras;
 using GeometricAlgorithms.Domain.Drawables;
+using GeometricAlgorithms.Domain.Tasks;
 using GeometricAlgorithms.Domain.VertexTypes;
 using GeometricAlgorithms.KdTree;
 using GeometricAlgorithms.MonoGame.Forms.Cameras;
@@ -16,14 +17,16 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
 {
     public class KdTreeRadiusQueryData : IDrawable
     {
-        private KdTree<GenericVertex> KdTree;
-
+        private readonly IFuncExecutor FuncExecutor;
         private readonly ToggleableDrawable Drawable;
 
-        public Vector3 QueryCenter { get; set; }
+        private KdTree<GenericVertex> KdTree;
 
+        public Vector3 QueryCenter { get; set; }
         public float Radius { get; private set; }
 
+        public bool IsCalculating { get; private set; }
+        public bool QueryHasChangedSinceLastCalculation { get; private set; }
 
         private QueryCenterPoint QueryCenterDrawable { get; set; }
         private KdTreeQueryResult QueryResultDrawable { get; set; }
@@ -33,8 +36,10 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
         public bool ShowQueryResult { get => QueryResultDrawable.EnableDraw; set => QueryResultDrawable.EnableDraw = value; }
         public Transformation Transformation { get; set; }
 
-        public KdTreeRadiusQueryData(IDrawableFactoryProvider drawableFactoryProvider)
+        public KdTreeRadiusQueryData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {
+            FuncExecutor = funcExecutor;
+
             Transformation = Transformation.Identity;
             Radius = 0.1f;
             QueryCenterDrawable = new QueryCenterPoint(drawableFactoryProvider);
@@ -61,21 +66,34 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
         public void SetRadius(float radius)
         {
             Radius = radius;
+            QueryHasChangedSinceLastCalculation = true;
         }
 
         public void CalculateQueryResult()
         {
-            var vertices = KdTree.FindInRadius(QueryCenter, Radius);
+            IsCalculating = true;
+            QueryHasChangedSinceLastCalculation = false;
+            var radiusQuery = FuncExecutor.Execute((progress) => KdTree.FindInRadius(QueryCenter, Radius, progress));
 
-            QueryResultDrawable.Reset(vertices);
+            radiusQuery.GetResult((vertices) =>
+            {
+                QueryResultDrawable.Reset(vertices);
+                IsCalculating = false;
+            });
         }
 
         public void Draw(ACamera camera)
         {
             //Refresh query center based on camera position - can only happen in draw
             float centerDistance = Radius + 0.1f;
-            QueryCenter = camera.Position + (camera.Forward.Normalized() * centerDistance);
-            QueryCenterDrawable.SetPosition(QueryCenter);
+            Vector3 newQueryCenter = camera.Position + (camera.Forward.Normalized() * centerDistance);
+
+            if (!newQueryCenter.Equals(QueryCenter))
+            {
+                QueryHasChangedSinceLastCalculation = true;
+                QueryCenter = newQueryCenter;
+                QueryCenterDrawable.SetPosition(QueryCenter);
+            }
 
             QueryCenterDrawable.Draw(camera);
             QueryResultDrawable.Draw(camera);

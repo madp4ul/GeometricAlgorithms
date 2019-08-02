@@ -17,18 +17,21 @@ namespace GeometricAlgorithms.KdTree
 
     class InRadiusQuery<TVertex>
     {
-        public Vector3 SeachCenter;
-        public float SearchRadius;
-        public List<TVertex> ResultSet;
-        public float SearchRadiusSquared;
+        public readonly Vector3 SeachCenter;
+        public readonly float SearchRadius;
+        public readonly List<TVertex> ResultSet;
+        public readonly float SearchRadiusSquared;
+        public readonly KdTreeProgressUpdater ProgressUpdater;
 
-        public InRadiusQuery(Vector3 seachCenter, float searchRadius, List<TVertex> resultSet)
+        public InRadiusQuery(Vector3 seachCenter, float searchRadius, List<TVertex> resultSet, KdTreeProgressUpdater progressUpdater)
         {
             this.SeachCenter = seachCenter;
             this.SearchRadius = searchRadius;
             this.ResultSet = resultSet ?? throw new ArgumentNullException(nameof(resultSet));
 
             this.SearchRadiusSquared = searchRadius * searchRadius;
+
+            this.ProgressUpdater = progressUpdater;
         }
     }
 }

@@ -28,7 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.viewer = new GeometricAlgorithms.MonoGame.Forms.Viewer3D();
+            this.inputEventTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // viewer
@@ -41,6 +43,12 @@
             this.viewer.Size = new System.Drawing.Size(533, 383);
             this.viewer.TabIndex = 0;
             this.viewer.Load += new System.EventHandler(this.Viewer_Load);
+            // 
+            // inputEventTimer
+            // 
+            this.inputEventTimer.Enabled = true;
+            this.inputEventTimer.Interval = 33;
+            this.inputEventTimer.Tick += new System.EventHandler(this.KeyEventTimer_Tick);
             // 
             // GeometricAlgorithmViewer
             // 
@@ -57,5 +65,6 @@
         #endregion
 
         private MonoGame.Forms.Viewer3D viewer;
+        private System.Windows.Forms.Timer inputEventTimer;
     }
 }

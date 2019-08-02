@@ -3,6 +3,7 @@ using GeometricAlgorithms.Viewer.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -20,34 +21,24 @@ namespace GeometricAlgorithms.Viewer.ToolStrip
 
         public void OpenFile()
         {
-            try
-            {
-                using (var openFileDialog =
-                new OpenFileDialog
-                {
-                    Filter = "Off-Dateien|*.off"
-                })
-                {
-                    if (openFileDialog.ShowDialog() == DialogResult.OK)
-                    {
-                        var reader = new ModelReader();
-                        var points = reader.ReadPoints(openFileDialog.FileName);
 
-                        ViewerModel.Workspace.PointData.Reset(points, ViewerModel.ViewerConfiguration.PointRadius);
-                    }
+            using (var openFileDialog = new OpenFileDialog
+            {
+                Filter = "Off-Dateien|*.off"
+            })
+            {
+                //TODO try to find bug by checking permission
+                var permission = new FileIOPermission(FileIOPermissionAccess.Read, openFileDialog.InitialDirectory);
+                permission.Demand();
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    var reader = new ModelReader();
+                    var points = reader.ReadPoints(openFileDialog.FileName);
+
+                    ViewerModel.Workspace.PointData.Reset(points, ViewerModel.ViewerConfiguration.PointRadius);
                 }
             }
-            catch (AccessViolationException ex)
-            {
-                //TODO find error and add proper handling
-                System.Diagnostics.Debugger.Break();
-
-                MessageBox.Show("Error: " + ex.Message);
-
-                throw;
-            }
-
-
         }
 
         public void SaveToFile()

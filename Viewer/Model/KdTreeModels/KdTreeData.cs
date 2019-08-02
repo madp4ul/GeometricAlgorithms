@@ -33,7 +33,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
             Configuration = KdTreeConfiguration.Default;
             KdTree = new KdTree<GenericVertex>(new GenericVertex[0], Configuration);
 
-            RadiusQuerydata = new KdTreeRadiusQueryData(drawableFactoryProvider);
+            RadiusQuerydata = new KdTreeRadiusQueryData(drawableFactoryProvider, funcExecutor);
         }
 
         public KdTreeData(

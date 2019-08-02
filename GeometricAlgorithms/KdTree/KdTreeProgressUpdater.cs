@@ -24,11 +24,11 @@ namespace GeometricAlgorithms.KdTree
             OperationsCompleted = 0;
         }
 
-        public void UpdateStatus()
+        public void UpdateAddOperation(int operationCount = 1)
         {
             if (Updater != null)
             {
-                OperationsCompleted++;
+                OperationsCompleted += operationCount;
 
                 //because TotalOperations isnt necessarily accurate we dont rely on it to be the max value
                 int maxOperationCount = Math.Max(OperationsCompleted, TotalOperations);
@@ -41,7 +41,7 @@ namespace GeometricAlgorithms.KdTree
             }
         }
 
-        public void UpdateIsDone()
+        public void IsCompleted()
         {
             Updater?.UpdateStatus(100, $"{OperationDescription} complete");
         }

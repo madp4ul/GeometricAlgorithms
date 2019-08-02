@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using GeometricAlgorithms.Viewer.Model.KdTreeModels;
+using GeometricAlgorithms.Domain.Tasks;
 
 namespace GeometricAlgorithms.Viewer.Forms.KdTreeControls
 {
@@ -16,9 +17,22 @@ namespace GeometricAlgorithms.Viewer.Forms.KdTreeControls
         public KdTreeRadiusQueryData QueryData { get; set; }
         public GeometricAlgorithmViewer Viewer { get; set; }
 
+
         public RadiusQueryControl()
         {
             InitializeComponent();
+
+            LiveUpdateTimer.Interval = 100;
+            LiveUpdateTimer.Tick += LiveUpdateTimer_Tick;
+            LiveUpdateTimer.Start();
+        }
+
+        private void LiveUpdateTimer_Tick(object sender, EventArgs e)
+        {
+            if (QueryData.QueryHasChangedSinceLastCalculation && !QueryData.IsCalculating)
+            {
+                QueryData.CalculateQueryResult();
+            }
         }
 
         private void RadiusQueryControl_Load(object sender, EventArgs e)

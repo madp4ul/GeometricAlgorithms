@@ -20,13 +20,13 @@ namespace GeometricAlgorithms.Viewer
             //if in debug the exceptions should be cought by the IDE, not by the program
             if (IsDebug)
             {
-                Application.Run(new MainWindow());
+                Run();
             }
             else
             {
                 try
                 {
-                    Application.Run(new MainWindow());
+                    Run();
                 }
                 catch (Exception e)
                 {
@@ -34,6 +34,11 @@ namespace GeometricAlgorithms.Viewer
                 }
             }
 
+        }
+
+        static void Run()
+        {
+            Application.Run(new MainWindow());
         }
 
         static bool IsDebug

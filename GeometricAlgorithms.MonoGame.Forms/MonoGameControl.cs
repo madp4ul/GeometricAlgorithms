@@ -33,14 +33,8 @@ namespace GeometricAlgorithms.MonoGame.Forms
         protected override void Draw()
         {
             base.Draw();
-            Invalidate();
 
             Editor.graphics.Clear(Color.Black);
-
-            //Editor.graphics.RasterizerState = new RasterizerState
-            //{
-            //    CullMode = CullMode.None
-            //};
 
             Scene.Draw();
         }

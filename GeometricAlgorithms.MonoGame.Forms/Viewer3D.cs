@@ -17,7 +17,11 @@ namespace GeometricAlgorithms.MonoGame.Forms
         public static DrawableFactory DrawableFactory => Instance.monoGameControl.DrawableFactory;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Scene Scene { get => monoGameControl.Scene; set => monoGameControl.Scene = value; }
+        public Scene Scene
+        {
+            get => monoGameControl.Scene;
+            set => monoGameControl.Scene = value;
+        }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Control Display => monoGameControl;

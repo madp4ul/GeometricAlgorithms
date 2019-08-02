@@ -36,42 +36,6 @@ namespace GeometricAlgorithms.Viewer
             viewer.Workspace = Model.Workspace;
 
             new ToolStripActionConfigurator(this, menuStrip, viewer, Model).Configure();
-
-
-            var func1 = FuncExecutor.Execute((status) =>
-             {
-                 status.UpdateStatus(0, "Start");
-
-                 Thread.Sleep(1000);
-                 status.UpdateStatus(30, "Sl11111111111111111eep 1");
-
-                 Thread.Sleep(1000);
-                 status.UpdateStatus(60, "Sleep 2");
-
-                 Thread.Sleep(1000);
-                 status.UpdateStatus(100, "33333333333333333333333333333 3");
-
-                 return 1;
-             });
-
-            func1.GetResult(r => Console.WriteLine($"Result {r}"));
-
-            var func2 = FuncExecutor.Execute((status) =>
-            {
-                for (int i = 0; i <= 1000; i++)
-                {
-                    if (i % 10 == 0)
-                    {
-                        status.UpdateStatus(i / 10, $"{i}/1000 geschafft");
-                    }
-                    Thread.Sleep(1);
-                }
-
-                return 2;
-            });
-
-            func2.GetResult(r => Console.WriteLine($"Result 2 {r}"));
-
         }
         ~MainWindow()
         {

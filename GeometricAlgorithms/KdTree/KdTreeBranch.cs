@@ -12,6 +12,8 @@ namespace GeometricAlgorithms.KdTree
     {
         public KdTreeNode<TVertex> MinimumChild { get; set; }
         public KdTreeNode<TVertex> MaximumChild { get; set; }
+        public override int NodeCount { get; protected set; }
+        public override int LeafCount { get; protected set; }
 
         private readonly Func<Vector3, float> DimensionSelector;
 
@@ -62,6 +64,10 @@ namespace GeometricAlgorithms.KdTree
                     maxChildVertices,
                     progressUpdater);
             }
+
+            //Add self and children count
+            NodeCount = 1 + MinimumChild.NodeCount + MaximumChild.NodeCount;
+            LeafCount = MinimumChild.LeafCount + MaximumChild.LeafCount;
         }
 
         protected virtual Dimension GetNextDimension(Dimension dimension)
@@ -76,10 +82,19 @@ namespace GeometricAlgorithms.KdTree
             {
                 MinimumChild.FindInRadius(query);
             }
+            else
+            {
+                //If branch can be skipped, add progress for whole branch
+                query.ProgressUpdater.UpdateAddOperation(MinimumChild.LeafCount);
+            }
 
             if (MaximumChild.BoundingBox.GetMinimumDistance(query.SeachCenter) < query.SearchRadius)
             {
                 MaximumChild.FindInRadius(query);
+            }
+            else
+            {
+                query.ProgressUpdater.UpdateAddOperation(MaximumChild.LeafCount);
             }
         }
 

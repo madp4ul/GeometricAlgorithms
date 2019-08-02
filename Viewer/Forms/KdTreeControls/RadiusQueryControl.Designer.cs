@@ -28,11 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.btnStartRadiusQuery = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.queryRadiusNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.cbShowQueryResult = new System.Windows.Forms.CheckBox();
             this.cbShowQueryCenter = new System.Windows.Forms.CheckBox();
+            this.LiveUpdateTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.queryRadiusNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
@@ -111,6 +113,11 @@
             this.cbShowQueryCenter.UseVisualStyleBackColor = true;
             this.cbShowQueryCenter.CheckedChanged += new System.EventHandler(this.CbShowQueryCenter_CheckedChanged);
             // 
+            // LiveUpdateTimer
+            // 
+            this.LiveUpdateTimer.Enabled = true;
+            this.LiveUpdateTimer.Tick += new System.EventHandler(this.LiveUpdateTimer_Tick);
+            // 
             // RadiusQueryControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -136,5 +143,6 @@
         private System.Windows.Forms.NumericUpDown queryRadiusNumericUpDown;
         private System.Windows.Forms.CheckBox cbShowQueryResult;
         private System.Windows.Forms.CheckBox cbShowQueryCenter;
+        private System.Windows.Forms.Timer LiveUpdateTimer;
     }
 }
