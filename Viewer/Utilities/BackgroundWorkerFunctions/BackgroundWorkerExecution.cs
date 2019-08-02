@@ -10,8 +10,7 @@ namespace GeometricAlgorithms.Viewer.Utilities.BackgroundWorkerFunctions
 {
     class BackgroundWorkerExecution<T> : IFuncExecution<T>
     {
-        private readonly BackgroundWorker Worker;
-        public readonly Action<WorkerStatusUpdater> Function;
+        public readonly Action<BackgroundWorkerProgressUpdater> Function;
 
         public bool IsStarted { get; private set; }
         public bool IsDone { get; private set; }
@@ -19,10 +18,8 @@ namespace GeometricAlgorithms.Viewer.Utilities.BackgroundWorkerFunctions
 
         public event Action<T> FuncDone;
 
-
-        public BackgroundWorkerExecution(BackgroundWorker worker, Func<IProgressUpdater, T> function, IProgressUpdater statusUpdater)
+        public BackgroundWorkerExecution(Func<IProgressUpdater, T> function, IProgressUpdater statusUpdater)
         {
-            Worker = worker ?? throw new ArgumentNullException(nameof(worker));
             Function = (workerStatus) =>
             {
                 //Set values on execution environment
@@ -39,9 +36,9 @@ namespace GeometricAlgorithms.Viewer.Utilities.BackgroundWorkerFunctions
             };
         }
 
-        public void CallWithResult(Action<T> action)
+        public void GetResult(Action<T> action)
         {
-            T value = default(T);
+            T value = default;
             bool wasDone = false;
 
             //Dont allow writing result to field while checking if the value is there.

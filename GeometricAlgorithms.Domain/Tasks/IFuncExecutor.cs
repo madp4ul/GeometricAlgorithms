@@ -18,6 +18,6 @@ namespace GeometricAlgorithms.Domain.Tasks
         /// <param name="function"></param>
         /// <param name="statusUpdater"></param>
         /// <returns></returns>
-        IFuncExecution<T> Execute<T>(Func<IProgressUpdater, T> function, IProgressUpdater statusUpdater);
+        IFuncExecution<T> Execute<T>(Func<IProgressUpdater, T> function);
     }
 }

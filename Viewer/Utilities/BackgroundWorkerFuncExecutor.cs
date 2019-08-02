@@ -11,21 +11,33 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.Viewer.Utilities
 {
-    class BackgroundWorkerFuncExecutor : IFuncExecutor
+    class BackgroundWorkerFuncExecutor : IFuncExecutor, IDisposable
     {
         private readonly BackgroundWorker Worker;
         private readonly ConcurrentQueue<Action> FunctionQueue;
-        private readonly WorkerStatusUpdater WorkerStatusUpdater;
+        private readonly BackgroundWorkerProgressUpdater WorkerStatusUpdater;
+        private readonly IProgressUpdater UserProgressUpdater;
 
-        public BackgroundWorkerFuncExecutor()
+        private bool IsDisposed;
+
+
+        public BackgroundWorkerFuncExecutor(IProgressUpdater progressUpdater)
         {
+            UserProgressUpdater = progressUpdater;
+
             Worker = new BackgroundWorker();
             Worker.DoWork += ExecuteQueue;
+
+            Worker.WorkerReportsProgress = true;
             Worker.ProgressChanged += Worker_ProgressChanged;
 
-            WorkerStatusUpdater = new WorkerStatusUpdater(Worker);
+            WorkerStatusUpdater = new BackgroundWorkerProgressUpdater(Worker);
 
             FunctionQueue = new ConcurrentQueue<Action>();
+        }
+        ~BackgroundWorkerFuncExecutor()
+        {
+            Dispose();
         }
 
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -52,9 +64,9 @@ namespace GeometricAlgorithms.Viewer.Utilities
             }
         }
 
-        public IFuncExecution<T> Execute<T>(Func<IProgressUpdater, T> function, IProgressUpdater statusUpdater)
+        public IFuncExecution<T> Execute<T>(Func<IProgressUpdater, T> function)
         {
-            BackgroundWorkerExecution<T> execution = new BackgroundWorkerExecution<T>(Worker, function, statusUpdater);
+            BackgroundWorkerExecution<T> execution = new BackgroundWorkerExecution<T>(function, UserProgressUpdater);
 
             void backgroundWork()
             {
@@ -69,6 +81,15 @@ namespace GeometricAlgorithms.Viewer.Utilities
             }
 
             return execution;
+        }
+
+        public void Dispose()
+        {
+            if (!IsDisposed)
+            {
+                Worker.Dispose();
+                IsDisposed = true;
+            }
         }
     }
 }

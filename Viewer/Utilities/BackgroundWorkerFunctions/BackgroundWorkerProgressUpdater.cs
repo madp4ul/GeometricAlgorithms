@@ -12,7 +12,7 @@ namespace GeometricAlgorithms.Viewer.Utilities.BackgroundWorkerFunctions
     /// Updates status to worker so that the worker can inform the main thread about the update with the 
     /// original updater. Also makes a difference between task update and task complete (which are both processed as progress)
     /// </summary>
-    class WorkerStatusUpdater : IProgressUpdater
+    class BackgroundWorkerProgressUpdater : IProgressUpdater
     {
         public BackgroundWorker Worker { get; set; }
 
@@ -21,7 +21,7 @@ namespace GeometricAlgorithms.Viewer.Utilities.BackgroundWorkerFunctions
         /// </summary>
         public IProgressUpdater CurrentStatusUpdater { get; set; }
 
-        public WorkerStatusUpdater(BackgroundWorker worker)
+        public BackgroundWorkerProgressUpdater(BackgroundWorker worker)
         {
             Worker = worker ?? throw new ArgumentNullException(nameof(worker));
         }

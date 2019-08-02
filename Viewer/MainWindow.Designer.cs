@@ -38,7 +38,11 @@
             this.showKdTreeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openKdTreeSettingStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewer = new GeometricAlgorithms.Viewer.GeometricAlgorithmViewer();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.backgroundWorkerProgressBar = new System.Windows.Forms.ToolStripProgressBar();
+            this.backgroundWorkerStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -105,13 +109,13 @@
             // showKdTreeToolStripMenuItem
             // 
             this.showKdTreeToolStripMenuItem.Name = "showKdTreeToolStripMenuItem";
-            this.showKdTreeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.showKdTreeToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.showKdTreeToolStripMenuItem.Text = "Show Kd-Tree";
             // 
             // openKdTreeSettingStripMenuItem
             // 
             this.openKdTreeSettingStripMenuItem.Name = "openKdTreeSettingStripMenuItem";
-            this.openKdTreeSettingStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openKdTreeSettingStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.openKdTreeSettingStripMenuItem.Text = "Open Settings";
             // 
             // viewer
@@ -121,14 +125,38 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.viewer.Location = new System.Drawing.Point(12, 27);
             this.viewer.Name = "viewer";
-            this.viewer.Size = new System.Drawing.Size(766, 508);
+            this.viewer.Size = new System.Drawing.Size(766, 479);
             this.viewer.TabIndex = 0;
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.backgroundWorkerProgressBar,
+            this.backgroundWorkerStatusLabel});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 525);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1055, 22);
+            this.statusStrip1.TabIndex = 2;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // backgroundWorkerProgressBar
+            // 
+            this.backgroundWorkerProgressBar.Name = "backgroundWorkerProgressBar";
+            this.backgroundWorkerProgressBar.Size = new System.Drawing.Size(100, 16);
+            this.backgroundWorkerProgressBar.Step = 1;
+            // 
+            // backgroundWorkerStatusLabel
+            // 
+            this.backgroundWorkerStatusLabel.Name = "backgroundWorkerStatusLabel";
+            this.backgroundWorkerStatusLabel.Size = new System.Drawing.Size(39, 17);
+            this.backgroundWorkerStatusLabel.Text = "Ready";
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1055, 547);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.viewer);
             this.Controls.Add(this.menuStrip);
             this.MainMenuStrip = this.menuStrip;
@@ -137,6 +165,8 @@
             this.Text = "Point Viewer";
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -154,6 +184,9 @@
         private System.Windows.Forms.ToolStripMenuItem kdTreeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showKdTreeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openKdTreeSettingStripMenuItem;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripProgressBar backgroundWorkerProgressBar;
+        private System.Windows.Forms.ToolStripStatusLabel backgroundWorkerStatusLabel;
     }
 }
 

@@ -29,7 +29,7 @@ namespace GeometricAlgorithms.Domain.Tasks
         /// Guarantees that the arrival of a value will not be missed
         /// </summary>
         /// <param name="action"></param>
-        void CallWithResult(Action<TResult> action);
+        void GetResult(Action<TResult> action);
     }
 
 
