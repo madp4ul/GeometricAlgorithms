@@ -19,21 +19,21 @@ namespace GeometricAlgorithms.Viewer.Utilities.BackgroundWorkerFunctions
         /// <summary>
         /// The status updater of the currently executed task
         /// </summary>
-        public IProgressUpdater CurrentStatusUpdater { get; set; }
+        public IProgressUpdater CurrentProgressUpdater { get; set; }
 
         public BackgroundWorkerProgressUpdater(BackgroundWorker worker)
         {
             Worker = worker ?? throw new ArgumentNullException(nameof(worker));
         }
 
-        public void OnFunctionFinished<T>(T result, Action<T> resultListener)
+        public virtual void OnFunctionFinished<T>(T result, Action<T> resultListener)
         {
             Worker.ReportProgress(100, new FunctionResult<T>(result, resultListener));
         }
 
-        public void UpdateStatus(int percentDone, string message = null)
+        public virtual void UpdateStatus(int percentDone, string message = null)
         {
-            Worker.ReportProgress(0, new FunctionProgress(CurrentStatusUpdater, percentDone, message));
+            Worker.ReportProgress(0, new FunctionProgress(CurrentProgressUpdater, percentDone, message));
         }
     }
 }

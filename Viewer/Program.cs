@@ -16,7 +16,37 @@ namespace GeometricAlgorithms.Viewer
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainWindow());
+
+            //if in debug the exceptions should be cought by the IDE, not by the program
+            if (IsDebug)
+            {
+                Application.Run(new MainWindow());
+            }
+            else
+            {
+                try
+                {
+                    Application.Run(new MainWindow());
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show($"An Error occured: {e.Message}");
+                }
+            }
+
         }
+
+        static bool IsDebug
+        {
+            get
+            {
+#if DEBUG
+                return true;
+#else
+            return false;
+#endif
+            }
+        }
+
     }
 }

@@ -18,12 +18,12 @@ namespace GeometricAlgorithms.Viewer.Utilities.BackgroundWorkerFunctions
 
         public event Action<T> FuncDone;
 
-        public BackgroundWorkerExecution(Func<IProgressUpdater, T> function, IProgressUpdater statusUpdater)
+        public BackgroundWorkerExecution(Func<IProgressUpdater, T> function, IProgressUpdater userProgressUpdater)
         {
             Function = (workerStatus) =>
             {
                 //Set values on execution environment
-                workerStatus.CurrentStatusUpdater = statusUpdater;
+                workerStatus.CurrentProgressUpdater = userProgressUpdater;
 
                 //Execute task
                 IsStarted = true;
