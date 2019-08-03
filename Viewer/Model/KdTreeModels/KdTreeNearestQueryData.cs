@@ -31,6 +31,8 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
 
         public bool ShowQueryHelper { get => QueryCenterDrawable.EnableDraw; set => QueryCenterDrawable.EnableDraw = value; }
         public bool ShowQueryResult { get => QueryResultDrawable.EnableDraw; set => QueryResultDrawable.EnableDraw = value; }
+        public bool CanQuery => KdTree != null;
+
         public Transformation Transformation { get; set; }
 
         public KdTreeNearestQueryData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
@@ -38,7 +40,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
             FuncExecutor = funcExecutor;
 
             Transformation = Transformation.Identity;
-            PointCount = 20;
+            PointCount = 100;
             QueryCenterDrawable = new QueryCenterPoint(drawableFactoryProvider);
 
             QueryResultDrawable = new KdTreeQueryResult(drawableFactoryProvider);
@@ -69,6 +71,11 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
 
         public void CalculateQueryResult()
         {
+            if (!CanQuery)
+            {
+                throw new InvalidOperationException("Can not query before tree generated");
+            }
+
             IsCalculating = true;
             QueryHasChangedSinceLastCalculation = false;
 

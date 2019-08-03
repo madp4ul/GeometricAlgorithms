@@ -23,6 +23,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
         public KdTreeConfiguration Configuration { get; set; }
 
         public KdTreeRadiusQueryData RadiusQuerydata { get; private set; }
+        public KdTreeNearestQueryData NearestQuerydata { get; private set; }
 
         public KdTreeData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {
@@ -34,6 +35,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
             KdTree = new KdTree<GenericVertex>(new GenericVertex[0], Configuration);
 
             RadiusQuerydata = new KdTreeRadiusQueryData(drawableFactoryProvider, funcExecutor);
+            NearestQuerydata = new KdTreeNearestQueryData(drawableFactoryProvider, funcExecutor);
         }
 
         public KdTreeData(
@@ -84,6 +86,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
                 }
 
                 RadiusQuerydata.Reset(KdTree);
+                NearestQuerydata.Reset(KdTree);
             });
         }
 
@@ -92,6 +95,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
             base.Draw(camera);
 
             RadiusQuerydata.Draw(camera);
+            NearestQuerydata.Draw(camera);
         }
     }
 }

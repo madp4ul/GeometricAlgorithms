@@ -47,6 +47,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\ConvertExtensions.cs" />
+    <Compile Include="Forms\KdTreeControls\KdTreeConfigurationControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\KdTreeControls\KdTreeConfigurationControl.Designer.cs">
+      <DependentUpon>KdTreeConfigurationControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\KdTreeControls\NearestQueryControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -102,6 +108,9 @@
     <Compile Include="ToolStrip\KdTreeMenuTools.cs" />
     <Compile Include="ToolStrip\ToolStripActionConfigurator.cs" />
     <Compile Include="ToolStrip\ViewerMenuTools.cs" />
+    <EmbeddedResource Include="Forms\KdTreeControls\KdTreeConfigurationControl.resx">
+      <DependentUpon>KdTreeConfigurationControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\KdTreeControls\NearestQueryControl.resx">
       <DependentUpon>NearestQueryControl.cs</DependentUpon>
     </EmbeddedResource>

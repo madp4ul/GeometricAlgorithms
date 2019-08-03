@@ -11,14 +11,12 @@ namespace GeometricAlgorithms.Viewer.ToolStrip
     class KdTreeMenuTools
     {
         public KdTreeData KdTreeData { get; set; }
-        public GeometricAlgorithmViewer Viewer { get; set; }
 
         private KdTreeOptions SettingsWindow = null;
 
-        public KdTreeMenuTools(KdTreeData kdTreeData, GeometricAlgorithmViewer viewer)
+        public KdTreeMenuTools(KdTreeData kdTreeData)
         {
             KdTreeData = kdTreeData ?? throw new ArgumentNullException(nameof(kdTreeData));
-            Viewer = viewer ?? throw new ArgumentNullException(nameof(viewer));
         }
 
         public void SetKdTreeVisibility(bool visible)
@@ -30,7 +28,7 @@ namespace GeometricAlgorithms.Viewer.ToolStrip
         {
             if (SettingsWindow == null)
             {
-                SettingsWindow = new KdTreeOptions(KdTreeData, Viewer);
+                SettingsWindow = new KdTreeOptions(KdTreeData);
                 SettingsWindow.FormClosed += (o, e) => SettingsWindow = null;
                 SettingsWindow.Show(owner);
             }

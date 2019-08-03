@@ -34,6 +34,8 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
 
         public bool ShowQueryHelper { get => QueryCenterDrawable.EnableDraw; set => QueryCenterDrawable.EnableDraw = value; }
         public bool ShowQueryResult { get => QueryResultDrawable.EnableDraw; set => QueryResultDrawable.EnableDraw = value; }
+        public bool CanQuery => KdTree != null;
+
         public Transformation Transformation { get; set; }
 
         public KdTreeRadiusQueryData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
@@ -72,6 +74,11 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
 
         public void CalculateQueryResult()
         {
+            if (!CanQuery)
+            {
+                throw new InvalidOperationException("Can not query before tree generated");
+            }
+
             IsCalculating = true;
             QueryHasChangedSinceLastCalculation = false;
             var radiusQuery = FuncExecutor.Execute((progress) => KdTree.FindInRadius(QueryCenter, Radius, progress));

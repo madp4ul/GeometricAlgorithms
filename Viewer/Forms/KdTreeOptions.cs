@@ -14,31 +14,24 @@ namespace GeometricAlgorithms.Viewer.Forms
     public partial class KdTreeOptions : Form
     {
         public KdTreeData KdTreeData { get; set; }
-        public GeometricAlgorithmViewer Viewer { get; set; }
 
-        public KdTreeOptions(KdTreeData kdTreeData, GeometricAlgorithmViewer viewer)
+        public KdTreeOptions(KdTreeData kdTreeData)
         {
             InitializeComponent();
 
             KdTreeData = kdTreeData;
-            Viewer = viewer;
 
             radiusQueryControl.QueryData = kdTreeData.RadiusQuerydata;
-            radiusQueryControl.Viewer = viewer;
-
-            //Take default values from model
-            pointsPerTreeLeafNumericUpDown.Value = kdTreeData.Configuration.MaximumPointsPerLeaf;
+            nearestQueryControl.QueryData = kdTreeData.NearestQuerydata;
+            kdTreeConfigurationControl.KdTreeData = kdTreeData;
         }
 
         private void KdTreeOptions_Load(object sender, EventArgs e)
         {
-            UpdateActiveTabPage();
-        }
-
-        private void BtnApplySettings_Click(object sender, EventArgs e)
-        {
-            KdTreeData.Configuration.MaximumPointsPerLeaf = (int)pointsPerTreeLeafNumericUpDown.Value;
-            KdTreeData.Reset();
+            if (!DesignMode)
+            {
+                UpdateActiveTabPage();
+            }
         }
 
         private void KdTreeSettings_FormClosed(object sender, FormClosedEventArgs e)
@@ -49,9 +42,10 @@ namespace GeometricAlgorithms.Viewer.Forms
         private void HideAllKdTreeQueries()
         {
             KdTreeData.RadiusQuerydata.HideAll();
+            KdTreeData.NearestQuerydata.HideAll();
         }
 
-        private void TabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateActiveTabPage();
         }
@@ -59,7 +53,7 @@ namespace GeometricAlgorithms.Viewer.Forms
         private void UpdateActiveTabPage()
         {
             radiusQueryControl.SetShowQuery(radiusQueryControl.Visible);
-
+            nearestQueryControl.SetShowQuery(nearestQueryControl.Visible);
         }
     }
 }

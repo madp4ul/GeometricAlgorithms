@@ -15,13 +15,10 @@ namespace GeometricAlgorithms.Viewer.ToolStrip
 
         public ModelData Model { get; set; }
 
-        public GeometricAlgorithmViewer Viewer { get; set; }
-
-        public ToolStripActionConfigurator(MainWindow mainWindow, MenuStrip menuStrip, GeometricAlgorithmViewer viewer, ModelData model)
+        public ToolStripActionConfigurator(MainWindow mainWindow, MenuStrip menuStrip, ModelData model)
         {
             MainWindow = mainWindow ?? throw new ArgumentNullException(nameof(mainWindow));
             MenuStrip = menuStrip ?? throw new ArgumentNullException(nameof(menuStrip));
-            Viewer = viewer ?? throw new ArgumentNullException(nameof(viewer));
             Model = model ?? throw new ArgumentNullException(nameof(model));
         }
 
@@ -37,10 +34,10 @@ namespace GeometricAlgorithms.Viewer.ToolStrip
             var fileMenuTools = new FileMenuTools(Model);
 
             GetItem(fileOptionItem.DropDownItems, "openFileToolStripMenuItem")
-                .Click += RefreshAfter((o, e) => fileMenuTools.OpenFile());
+                .Click += (o, e) => fileMenuTools.OpenFile();
 
             GetItem(fileOptionItem.DropDownItems, "saveFileToolStripMenuItem")
-                .Click += RefreshAfter((o, e) => fileMenuTools.SaveToFile());
+                .Click += (o, e) => fileMenuTools.SaveToFile();
         }
 
         private void ConfigureViewerOptions(ToolStripMenuItem viewerOptionItem)
@@ -48,42 +45,33 @@ namespace GeometricAlgorithms.Viewer.ToolStrip
             var viewerMenuTools = new ViewerMenuTools(Model.Workspace);
 
             GetItem(viewerOptionItem.DropDownItems, "showPointCloudToolStripMenuItem")
-                .Click += RefreshAfter((o, e) =>
+                .Click += (o, e) =>
                     {
                         ToolStripMenuItem sender = (ToolStripMenuItem)o;
                         sender.Checked = !sender.Checked;
 
                         viewerMenuTools.SetPointCloudVisibility(sender.Checked);
-                    });
+                    };
         }
 
         private void ConfigureKdTreeOptions(ToolStripMenuItem kdTreeOptionItem)
         {
-            var treeMenuTools = new KdTreeMenuTools(Model.Workspace.PointData.KdTreeData, Viewer);
+            var treeMenuTools = new KdTreeMenuTools(Model.Workspace.PointData.KdTreeData);
 
             GetItem(kdTreeOptionItem.DropDownItems, "showKdTreeToolStripMenuItem")
-                .Click += RefreshAfter((o, e) =>
+                .Click += (o, e) =>
                 {
                     ToolStripMenuItem sender = (ToolStripMenuItem)o;
                     sender.Checked = !sender.Checked;
 
                     treeMenuTools.SetKdTreeVisibility(sender.Checked);
-                });
+                };
 
             GetItem(kdTreeOptionItem.DropDownItems, "openKdTreeSettingStripMenuItem")
-                .Click += RefreshAfter((o, e) =>
+                .Click += (o, e) =>
                 {
                     treeMenuTools.OpenKdTreeSettings(MainWindow);
-                });
-        }
-
-        private EventHandler RefreshAfter(Action<object, EventArgs> action)
-        {
-            return (o, e) =>
-            {
-                action(o, e);
-                Viewer.Invalidate();
-            };
+                };
         }
 
         private ToolStripItem GetItem(ToolStripItemCollection collection, string name)

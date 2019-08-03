@@ -15,8 +15,6 @@ namespace GeometricAlgorithms.Viewer.Forms.KdTreeControls
     public partial class RadiusQueryControl : UserControl
     {
         public KdTreeRadiusQueryData QueryData { get; set; }
-        public GeometricAlgorithmViewer Viewer { get; set; }
-
 
         public RadiusQueryControl()
         {
@@ -35,7 +33,10 @@ namespace GeometricAlgorithms.Viewer.Forms.KdTreeControls
 
         private void AutoRefreshTimer_Tick(object sender, EventArgs e)
         {
-            if (QueryData.QueryHasChangedSinceLastCalculation && !QueryData.IsCalculating)
+            if (!DesignMode
+                && QueryData.CanQuery
+                && QueryData.QueryHasChangedSinceLastCalculation
+                && !QueryData.IsCalculating)
             {
                 QueryData.CalculateQueryResult();
             }
@@ -48,7 +49,10 @@ namespace GeometricAlgorithms.Viewer.Forms.KdTreeControls
 
         private void BtnStartRadiusSearch_Click(object sender, EventArgs e)
         {
-            QueryData.CalculateQueryResult();
+            if (QueryData.CanQuery)
+            {
+                QueryData.CalculateQueryResult();
+            }
         }
 
         private void CbShowQueryResult_CheckedChanged(object sender, EventArgs e)
@@ -65,7 +69,7 @@ namespace GeometricAlgorithms.Viewer.Forms.KdTreeControls
         {
             if (showQuery)
             {
-                QueryData.ShowQueryHelper = cbShowQueryResult.Checked;
+                QueryData.ShowQueryHelper = cbShowQueryCenter.Checked;
                 QueryData.ShowQueryResult = cbShowQueryResult.Checked;
             }
             else

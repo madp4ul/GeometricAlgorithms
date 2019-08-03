@@ -35,7 +35,7 @@ namespace GeometricAlgorithms.Viewer
             viewer.Configuration = Model.ViewerConfiguration;
             viewer.Workspace = Model.Workspace;
 
-            new ToolStripActionConfigurator(this, menuStrip, viewer, Model).Configure();
+            new ToolStripActionConfigurator(this, menuStrip, Model).Configure();
         }
         ~MainWindow()
         {
