@@ -56,7 +56,7 @@
             this.kdTreeToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(159, 24);
+            this.menuStrip.Size = new System.Drawing.Size(251, 24);
             this.menuStrip.TabIndex = 1;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -115,17 +115,17 @@
             // openKdTreeSettingStripMenuItem
             // 
             this.openKdTreeSettingStripMenuItem.Name = "openKdTreeSettingStripMenuItem";
-            this.openKdTreeSettingStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.openKdTreeSettingStripMenuItem.Text = "Open Settings";
+            this.openKdTreeSettingStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openKdTreeSettingStripMenuItem.Text = "Query";
             // 
             // viewer
             // 
             this.viewer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.viewer.Location = new System.Drawing.Point(12, 27);
+            this.viewer.Location = new System.Drawing.Point(0, 24);
             this.viewer.Name = "viewer";
-            this.viewer.Size = new System.Drawing.Size(766, 479);
+            this.viewer.Size = new System.Drawing.Size(1017, 496);
             this.viewer.TabIndex = 0;
             // 
             // statusStrip1
@@ -133,9 +133,9 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.backgroundWorkerProgressBar,
             this.backgroundWorkerStatusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 525);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 519);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1055, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1017, 22);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -155,7 +155,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1055, 547);
+            this.ClientSize = new System.Drawing.Size(1017, 541);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.viewer);
             this.Controls.Add(this.menuStrip);

@@ -1,6 +1,6 @@
 ﻿namespace GeometricAlgorithms.Viewer.Forms
 {
-    partial class KdTreeOptions
+    partial class KdTreeQueries
     {
         /// <summary>
         /// Required designer variable.
@@ -30,10 +30,10 @@
         {
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageRadiusQuery = new System.Windows.Forms.TabPage();
-            this.tabPageNearestQuery = new System.Windows.Forms.TabPage();
-            this.kdTreeConfigurationControl = new GeometricAlgorithms.Viewer.Forms.KdTreeControls.KdTreeConfigurationControl();
             this.radiusQueryControl = new GeometricAlgorithms.Viewer.Forms.KdTreeControls.RadiusQueryControl();
+            this.tabPageNearestQuery = new System.Windows.Forms.TabPage();
             this.nearestQueryControl = new GeometricAlgorithms.Viewer.Forms.KdTreeControls.NearestQueryControl();
+            this.kdTreeConfigurationControl = new GeometricAlgorithms.Viewer.Forms.KdTreeControls.KdTreeConfigurationControl();
             this.tabControl.SuspendLayout();
             this.tabPageRadiusQuery.SuspendLayout();
             this.tabPageNearestQuery.SuspendLayout();
@@ -63,27 +63,6 @@
             this.tabPageRadiusQuery.Text = "Points in Radius Query";
             this.tabPageRadiusQuery.UseVisualStyleBackColor = true;
             // 
-            // tabPageNearestQuery
-            // 
-            this.tabPageNearestQuery.Controls.Add(this.nearestQueryControl);
-            this.tabPageNearestQuery.Location = new System.Drawing.Point(4, 22);
-            this.tabPageNearestQuery.Name = "tabPageNearestQuery";
-            this.tabPageNearestQuery.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageNearestQuery.Size = new System.Drawing.Size(242, 115);
-            this.tabPageNearestQuery.TabIndex = 1;
-            this.tabPageNearestQuery.Text = "Nearest Points Query";
-            this.tabPageNearestQuery.UseVisualStyleBackColor = true;
-            // 
-            // kdTreeConfigurationControl
-            // 
-            this.kdTreeConfigurationControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.kdTreeConfigurationControl.Location = new System.Drawing.Point(16, 159);
-            this.kdTreeConfigurationControl.Name = "kdTreeConfigurationControl";
-            this.kdTreeConfigurationControl.Size = new System.Drawing.Size(242, 63);
-            this.kdTreeConfigurationControl.TabIndex = 1;
-            // 
             // radiusQueryControl
             // 
             this.radiusQueryControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -94,6 +73,17 @@
             this.radiusQueryControl.QueryData = null;
             this.radiusQueryControl.Size = new System.Drawing.Size(230, 103);
             this.radiusQueryControl.TabIndex = 0;
+            // 
+            // tabPageNearestQuery
+            // 
+            this.tabPageNearestQuery.Controls.Add(this.nearestQueryControl);
+            this.tabPageNearestQuery.Location = new System.Drawing.Point(4, 22);
+            this.tabPageNearestQuery.Name = "tabPageNearestQuery";
+            this.tabPageNearestQuery.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageNearestQuery.Size = new System.Drawing.Size(242, 115);
+            this.tabPageNearestQuery.TabIndex = 1;
+            this.tabPageNearestQuery.Text = "Nearest Points Query";
+            this.tabPageNearestQuery.UseVisualStyleBackColor = true;
             // 
             // nearestQueryControl
             // 
@@ -106,15 +96,26 @@
             this.nearestQueryControl.Size = new System.Drawing.Size(233, 103);
             this.nearestQueryControl.TabIndex = 0;
             // 
-            // KdTreeOptions
+            // kdTreeConfigurationControl
+            // 
+            this.kdTreeConfigurationControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.kdTreeConfigurationControl.KdTreeData = null;
+            this.kdTreeConfigurationControl.Location = new System.Drawing.Point(16, 159);
+            this.kdTreeConfigurationControl.Name = "kdTreeConfigurationControl";
+            this.kdTreeConfigurationControl.Size = new System.Drawing.Size(242, 63);
+            this.kdTreeConfigurationControl.TabIndex = 1;
+            // 
+            // KdTreeQueries
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(274, 228);
             this.Controls.Add(this.kdTreeConfigurationControl);
             this.Controls.Add(this.tabControl);
-            this.Name = "KdTreeOptions";
-            this.Text = "KdTreeSettings";
+            this.Name = "KdTreeQueries";
+            this.Text = "Query Kd-Tree";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.KdTreeSettings_FormClosed);
             this.Load += new System.EventHandler(this.KdTreeOptions_Load);
             this.tabControl.ResumeLayout(false);

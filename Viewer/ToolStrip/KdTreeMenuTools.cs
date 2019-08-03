@@ -12,7 +12,7 @@ namespace GeometricAlgorithms.Viewer.ToolStrip
     {
         public KdTreeData KdTreeData { get; set; }
 
-        private KdTreeOptions SettingsWindow = null;
+        private KdTreeQueries QueriesWindow = null;
 
         public KdTreeMenuTools(KdTreeData kdTreeData)
         {
@@ -24,17 +24,17 @@ namespace GeometricAlgorithms.Viewer.ToolStrip
             KdTreeData.EnableDraw = visible;
         }
 
-        public void OpenKdTreeSettings(System.Windows.Forms.IWin32Window owner)
+        public void OpenKdTreeQueriesWindow(System.Windows.Forms.IWin32Window owner)
         {
-            if (SettingsWindow == null)
+            if (QueriesWindow == null)
             {
-                SettingsWindow = new KdTreeOptions(KdTreeData);
-                SettingsWindow.FormClosed += (o, e) => SettingsWindow = null;
-                SettingsWindow.Show(owner);
+                QueriesWindow = new KdTreeQueries(KdTreeData);
+                QueriesWindow.FormClosed += (o, e) => QueriesWindow = null;
+                QueriesWindow.Show(owner);
             }
             else
             {
-                SettingsWindow.Focus();
+                QueriesWindow.Focus();
             }
         }
     }

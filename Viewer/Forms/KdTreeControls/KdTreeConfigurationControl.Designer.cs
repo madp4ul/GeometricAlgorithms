@@ -36,7 +36,7 @@
             // buttonApplyPointsPerLeaf
             // 
             this.buttonApplyPointsPerLeaf.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonApplyPointsPerLeaf.Location = new System.Drawing.Point(112, 13);
+            this.buttonApplyPointsPerLeaf.Location = new System.Drawing.Point(121, 15);
             this.buttonApplyPointsPerLeaf.Name = "buttonApplyPointsPerLeaf";
             this.buttonApplyPointsPerLeaf.Size = new System.Drawing.Size(105, 23);
             this.buttonApplyPointsPerLeaf.TabIndex = 0;
@@ -48,9 +48,9 @@
             // 
             this.numericPointsPerLeaf.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.numericPointsPerLeaf.Location = new System.Drawing.Point(18, 15);
+            this.numericPointsPerLeaf.Location = new System.Drawing.Point(3, 16);
             this.numericPointsPerLeaf.Name = "numericPointsPerLeaf";
-            this.numericPointsPerLeaf.Size = new System.Drawing.Size(88, 20);
+            this.numericPointsPerLeaf.Size = new System.Drawing.Size(112, 20);
             this.numericPointsPerLeaf.TabIndex = 1;
             // 
             // KdTreeConfigurationControl

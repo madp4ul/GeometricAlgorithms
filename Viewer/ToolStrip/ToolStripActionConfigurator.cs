@@ -70,7 +70,7 @@ namespace GeometricAlgorithms.Viewer.ToolStrip
             GetItem(kdTreeOptionItem.DropDownItems, "openKdTreeSettingStripMenuItem")
                 .Click += (o, e) =>
                 {
-                    treeMenuTools.OpenKdTreeSettings(MainWindow);
+                    treeMenuTools.OpenKdTreeQueriesWindow(MainWindow);
                 };
         }
 

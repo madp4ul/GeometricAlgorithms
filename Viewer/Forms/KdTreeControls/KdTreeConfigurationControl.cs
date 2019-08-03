@@ -20,16 +20,19 @@ namespace GeometricAlgorithms.Viewer.Forms.KdTreeControls
             InitializeComponent();
         }
 
+        private void KdTreeConfigurationControl_Load(object sender, EventArgs e)
+        {
+            if (!DesignMode)
+            {
+                //Take default values from model
+                numericPointsPerLeaf.Value = KdTreeData.Configuration.MaximumPointsPerLeaf;
+            }
+        }
+
         private void ButtonApplyPointsPerLeaf_Click(object sender, EventArgs e)
         {
             KdTreeData.Configuration.MaximumPointsPerLeaf = (int)numericPointsPerLeaf.Value;
             KdTreeData.Reset();
-        }
-
-        private void KdTreeConfigurationControl_Load(object sender, EventArgs e)
-        {
-            //Take default values from model
-            numericPointsPerLeaf.Value = KdTreeData.Configuration.MaximumPointsPerLeaf;
         }
     }
 }

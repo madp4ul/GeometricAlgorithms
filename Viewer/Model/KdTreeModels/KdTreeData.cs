@@ -80,7 +80,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
                     float maxVolume = boxes[0].Volume;
 
                     //have a minimum lightness and let the rest be dictated by box volume relative to the root box
-                    Vector3 colorGenerator(BoundingBox box) => new Vector3(1, 0.2f + 0.8f * (box.Volume / maxVolume), 0);
+                    Vector3 colorGenerator(BoundingBox box) => new Vector3(1, (box.Volume / maxVolume), 0);
 
                     Drawable = DrawableFactoryProvider.DrawableFactory.CreateBoundingBoxRepresentation(boxes, colorGenerator);
                 }

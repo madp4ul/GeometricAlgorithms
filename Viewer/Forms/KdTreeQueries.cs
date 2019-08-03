@@ -11,19 +11,22 @@ using System.Windows.Forms;
 
 namespace GeometricAlgorithms.Viewer.Forms
 {
-    public partial class KdTreeOptions : Form
+    public partial class KdTreeQueries : Form
     {
         public KdTreeData KdTreeData { get; set; }
 
-        public KdTreeOptions(KdTreeData kdTreeData)
+        public KdTreeQueries(KdTreeData kdTreeData)
         {
             InitializeComponent();
 
-            KdTreeData = kdTreeData;
+            if (!DesignMode)
+            {
+                KdTreeData = kdTreeData;
 
-            radiusQueryControl.QueryData = kdTreeData.RadiusQuerydata;
-            nearestQueryControl.QueryData = kdTreeData.NearestQuerydata;
-            kdTreeConfigurationControl.KdTreeData = kdTreeData;
+                radiusQueryControl.QueryData = kdTreeData.RadiusQuerydata;
+                nearestQueryControl.QueryData = kdTreeData.NearestQuerydata;
+                kdTreeConfigurationControl.KdTreeData = kdTreeData;
+            }
         }
 
         private void KdTreeOptions_Load(object sender, EventArgs e)
