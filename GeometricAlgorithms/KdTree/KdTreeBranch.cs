@@ -1,5 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
-using GeometricAlgorithms.Domain.VertexTypes;
+using GeometricAlgorithms.Domain.Vertices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -107,11 +107,20 @@ namespace GeometricAlgorithms.KdTree
             {
                 MinimumChild.FindNearestVertices(query);
             }
+            else
+            {
+                //If branch can be skipped, add progress for whole branch
+                query.ProgressUpdater.UpdateAddOperation(MinimumChild.LeafCount);
+            }
 
             if (query.ResultSet.Count < query.PointAmount
                 || MaximumChild.BoundingBox.GetMinimumDistance(query.SearchPosition) < query.MaxSearchRadius)
             {
                 MaximumChild.FindNearestVertices(query);
+            }
+            else
+            {
+                query.ProgressUpdater.UpdateAddOperation(MaximumChild.LeafCount);
             }
         }
 

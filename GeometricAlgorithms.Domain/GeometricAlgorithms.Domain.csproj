@@ -58,9 +58,9 @@
     <Compile Include="Tasks\IFuncExecutor.cs" />
     <Compile Include="Tasks\IProgressUpdater.cs" />
     <Compile Include="Vector3.cs" />
-    <Compile Include="VertexTypes\GenericVertex.cs" />
-    <Compile Include="VertexTypes\Vertex.cs" />
-    <Compile Include="VertexTypes\VertexNormal.cs" />
+    <Compile Include="Vertices\GenericVertex.cs" />
+    <Compile Include="Vertices\Vertex.cs" />
+    <Compile Include="Vertices\VertexNormal.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

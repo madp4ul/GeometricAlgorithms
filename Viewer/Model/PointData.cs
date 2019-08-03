@@ -1,7 +1,7 @@
 ﻿using GeometricAlgorithms.Domain.Cameras;
 using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.Domain.Tasks;
-using GeometricAlgorithms.Domain.VertexTypes;
+using GeometricAlgorithms.Domain.Vertices;
 using GeometricAlgorithms.Viewer.Model.KdTreeModels;
 using GeometricAlgorithms.Viewer.Providers;
 using System;

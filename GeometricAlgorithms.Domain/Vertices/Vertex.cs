@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.Domain.VertexTypes
+namespace GeometricAlgorithms.Domain.Vertices
 {
     public struct Vertex : IVertex
     {

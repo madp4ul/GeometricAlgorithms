@@ -122,7 +122,7 @@
             // 
             // cbAutoRefresh
             // 
-            this.cbAutoRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbAutoRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbAutoRefresh.AutoSize = true;
             this.cbAutoRefresh.Checked = true;
             this.cbAutoRefresh.CheckState = System.Windows.Forms.CheckState.Checked;

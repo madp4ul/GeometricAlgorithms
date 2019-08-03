@@ -4,8 +4,6 @@ using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.Domain.Tasks;
 using GeometricAlgorithms.Domain.Vertices;
 using GeometricAlgorithms.KdTree;
-using GeometricAlgorithms.MonoGame.Forms.Cameras;
-using GeometricAlgorithms.MonoGame.Forms.Drawables;
 using GeometricAlgorithms.Viewer.Providers;
 using System;
 using System.Collections.Generic;
@@ -15,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
 {
-    public class KdTreeRadiusQueryData : IDrawable
+    public class KdTreeNearestQueryData : IDrawable
     {
         private readonly IFuncExecutor FuncExecutor;
         private readonly ToggleableDrawable Drawable;
@@ -23,7 +21,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
         private KdTree<GenericVertex> KdTree;
 
         public Vector3 QueryCenter { get; set; }
-        public float Radius { get; private set; }
+        public int PointCount { get; private set; }
 
         public bool IsCalculating { get; private set; }
         public bool QueryHasChangedSinceLastCalculation { get; private set; }
@@ -31,17 +29,16 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
         private QueryCenterPoint QueryCenterDrawable { get; set; }
         private KdTreeQueryResult QueryResultDrawable { get; set; }
 
-
         public bool ShowQueryHelper { get => QueryCenterDrawable.EnableDraw; set => QueryCenterDrawable.EnableDraw = value; }
         public bool ShowQueryResult { get => QueryResultDrawable.EnableDraw; set => QueryResultDrawable.EnableDraw = value; }
         public Transformation Transformation { get; set; }
 
-        public KdTreeRadiusQueryData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
+        public KdTreeNearestQueryData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {
             FuncExecutor = funcExecutor;
 
             Transformation = Transformation.Identity;
-            Radius = 0.1f;
+            PointCount = 20;
             QueryCenterDrawable = new QueryCenterPoint(drawableFactoryProvider);
 
             QueryResultDrawable = new KdTreeQueryResult(drawableFactoryProvider);
@@ -64,9 +61,9 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
             ShowQueryResult = false;
         }
 
-        public void SetRadius(float radius)
+        public void SetPointCount(int pointCount)
         {
-            Radius = radius;
+            PointCount = pointCount;
             QueryHasChangedSinceLastCalculation = true;
         }
 
@@ -74,11 +71,12 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
         {
             IsCalculating = true;
             QueryHasChangedSinceLastCalculation = false;
-            var radiusQuery = FuncExecutor.Execute((progress) => KdTree.FindInRadius(QueryCenter, Radius, progress));
+
+            var radiusQuery = FuncExecutor.Execute((progress) => KdTree.FindNearestVertices(QueryCenter, PointCount, progress));
 
             radiusQuery.GetResult((vertices) =>
             {
-                QueryResultDrawable.Reset(vertices);
+                QueryResultDrawable.Reset(vertices.Values);
                 IsCalculating = false;
             });
         }

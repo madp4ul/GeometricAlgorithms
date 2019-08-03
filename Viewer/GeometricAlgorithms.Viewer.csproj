@@ -47,6 +47,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\ConvertExtensions.cs" />
+    <Compile Include="Forms\KdTreeControls\NearestQueryControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\KdTreeControls\NearestQueryControl.Designer.cs">
+      <DependentUpon>NearestQueryControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\KdTreeControls\RadiusQueryControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -59,6 +65,7 @@
     <Compile Include="Forms\KdTreeOptions.Designer.cs">
       <DependentUpon>KdTreeOptions.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\KdTreeModels\KdTreeNearestQueryData.cs" />
     <Compile Include="Model\KdTreeModels\KdTreeQueryResult.cs" />
     <Compile Include="Model\KdTreeModels\KdTreeRadiusQueryData.cs" />
     <Compile Include="Model\KdTreeModels\QueryCenterPoint.cs" />
@@ -95,6 +102,9 @@
     <Compile Include="ToolStrip\KdTreeMenuTools.cs" />
     <Compile Include="ToolStrip\ToolStripActionConfigurator.cs" />
     <Compile Include="ToolStrip\ViewerMenuTools.cs" />
+    <EmbeddedResource Include="Forms\KdTreeControls\NearestQueryControl.resx">
+      <DependentUpon>NearestQueryControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\KdTreeControls\RadiusQueryControl.resx">
       <DependentUpon>RadiusQueryControl.cs</DependentUpon>
     </EmbeddedResource>

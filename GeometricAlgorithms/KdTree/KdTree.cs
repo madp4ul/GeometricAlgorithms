@@ -47,7 +47,10 @@ namespace GeometricAlgorithms.KdTree
             return new KdTree<TVertex>(Vertices.ToArray(), configuration);
         }
 
-        public List<TVertex> FindInRadius(Vector3 seachCenter, float searchRadius, IProgressUpdater progressUpdater)
+        public List<TVertex> FindInRadius(
+            Vector3 seachCenter,
+            float searchRadius,
+            IProgressUpdater progressUpdater = null)
         {
             var resultList = new List<TVertex>();
 
@@ -60,17 +63,23 @@ namespace GeometricAlgorithms.KdTree
             return resultList;
         }
 
-        public SortedList<float, TVertex> FindNearestVertices(Vector3 searchPosition, int pointAmount)
+        public SortedList<float, TVertex> FindNearestVertices(
+            Vector3 searchPosition,
+            int pointAmount,
+            IProgressUpdater progressUpdater = null)
         {
             var resultSet = new SortedList<float, TVertex>(new DistanceComparer());
 
-            Root.FindNearestVertices(new NearestVerticesQuery<TVertex>
-            {
-                MaxSearchRadius = float.PositiveInfinity,
-                PointAmount = pointAmount,
-                SearchPosition = searchPosition,
-                ResultSet = resultSet
-            });
+            var kdTreeProgress = new KdTreeProgressUpdater(progressUpdater, Root.LeafCount, "Looking for nearest points");
+
+            Root.FindNearestVertices(new NearestVerticesQuery<TVertex>(
+                searchPosition,
+                pointAmount,
+                resultSet,
+                kdTreeProgress
+            ));
+
+            kdTreeProgress.IsCompleted();
 
             return resultSet;
         }

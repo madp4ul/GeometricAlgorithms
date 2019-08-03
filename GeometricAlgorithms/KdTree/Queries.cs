@@ -9,10 +9,24 @@ namespace GeometricAlgorithms.KdTree
 {
     class NearestVerticesQuery<TVertex>
     {
-        public Vector3 SearchPosition;
-        public int PointAmount;
-        public float MaxSearchRadius;
-        public SortedList<float, TVertex> ResultSet;
+        public readonly Vector3 SearchPosition;
+        public readonly int PointAmount;
+        public readonly SortedList<float, TVertex> ResultSet;
+        public readonly KdTreeProgressUpdater ProgressUpdater;
+
+        public float MaxSearchRadius = float.PositiveInfinity;
+
+        public NearestVerticesQuery(
+            Vector3 searchPosition,
+            int pointAmount,
+            SortedList<float, TVertex> resultSet,
+            KdTreeProgressUpdater progressUpdater)
+        {
+            SearchPosition = searchPosition;
+            PointAmount = pointAmount;
+            ResultSet = resultSet ?? throw new ArgumentNullException(nameof(resultSet));
+            ProgressUpdater = progressUpdater ?? throw new ArgumentNullException(nameof(progressUpdater));
+        }
     }
 
     class InRadiusQuery<TVertex>

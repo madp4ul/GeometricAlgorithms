@@ -1,5 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
-using GeometricAlgorithms.Domain.VertexTypes;
+using GeometricAlgorithms.Domain.Vertices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,6 +56,8 @@ namespace GeometricAlgorithms.KdTree
                     }
                 }
             }
+
+            query.ProgressUpdater.UpdateAddOperation();
         }
     }
 }

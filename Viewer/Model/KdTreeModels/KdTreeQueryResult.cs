@@ -1,5 +1,5 @@
 ﻿using GeometricAlgorithms.Domain.Drawables;
-using GeometricAlgorithms.Domain.VertexTypes;
+using GeometricAlgorithms.Domain.Vertices;
 using GeometricAlgorithms.Viewer.Extensions;
 using GeometricAlgorithms.Viewer.Providers;
 using System;

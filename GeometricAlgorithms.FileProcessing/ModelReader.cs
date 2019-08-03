@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GeometricAlgorithms.Domain;
-using GeometricAlgorithms.Domain.VertexTypes;
+using GeometricAlgorithms.Domain.Vertices;
 
 namespace GeometricAlgorithms.FileProcessing
 {
