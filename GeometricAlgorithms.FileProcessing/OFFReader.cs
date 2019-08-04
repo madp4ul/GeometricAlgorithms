@@ -24,13 +24,13 @@ namespace GeometricAlgorithms.FileProcessing
 
             if (lines[0] == "OFF")
             {
-                string[] itemCounts = lines[1].Split(' ');
+                string[] itemCounts = lines[1].Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 int pointCount = int.Parse(itemCounts[0]);
 
                 GenericVertex[] points = new GenericVertex[pointCount];
                 for (int i = 0; i < pointCount; i++)
                 {
-                    string[] vertexDimensions = lines[i + 2].Split(' ');
+                    string[] vertexDimensions = lines[i + 2].Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
                     Vector3 vertex = new Vector3(
                         float.Parse(vertexDimensions[0], CultureInfo.InvariantCulture),

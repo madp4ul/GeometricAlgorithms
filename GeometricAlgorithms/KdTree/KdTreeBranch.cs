@@ -36,13 +36,13 @@ namespace GeometricAlgorithms.KdTree
             //Split space at median along halved dimension
             float halfSpace = DimensionSelector(vertices[halfIndex].Position);
 
-            //Create bounding box halves along median
-            BoundingBox minChildBox = boundingBox.GetMinHalfAlongDimension(halvedDimension, halfSpace);
-            BoundingBox maxChildBox = boundingBox.GetMaxHalfAlongDimension(halvedDimension, halfSpace);
-
             //split value range into to sections, one for each child
             Range<TVertex> minChildVertices = vertices.GetRange(0, halfIndex);
             Range<TVertex> maxChildVertices = vertices.GetRange(halfIndex, vertices.Length - halfIndex);
+
+            //Create bounding box halves along median
+            BoundingBox minChildBox = BoundingBox.CreateContainer(minChildVertices);// boundingBox.GetMinHalfAlongDimension(halvedDimension, halfSpace);
+            BoundingBox maxChildBox = BoundingBox.CreateContainer(maxChildVertices);// boundingBox.GetMaxHalfAlongDimension(halvedDimension, halfSpace);
 
             //If more vertices than what fits into to leafs, create more branches
             if (vertices.Length > configuration.MaximumPointsPerLeaf * 2)
