@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GeometricAlgorithms.Domain;
-using GeometricAlgorithms.Domain.Vertices;
 
 namespace GeometricAlgorithms.FileProcessing
 {
@@ -12,35 +11,35 @@ namespace GeometricAlgorithms.FileProcessing
     {
 
 
-        public GenericVertex[] ReadPoints(string filePath)
+        public Mesh<VertexNormal> ReadPoints(string filePath)
         {
-            GenericVertex[] vertices;
+            Mesh<VertexNormal> model;
 
             if (filePath.EndsWith("off"))
             {
-                vertices = new OFFReader().ReadPoints(filePath);
+                model = new OFFReader().ReadPoints(filePath);
             }
             else
             {
                 throw new NotImplementedException("This file format is not supported");
             }
 
-            ScaleAndMoveTo1(vertices);
+            ScaleAndMoveToUnitCube(model);
 
-            return vertices;
+            return model;
         }
 
-        private void ScaleAndMoveTo1(GenericVertex[] vertices)
+        private void ScaleAndMoveToUnitCube(Mesh<VertexNormal> model)
         {
-            var bounds = BoundingBox.CreateContainer(vertices);
+            var bounds = BoundingBox.CreateContainer(model.Vertices);
 
             Vector3 translation = bounds.Minimum;
             Vector3 size = (bounds.Maximum - bounds.Minimum);
             float scaleFactor = 1 / Math.Max(size.X, Math.Max(size.Y, size.Z));
 
-            for (int i = 0; i < vertices.Length; i++)
+            for (int i = 0; i < model.Vertices.Length; i++)
             {
-                ref GenericVertex vertex = ref vertices[i];
+                ref VertexNormal vertex = ref model.Vertices[i];
                 vertex.Position -= translation;
                 vertex.Position *= scaleFactor;
             }

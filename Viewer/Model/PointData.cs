@@ -1,7 +1,7 @@
-﻿using GeometricAlgorithms.Domain.Cameras;
+﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.Domain.Cameras;
 using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.Domain.Tasks;
-using GeometricAlgorithms.Domain.Vertices;
 using GeometricAlgorithms.Viewer.Model.KdTreeModels;
 using GeometricAlgorithms.Viewer.Providers;
 using System;
@@ -16,7 +16,7 @@ namespace GeometricAlgorithms.Viewer.Model
     {
         readonly IDrawableFactoryProvider DrawableFactoryProvider;
 
-        public GenericVertex[] Points { get; set; }
+        public Mesh<VertexNormal> Model { get; set; }
 
         public readonly KdTreeData KdTreeData;
 
@@ -24,34 +24,34 @@ namespace GeometricAlgorithms.Viewer.Model
         public PointData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {
             DrawableFactoryProvider = drawableFactoryProvider;
-            Points = new GenericVertex[0];
+            Model = Mesh<VertexNormal>.CreateEmpty();
             Drawable = new EmptyDrawable();
             KdTreeData = new KdTreeData(drawableFactoryProvider, funcExecutor);
         }
 
         public PointData(
-            GenericVertex[] points,
+           Mesh<VertexNormal> model,
             int radius,
             IDrawableFactoryProvider drawableFactoryProvider,
             IFuncExecutor funcExecutor)
             : this(drawableFactoryProvider, funcExecutor)
         {
-            Reset(points, radius);
-            KdTreeData.Reset(points);
+            Reset(model, radius);
+            KdTreeData.Reset(model);
         }
 
-        public void Reset(GenericVertex[] points, int radius)
+        public void Reset(Mesh<VertexNormal> model, int radius)
         {
-            Points = points ?? throw new ArgumentNullException(nameof(points));
+            Model = model ?? throw new ArgumentNullException(nameof(model));
 
             if (Drawable != null)
             {
                 Drawable.Dispose();
             }
             Drawable = DrawableFactoryProvider.DrawableFactory.CreatePointCloud(
-                points.Select(v => v.Position), radius);
+                model.Vertices.Select(v => v.Position), radius);
 
-            KdTreeData.Reset(Points);
+            KdTreeData.Reset(Model);
         }
 
         public override void Draw(ACamera camera)

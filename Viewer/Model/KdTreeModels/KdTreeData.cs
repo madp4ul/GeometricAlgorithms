@@ -2,7 +2,6 @@
 using GeometricAlgorithms.Domain.Cameras;
 using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.Domain.Tasks;
-using GeometricAlgorithms.Domain.Vertices;
 using GeometricAlgorithms.KdTree;
 using GeometricAlgorithms.Viewer.Providers;
 using System;
@@ -19,7 +18,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
         private readonly IDrawableFactoryProvider DrawableFactoryProvider;
         private readonly IFuncExecutor FuncExecutor;
 
-        public KdTree<GenericVertex> KdTree { get; private set; }
+        public KdTree<VertexNormal> KdTree { get; private set; }
         public KdTreeConfiguration Configuration { get; set; }
 
         public KdTreeRadiusQueryData RadiusQuerydata { get; private set; }
@@ -32,31 +31,31 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
 
             EnableDraw = false;
             Configuration = KdTreeConfiguration.Default;
-            KdTree = new KdTree<GenericVertex>(new GenericVertex[0], Configuration);
+            KdTree = new KdTree<VertexNormal>(Mesh<VertexNormal>.CreateEmpty(), Configuration);
 
             RadiusQuerydata = new KdTreeRadiusQueryData(drawableFactoryProvider, funcExecutor);
             NearestQuerydata = new KdTreeNearestQueryData(drawableFactoryProvider, funcExecutor);
         }
 
         public KdTreeData(
-            GenericVertex[] points,
+            Mesh<VertexNormal> model,
             IDrawableFactoryProvider drawableFactoryProvider,
             IFuncExecutor funcExecutor)
             : this(drawableFactoryProvider, funcExecutor)
         {
-            Reset(points);
+            Reset(model);
         }
 
         public void Reset()
         {
-            Reset(KdTree.Vertices.ToArray());
+            Reset(KdTree.Model);
         }
 
-        public void Reset(GenericVertex[] points)
+        public void Reset(Mesh<VertexNormal> model)
         {
             var buildKdTree = FuncExecutor.Execute((progress) =>
               {
-                  return new KdTree<GenericVertex>(points, Configuration, progress);
+                  return new KdTree<VertexNormal>(model, Configuration, progress);
               });
 
 

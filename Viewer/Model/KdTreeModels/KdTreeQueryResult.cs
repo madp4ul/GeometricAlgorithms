@@ -1,5 +1,5 @@
-﻿using GeometricAlgorithms.Domain.Drawables;
-using GeometricAlgorithms.Domain.Vertices;
+﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.Viewer.Extensions;
 using GeometricAlgorithms.Viewer.Providers;
 using System;
@@ -25,10 +25,10 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
 
         public void Reset()
         {
-            Reset(Enumerable.Empty<GenericVertex>());
+            Reset(Enumerable.Empty<VertexNormal>());
         }
 
-        public void Reset(IEnumerable<GenericVertex> vertices)
+        public void Reset(IEnumerable<VertexNormal> vertices)
         {
             Drawable.Dispose();
 

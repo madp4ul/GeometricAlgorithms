@@ -1,5 +1,4 @@
 ﻿using GeometricAlgorithms.Domain;
-using GeometricAlgorithms.Domain.Vertices;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -18,7 +17,7 @@ namespace GeometricAlgorithms.FileProcessing
             FileReader = new FileReader();
         }
 
-        public GenericVertex[] ReadPoints(string offFilePath)
+        public Mesh<VertexNormal> ReadPoints(string offFilePath)
         {
             string[] lines = FileReader.ReadFile(offFilePath);
 
@@ -36,42 +35,64 @@ namespace GeometricAlgorithms.FileProcessing
             }
         }
 
-        private GenericVertex[] ReadFile(string[] lines, Func<string[], GenericVertex> processLine)
+        private Mesh<VertexNormal> ReadFile(string[] lines, Func<string[], VertexNormal> processVertexLine)
         {
             string[] itemCounts = SplitLine(lines[1]);
             int pointCount = int.Parse(itemCounts[0]);
             int faceCount = int.Parse(itemCounts[1]);
 
-            GenericVertex[] points = new GenericVertex[pointCount];
+            VertexNormal[] vertices = new VertexNormal[pointCount];
             for (int i = 0; i < pointCount; i++)
             {
                 string[] lineData = SplitLine(lines[i + 2]);
-                points[i] = processLine(lineData);
+                vertices[i] = processVertexLine(lineData);
             }
 
-            return points;
+            IFace[] faces = new IFace[faceCount];
+            for (int i = 0; i < faceCount; i++)
+            {
+                string[] lineData = SplitLine(lines[i + pointCount + 2]);
+                faces[i] = ProcessFaceLine(lineData);
+            }
+
+            return new Mesh<VertexNormal>(vertices, new IFace[0]);
         }
 
-        private GenericVertex ProcessOFFVertexLine(string[] lineData)
+        private IFace ProcessFaceLine(string[] lineData)
+        {
+            if (int.TryParse(lineData[0], out int result) && result == 3)
+            {
+                return new Triangle(
+                    int.Parse(lineData[1]),
+                    int.Parse(lineData[2]),
+                    int.Parse(lineData[3]));
+            }
+            else
+            {
+                throw new NotImplementedException($"Can not parse faces with {lineData[0]} vertices");
+            }
+        }
+
+        private VertexNormal ProcessOFFVertexLine(string[] lineData)
         {
             Vector3 vertex = new Vector3(
                 ParseFloat(lineData[0]),
                 ParseFloat(lineData[1]),
                 ParseFloat(lineData[2]));
 
-            return new GenericVertex(vertex);
+            return new VertexNormal(vertex);
         }
 
-        private GenericVertex ProcessNOFFVertexLine(string[] lineData)
+        private VertexNormal ProcessNOFFVertexLine(string[] lineData)
         {
-            GenericVertex vertex = ProcessOFFVertexLine(lineData);
+            VertexNormal vertex = ProcessOFFVertexLine(lineData);
 
             Vector3 normal = new Vector3(
                 ParseFloat(lineData[3]),
                 ParseFloat(lineData[4]),
                 ParseFloat(lineData[5]));
 
-            vertex.Data = normal;
+            vertex.OriginalNormal = normal;
 
             return vertex;
         }

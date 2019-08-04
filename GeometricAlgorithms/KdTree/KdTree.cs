@@ -12,25 +12,25 @@ namespace GeometricAlgorithms.KdTree
     {
         private readonly KdTreeNode<TVertex> Root;
 
-        public IReadOnlyCollection<TVertex> Vertices { get; set; }
+        public Mesh<TVertex> Model { get; set; }
 
-        public KdTree(TVertex[] vertices, KdTreeConfiguration configuration = null, IProgressUpdater progressUpdater = null)
+        public KdTree(Mesh<TVertex> model, KdTreeConfiguration configuration = null, IProgressUpdater progressUpdater = null)
         {
             if (configuration == null)
             {
                 configuration = KdTreeConfiguration.Default;
             }
 
-            Vertices = vertices;
-            var range = Range<TVertex>.FromArray(vertices, 0, vertices.Length);
-            var rootBoundingBox = BoundingBox.CreateContainer(vertices);
+            Model = model.Copy();
+            var range = Range<TVertex>.FromArray(model.Vertices, 0, model.Vertices.Length);
+            var rootBoundingBox = BoundingBox.CreateContainer(model.Vertices);
 
             var updater = new KdTreeProgressUpdater(
                 progressUpdater,
-                (2 * vertices.Length) / configuration.MaximumPointsPerLeaf,
+                (2 * model.Vertices.Length) / configuration.MaximumPointsPerLeaf,
                 "Building Kd-Tree");
 
-            if (vertices.Length > configuration.MaximumPointsPerLeaf)
+            if (model.Vertices.Length > configuration.MaximumPointsPerLeaf)
             {
                 Root = new KdTreeBranch<TVertex>(rootBoundingBox, range, configuration, updater);
             }
@@ -44,7 +44,7 @@ namespace GeometricAlgorithms.KdTree
 
         public KdTree<TVertex> Reshape(KdTreeConfiguration configuration)
         {
-            return new KdTree<TVertex>(Vertices.ToArray(), configuration);
+            return new KdTree<TVertex>(Model, configuration);
         }
 
         public List<TVertex> FindInRadius(

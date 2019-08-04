@@ -2,7 +2,6 @@
 using GeometricAlgorithms.Domain.Cameras;
 using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.Domain.Tasks;
-using GeometricAlgorithms.Domain.Vertices;
 using GeometricAlgorithms.KdTree;
 using GeometricAlgorithms.MonoGame.Forms.Cameras;
 using GeometricAlgorithms.MonoGame.Forms.Drawables;
@@ -20,7 +19,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
         private readonly IFuncExecutor FuncExecutor;
         private readonly ToggleableDrawable Drawable;
 
-        private KdTree<GenericVertex> KdTree;
+        private KdTree<VertexNormal> KdTree;
 
         public Vector3 QueryCenter { get; set; }
         public float Radius { get; private set; }
@@ -52,7 +51,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
         }
 
 
-        public void Reset(KdTree<GenericVertex> kdTree)
+        public void Reset(KdTree<VertexNormal> kdTree)
         {
             KdTree = kdTree;
 

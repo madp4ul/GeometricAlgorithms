@@ -1,4 +1,4 @@
-﻿using GeometricAlgorithms.Domain.Vertices;
+﻿using GeometricAlgorithms.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +9,6 @@ namespace GeometricAlgorithms.FileProcessing
 {
     public interface IReader
     {
-        GenericVertex[] ReadPoints(string filePath);
+        Mesh<VertexNormal> ReadPoints(string filePath);
     }
 }
