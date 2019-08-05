@@ -3,7 +3,7 @@ using GeometricAlgorithms.Domain.Cameras;
 using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.Domain.Tasks;
 using GeometricAlgorithms.KdTree;
-using GeometricAlgorithms.Viewer.Providers;
+using GeometricAlgorithms.Viewer.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

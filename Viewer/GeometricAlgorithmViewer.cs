@@ -11,7 +11,7 @@ using GeometricAlgorithms.Viewer.Model;
 using GeometricAlgorithms.MonoGame.Forms.Cameras;
 using GeometricAlgorithms.MonoGame.Forms;
 using GeometricAlgorithms.Domain;
-using GeometricAlgorithms.Viewer.Providers;
+using GeometricAlgorithms.Viewer.Interfaces;
 using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.Viewer.Utilities;
 
@@ -53,7 +53,7 @@ namespace GeometricAlgorithms.Viewer
             {
                 Camera = new FirstPersonCamera();
 
-                Camera.SetPosition(new Vector3(0.5f, 0.5f, 1.3f));
+                Camera.SetPosition(new Vector3(0f, 0f, 0.8f));
                 Camera.SetRotation(0, 0);
                 Camera.SetProjection((float)Math.PI / 3, 1, 0.0001f, 1000f);
                 SetAspectRatio();

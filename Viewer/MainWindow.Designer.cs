@@ -56,7 +56,7 @@
             this.kdTreeToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(251, 24);
+            this.menuStrip.Size = new System.Drawing.Size(159, 24);
             this.menuStrip.TabIndex = 1;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -94,8 +94,8 @@
             this.showPointCloudToolStripMenuItem.Checked = true;
             this.showPointCloudToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showPointCloudToolStripMenuItem.Name = "showPointCloudToolStripMenuItem";
-            this.showPointCloudToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
-            this.showPointCloudToolStripMenuItem.Text = "Show point cloud";
+            this.showPointCloudToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+            this.showPointCloudToolStripMenuItem.Text = "Show Vertex Locations";
             // 
             // kdTreeToolStripMenuItem
             // 
@@ -109,13 +109,13 @@
             // showKdTreeToolStripMenuItem
             // 
             this.showKdTreeToolStripMenuItem.Name = "showKdTreeToolStripMenuItem";
-            this.showKdTreeToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.showKdTreeToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.showKdTreeToolStripMenuItem.Text = "Show Kd-Tree";
             // 
             // openKdTreeSettingStripMenuItem
             // 
             this.openKdTreeSettingStripMenuItem.Name = "openKdTreeSettingStripMenuItem";
-            this.openKdTreeSettingStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openKdTreeSettingStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.openKdTreeSettingStripMenuItem.Text = "Query";
             // 
             // viewer
@@ -163,6 +163,7 @@
             this.MinimumSize = new System.Drawing.Size(700, 400);
             this.Name = "MainWindow";
             this.Text = "Point Viewer";
+            this.Load += new System.EventHandler(this.MainWindow_Load);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.statusStrip1.ResumeLayout(false);

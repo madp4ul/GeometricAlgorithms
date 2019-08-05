@@ -3,7 +3,7 @@ using GeometricAlgorithms.Domain.Cameras;
 using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.Domain.Tasks;
 using GeometricAlgorithms.Viewer.Model.KdTreeModels;
-using GeometricAlgorithms.Viewer.Providers;
+using GeometricAlgorithms.Viewer.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ namespace GeometricAlgorithms.Viewer.Model
 {
     public class PointData : ToggleableDrawable
     {
-        readonly IDrawableFactoryProvider DrawableFactoryProvider;
+        private readonly IDrawableFactoryProvider DrawableFactoryProvider;
 
         public Mesh<VertexNormal> Model { get; set; }
 

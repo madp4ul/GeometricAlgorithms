@@ -744,6 +744,11 @@ namespace GeometricAlgorithms.Domain
         {
             return new Vector3(0, 0, Z);
         }
+
+        public float MaximumComponent()
+        {
+            return Math.Max(X, Math.Max(Y, Z));
+        }
     }
 }
 

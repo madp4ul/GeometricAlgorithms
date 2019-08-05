@@ -30,7 +30,9 @@ namespace GeometricAlgorithms.Viewer
             FuncExecutor = new BackgroundWorkerFuncExecutor(
                  new FormProgressUpdater(backgroundWorkerStatusLabel, backgroundWorkerProgressBar));
 
-            Model = new ModelData(drawableFactoryProvider: viewer, FuncExecutor);
+            Model = new ModelData(
+                drawableFactoryProvider: viewer,
+                FuncExecutor);
 
             viewer.Configuration = Model.ViewerConfiguration;
             viewer.Workspace = Model.Workspace;
@@ -40,6 +42,11 @@ namespace GeometricAlgorithms.Viewer
         ~MainWindow()
         {
             FuncExecutor.Dispose();
+        }
+
+        private void MainWindow_Load(object sender, EventArgs e)
+        {
+            Model.Workspace.LoadReferenceFrame();
         }
     }
 }

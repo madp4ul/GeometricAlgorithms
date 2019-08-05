@@ -3,7 +3,7 @@ using GeometricAlgorithms.Domain.Cameras;
 using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.Domain.Tasks;
 using GeometricAlgorithms.KdTree;
-using GeometricAlgorithms.Viewer.Providers;
+using GeometricAlgorithms.Viewer.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -76,10 +76,10 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
                 }
                 else
                 {
-                    float maxVolume = boxes[0].Volume;
+                    float maxSideLength = boxes[0].Diagonal.MaximumComponent();
 
                     //have a minimum lightness and let the rest be dictated by box volume relative to the root box
-                    Vector3 colorGenerator(BoundingBox box) => new Vector3(1, (box.Volume / maxVolume), 0);
+                    Vector3 colorGenerator(BoundingBox box) => new Vector3(1, (box.Diagonal.MaximumComponent() / maxSideLength), 0);
 
                     Drawable = DrawableFactoryProvider.DrawableFactory.CreateBoundingBoxRepresentation(boxes, colorGenerator);
                 }

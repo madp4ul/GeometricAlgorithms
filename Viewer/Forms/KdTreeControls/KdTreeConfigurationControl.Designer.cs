@@ -49,6 +49,11 @@
             this.numericPointsPerLeaf.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.numericPointsPerLeaf.Location = new System.Drawing.Point(3, 16);
+            this.numericPointsPerLeaf.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
             this.numericPointsPerLeaf.Name = "numericPointsPerLeaf";
             this.numericPointsPerLeaf.Size = new System.Drawing.Size(112, 20);
             this.numericPointsPerLeaf.TabIndex = 1;

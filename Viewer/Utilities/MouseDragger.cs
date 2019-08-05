@@ -34,7 +34,7 @@ namespace GeometricAlgorithms.Viewer.Utilities
 
         private void Control_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left && IsMouseDown)
             {
                 Size mouseMovedDistance = new Size(e.Location.X - MouseDownPosition.X, e.Location.Y - MouseDownPosition.Y);
                 MouseDownPosition = e.Location;

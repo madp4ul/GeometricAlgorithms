@@ -11,7 +11,7 @@
 
         public override Vector3 Position { get; set; }
 
-        public override Vector3 Forward => new Vector3(Camera.LookAt.X, Camera.LookAt.Y, Camera.LookAt.Z);
+        public override Vector3 Forward => new Vector3(Camera.Direction.X, Camera.Direction.Y, Camera.Direction.Z);
         public override Vector3 Up => new Vector3(Camera.Up.X, Camera.Up.Y, Camera.Up.Z);
 
         public float RotationY { get; private set; }
@@ -94,14 +94,14 @@ namespace GeometricAlgorithms.MonoGame.Forms.Cameras.FirstPerson
     {
         public Matrix ViewProjectionMatrix { get; private set; }
 
-        public Vector3 LookAt { get; private set; }
+        public Vector3 Direction { get; private set; }
         public readonly Vector3 Up = Vector3.Up;
 
         public void UpdateMatrix(Vector3 position, float rotX, float rotY, float fov, float aspect, float near, float far)
         {
-            LookAt = Vector3.Transform(-Vector3.UnitZ, Matrix.CreateRotationX(rotX) * Matrix.CreateRotationY(rotY));
+            Direction = Vector3.Transform(-Vector3.UnitZ, Matrix.CreateRotationX(rotX) * Matrix.CreateRotationY(rotY));
 
-            Matrix view = Matrix.CreateLookAt(position, position + LookAt, Up);
+            Matrix view = Matrix.CreateLookAt(position, position + Direction, Up);
             Matrix projection = Matrix.CreatePerspectiveFieldOfView(fov, aspect, near, far);
 
             ViewProjectionMatrix = view * projection;

@@ -5,7 +5,7 @@ using GeometricAlgorithms.Domain.Tasks;
 using GeometricAlgorithms.KdTree;
 using GeometricAlgorithms.MonoGame.Forms.Cameras;
 using GeometricAlgorithms.MonoGame.Forms.Drawables;
-using GeometricAlgorithms.Viewer.Providers;
+using GeometricAlgorithms.Viewer.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

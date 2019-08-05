@@ -10,7 +10,9 @@ namespace GeometricAlgorithms.Domain
     {
         public Vector3 Minimum { get; private set; }
         public Vector3 Maximum { get; private set; }
-                
+
+        public Vector3 Diagonal => Maximum - Minimum;
+
         public float Volume
         {
             get
