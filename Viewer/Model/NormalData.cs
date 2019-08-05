@@ -52,7 +52,7 @@ namespace GeometricAlgorithms.Viewer.Model
             }
         }
 
-        protected virtual Vector3[] SelectNormals(Mesh mesh)
+        protected virtual IEnumerable<Vector3> SelectNormals(Mesh mesh)
         {
             return mesh.FileNormals;
         }

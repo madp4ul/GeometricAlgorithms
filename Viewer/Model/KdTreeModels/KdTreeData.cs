@@ -1,8 +1,7 @@
 ﻿using GeometricAlgorithms.Domain;
-using GeometricAlgorithms.Domain.Cameras;
 using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.Domain.Tasks;
-using GeometricAlgorithms.KdTree;
+using GeometricAlgorithms.MeshQuerying;
 using GeometricAlgorithms.Viewer.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -18,7 +17,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
         private readonly IDrawableFactoryProvider DrawableFactoryProvider;
         private readonly IFuncExecutor FuncExecutor;
 
-        public KdTree.KdTree KdTree { get; private set; }
+        public MeshQuerying.KdTree KdTree { get; private set; }
         public KdTreeConfiguration Configuration { get; set; }
 
         public KdTreeRadiusQueryData RadiusQuerydata { get; private set; }
@@ -31,7 +30,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
 
             EnableDraw = false;
             Configuration = KdTreeConfiguration.Default;
-            KdTree = new KdTree.KdTree(Mesh.CreateEmpty(), Configuration);
+            KdTree = new MeshQuerying.KdTree(Mesh.CreateEmpty(), Configuration);
 
             RadiusQuerydata = new KdTreeRadiusQueryData(drawableFactoryProvider, funcExecutor);
             NearestQuerydata = new KdTreeNearestQueryData(drawableFactoryProvider, funcExecutor);
@@ -39,14 +38,14 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
 
         public void Reset()
         {
-            Reset(KdTree.Model);
+            Reset(KdTree.Mesh);
         }
 
         public void Reset(Mesh model)
         {
             var buildKdTree = FuncExecutor.Execute((progress) =>
               {
-                  return new KdTree.KdTree(model, Configuration, progress);
+                  return new MeshQuerying.KdTree(model, Configuration, progress);
               });
 
 

@@ -1,5 +1,4 @@
-﻿using GeometricAlgorithms.Domain.Cameras;
-using GeometricAlgorithms.Domain.Drawables;
+﻿using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.MonoGame.Forms.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -69,7 +68,7 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             Effect.Dispose();
         }
 
-        public void Draw(ACamera camera)
+        public void Draw(Domain.ACamera camera)
         {
             //Set buffers
             Device.SetVertexBuffer(Vertices);

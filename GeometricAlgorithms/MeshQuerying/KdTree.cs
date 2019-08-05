@@ -6,36 +6,38 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.KdTree
+namespace GeometricAlgorithms.MeshQuerying
 {
     public class KdTree
     {
         private readonly KdTreeNode Root;
 
-        public Mesh Model { get; set; }
+        public Mesh Mesh { get; private set; }
 
-        public KdTree(Mesh model, KdTreeConfiguration configuration = null, IProgressUpdater progressUpdater = null)
+        public KdTree(Mesh mesh, KdTreeConfiguration configuration = null, IProgressUpdater progressUpdater = null)
         {
             if (configuration == null)
             {
                 configuration = KdTreeConfiguration.Default;
             }
 
-            Model = model;
+            Mesh = mesh;
 
             //Needs position mapping to preserve original indices because 
             //they are necessary to find the other related data in the model
-            var positionMapping = model.Positions.Select((vector, index) => new VertexPosition(vector, index)).ToArray();
+            var positionMapping = mesh.Positions
+                .Select((vector, index) => new PositionIndex(vector, index))
+                .ToArray();
 
-            var range = Range<VertexPosition>.FromArray(positionMapping, 0, model.Positions.Length);
-            var rootBoundingBox = BoundingBox.CreateContainer(model.Positions);
+            var range = Range<PositionIndex>.FromArray(positionMapping, 0, mesh.VertexCount);
+            var rootBoundingBox = BoundingBox.CreateContainer(mesh.Positions);
 
             var updater = new KdTreeProgressUpdater(
                 progressUpdater,
-                (2 * model.Positions.Length) / configuration.MaximumPointsPerLeaf,
+                (2 * mesh.VertexCount) / configuration.MaximumPointsPerLeaf,
                 "Building Kd-Tree");
 
-            if (model.Positions.Length > configuration.MaximumPointsPerLeaf)
+            if (mesh.VertexCount > configuration.MaximumPointsPerLeaf)
             {
                 Root = new KdTreeBranch(rootBoundingBox, range, configuration, updater);
             }
@@ -49,36 +51,50 @@ namespace GeometricAlgorithms.KdTree
 
         public KdTree Reshape(KdTreeConfiguration configuration)
         {
-            return new KdTree(Model, configuration);
+            return new KdTree(Mesh, configuration);
         }
 
-        public List<int> FindInRadius(
-            Vector3 seachCenter,
-            float searchRadius,
+        /// <summary>
+        /// Query for indices of vertices that are in radius around query center
+        /// </summary>
+        /// <param name="queryCenter"></param>
+        /// <param name="queryRadius"></param>
+        /// <param name="progressUpdater"></param>
+        /// <returns></returns>
+        public List<PositionIndex> FindInRadius(
+            Vector3 queryCenter,
+            float queryRadius,
             IProgressUpdater progressUpdater = null)
         {
-            var resultList = new List<int>();
+            var resultList = new List<PositionIndex>();
 
             var kdTreeProgress = new KdTreeProgressUpdater(progressUpdater, Root.LeafCount, "Looking for vertices in radius");
 
-            Root.FindInRadius(new InRadiusQuery(seachCenter, searchRadius, resultList, kdTreeProgress));
+            Root.FindInRadius(new InRadiusQuery(queryCenter, queryRadius, resultList, kdTreeProgress));
 
             kdTreeProgress.IsCompleted();
 
             return resultList;
         }
 
-        public SortedList<float, int> FindNearestVertices(
-            Vector3 searchPosition,
+        /// <summary>
+        /// Query for amount of indices of closest vertices
+        /// </summary>
+        /// <param name="queryPosition"></param>
+        /// <param name="pointAmount"></param>
+        /// <param name="progressUpdater"></param>
+        /// <returns></returns>
+        public SortedList<float, PositionIndex> FindNearestVertices(
+            Vector3 queryPosition,
             int pointAmount,
             IProgressUpdater progressUpdater = null)
         {
-            var resultSet = new SortedList<float, int>(new DistanceComparer());
+            var resultSet = new SortedList<float, PositionIndex>(new DistanceComparer());
 
             var kdTreeProgress = new KdTreeProgressUpdater(progressUpdater, Root.LeafCount, "Looking for nearest points");
 
             Root.FindNearestVertices(new NearestVerticesQuery(
-                searchPosition,
+                queryPosition,
                 pointAmount,
                 resultSet,
                 kdTreeProgress

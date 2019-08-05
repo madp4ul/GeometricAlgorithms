@@ -1,8 +1,7 @@
 ﻿using GeometricAlgorithms.Domain;
-using GeometricAlgorithms.Domain.Cameras;
 using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.Domain.Tasks;
-using GeometricAlgorithms.KdTree;
+using GeometricAlgorithms.MeshQuerying;
 using GeometricAlgorithms.MonoGame.Forms.Cameras;
 using GeometricAlgorithms.MonoGame.Forms.Drawables;
 using GeometricAlgorithms.Viewer.Interfaces;
@@ -19,7 +18,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
         private readonly IFuncExecutor FuncExecutor;
         private readonly ToggleableDrawable Drawable;
 
-        private KdTree.KdTree KdTree;
+        private MeshQuerying.KdTree KdTree;
 
         public Vector3 QueryCenter { get; set; }
         public float Radius { get; private set; }
@@ -51,7 +50,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
         }
 
 
-        public void Reset(KdTree.KdTree kdTree)
+        public void Reset(MeshQuerying.KdTree kdTree)
         {
             KdTree = kdTree;
 
@@ -84,7 +83,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
 
             radiusQuery.GetResult((vertexIndices) =>
             {
-                QueryResultDrawable.Reset(vertexIndices.Select(i => KdTree.Model.Positions[i]));
+                QueryResultDrawable.Reset(vertexIndices.Select(pi => pi.Position));
                 IsCalculating = false;
             });
         }

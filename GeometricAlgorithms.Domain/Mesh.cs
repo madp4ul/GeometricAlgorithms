@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,13 +10,14 @@ namespace GeometricAlgorithms.Domain
     public class Mesh
     {
         public int VertexCount { get; private set; }
+        public int FaceCount { get; private set; }
 
-        public Vector3[] Positions { get; private set; }
+        public ReadOnlyCollection<Vector3> Positions { get; private set; }
 
         /// <summary>
         /// Normals read from file
         /// </summary>
-        public Vector3[] FileNormals { get; set; }
+        public ReadOnlyCollection<Vector3> FileNormals { get; set; }
 
         /// <summary>
         /// Normals Approximated from faces of mesh
@@ -30,14 +32,16 @@ namespace GeometricAlgorithms.Domain
         /// <summary>
         /// Faces of mesh
         /// </summary>
-        public IFace[] Faces { get; private set; }
+        public ReadOnlyCollection<IFace> Faces { get; private set; }
 
-        public Mesh(Vector3[] positions, IFace[] faces)
+        public Mesh(Vector3[] positions, IFace[] faces, Vector3[] fileNormals = null)
         {
-            Positions = positions ?? throw new ArgumentNullException(nameof(positions));
-            Faces = faces ?? throw new ArgumentNullException(nameof(faces));
+            Positions = Array.AsReadOnly(positions) ?? throw new ArgumentNullException(nameof(positions));
+            Faces = Array.AsReadOnly(faces) ?? throw new ArgumentNullException(nameof(faces));
+            FileNormals = fileNormals != null ? Array.AsReadOnly(fileNormals) : null;
 
             VertexCount = positions.Length;
+            FaceCount = faces.Length;
         }
 
         public IEnumerable<Vector3> GetFacePositions(int index)
@@ -45,11 +49,10 @@ namespace GeometricAlgorithms.Domain
             return Faces[index].Select(vIndex => Positions[vIndex]);
         }
 
-        public Mesh Copy()
+        public Mesh Copy(Vector3[] replacePositions = null)
         {
-            return new Mesh(Positions.ToArray(), Faces.ToArray())
+            return new Mesh(replacePositions ?? Positions.ToArray(), Faces.ToArray(), FileNormals?.ToArray())
             {
-                FileNormals = this.FileNormals?.ToArray(),
                 FaceApproximatedNormals = this.FaceApproximatedNormals?.ToArray(),
                 PointApproximatedNormals = this.PointApproximatedNormals?.ToArray(),
             };

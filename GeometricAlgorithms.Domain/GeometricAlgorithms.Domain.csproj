@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BoundingBox.cs" />
-    <Compile Include="Cameras\ACamera.cs" />
+    <Compile Include="ACamera.cs" />
     <Compile Include="Dimension.cs" />
     <Compile Include="Drawables\CompositeDrawable.cs" />
     <Compile Include="Drawables\EmptyDrawable.cs" />

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GeometricAlgorithms.Domain;
-using GeometricAlgorithms.Domain.Cameras;
 using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.MonoGame.Forms.Extensions;
 using Microsoft.Xna.Framework.Graphics;

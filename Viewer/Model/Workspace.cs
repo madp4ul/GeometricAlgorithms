@@ -1,9 +1,6 @@
 ﻿using GeometricAlgorithms.Domain;
-using GeometricAlgorithms.Domain.Cameras;
 using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.Domain.Tasks;
-using GeometricAlgorithms.MonoGame.Forms.Cameras;
-using GeometricAlgorithms.MonoGame.Forms.Drawables;
 using GeometricAlgorithms.Viewer.Extensions;
 using GeometricAlgorithms.Viewer.Interfaces;
 using System.Drawing;

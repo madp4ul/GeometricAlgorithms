@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.KdTree
+namespace GeometricAlgorithms.MeshQuerying
 {
     class KdTreeBranch : KdTreeNode
     {
@@ -18,7 +18,7 @@ namespace GeometricAlgorithms.KdTree
 
         public KdTreeBranch(
             BoundingBox boundingBox,
-            Range<VertexPosition> vertices,
+            Range<PositionIndex> vertices,
             KdTreeConfiguration configuration,
             KdTreeProgressUpdater progressUpdater,
             Dimension halvedDimension = Dimension.X)
@@ -36,8 +36,8 @@ namespace GeometricAlgorithms.KdTree
             float halfSpace = DimensionSelector(vertices[halfIndex].Position);
 
             //split value range into to sections, one for each child
-            Range<VertexPosition> minChildVertices = vertices.GetRange(0, halfIndex);
-            Range<VertexPosition> maxChildVertices = vertices.GetRange(halfIndex, vertices.Length - halfIndex);
+            Range<PositionIndex> minChildVertices = vertices.GetRange(0, halfIndex);
+            Range<PositionIndex> maxChildVertices = vertices.GetRange(halfIndex, vertices.Length - halfIndex);
 
             //Create bounding box halves along median
             BoundingBox minChildBox = BoundingBox.CreateContainer(minChildVertices.Select(v => v.Position));// boundingBox.GetMinHalfAlongDimension(halvedDimension, halfSpace);
@@ -145,7 +145,7 @@ namespace GeometricAlgorithms.KdTree
             MaximumChild.AddBoundingBoxes(boundingBoxes);
         }
 
-        private class VertexComparer : IComparer<VertexPosition>
+        private class VertexComparer : IComparer<PositionIndex>
         {
             public Func<Vector3, float> DimensionSelector { get; private set; }
 
@@ -154,7 +154,7 @@ namespace GeometricAlgorithms.KdTree
                 DimensionSelector = dimensionSelector;
             }
 
-            public int Compare(VertexPosition v1, VertexPosition v2)
+            public int Compare(PositionIndex v1, PositionIndex v2)
             {
                 float diff = DimensionSelector(v1.Position) - DimensionSelector(v2.Position);
 

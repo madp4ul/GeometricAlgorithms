@@ -14,7 +14,7 @@ namespace GeometricAlgorithms.Viewer.Model
         {
         }
 
-        protected override Vector3[] SelectNormals(Mesh mesh)
+        protected override IEnumerable<Vector3> SelectNormals(Mesh mesh)
         {
             return mesh.FaceApproximatedNormals;
         }

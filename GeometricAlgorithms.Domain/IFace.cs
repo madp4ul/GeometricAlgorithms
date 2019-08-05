@@ -8,5 +8,6 @@ namespace GeometricAlgorithms.Domain
 {
     public interface IFace : IEnumerable<int>
     {
+        float Area { get; }
     }
 }

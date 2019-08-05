@@ -1,5 +1,4 @@
 ﻿using GeometricAlgorithms.Domain;
-using GeometricAlgorithms.Domain.Cameras;
 using System;
 using System.Collections.Generic;
 using System.Linq;

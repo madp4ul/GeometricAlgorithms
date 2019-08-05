@@ -5,16 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.KdTree
+namespace GeometricAlgorithms.MeshQuerying
 {
     class KdTreeLeaf : KdTreeNode
     {
-        public Range<VertexPosition> Vertices { get; set; }
+        public Range<PositionIndex> Vertices { get; set; }
         public override int NodeCount { get => 1; protected set { } }
 
         public override int LeafCount { get => 1; protected set { } }
 
-        public KdTreeLeaf(BoundingBox boundingBox, Range<VertexPosition> vertices, KdTreeProgressUpdater progressUpdater)
+        public KdTreeLeaf(BoundingBox boundingBox, Range<PositionIndex> vertices, KdTreeProgressUpdater progressUpdater)
                : base(boundingBox, vertices.Length)
         {
             Vertices = vertices ?? throw new ArgumentNullException(nameof(vertices));
@@ -27,7 +27,7 @@ namespace GeometricAlgorithms.KdTree
             {
                 if ((vertex.Position - query.SeachCenter).LengthSquared < query.SearchRadiusSquared)
                 {
-                    query.ResultSet.Add(vertex.OriginalIndex);
+                    query.ResultSet.Add(vertex);
                 }
             }
             query.ProgressUpdater.UpdateAddOperation();
@@ -46,7 +46,7 @@ namespace GeometricAlgorithms.KdTree
                         query.ResultSet.RemoveAt(query.ResultSet.Count - 1);
                     }
 
-                    query.ResultSet.Add(distance, vertex.OriginalIndex);
+                    query.ResultSet.Add(distance, vertex);
 
                     //If list is full after adding point refresh max search radius with last
                     if (query.ResultSet.Count == query.PointAmount)

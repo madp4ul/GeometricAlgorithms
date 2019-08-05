@@ -20,6 +20,8 @@ namespace GeometricAlgorithms.Domain
             Index3 = index3;
         }
 
+        public float Area => throw new NotImplementedException();
+
         public IEnumerator<int> GetEnumerator()
         {
             yield return Index1;

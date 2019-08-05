@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.KdTree
+namespace GeometricAlgorithms.MeshQuerying
 {
     class DistanceComparer : IComparer<float>
     {

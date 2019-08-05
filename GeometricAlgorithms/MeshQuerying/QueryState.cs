@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.KdTree
+namespace GeometricAlgorithms.MeshQuerying
 {
     class NearestVerticesQuery
     {
         public readonly Vector3 SearchPosition;
         public readonly int PointAmount;
-        public readonly SortedList<float, int> ResultSet;
+        public readonly SortedList<float, PositionIndex> ResultSet;
         public readonly KdTreeProgressUpdater ProgressUpdater;
 
         public float MaxSearchRadius = float.PositiveInfinity;
@@ -19,7 +19,7 @@ namespace GeometricAlgorithms.KdTree
         public NearestVerticesQuery(
             Vector3 searchPosition,
             int pointAmount,
-            SortedList<float, int> resultSet,
+            SortedList<float, PositionIndex> resultSet,
             KdTreeProgressUpdater progressUpdater)
         {
             SearchPosition = searchPosition;
@@ -33,11 +33,11 @@ namespace GeometricAlgorithms.KdTree
     {
         public readonly Vector3 SeachCenter;
         public readonly float SearchRadius;
-        public readonly List<int> ResultSet;
+        public readonly List<PositionIndex> ResultSet;
         public readonly float SearchRadiusSquared;
         public readonly KdTreeProgressUpdater ProgressUpdater;
 
-        public InRadiusQuery(Vector3 seachCenter, float searchRadius, List<int> resultSet, KdTreeProgressUpdater progressUpdater)
+        public InRadiusQuery(Vector3 seachCenter, float searchRadius, List<PositionIndex> resultSet, KdTreeProgressUpdater progressUpdater)
         {
             this.SeachCenter = seachCenter;
             this.SearchRadius = searchRadius;

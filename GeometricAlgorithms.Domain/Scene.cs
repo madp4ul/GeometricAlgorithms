@@ -1,4 +1,4 @@
-﻿using GeometricAlgorithms.Domain.Cameras;
+﻿using GeometricAlgorithms.Domain;
 using GeometricAlgorithms.Domain.Drawables;
 using System;
 using System.Collections.Generic;

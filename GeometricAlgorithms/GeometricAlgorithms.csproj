@@ -45,16 +45,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="KdTree\DistanceComparer.cs" />
-    <Compile Include="KdTree\KdTree.cs" />
-    <Compile Include="KdTree\KdTreeBranch.cs" />
-    <Compile Include="KdTree\KdTreeConfiguration.cs" />
-    <Compile Include="KdTree\KdTreeLeaf.cs" />
-    <Compile Include="KdTree\KdTreeNode.cs" />
-    <Compile Include="KdTree\KdTreeProgressUpdater.cs" />
-    <Compile Include="KdTree\Queries.cs" />
-    <Compile Include="KdTree\Range.cs" />
-    <Compile Include="KdTree\VertexPosition.cs" />
+    <Compile Include="MeshQuerying\DistanceComparer.cs" />
+    <Compile Include="MeshQuerying\KdTree.cs" />
+    <Compile Include="MeshQuerying\KdTreeBranch.cs" />
+    <Compile Include="MeshQuerying\KdTreeConfiguration.cs" />
+    <Compile Include="MeshQuerying\KdTreeLeaf.cs" />
+    <Compile Include="MeshQuerying\KdTreeNode.cs" />
+    <Compile Include="MeshQuerying\KdTreeProgressUpdater.cs" />
+    <Compile Include="MeshQuerying\QueryState.cs" />
+    <Compile Include="MeshQuerying\Range.cs" />
+    <Compile Include="MeshQuerying\PositionIndex.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

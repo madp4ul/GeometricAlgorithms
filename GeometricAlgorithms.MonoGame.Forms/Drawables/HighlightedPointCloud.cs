@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GeometricAlgorithms.Domain.Cameras;
 using GeometricAlgorithms.MonoGame.PointRendering;
 using Microsoft.Xna.Framework;
 
@@ -24,7 +23,7 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             Effect.ApplyPointHighlight();
         }
 
-        public override void Draw(ACamera camera)
+        public override void Draw(Domain.ACamera camera)
         {
             var previous = Effect.HighlightColor;
             Effect.HighlightColor = HighlightColor;

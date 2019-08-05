@@ -1,7 +1,6 @@
 ﻿namespace GeometricAlgorithms.MonoGame.Forms.Cameras
 {
     using GeometricAlgorithms.Domain;
-    using GeometricAlgorithms.Domain.Cameras;
     using GeometricAlgorithms.MonoGame.Forms.Extensions;
     using System;
 

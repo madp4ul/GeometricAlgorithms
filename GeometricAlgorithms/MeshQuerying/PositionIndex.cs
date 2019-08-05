@@ -5,14 +5,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.KdTree
+namespace GeometricAlgorithms.MeshQuerying
 {
-    class VertexPosition
+    public class PositionIndex
     {
+        /// <summary>
+        /// Position of vertex
+        /// </summary>
         public readonly Vector3 Position;
+
+        /// <summary>
+        /// Index of related data in mesh this belongs to
+        /// </summary>
         public readonly int OriginalIndex;
 
-        public VertexPosition(Vector3 position, int originalIndex)
+        public PositionIndex(Vector3 position, int originalIndex)
         {
             Position = position;
             OriginalIndex = originalIndex;

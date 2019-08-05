@@ -11,25 +11,23 @@ namespace GeometricAlgorithms.FileProcessing
     {
         public Mesh ReadPoints(string filePath)
         {
-            Mesh model;
+            Mesh mesh;
 
             if (filePath.EndsWith("off"))
             {
-                model = new OFFReader().ReadPoints(filePath);
+                mesh = new OFFReader().ReadPoints(filePath);
             }
             else
             {
                 throw new NotImplementedException("This file format is not supported");
             }
 
-            ScaleAndMoveToUnitCubeAroundOrigin(model);
-
-            return model;
+            return ScaleAndMoveToUnitCubeAroundOrigin(mesh);
         }
 
-        private void ScaleAndMoveToUnitCubeAroundOrigin(Mesh model)
+        private Mesh ScaleAndMoveToUnitCubeAroundOrigin(Mesh mesh)
         {
-            var bounds = BoundingBox.CreateContainer(model.Positions);
+            var bounds = BoundingBox.CreateContainer(mesh.Positions);
 
             Vector3 translationBeforeScaling = bounds.Minimum;//Move Corner to Origin
             Vector3 size = bounds.Diagonal;
@@ -41,13 +39,19 @@ namespace GeometricAlgorithms.FileProcessing
                 (Vector3.One - scaledSize) / 2 //Move to Middle of Unit Cube
                 - (Vector3.One / 2); //Move from middle of Unit Cube to Origin
 
-            for (int i = 0; i < model.Positions.Length; i++)
+
+            Vector3[] tranformedPositions = new Vector3[mesh.VertexCount];
+
+            for (int i = 0; i < mesh.VertexCount; i++)
             {
-                ref Vector3 position = ref model.Positions[i];
+                Vector3 position = mesh.Positions[i];
                 position -= translationBeforeScaling;
                 position *= scaleFactor;
                 position += translationAfterScaling;
+                tranformedPositions[i] = position;
             }
+
+            return mesh.Copy(replacePositions: tranformedPositions);
         }
     }
 }

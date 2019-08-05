@@ -62,10 +62,7 @@ namespace GeometricAlgorithms.FileProcessing
                 faces[i] = ProcessFaceLine(lineData);
             }
 
-            return new Mesh(positions, faces)
-            {
-                FileNormals = normals
-            };
+            return new Mesh(positions, faces, normals);
         }
 
         private IFace ProcessFaceLine(string[] lineData)

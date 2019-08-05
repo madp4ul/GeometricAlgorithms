@@ -5,25 +5,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.KdTree
+namespace GeometricAlgorithms.MeshQuerying
 {
     class KdTreeProgressUpdater
     {
         private readonly IProgressUpdater Updater;
 
         private readonly string OperationDescription;
-
         private readonly int TotalOperations;
         private int OperationsCompleted;
 
-        public KdTreeProgressUpdater(IProgressUpdater updater, int numberOfOperations, string operationDescription)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="updater"></param>
+        /// <param name="totalOperations">Predicted total amount of operations, 
+        /// if unsure guess too high instead of too low</param>
+        /// <param name="operationDescription"></param>
+        public KdTreeProgressUpdater(IProgressUpdater updater, int totalOperations, string operationDescription)
         {
             Updater = updater;
             OperationDescription = operationDescription;
-            TotalOperations = numberOfOperations;
+            TotalOperations = totalOperations;
             OperationsCompleted = 0;
         }
 
+        /// <summary>
+        /// Add progress towards reaching goal
+        /// </summary>
+        /// <param name="operationCount"></param>
         public void UpdateAddOperation(int operationCount = 1)
         {
             if (Updater != null)

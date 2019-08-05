@@ -1,5 +1,4 @@
-﻿using GeometricAlgorithms.Domain.Cameras;
-using GeometricAlgorithms.Domain.Drawables;
+﻿using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.MonoGame.Forms.Extensions;
 using GeometricAlgorithms.MonoGame.PointRendering;
 using Microsoft.Xna.Framework;
@@ -72,7 +71,7 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             Effect.ApplyPointDrawing();
         }
 
-        public virtual void Draw(ACamera camera)
+        public virtual void Draw(Domain.ACamera camera)
         {
             Device.SetVertexBuffer(Vertices);
             Device.Indices = Indices;
