@@ -27,7 +27,7 @@ namespace GeometricAlgorithms.Domain
         {
             return new Mesh<TVertex>(Vertices.ToArray(), Faces.ToArray());
         }
-
+                
         public static Mesh<TVertex> CreateEmpty()
         {
             return new Mesh<TVertex>(new TVertex[0], new IFace[0]);

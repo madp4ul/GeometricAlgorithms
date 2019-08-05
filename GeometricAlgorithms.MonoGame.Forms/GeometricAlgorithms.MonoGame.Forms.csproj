@@ -67,6 +67,7 @@
     <Compile Include="Drawables\BoundingBoxRepresentation.cs" />
     <Compile Include="Drawables\DrawableFactory.cs" />
     <Compile Include="Drawables\HighlightedPointCloud.cs" />
+    <Compile Include="Drawables\VectorsDrawable.cs" />
     <Compile Include="Drawables\PointCloud.cs" />
     <Compile Include="Extensions\ConvertExtensions.cs" />
     <Compile Include="Extensions\TransformationExtensions.cs" />

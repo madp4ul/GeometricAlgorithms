@@ -37,15 +37,6 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
             NearestQuerydata = new KdTreeNearestQueryData(drawableFactoryProvider, funcExecutor);
         }
 
-        public KdTreeData(
-            Mesh<VertexNormal> model,
-            IDrawableFactoryProvider drawableFactoryProvider,
-            IFuncExecutor funcExecutor)
-            : this(drawableFactoryProvider, funcExecutor)
-        {
-            Reset(model);
-        }
-
         public void Reset()
         {
             Reset(KdTree.Model);

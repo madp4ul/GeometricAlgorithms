@@ -16,31 +16,23 @@ namespace GeometricAlgorithms.Viewer.Model
     {
         private readonly IDrawableFactoryProvider DrawableFactoryProvider;
 
-        public Mesh<VertexNormal> Model { get; set; }
+        public Mesh<VertexNormal> Model { get; private set; }
 
         public readonly KdTreeData KdTreeData;
-
+        public readonly NormalData NormalData;
+        public readonly ApproximatedNormalData ApproximatedNormalData;
 
         public PointData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {
             DrawableFactoryProvider = drawableFactoryProvider;
             Model = Mesh<VertexNormal>.CreateEmpty();
             Drawable = new EmptyDrawable();
+            NormalData = new NormalData(drawableFactoryProvider);
+            ApproximatedNormalData = new ApproximatedNormalData(drawableFactoryProvider);
             KdTreeData = new KdTreeData(drawableFactoryProvider, funcExecutor);
         }
 
-        public PointData(
-           Mesh<VertexNormal> model,
-            int radius,
-            IDrawableFactoryProvider drawableFactoryProvider,
-            IFuncExecutor funcExecutor)
-            : this(drawableFactoryProvider, funcExecutor)
-        {
-            Reset(model, radius);
-            KdTreeData.Reset(model);
-        }
-
-        public void Reset(Mesh<VertexNormal> model, int radius)
+        public void Reset(Mesh<VertexNormal> model, int pointRadius)
         {
             Model = model ?? throw new ArgumentNullException(nameof(model));
 
@@ -49,14 +41,18 @@ namespace GeometricAlgorithms.Viewer.Model
                 Drawable.Dispose();
             }
             Drawable = DrawableFactoryProvider.DrawableFactory.CreatePointCloud(
-                model.Vertices.Select(v => v.Position), radius);
+                Model.Vertices.Select(v => v.Position), pointRadius);
 
+            NormalData.Reset(Model);
+            ApproximatedNormalData.Reset(Model);
             KdTreeData.Reset(Model);
         }
 
         public override void Draw(ACamera camera)
         {
             base.Draw(camera);
+            NormalData.Draw(camera);
+            ApproximatedNormalData.Draw(camera);
             KdTreeData.Draw(camera);
         }
     }

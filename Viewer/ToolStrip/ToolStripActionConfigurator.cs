@@ -45,13 +45,19 @@ namespace GeometricAlgorithms.Viewer.ToolStrip
             var viewerMenuTools = new ViewerMenuTools(Model.Workspace);
 
             GetItem(viewerOptionItem.DropDownItems, "showPointCloudToolStripMenuItem")
-                .Click += (o, e) =>
-                    {
-                        ToolStripMenuItem sender = (ToolStripMenuItem)o;
-                        sender.Checked = !sender.Checked;
+                .Click += ToggleClick(viewerMenuTools.SetPointCloudVisibility);
 
-                        viewerMenuTools.SetPointCloudVisibility(sender.Checked);
-                    };
+            var showNormals = GetItem(viewerOptionItem.DropDownItems, "showOriginalNormalsToolStripMenuItem");
+            var showApproximatedNormals = GetItem(viewerOptionItem.DropDownItems, "showApproximatedNormalsToolStripMenuItem");
+
+            viewerOptionItem.DropDownOpening += (o, e) =>
+            {
+                showNormals.Enabled = viewerMenuTools.EnableOptionSetNormalVisiblity();
+                showApproximatedNormals.Enabled = viewerMenuTools.EnableOptionSetApproximatedNormalVisiblity();
+            };
+
+            showNormals.Click += ToggleClick(viewerMenuTools.SetNormalVisiblity);
+            showApproximatedNormals.Click += ToggleClick(viewerMenuTools.SetApproximatedNormalVisiblity);
         }
 
         private void ConfigureKdTreeOptions(ToolStripMenuItem kdTreeOptionItem)
@@ -59,19 +65,24 @@ namespace GeometricAlgorithms.Viewer.ToolStrip
             var treeMenuTools = new KdTreeMenuTools(Model.Workspace.PointData.KdTreeData);
 
             GetItem(kdTreeOptionItem.DropDownItems, "showKdTreeToolStripMenuItem")
-                .Click += (o, e) =>
-                {
-                    ToolStripMenuItem sender = (ToolStripMenuItem)o;
-                    sender.Checked = !sender.Checked;
-
-                    treeMenuTools.SetKdTreeVisibility(sender.Checked);
-                };
+                .Click += ToggleClick(treeMenuTools.SetKdTreeVisibility);
 
             GetItem(kdTreeOptionItem.DropDownItems, "openKdTreeSettingStripMenuItem")
                 .Click += (o, e) =>
                 {
                     treeMenuTools.OpenKdTreeQueriesWindow(MainWindow);
                 };
+        }
+
+        private EventHandler ToggleClick(Action<bool> toToggle)
+        {
+            return (o, e) =>
+            {
+                ToolStripMenuItem sender = (ToolStripMenuItem)o;
+                sender.Checked = !sender.Checked;
+
+                toToggle(sender.Checked);
+            };
         }
 
         private ToolStripItem GetItem(ToolStripItemCollection collection, string name)

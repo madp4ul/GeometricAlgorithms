@@ -68,5 +68,14 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             //TODO
             throw new NotImplementedException();
         }
+
+        public IDrawable CreateVectors(
+            IEnumerable<Vector3> supportVectors,
+            IEnumerable<Vector3> directionVectors,
+            float length,
+            VectorColorGenerator colorGenerator = null)
+        {
+            return new VectorsDrawable(ContentProvider.GraphicsDevice, supportVectors, directionVectors, length, colorGenerator);
+        }
     }
 }

@@ -41,6 +41,8 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.backgroundWorkerProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.backgroundWorkerStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.showOriginalNormalsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showApproximatedNormalsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -84,7 +86,9 @@
             // viewerToolStripMenuItem
             // 
             this.viewerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.showPointCloudToolStripMenuItem});
+            this.showPointCloudToolStripMenuItem,
+            this.showOriginalNormalsToolStripMenuItem,
+            this.showApproximatedNormalsToolStripMenuItem});
             this.viewerToolStripMenuItem.Name = "viewerToolStripMenuItem";
             this.viewerToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
             this.viewerToolStripMenuItem.Text = "Viewer";
@@ -94,7 +98,7 @@
             this.showPointCloudToolStripMenuItem.Checked = true;
             this.showPointCloudToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showPointCloudToolStripMenuItem.Name = "showPointCloudToolStripMenuItem";
-            this.showPointCloudToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+            this.showPointCloudToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
             this.showPointCloudToolStripMenuItem.Text = "Show Vertex Locations";
             // 
             // kdTreeToolStripMenuItem
@@ -151,6 +155,22 @@
             this.backgroundWorkerStatusLabel.Size = new System.Drawing.Size(39, 17);
             this.backgroundWorkerStatusLabel.Text = "Ready";
             // 
+            // showOriginalNormalsToolStripMenuItem
+            // 
+            this.showOriginalNormalsToolStripMenuItem.Checked = true;
+            this.showOriginalNormalsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showOriginalNormalsToolStripMenuItem.Name = "showOriginalNormalsToolStripMenuItem";
+            this.showOriginalNormalsToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.showOriginalNormalsToolStripMenuItem.Text = "Show Original Normals";
+            // 
+            // showApproximatedNormalsToolStripMenuItem
+            // 
+            this.showApproximatedNormalsToolStripMenuItem.Checked = true;
+            this.showApproximatedNormalsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showApproximatedNormalsToolStripMenuItem.Name = "showApproximatedNormalsToolStripMenuItem";
+            this.showApproximatedNormalsToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.showApproximatedNormalsToolStripMenuItem.Text = "Show Approximated Normals";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -188,6 +208,8 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripProgressBar backgroundWorkerProgressBar;
         private System.Windows.Forms.ToolStripStatusLabel backgroundWorkerStatusLabel;
+        private System.Windows.Forms.ToolStripMenuItem showOriginalNormalsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showApproximatedNormalsToolStripMenuItem;
     }
 }
 

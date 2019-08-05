@@ -16,9 +16,29 @@ namespace GeometricAlgorithms.Viewer.ToolStrip
             Workspace = workspace ?? throw new ArgumentNullException(nameof(workspace));
         }
 
+        public bool EnableOptionSetNormalVisiblity()
+        {
+            return Workspace.PointData.NormalData.HasNormals;
+        }
+
+        public bool EnableOptionSetApproximatedNormalVisiblity()
+        {
+            return Workspace.PointData.ApproximatedNormalData.HasNormals;
+        }
+
         public void SetPointCloudVisibility(bool showPointCloud)
         {
             Workspace.PointData.EnableDraw = showPointCloud;
+        }
+
+        public void SetNormalVisiblity(bool showNormals)
+        {
+            Workspace.PointData.NormalData.EnableDraw = showNormals;
+        }
+
+        public void SetApproximatedNormalVisiblity(bool showNormals)
+        {
+            Workspace.PointData.ApproximatedNormalData.EnableDraw = showNormals;
         }
     }
 }
