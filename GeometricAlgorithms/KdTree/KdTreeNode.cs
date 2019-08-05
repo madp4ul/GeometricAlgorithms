@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.KdTree
 {
-    abstract class KdTreeNode<TVertex> where TVertex : IVertex
+    abstract class KdTreeNode
     {
         public int VertexCount { get; set; }
 
@@ -22,9 +22,9 @@ namespace GeometricAlgorithms.KdTree
             BoundingBox = boundingBox ?? throw new ArgumentNullException(nameof(boundingBox));
         }
 
-        public abstract void FindInRadius(InRadiusQuery<TVertex> query);
+        public abstract void FindInRadius(InRadiusQuery query);
 
-        public abstract void FindNearestVertices(NearestVerticesQuery<TVertex> query);
+        public abstract void FindNearestVertices(NearestVerticesQuery query);
 
         public virtual void AddBoundingBoxes(List<BoundingBox> boundingBoxes)
         {

@@ -19,7 +19,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
         private readonly IFuncExecutor FuncExecutor;
         private readonly ToggleableDrawable Drawable;
 
-        private KdTree<VertexNormal> KdTree;
+        private KdTree.KdTree KdTree;
 
         public Vector3 QueryCenter { get; set; }
         public float Radius { get; private set; }
@@ -51,7 +51,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
         }
 
 
-        public void Reset(KdTree<VertexNormal> kdTree)
+        public void Reset(KdTree.KdTree kdTree)
         {
             KdTree = kdTree;
 
@@ -82,9 +82,9 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
             QueryHasChangedSinceLastCalculation = false;
             var radiusQuery = FuncExecutor.Execute((progress) => KdTree.FindInRadius(QueryCenter, Radius, progress));
 
-            radiusQuery.GetResult((vertices) =>
+            radiusQuery.GetResult((vertexIndices) =>
             {
-                QueryResultDrawable.Reset(vertices);
+                QueryResultDrawable.Reset(vertexIndices.Select(i => KdTree.Model.Positions[i]));
                 IsCalculating = false;
             });
         }

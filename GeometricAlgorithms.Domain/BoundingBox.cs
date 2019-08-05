@@ -113,7 +113,7 @@ namespace GeometricAlgorithms.Domain
                  Maximum);
         }
 
-        public static BoundingBox CreateContainer<TVertex>(IEnumerable<TVertex> vertices) where TVertex : IVertex
+        public static BoundingBox CreateContainer(IEnumerable<Vector3> vertices)
         {
             float minX = float.MaxValue;
             float minY = float.MaxValue;
@@ -123,32 +123,32 @@ namespace GeometricAlgorithms.Domain
             float maxY = float.MinValue;
             float maxZ = float.MinValue;
 
-            foreach (TVertex vertex in vertices)
+            foreach (var position in vertices)
             {
-                if (vertex.Position.X < minX)
+                if (position.X < minX)
                 {
-                    minX = vertex.Position.X;
+                    minX = position.X;
                 }
-                if (vertex.Position.Y < minY)
+                if (position.Y < minY)
                 {
-                    minY = vertex.Position.Y;
+                    minY = position.Y;
                 }
-                if (vertex.Position.Z < minZ)
+                if (position.Z < minZ)
                 {
-                    minZ = vertex.Position.Z;
+                    minZ = position.Z;
                 }
 
-                if (vertex.Position.X > maxX)
+                if (position.X > maxX)
                 {
-                    maxX = vertex.Position.X;
+                    maxX = position.X;
                 }
-                if (vertex.Position.Y > maxY)
+                if (position.Y > maxY)
                 {
-                    maxY = vertex.Position.Y;
+                    maxY = position.Y;
                 }
-                if (vertex.Position.Z > maxZ)
+                if (position.Z > maxZ)
                 {
-                    maxZ = vertex.Position.Z;
+                    maxZ = position.Z;
                 }
             }
 

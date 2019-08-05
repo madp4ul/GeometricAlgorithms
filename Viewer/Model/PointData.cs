@@ -16,23 +16,23 @@ namespace GeometricAlgorithms.Viewer.Model
     {
         private readonly IDrawableFactoryProvider DrawableFactoryProvider;
 
-        public Mesh<VertexNormal> Model { get; private set; }
+        public Mesh Model { get; private set; }
 
         public readonly KdTreeData KdTreeData;
         public readonly NormalData NormalData;
-        public readonly ApproximatedNormalData ApproximatedNormalData;
+        public readonly FaceApproximatedNormalData ApproximatedNormalData;
 
         public PointData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {
             DrawableFactoryProvider = drawableFactoryProvider;
-            Model = Mesh<VertexNormal>.CreateEmpty();
+            Model = Mesh.CreateEmpty();
             Drawable = new EmptyDrawable();
             NormalData = new NormalData(drawableFactoryProvider);
-            ApproximatedNormalData = new ApproximatedNormalData(drawableFactoryProvider);
+            ApproximatedNormalData = new FaceApproximatedNormalData(drawableFactoryProvider);
             KdTreeData = new KdTreeData(drawableFactoryProvider, funcExecutor);
         }
 
-        public void Reset(Mesh<VertexNormal> model, int pointRadius)
+        public void Reset(Mesh model, int pointRadius)
         {
             Model = model ?? throw new ArgumentNullException(nameof(model));
 
@@ -41,7 +41,7 @@ namespace GeometricAlgorithms.Viewer.Model
                 Drawable.Dispose();
             }
             Drawable = DrawableFactoryProvider.DrawableFactory.CreatePointCloud(
-                Model.Vertices.Select(v => v.Position), pointRadius);
+                Model.Positions, pointRadius);
 
             NormalData.Reset(Model);
             ApproximatedNormalData.Reset(Model);

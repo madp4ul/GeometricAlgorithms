@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.KdTree
 {
-    class KdTreeBranch<TVertex> : KdTreeNode<TVertex> where TVertex : IVertex
+    class KdTreeBranch : KdTreeNode
     {
-        public KdTreeNode<TVertex> MinimumChild { get; set; }
-        public KdTreeNode<TVertex> MaximumChild { get; set; }
+        public KdTreeNode MinimumChild { get; set; }
+        public KdTreeNode MaximumChild { get; set; }
         public override int NodeCount { get; protected set; }
         public override int LeafCount { get; protected set; }
 
@@ -18,7 +18,7 @@ namespace GeometricAlgorithms.KdTree
 
         public KdTreeBranch(
             BoundingBox boundingBox,
-            Range<TVertex> vertices,
+            Range<VertexPosition> vertices,
             KdTreeConfiguration configuration,
             KdTreeProgressUpdater progressUpdater,
             Dimension halvedDimension = Dimension.X)
@@ -36,29 +36,29 @@ namespace GeometricAlgorithms.KdTree
             float halfSpace = DimensionSelector(vertices[halfIndex].Position);
 
             //split value range into to sections, one for each child
-            Range<TVertex> minChildVertices = vertices.GetRange(0, halfIndex);
-            Range<TVertex> maxChildVertices = vertices.GetRange(halfIndex, vertices.Length - halfIndex);
+            Range<VertexPosition> minChildVertices = vertices.GetRange(0, halfIndex);
+            Range<VertexPosition> maxChildVertices = vertices.GetRange(halfIndex, vertices.Length - halfIndex);
 
             //Create bounding box halves along median
-            BoundingBox minChildBox = BoundingBox.CreateContainer(minChildVertices);// boundingBox.GetMinHalfAlongDimension(halvedDimension, halfSpace);
-            BoundingBox maxChildBox = BoundingBox.CreateContainer(maxChildVertices);// boundingBox.GetMaxHalfAlongDimension(halvedDimension, halfSpace);
+            BoundingBox minChildBox = BoundingBox.CreateContainer(minChildVertices.Select(v => v.Position));// boundingBox.GetMinHalfAlongDimension(halvedDimension, halfSpace);
+            BoundingBox maxChildBox = BoundingBox.CreateContainer(maxChildVertices.Select(v => v.Position));// boundingBox.GetMaxHalfAlongDimension(halvedDimension, halfSpace);
 
             //If more vertices than what fits into to leafs, create more branches
             if (vertices.Length > configuration.MaximumPointsPerLeaf * 2)
             {
                 Dimension nextDimension = GetNextDimension(halvedDimension);
 
-                MinimumChild = new KdTreeBranch<TVertex>(minChildBox, minChildVertices, configuration, progressUpdater, nextDimension);
-                MaximumChild = new KdTreeBranch<TVertex>(maxChildBox, maxChildVertices, configuration, progressUpdater, nextDimension);
+                MinimumChild = new KdTreeBranch(minChildBox, minChildVertices, configuration, progressUpdater, nextDimension);
+                MaximumChild = new KdTreeBranch(maxChildBox, maxChildVertices, configuration, progressUpdater, nextDimension);
             }
             else //create leafs
             {
-                MinimumChild = new KdTreeLeaf<TVertex>(
+                MinimumChild = new KdTreeLeaf(
                     minChildBox,
                     minChildVertices,
                     progressUpdater);
 
-                MaximumChild = new KdTreeLeaf<TVertex>(
+                MaximumChild = new KdTreeLeaf(
                     maxChildBox,
                     maxChildVertices,
                     progressUpdater);
@@ -74,7 +74,7 @@ namespace GeometricAlgorithms.KdTree
             return (Dimension)((int)(dimension + 1) % (int)Dimension.Count);
         }
 
-        public override void FindInRadius(InRadiusQuery<TVertex> query)
+        public override void FindInRadius(InRadiusQuery query)
         {
 
             if (MinimumChild.BoundingBox.GetMinimumDistance(query.SeachCenter) < query.SearchRadius)
@@ -97,7 +97,7 @@ namespace GeometricAlgorithms.KdTree
             }
         }
 
-        public override void FindNearestVertices(NearestVerticesQuery<TVertex> query)
+        public override void FindNearestVertices(NearestVerticesQuery query)
         {
             //Enter child if still more more required to fill result or if distance is smaller than maxSearchRadius
             //which means that child potentially contains better points
@@ -145,7 +145,7 @@ namespace GeometricAlgorithms.KdTree
             MaximumChild.AddBoundingBoxes(boundingBoxes);
         }
 
-        private class VertexComparer : IComparer<TVertex>
+        private class VertexComparer : IComparer<VertexPosition>
         {
             public Func<Vector3, float> DimensionSelector { get; private set; }
 
@@ -154,7 +154,7 @@ namespace GeometricAlgorithms.KdTree
                 DimensionSelector = dimensionSelector;
             }
 
-            public int Compare(TVertex v1, TVertex v2)
+            public int Compare(VertexPosition v1, VertexPosition v2)
             {
                 float diff = DimensionSelector(v1.Position) - DimensionSelector(v2.Position);
 

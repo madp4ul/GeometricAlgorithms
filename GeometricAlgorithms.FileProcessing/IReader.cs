@@ -9,6 +9,6 @@ namespace GeometricAlgorithms.FileProcessing
 {
     public interface IReader
     {
-        Mesh<VertexNormal> ReadPoints(string filePath);
+        Mesh ReadPoints(string filePath);
     }
 }

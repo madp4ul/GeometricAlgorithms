@@ -17,17 +17,17 @@ namespace GeometricAlgorithms.FileProcessing
             FileReader = new FileReader();
         }
 
-        public Mesh<VertexNormal> ReadPoints(string offFilePath)
+        public Mesh ReadPoints(string offFilePath)
         {
             string[] lines = FileReader.ReadFile(offFilePath);
 
             if (lines[0] == "OFF")
             {
-                return ReadFile(lines, ProcessOFFVertexLine);
+                return ReadFile(lines, hasNormals: false);
             }
             else if (lines[0] == "NOFF")
             {
-                return ReadFile(lines, ProcessNOFFVertexLine);
+                return ReadFile(lines, hasNormals: true);
             }
             else
             {
@@ -35,17 +35,24 @@ namespace GeometricAlgorithms.FileProcessing
             }
         }
 
-        private Mesh<VertexNormal> ReadFile(string[] lines, Func<string[], VertexNormal> processVertexLine)
+        private Mesh ReadFile(string[] lines, bool hasNormals)
         {
             string[] itemCounts = SplitLine(lines[1]);
             int pointCount = int.Parse(itemCounts[0]);
             int faceCount = int.Parse(itemCounts[1]);
 
-            VertexNormal[] vertices = new VertexNormal[pointCount];
+            Vector3[] positions = new Vector3[pointCount];
+            Vector3[] normals = hasNormals ? new Vector3[pointCount] : null;
+
             for (int i = 0; i < pointCount; i++)
             {
                 string[] lineData = SplitLine(lines[i + 2]);
-                vertices[i] = processVertexLine(lineData);
+                positions[i] = GetPosition(lineData);
+
+                if (hasNormals)
+                {
+                    normals[i] = GetNormal(lineData);
+                }
             }
 
             IFace[] faces = new IFace[faceCount];
@@ -55,7 +62,10 @@ namespace GeometricAlgorithms.FileProcessing
                 faces[i] = ProcessFaceLine(lineData);
             }
 
-            return new Mesh<VertexNormal>(vertices, new IFace[0]);
+            return new Mesh(positions, faces)
+            {
+                FileNormals = normals
+            };
         }
 
         private IFace ProcessFaceLine(string[] lineData)
@@ -73,28 +83,24 @@ namespace GeometricAlgorithms.FileProcessing
             }
         }
 
-        private VertexNormal ProcessOFFVertexLine(string[] lineData)
+        private Vector3 GetPosition(string[] lineData)
         {
-            Vector3 vertex = new Vector3(
+            Vector3 position = new Vector3(
                 ParseFloat(lineData[0]),
                 ParseFloat(lineData[1]),
                 ParseFloat(lineData[2]));
 
-            return new VertexNormal(vertex);
+            return position;
         }
 
-        private VertexNormal ProcessNOFFVertexLine(string[] lineData)
+        private Vector3 GetNormal(string[] lineData)
         {
-            VertexNormal vertex = ProcessOFFVertexLine(lineData);
-
             Vector3 normal = new Vector3(
                 ParseFloat(lineData[3]),
                 ParseFloat(lineData[4]),
                 ParseFloat(lineData[5]));
 
-            vertex.OriginalNormal = normal;
-
-            return vertex;
+            return normal;
         }
 
         private float ParseFloat(string floatString)

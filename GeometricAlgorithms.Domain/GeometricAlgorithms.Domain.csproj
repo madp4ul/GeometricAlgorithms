@@ -61,7 +61,6 @@
     <Compile Include="Tasks\IFuncExecutor.cs" />
     <Compile Include="Tasks\IProgressUpdater.cs" />
     <Compile Include="Vector3.cs" />
-    <Compile Include="VertexNormal.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

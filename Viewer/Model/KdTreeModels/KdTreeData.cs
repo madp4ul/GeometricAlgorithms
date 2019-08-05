@@ -18,7 +18,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
         private readonly IDrawableFactoryProvider DrawableFactoryProvider;
         private readonly IFuncExecutor FuncExecutor;
 
-        public KdTree<VertexNormal> KdTree { get; private set; }
+        public KdTree.KdTree KdTree { get; private set; }
         public KdTreeConfiguration Configuration { get; set; }
 
         public KdTreeRadiusQueryData RadiusQuerydata { get; private set; }
@@ -31,7 +31,7 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
 
             EnableDraw = false;
             Configuration = KdTreeConfiguration.Default;
-            KdTree = new KdTree<VertexNormal>(Mesh<VertexNormal>.CreateEmpty(), Configuration);
+            KdTree = new KdTree.KdTree(Mesh.CreateEmpty(), Configuration);
 
             RadiusQuerydata = new KdTreeRadiusQueryData(drawableFactoryProvider, funcExecutor);
             NearestQuerydata = new KdTreeNearestQueryData(drawableFactoryProvider, funcExecutor);
@@ -42,11 +42,11 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
             Reset(KdTree.Model);
         }
 
-        public void Reset(Mesh<VertexNormal> model)
+        public void Reset(Mesh model)
         {
             var buildKdTree = FuncExecutor.Execute((progress) =>
               {
-                  return new KdTree<VertexNormal>(model, Configuration, progress);
+                  return new KdTree.KdTree(model, Configuration, progress);
               });
 
 

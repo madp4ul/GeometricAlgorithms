@@ -9,11 +9,9 @@ namespace GeometricAlgorithms.FileProcessing
 {
     public class ModelReader : IReader
     {
-
-
-        public Mesh<VertexNormal> ReadPoints(string filePath)
+        public Mesh ReadPoints(string filePath)
         {
-            Mesh<VertexNormal> model;
+            Mesh model;
 
             if (filePath.EndsWith("off"))
             {
@@ -29,9 +27,9 @@ namespace GeometricAlgorithms.FileProcessing
             return model;
         }
 
-        private void ScaleAndMoveToUnitCubeAroundOrigin(Mesh<VertexNormal> model)
+        private void ScaleAndMoveToUnitCubeAroundOrigin(Mesh model)
         {
-            var bounds = BoundingBox.CreateContainer(model.Vertices);
+            var bounds = BoundingBox.CreateContainer(model.Positions);
 
             Vector3 translationBeforeScaling = bounds.Minimum;//Move Corner to Origin
             Vector3 size = bounds.Diagonal;
@@ -43,12 +41,12 @@ namespace GeometricAlgorithms.FileProcessing
                 (Vector3.One - scaledSize) / 2 //Move to Middle of Unit Cube
                 - (Vector3.One / 2); //Move from middle of Unit Cube to Origin
 
-            for (int i = 0; i < model.Vertices.Length; i++)
+            for (int i = 0; i < model.Positions.Length; i++)
             {
-                ref VertexNormal vertex = ref model.Vertices[i];
-                vertex.Position -= translationBeforeScaling;
-                vertex.Position *= scaleFactor;
-                vertex.Position += translationAfterScaling;
+                ref Vector3 position = ref model.Positions[i];
+                position -= translationBeforeScaling;
+                position *= scaleFactor;
+                position += translationAfterScaling;
             }
         }
     }

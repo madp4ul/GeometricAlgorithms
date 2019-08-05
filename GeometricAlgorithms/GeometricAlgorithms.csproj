@@ -54,6 +54,7 @@
     <Compile Include="KdTree\KdTreeProgressUpdater.cs" />
     <Compile Include="KdTree\Queries.cs" />
     <Compile Include="KdTree\Range.cs" />
+    <Compile Include="KdTree\VertexPosition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

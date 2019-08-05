@@ -7,35 +7,35 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.KdTree
 {
-    class KdTreeLeaf<TVertex> : KdTreeNode<TVertex> where TVertex : IVertex
+    class KdTreeLeaf : KdTreeNode
     {
-        public Range<TVertex> Vertices { get; set; }
+        public Range<VertexPosition> Vertices { get; set; }
         public override int NodeCount { get => 1; protected set { } }
 
         public override int LeafCount { get => 1; protected set { } }
 
-        public KdTreeLeaf(BoundingBox boundingBox, Range<TVertex> vertices, KdTreeProgressUpdater progressUpdater)
+        public KdTreeLeaf(BoundingBox boundingBox, Range<VertexPosition> vertices, KdTreeProgressUpdater progressUpdater)
                : base(boundingBox, vertices.Length)
         {
             Vertices = vertices ?? throw new ArgumentNullException(nameof(vertices));
             progressUpdater.UpdateAddOperation();
         }
 
-        public override void FindInRadius(InRadiusQuery<TVertex> query)
+        public override void FindInRadius(InRadiusQuery query)
         {
             foreach (var vertex in Vertices)
             {
                 if ((vertex.Position - query.SeachCenter).LengthSquared < query.SearchRadiusSquared)
                 {
-                    query.ResultSet.Add(vertex);
+                    query.ResultSet.Add(vertex.OriginalIndex);
                 }
             }
             query.ProgressUpdater.UpdateAddOperation();
         }
 
-        public override void FindNearestVertices(NearestVerticesQuery<TVertex> query)
+        public override void FindNearestVertices(NearestVerticesQuery query)
         {
-            foreach (TVertex vertex in Vertices)
+            foreach (var vertex in Vertices)
             {
                 float distance = (vertex.Position - query.SearchPosition).Length;
                 if (distance < query.MaxSearchRadius)
@@ -46,7 +46,7 @@ namespace GeometricAlgorithms.KdTree
                         query.ResultSet.RemoveAt(query.ResultSet.Count - 1);
                     }
 
-                    query.ResultSet.Add(distance, vertex);
+                    query.ResultSet.Add(distance, vertex.OriginalIndex);
 
                     //If list is full after adding point refresh max search radius with last
                     if (query.ResultSet.Count == query.PointAmount)

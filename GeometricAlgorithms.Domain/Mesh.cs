@@ -6,31 +6,58 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.Domain
 {
-    public class Mesh<TVertex>
+    public class Mesh
     {
-        public TVertex[] Vertices { get; private set; }
+        public int VertexCount { get; private set; }
 
+        public Vector3[] Positions { get; private set; }
+
+        /// <summary>
+        /// Normals read from file
+        /// </summary>
+        public Vector3[] FileNormals { get; set; }
+
+        /// <summary>
+        /// Normals Approximated from faces of mesh
+        /// </summary>
+        public Vector3[] FaceApproximatedNormals { get; set; }
+
+        /// <summary>
+        /// Normals approximated from pure point cloud
+        /// </summary>
+        public Vector3[] PointApproximatedNormals { get; set; }
+
+        /// <summary>
+        /// Faces of mesh
+        /// </summary>
         public IFace[] Faces { get; private set; }
 
-        public Mesh(TVertex[] vertices, IFace[] faces)
+        public Mesh(Vector3[] positions, IFace[] faces)
         {
-            Vertices = vertices ?? throw new ArgumentNullException(nameof(vertices));
+            Positions = positions ?? throw new ArgumentNullException(nameof(positions));
             Faces = faces ?? throw new ArgumentNullException(nameof(faces));
+
+            VertexCount = positions.Length;
         }
 
-        public IEnumerable<TVertex> GetFaceVertices(int index)
+        public IEnumerable<Vector3> GetFacePositions(int index)
         {
-            return Faces[index].Select(vIndex => Vertices[vIndex]);
+            return Faces[index].Select(vIndex => Positions[vIndex]);
         }
 
-        public Mesh<TVertex> Copy()
+        public Mesh Copy()
         {
-            return new Mesh<TVertex>(Vertices.ToArray(), Faces.ToArray());
+            return new Mesh(Positions.ToArray(), Faces.ToArray())
+            {
+                FileNormals = this.FileNormals?.ToArray(),
+                FaceApproximatedNormals = this.FaceApproximatedNormals?.ToArray(),
+                PointApproximatedNormals = this.PointApproximatedNormals?.ToArray(),
+            };
         }
-                
-        public static Mesh<TVertex> CreateEmpty()
+
+        public static Mesh CreateEmpty()
         {
-            return new Mesh<TVertex>(new TVertex[0], new IFace[0]);
+            return new Mesh(new Vector3[0], new IFace[0]);
         }
     }
 }

@@ -25,15 +25,15 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
 
         public void Reset()
         {
-            Reset(Enumerable.Empty<VertexNormal>());
+            Reset(Enumerable.Empty<Vector3>());
         }
 
-        public void Reset(IEnumerable<VertexNormal> vertices)
+        public void Reset(IEnumerable<Vector3> vertices)
         {
             Drawable.Dispose();
 
             Drawable = DrawableFactoryProvider.DrawableFactory.CreateHighlightedPointCloud(
-                vertices.Select(v => v.Position), Color.LightBlue.ToVector3(), PointRadius);
+                vertices, Color.LightBlue.ToVector3(), PointRadius);
         }
     }
 }
