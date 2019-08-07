@@ -99,14 +99,15 @@
     <Compile Include="Forms\KdTreeQueries.Designer.cs">
       <DependentUpon>KdTreeQueries.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\FaceApproximatedNormalData.cs" />
+    <Compile Include="Model\FaceModels\FaceData.cs" />
+    <Compile Include="Model\NormalModels\FaceApproximatedNormalData.cs" />
     <Compile Include="Model\KdTreeModels\KdTreeNearestQueryData.cs" />
     <Compile Include="Model\KdTreeModels\KdTreeQueryResult.cs" />
     <Compile Include="Model\KdTreeModels\KdTreeRadiusQueryData.cs" />
     <Compile Include="Model\KdTreeModels\QueryCenterPoint.cs" />
     <Compile Include="Model\ModelData.cs" />
     <Compile Include="Model\KdTreeModels\KdTreeData.cs" />
-    <Compile Include="Model\NormalData.cs" />
+    <Compile Include="Model\NormalModels\NormalData.cs" />
     <Compile Include="Model\PointData.cs" />
     <Compile Include="Model\ViewerConfiguration.cs" />
     <Compile Include="GeometricAlgorithmViewer.cs">

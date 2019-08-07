@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GeometricAlgorithms.Viewer.Model.NormalModels;
+using GeometricAlgorithms.Viewer.Model.FaceModels;
 
 namespace GeometricAlgorithms.Viewer.Model
 {
@@ -15,43 +17,57 @@ namespace GeometricAlgorithms.Viewer.Model
     {
         private readonly IDrawableFactoryProvider DrawableFactoryProvider;
 
-        public Mesh Model { get; private set; }
+        public Mesh Mesh { get; private set; }
 
         public readonly KdTreeData KdTreeData;
+
         public readonly NormalData NormalData;
-        public readonly FaceApproximatedNormalData ApproximatedNormalData;
+        public readonly FaceApproximatedNormalData FaceApproximatedNormalData;
+
+        public readonly FaceData FaceData;
 
         public PointData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {
             DrawableFactoryProvider = drawableFactoryProvider;
-            Model = Mesh.CreateEmpty();
+            Mesh = Mesh.CreateEmpty();
             Drawable = new EmptyDrawable();
+
             NormalData = new NormalData(drawableFactoryProvider);
-            ApproximatedNormalData = new FaceApproximatedNormalData(drawableFactoryProvider);
+            FaceApproximatedNormalData = new FaceApproximatedNormalData(drawableFactoryProvider);
+
+            FaceData = new FaceData(drawableFactoryProvider);
+
             KdTreeData = new KdTreeData(drawableFactoryProvider, funcExecutor);
         }
 
-        public void Reset(Mesh model, int pointRadius)
+        public void Reset(Mesh mesh, int pointRadius)
         {
-            Model = model ?? throw new ArgumentNullException(nameof(model));
+            Mesh = mesh ?? throw new ArgumentNullException(nameof(mesh));
 
             if (Drawable != null)
             {
                 Drawable.Dispose();
             }
             Drawable = DrawableFactoryProvider.DrawableFactory.CreatePointCloud(
-                Model.Positions, pointRadius);
+                Mesh.Positions, pointRadius);
 
-            NormalData.Reset(Model);
-            ApproximatedNormalData.Reset(Model);
-            KdTreeData.Reset(Model);
+            NormalData.Reset(Mesh);
+            FaceApproximatedNormalData.Reset(Mesh);
+
+            FaceData.Reset(Mesh);
+
+            KdTreeData.Reset(Mesh);
         }
 
         public override void Draw(ACamera camera)
         {
             base.Draw(camera);
+
             NormalData.Draw(camera);
-            ApproximatedNormalData.Draw(camera);
+            FaceApproximatedNormalData.Draw(camera);
+
+            FaceData.Draw(camera);
+
             KdTreeData.Draw(camera);
         }
     }

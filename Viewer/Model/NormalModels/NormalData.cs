@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.Viewer.Model
+namespace GeometricAlgorithms.Viewer.Model.NormalModels
 {
     public class NormalData : ToggleableDrawable
     {

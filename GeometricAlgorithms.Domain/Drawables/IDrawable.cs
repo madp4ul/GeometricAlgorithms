@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.Domain.Drawables
 {
+    /// <summary>
+    /// Represents anything that can be drawn
+    /// </summary>
     public interface IDrawable : IDisposable
     {
         Transformation Transformation { get; set; }

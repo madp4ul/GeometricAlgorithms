@@ -41,6 +41,11 @@ namespace GeometricAlgorithms.FileProcessing
             int pointCount = int.Parse(itemCounts[0]);
             int faceCount = int.Parse(itemCounts[1]);
 
+            if (pointCount == 0)
+            {
+                throw new InvalidOperationException();
+            }
+
             Vector3[] positions = new Vector3[pointCount];
             Vector3[] normals = hasNormals ? new Vector3[pointCount] : null;
 
@@ -62,7 +67,7 @@ namespace GeometricAlgorithms.FileProcessing
                 faces[i] = ProcessFaceLine(lineData);
             }
 
-            return new Mesh(positions, faces, normals);
+            return new Mesh(positions, faceCount > 0 ? faces : null, normals);
         }
 
         private IFace ProcessFaceLine(string[] lineData)

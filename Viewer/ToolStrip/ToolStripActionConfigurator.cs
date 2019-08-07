@@ -33,10 +33,10 @@ namespace GeometricAlgorithms.Viewer.ToolStrip
         {
             var fileMenuTools = new FileMenuTools(Model);
 
-            GetItem(fileOptionItem.DropDownItems, "openFileToolStripMenuItem")
+            GetMenu(fileOptionItem.DropDownItems, "openFileToolStripMenuItem")
                 .Click += (o, e) => fileMenuTools.OpenFile();
 
-            GetItem(fileOptionItem.DropDownItems, "saveFileToolStripMenuItem")
+            GetMenu(fileOptionItem.DropDownItems, "saveFileToolStripMenuItem")
                 .Click += (o, e) => fileMenuTools.SaveToFile();
         }
 
@@ -44,38 +44,55 @@ namespace GeometricAlgorithms.Viewer.ToolStrip
         {
             var viewerMenuTools = new ViewerMenuTools(Model.Workspace);
 
-            GetItem(viewerOptionItem.DropDownItems, "showPointCloudToolStripMenuItem")
-                .Click += ToggleClick(viewerMenuTools.SetPointCloudVisibility);
+            //Get Menu Items
+            var showNormals = GetMenu(viewerOptionItem.DropDownItems, "showOriginalNormalsToolStripMenuItem");
+            var showFaceApproximatedNormals = GetMenu(viewerOptionItem.DropDownItems, "showFaceApproximatedNormalsToolStripMenuItem");
 
-            var showNormals = GetItem(viewerOptionItem.DropDownItems, "showOriginalNormalsToolStripMenuItem");
-            var showApproximatedNormals = GetItem(viewerOptionItem.DropDownItems, "showApproximatedNormalsToolStripMenuItem");
+            var showFaces = GetMenu(viewerOptionItem.DropDownItems, "showOriginalMeshToolStripMenuItem");
+            var showFacesAsWireframe = GetMenu(showFaces.DropDownItems, "showOriginalFacesAsWireframeToolStripMenuItem");
 
+            //Set enabled on open menu
             viewerOptionItem.DropDownOpening += (o, e) =>
             {
                 showNormals.Enabled = viewerMenuTools.EnableOptionSetNormalVisiblity();
-                showApproximatedNormals.Enabled = viewerMenuTools.EnableOptionSetApproximatedNormalVisiblity();
+                showFaceApproximatedNormals.Enabled = viewerMenuTools.EnableOptionSetApproximatedNormalVisiblity();
+                showFaces.Enabled = viewerMenuTools.EnableOptionSetOriginalFacesVisiblity();
             };
 
-            showNormals.Click += ToggleClick(viewerMenuTools.SetNormalVisiblity);
-            showApproximatedNormals.Click += ToggleClick(viewerMenuTools.SetApproximatedNormalVisiblity);
+            //Configure action on click
+            GetMenu(viewerOptionItem.DropDownItems, "showPointCloudToolStripMenuItem")
+                       .Click += ToggleClick(viewerMenuTools.SetPointCloudVisibility);
+
+            showNormals.Click += ToggleClick(viewerMenuTools.SetNormalVisiblity, showNormals.Checked);
+            showFaceApproximatedNormals.Click += ToggleClick(
+                viewerMenuTools.SetApproximatedNormalVisiblity,
+                showFaceApproximatedNormals.Checked);
+
+            showFaces.Click += ToggleClick(viewerMenuTools.SetOriginalFacesVisiblity, showFaces.Checked);
+            showFacesAsWireframe.Click += ToggleClick(viewerMenuTools.SetDrawOriginalFacesAsWireframe, showFacesAsWireframe.Checked);
         }
 
         private void ConfigureKdTreeOptions(ToolStripMenuItem kdTreeOptionItem)
         {
             var treeMenuTools = new KdTreeMenuTools(Model.Workspace.PointData.KdTreeData);
 
-            GetItem(kdTreeOptionItem.DropDownItems, "showKdTreeToolStripMenuItem")
+            GetMenu(kdTreeOptionItem.DropDownItems, "showKdTreeToolStripMenuItem")
                 .Click += ToggleClick(treeMenuTools.SetKdTreeVisibility);
 
-            GetItem(kdTreeOptionItem.DropDownItems, "openKdTreeSettingStripMenuItem")
+            GetMenu(kdTreeOptionItem.DropDownItems, "openKdTreeSettingStripMenuItem")
                 .Click += (o, e) =>
                 {
                     treeMenuTools.OpenKdTreeQueriesWindow(MainWindow);
                 };
         }
 
-        private EventHandler ToggleClick(Action<bool> toToggle)
+        private EventHandler ToggleClick(Action<bool> toToggle, bool? initialValue = null)
         {
+            if (initialValue.HasValue)
+            {
+                toToggle(initialValue.Value);
+            }
+
             return (o, e) =>
             {
                 ToolStripMenuItem sender = (ToolStripMenuItem)o;

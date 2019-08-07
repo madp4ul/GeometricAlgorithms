@@ -48,6 +48,7 @@
     <Compile Include="Drawables\EmptyDrawable.cs" />
     <Compile Include="Drawables\IDrawable.cs" />
     <Compile Include="Drawables\IDrawableFactory.cs" />
+    <Compile Include="Drawables\IDrawableMesh.cs" />
     <Compile Include="Drawables\ToggleableDrawable.cs" />
     <Compile Include="Drawables\Transformation.cs" />
     <Compile Include="IFace.cs" />

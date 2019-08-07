@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using GeometricAlgorithms.Domain;
 using GeometricAlgorithms.Viewer.Interfaces;
 
-namespace GeometricAlgorithms.Viewer.Model
+namespace GeometricAlgorithms.Viewer.Model.NormalModels
 {
     public class FaceApproximatedNormalData : NormalData
     {

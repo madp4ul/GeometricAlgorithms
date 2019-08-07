@@ -34,7 +34,7 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             return new PointCloud(ContentProvider.PointEffect, xnaPoints, radius);
         }
 
-        public IDrawable CreateBoundingBoxRepresentation(BoundingBox[] boxes, Func<BoundingBox, Vector3> colorGenerator = null)
+        public IDrawable CreateBoundingBoxRepresentation(BoundingBox[] boxes, BoundingBoxColorGenerator colorGenerator = null)
         {
             Func<BoundingBox, Microsoft.Xna.Framework.Vector3> xnaColorGenerator = null;
             if (colorGenerator != null)
@@ -63,7 +63,7 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             return new HighlightedPointCloud(ContentProvider.PointEffect, xnaPoints, highlightColor.ToXna(), radius);
         }
 
-        public IDrawable CreateWireframeSphere(float radius)
+        public IDrawableMesh CreateSphereMesh(float radius)
         {
             //TODO
             throw new NotImplementedException();
@@ -76,6 +76,21 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             VectorColorGenerator colorGenerator = null)
         {
             return new VectorsDrawable(ContentProvider.GraphicsDevice, supportVectors, directionVectors, length, colorGenerator);
+        }
+
+        public IDrawableMesh CreateMesh(IEnumerable<Vector3> vertices, IEnumerable<IFace> faces, PositionColorGenerator colorGenerator = null)
+        {
+            Func<Vector3, Microsoft.Xna.Framework.Vector3> xnaColorGenerator = null;
+            if (colorGenerator != null)
+            {
+                xnaColorGenerator = (box) =>
+                {
+                    var c = colorGenerator(box);
+                    return c.ToXna();
+                };
+            }
+
+            return new DrawableMesh(ContentProvider.GraphicsDevice, vertices, faces, xnaColorGenerator);
         }
     }
 }

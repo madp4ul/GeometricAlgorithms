@@ -10,7 +10,6 @@ namespace GeometricAlgorithms.Domain
     public class Mesh
     {
         public int VertexCount { get; private set; }
-        public int FaceCount { get; private set; }
 
         public ReadOnlyCollection<Vector3> Positions { get; private set; }
 
@@ -32,26 +31,25 @@ namespace GeometricAlgorithms.Domain
         /// <summary>
         /// Faces of mesh
         /// </summary>
-        public ReadOnlyCollection<IFace> Faces { get; private set; }
+        public ReadOnlyCollection<IFace> FileFaces { get; private set; }
 
-        public Mesh(Vector3[] positions, IFace[] faces, Vector3[] fileNormals = null)
+        public Mesh(Vector3[] positions, IFace[] fileFaces, Vector3[] fileNormals = null)
         {
             Positions = Array.AsReadOnly(positions) ?? throw new ArgumentNullException(nameof(positions));
-            Faces = Array.AsReadOnly(faces) ?? throw new ArgumentNullException(nameof(faces));
+            FileFaces = fileFaces != null ? Array.AsReadOnly(fileFaces) : null;
             FileNormals = fileNormals != null ? Array.AsReadOnly(fileNormals) : null;
 
             VertexCount = positions.Length;
-            FaceCount = faces.Length;
         }
 
         public IEnumerable<Vector3> GetFacePositions(int index)
         {
-            return Faces[index].Select(vIndex => Positions[vIndex]);
+            return FileFaces[index].Select(vIndex => Positions[vIndex]);
         }
 
         public Mesh Copy(Vector3[] replacePositions = null)
         {
-            return new Mesh(replacePositions ?? Positions.ToArray(), Faces.ToArray(), FileNormals?.ToArray())
+            return new Mesh(replacePositions ?? Positions.ToArray(), FileFaces?.ToArray(), FileNormals?.ToArray())
             {
                 FaceApproximatedNormals = this.FaceApproximatedNormals?.ToArray(),
                 PointApproximatedNormals = this.PointApproximatedNormals?.ToArray(),
