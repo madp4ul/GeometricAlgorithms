@@ -112,7 +112,7 @@ namespace GeometricAlgorithms.FileProcessing
 
         private string[] SplitLine(string line)
         {
-            return line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            return line.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
         }
     }
 }
