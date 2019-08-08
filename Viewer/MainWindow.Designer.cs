@@ -46,26 +46,27 @@
             this.kdTreeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showKdTreeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openKdTreeSettingStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewer = new GeometricAlgorithms.Viewer.GeometricAlgorithmViewer();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.backgroundWorkerProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.backgroundWorkerStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.approximationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.normalApproximationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewer = new GeometricAlgorithms.Viewer.GeometricAlgorithmViewer();
+            this.approximateFromFacesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip
             // 
-            this.menuStrip.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.menuStrip.Dock = System.Windows.Forms.DockStyle.None;
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.viewerToolStripMenuItem,
-            this.kdTreeToolStripMenuItem});
+            this.kdTreeToolStripMenuItem,
+            this.approximationToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(159, 24);
+            this.menuStrip.Size = new System.Drawing.Size(1017, 24);
             this.menuStrip.TabIndex = 1;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -209,16 +210,6 @@
             this.openKdTreeSettingStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.openKdTreeSettingStripMenuItem.Text = "Query";
             // 
-            // viewer
-            // 
-            this.viewer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.viewer.Location = new System.Drawing.Point(0, 24);
-            this.viewer.Name = "viewer";
-            this.viewer.Size = new System.Drawing.Size(1017, 496);
-            this.viewer.TabIndex = 0;
-            // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -241,6 +232,38 @@
             this.backgroundWorkerStatusLabel.Name = "backgroundWorkerStatusLabel";
             this.backgroundWorkerStatusLabel.Size = new System.Drawing.Size(39, 17);
             this.backgroundWorkerStatusLabel.Text = "Ready";
+            // 
+            // approximationToolStripMenuItem
+            // 
+            this.approximationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.normalApproximationToolStripMenuItem});
+            this.approximationToolStripMenuItem.Name = "approximationToolStripMenuItem";
+            this.approximationToolStripMenuItem.Size = new System.Drawing.Size(98, 20);
+            this.approximationToolStripMenuItem.Text = "Approximation";
+            // 
+            // normalApproximationToolStripMenuItem
+            // 
+            this.normalApproximationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.approximateFromFacesToolStripMenuItem});
+            this.normalApproximationToolStripMenuItem.Name = "normalApproximationToolStripMenuItem";
+            this.normalApproximationToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.normalApproximationToolStripMenuItem.Text = "Normals";
+            // 
+            // viewer
+            // 
+            this.viewer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.viewer.Location = new System.Drawing.Point(0, 24);
+            this.viewer.Name = "viewer";
+            this.viewer.Size = new System.Drawing.Size(1017, 496);
+            this.viewer.TabIndex = 0;
+            // 
+            // approximateFromFacesToolStripMenuItem
+            // 
+            this.approximateFromFacesToolStripMenuItem.Name = "approximateFromFacesToolStripMenuItem";
+            this.approximateFromFacesToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
+            this.approximateFromFacesToolStripMenuItem.Text = "Approximate from faces";
             // 
             // MainWindow
             // 
@@ -288,6 +311,9 @@
         private System.Windows.Forms.ToolStripMenuItem showApproximatedFacesAsWireframeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showApproximatedFacesFromApproximatedNormalsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showApproximatedFacesFromApproximatedNormalsAsWireframeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem approximationToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem normalApproximationToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem approximateFromFacesToolStripMenuItem;
     }
 }
 

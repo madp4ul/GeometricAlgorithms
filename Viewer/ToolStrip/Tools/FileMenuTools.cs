@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace GeometricAlgorithms.Viewer.ToolStrip
+namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
 {
     class FileMenuTools
     {

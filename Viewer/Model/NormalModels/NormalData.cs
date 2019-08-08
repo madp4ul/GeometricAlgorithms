@@ -28,10 +28,9 @@ namespace GeometricAlgorithms.Viewer.Model.NormalModels
             EnableDraw = true;
         }
 
-        public void Reset(Mesh mesh)
+        public void Reset()
         {
-            Mesh = mesh ?? throw new ArgumentNullException(nameof(mesh));
-            HasNormals = MeshHasNormals(mesh);
+            HasNormals = MeshHasNormals(Mesh);
 
             if (Drawable != null)
             {
@@ -52,9 +51,15 @@ namespace GeometricAlgorithms.Viewer.Model.NormalModels
             }
         }
 
+        public void Reset(Mesh mesh)
+        {
+            Mesh = mesh ?? throw new ArgumentNullException(nameof(mesh));
+            Reset();
+        }
+
         protected virtual IEnumerable<Vector3> SelectNormals(Mesh mesh)
         {
-            return mesh.FileNormals;
+            return mesh?.FileNormals;
         }
 
         protected virtual Vector3 GenerateColor(Vector3 position, Vector3 direction)

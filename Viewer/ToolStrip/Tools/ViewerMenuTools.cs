@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.Viewer.ToolStrip
+namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
 {
     class ViewerMenuTools
     {

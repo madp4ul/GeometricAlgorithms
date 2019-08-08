@@ -33,7 +33,7 @@ namespace GeometricAlgorithms.Viewer.Model
             Drawable = new EmptyDrawable();
 
             NormalData = new NormalData(drawableFactoryProvider);
-            FaceApproximatedNormalData = new FaceApproximatedNormalData(drawableFactoryProvider);
+            FaceApproximatedNormalData = new FaceApproximatedNormalData(drawableFactoryProvider, funcExecutor);
 
             FaceData = new FaceData(drawableFactoryProvider);
 

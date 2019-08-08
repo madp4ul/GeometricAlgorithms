@@ -123,6 +123,12 @@
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\Workspace.cs" />
+    <Compile Include="ToolStrip\Configurators\ApproximationConfigurator.cs" />
+    <Compile Include="ToolStrip\Configurators\KdTreeMenuConfigurator.cs" />
+    <Compile Include="ToolStrip\Configurators\MenuConfigurator.cs" />
+    <Compile Include="ToolStrip\Configurators\FileMenuConfigurator.cs" />
+    <Compile Include="ToolStrip\Configurators\ViewerMenuConfigurator.cs" />
+    <Compile Include="ToolStrip\Tools\ApproximationTools.cs" />
     <Compile Include="Utilities\BackgroundWorkerFuncExecutor.cs" />
     <Compile Include="Utilities\BackgroundWorkerFunctions\BackgroundWorkerExecution.cs" />
     <Compile Include="Utilities\BackgroundWorkerFunctions\FunctionProgress.cs" />
@@ -135,10 +141,10 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Interfaces\IDrawableFactoryProvider.cs" />
-    <Compile Include="ToolStrip\FileMenuTools.cs" />
+    <Compile Include="ToolStrip\Tools\FileMenuTools.cs" />
     <Compile Include="ToolStrip\KdTreeMenuTools.cs" />
     <Compile Include="ToolStrip\ToolStripActionConfigurator.cs" />
-    <Compile Include="ToolStrip\ViewerMenuTools.cs" />
+    <Compile Include="ToolStrip\Tools\ViewerMenuTools.cs" />
     <EmbeddedResource Include="Forms\KdTreeControls\KdTreeConfigurationControl.resx">
       <DependentUpon>KdTreeConfigurationControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -211,5 +217,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
