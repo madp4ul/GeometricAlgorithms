@@ -66,7 +66,8 @@
     <Compile Include="Cameras\FirstPersonCamera.cs" />
     <Compile Include="Drawables\BoundingBoxRepresentation.cs" />
     <Compile Include="Drawables\DrawableFactory.cs" />
-    <Compile Include="Drawables\DrawableMesh.cs" />
+    <Compile Include="Drawables\MeshDrawable.cs" />
+    <Compile Include="Drawables\FlatShadedMeshDrawable.cs" />
     <Compile Include="Drawables\HighlightedPointCloud.cs" />
     <Compile Include="Drawables\VectorsDrawable.cs" />
     <Compile Include="Drawables\PointCloud.cs" />

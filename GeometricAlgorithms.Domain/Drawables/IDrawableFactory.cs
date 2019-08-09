@@ -21,6 +21,6 @@ namespace GeometricAlgorithms.Domain.Drawables
             float length,
             VectorColorGenerator colorGenerator = null);
 
-        IDrawableMesh CreateMesh(IEnumerable<Vector3> vertices, IEnumerable<Triangle> faces, PositionColorGenerator colorGenerator = null);
+        IDrawableMesh CreateMesh(IReadOnlyList<Vector3> vertices, IEnumerable<Triangle> faces);
     }
 }

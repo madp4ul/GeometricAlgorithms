@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 {
-    class DrawableMesh : IDrawableMesh
+    class MeshDrawable : IDrawableMesh
     {
         private readonly VertexBuffer Vertices;
         private readonly IndexBuffer Indices;
@@ -21,7 +21,7 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
         public bool DrawWireframe { get; set; }
         public Transformation Transformation { get; set; }
 
-        public DrawableMesh(
+        public MeshDrawable(
            GraphicsDevice device,
            IEnumerable<Domain.Vector3> positions,
            IEnumerable<Domain.Triangle> faces,

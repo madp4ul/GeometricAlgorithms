@@ -78,19 +78,9 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             return new VectorsDrawable(ContentProvider.GraphicsDevice, supportVectors, directionVectors, length, colorGenerator);
         }
 
-        public IDrawableMesh CreateMesh(IEnumerable<Vector3> vertices, IEnumerable<Triangle> faces, PositionColorGenerator colorGenerator = null)
+        public IDrawableMesh CreateMesh(IReadOnlyList<Vector3> positions, IEnumerable<Triangle> faces)
         {
-            Func<Vector3, Microsoft.Xna.Framework.Vector3> xnaColorGenerator = null;
-            if (colorGenerator != null)
-            {
-                xnaColorGenerator = (box) =>
-                {
-                    var c = colorGenerator(box);
-                    return c.ToXna();
-                };
-            }
-
-            return new DrawableMesh(ContentProvider.GraphicsDevice, vertices, faces, xnaColorGenerator);
+            return new FlatShadedMeshDrawable(ContentProvider.GraphicsDevice, positions, faces);
         }
     }
 }

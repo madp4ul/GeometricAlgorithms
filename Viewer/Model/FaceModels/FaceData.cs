@@ -41,7 +41,7 @@ namespace GeometricAlgorithms.Viewer.Model.FaceModels
 
             if (HasFaces)
             {
-                Drawable = DrawableFactoryProvider.DrawableFactory.CreateMesh(Mesh.Positions, SelectFaces(Mesh), GenerateColor);
+                Drawable = DrawableFactoryProvider.DrawableFactory.CreateMesh(Mesh.Positions, SelectFaces(Mesh));
             }
             else
             {
@@ -52,12 +52,6 @@ namespace GeometricAlgorithms.Viewer.Model.FaceModels
         protected virtual IEnumerable<Triangle> SelectFaces(Mesh mesh)
         {
             return mesh.FileFaces;
-        }
-
-        protected virtual Vector3 GenerateColor(Vector3 position)
-        {
-            Vector3 n = position.Normalized();
-            return new Vector3(Math.Abs(n.X), Math.Abs(n.Y), Math.Abs(n.Z));
         }
 
         protected bool MeshHasFaces(Mesh mesh)

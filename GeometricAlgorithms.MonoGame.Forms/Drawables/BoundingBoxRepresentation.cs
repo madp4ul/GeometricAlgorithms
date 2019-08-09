@@ -119,15 +119,8 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             Device.Indices = Indices;
 
             //Set states
-            var prevDepthStencilState = Effect.GraphicsDevice.DepthStencilState;
-            Effect.GraphicsDevice.DepthStencilState = new DepthStencilState()
-            {
-                DepthBufferEnable = false,
-
-            };
-
-            var prevBlendState = Effect.GraphicsDevice.BlendState;
-            Effect.GraphicsDevice.BlendState = BlendState.Additive;
+            var prevBlendState = Device.BlendState;
+            Device.BlendState = BlendState.Additive;
 
             //set effect values
             Effect.World = Transformation.GetWorldMatrix();
@@ -143,8 +136,7 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             Device.DrawIndexedPrimitives(PrimitiveType.LineList, 0, 0, Indices.IndexCount / 2);
 
             //Reset states
-            Effect.GraphicsDevice.DepthStencilState = prevDepthStencilState;
-            Effect.GraphicsDevice.BlendState = prevBlendState;
+            Device.BlendState = prevBlendState;
         }
 
         public void Dispose()
