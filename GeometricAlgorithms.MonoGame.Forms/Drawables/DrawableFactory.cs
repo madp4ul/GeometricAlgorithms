@@ -78,7 +78,7 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             return new VectorsDrawable(ContentProvider.GraphicsDevice, supportVectors, directionVectors, length, colorGenerator);
         }
 
-        public IDrawableMesh CreateMesh(IEnumerable<Vector3> vertices, IEnumerable<IFace> faces, PositionColorGenerator colorGenerator = null)
+        public IDrawableMesh CreateMesh(IEnumerable<Vector3> vertices, IEnumerable<Triangle> faces, PositionColorGenerator colorGenerator = null)
         {
             Func<Vector3, Microsoft.Xna.Framework.Vector3> xnaColorGenerator = null;
             if (colorGenerator != null)

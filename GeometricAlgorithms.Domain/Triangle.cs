@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.Domain
 {
-    public class Triangle : IFace
+    public class Triangle : IEnumerable<int>
     {
         public readonly int Index1;
         public readonly int Index2;
@@ -19,8 +19,6 @@ namespace GeometricAlgorithms.Domain
             Index2 = index2;
             Index3 = index3;
         }
-
-        public float Area => throw new NotImplementedException();
 
         public IEnumerator<int> GetEnumerator()
         {

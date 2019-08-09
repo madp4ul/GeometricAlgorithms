@@ -60,7 +60,7 @@ namespace GeometricAlgorithms.FileProcessing
                 }
             }
 
-            IFace[] faces = new IFace[faceCount];
+            Triangle[] faces = new Triangle[faceCount];
             for (int i = 0; i < faceCount; i++)
             {
                 string[] lineData = SplitLine(lines[i + pointCount + 2]);
@@ -70,7 +70,7 @@ namespace GeometricAlgorithms.FileProcessing
             return new Mesh(positions, faceCount > 0 ? faces : null, normals);
         }
 
-        private IFace ProcessFaceLine(string[] lineData)
+        private Triangle ProcessFaceLine(string[] lineData)
         {
             if (int.TryParse(lineData[0], out int result) && result == 3)
             {

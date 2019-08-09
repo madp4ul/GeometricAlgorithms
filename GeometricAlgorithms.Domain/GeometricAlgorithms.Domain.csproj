@@ -51,7 +51,6 @@
     <Compile Include="Drawables\IDrawableMesh.cs" />
     <Compile Include="Drawables\ToggleableDrawable.cs" />
     <Compile Include="Drawables\Transformation.cs" />
-    <Compile Include="IFace.cs" />
     <Compile Include="Triangle.cs" />
     <Compile Include="IVertex.cs" />
     <Compile Include="Matrix4x4.cs" />

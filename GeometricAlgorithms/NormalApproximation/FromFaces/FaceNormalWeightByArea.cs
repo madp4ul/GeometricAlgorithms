@@ -13,7 +13,7 @@ namespace GeometricAlgorithms.NormalApproximation.FromFaces
         public float Weight { get; private set; }
         public Vector3 UnitNormal { get; private set; }
 
-        public FaceNormalWeightByArea(IReadOnlyList<Vector3> positions, IFace face)
+        public FaceNormalWeightByArea(IReadOnlyList<Vector3> positions, Triangle face)
         {
             Indices = face.ToArray();
 
@@ -25,7 +25,7 @@ namespace GeometricAlgorithms.NormalApproximation.FromFaces
             CalculateValues(positions, face);
         }
 
-        protected virtual void CalculateValues(IReadOnlyList<Vector3> positions, IFace face)
+        protected virtual void CalculateValues(IReadOnlyList<Vector3> positions, Triangle face)
         {
             Vector3 planeDir1 = positions[Indices[0]] - positions[Indices[1]];
             Vector3 planeDir2 = positions[Indices[0]] - positions[Indices[2]];

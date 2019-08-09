@@ -31,9 +31,9 @@ namespace GeometricAlgorithms.Domain
         /// <summary>
         /// Faces of mesh
         /// </summary>
-        public ReadOnlyCollection<IFace> FileFaces { get; private set; }
+        public ReadOnlyCollection<Triangle> FileFaces { get; private set; }
 
-        public Mesh(Vector3[] positions, IFace[] fileFaces, Vector3[] fileNormals = null)
+        public Mesh(Vector3[] positions, Triangle[] fileFaces, Vector3[] fileNormals = null)
         {
             Positions = Array.AsReadOnly(positions) ?? throw new ArgumentNullException(nameof(positions));
             FileFaces = fileFaces != null ? Array.AsReadOnly(fileFaces) : null;
@@ -58,7 +58,7 @@ namespace GeometricAlgorithms.Domain
 
         public static Mesh CreateEmpty()
         {
-            return new Mesh(new Vector3[0], new IFace[0]);
+            return new Mesh(new Vector3[0], new Triangle[0]);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace GeometricAlgorithms.NormalApproximation.FromFaces
 {
     class FaceNormalWeightSum
     {
-        private List<FaceNormalWeightByArea> Sum = new List<FaceNormalWeightByArea>();
+        private readonly List<FaceNormalWeightByArea> Sum = new List<FaceNormalWeightByArea>();
 
         public void Add(FaceNormalWeightByArea normal)
         {

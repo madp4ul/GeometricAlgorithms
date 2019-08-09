@@ -27,7 +27,7 @@ namespace GeometricAlgorithms.Viewer.Model.NormalModels
 
         public void CalculateApproximation()
         {
-            var normalCalculation = FuncExecutor.Execute((progress) => Approximator.GetNormals(Mesh.Positions, Mesh.FileFaces));
+            var normalCalculation = FuncExecutor.Execute((progress) => Approximator.GetNormals(Mesh.Positions, Mesh.FileFaces, progress));
 
             normalCalculation.GetResult((normals) =>
             {

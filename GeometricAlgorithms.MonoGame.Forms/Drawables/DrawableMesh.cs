@@ -1,5 +1,6 @@
 ﻿using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.MonoGame.Forms.Extensions;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
         public DrawableMesh(
            GraphicsDevice device,
            IEnumerable<Domain.Vector3> positions,
-           IEnumerable<Domain.IFace> faces,
+           IEnumerable<Domain.Triangle> faces,
            Func<Domain.Vector3, Microsoft.Xna.Framework.Vector3> colorGenerator = null)
         {
             Effect = new BasicEffect(device);
@@ -71,7 +72,7 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 
             //Set states
             var prevRasterizerState = Device.RasterizerState;
-            Effect.GraphicsDevice.RasterizerState = new RasterizerState()
+            Device.RasterizerState = new RasterizerState()
             {
                 FillMode = DrawWireframe ? FillMode.WireFrame : FillMode.Solid,
                 CullMode = CullMode.None,
@@ -90,7 +91,7 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, Indices.IndexCount / 2);
 
             //Reset states
-            Effect.GraphicsDevice.RasterizerState = prevRasterizerState;
+            Device.RasterizerState = prevRasterizerState;
         }
 
         public void Dispose()
