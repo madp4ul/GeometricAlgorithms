@@ -8,6 +8,7 @@ using GeometricAlgorithms.Domain;
 using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.Domain.Tasks;
 using GeometricAlgorithms.ImplicitSurfaces;
+using GeometricAlgorithms.ImplicitSurfaces.MarchingCubes;
 using GeometricAlgorithms.MeshQuerying;
 using GeometricAlgorithms.Viewer.Extensions;
 using GeometricAlgorithms.Viewer.Interfaces;
@@ -24,6 +25,8 @@ namespace GeometricAlgorithms.Viewer.Model.FaceModels
 
         public IDrawable FunctionValuesDrawable { get; set; }
 
+        public PointData ApproximatedPointData { get; private set; }
+
         public bool CanApproximate => KdTree != null;
 
         public ApproximatedFaceData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
@@ -34,6 +37,8 @@ namespace GeometricAlgorithms.Viewer.Model.FaceModels
             UsedNearestPointCount = 10;
 
             FunctionValuesDrawable = new EmptyDrawable();
+
+            //ApproximatedPointData = new PointData(drawableFactoryProvider, funcExecutor);
         }
 
         public void Reset(KdTree kdTree)
@@ -54,16 +59,19 @@ namespace GeometricAlgorithms.Viewer.Model.FaceModels
 
             var cubeMarcher = CubeMarcher.AroundBox(KdTree.MeshContainer, 0.1f, approximation, 40);
 
-            var faceCalculation = FuncExecutor.Execute((progress) => cubeMarcher.GetFunctionValues());
+            var faceCalculation = FuncExecutor.Execute((progress) => cubeMarcher.MarchCubes());
 
-            faceCalculation.GetResult((functionValues) =>
+            faceCalculation.GetResult((mesh) =>
             {
-                var positions = functionValues.Result.Select(kv => kv.Key);
-                var colors = functionValues.Result.Select(kv => kv.Value > 0 ? Color.Green.ToVector3() : Color.Red.ToVector3());
+                var positions = cubeMarcher.FunctionValueGrid.FunctionValues.Select(f => f.Position);
+                var colors = cubeMarcher.FunctionValueGrid.FunctionValues
+                    .Select(f => f.Value > 0 ? Color.Green.ToVector3() : Color.Red.ToVector3());
 
                 FunctionValuesDrawable.Dispose();
                 FunctionValuesDrawable = DrawableFactoryProvider.DrawableFactory
                 .CreatePointCloud(positions, 5, colors);
+
+                //ApproximatedPointData.Reset(mesh, 10);
             });
         }
 

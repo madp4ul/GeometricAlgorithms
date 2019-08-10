@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.ImplicitSurfaces
+namespace GeometricAlgorithms.ImplicitSurfaces.MarchingCubes
 {
     public class CubeMarcher
     {
@@ -13,6 +13,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces
         public int StepsAlongSide { get; set; }
 
         public IImplicitSurface Surface { get; set; }
+
+        public FunctionValueGrid FunctionValueGrid { get; private set; }
 
         public int TotalValues => StepsAlongSide * StepsAlongSide * StepsAlongSide;
 
@@ -23,39 +25,26 @@ namespace GeometricAlgorithms.ImplicitSurfaces
             Surface = surface ?? throw new ArgumentNullException(nameof(surface));
         }
 
-        public MarchingCubeResult GetFunctionValues()
+        public Mesh MarchCubes()
         {
-            var values = new KeyValuePair<Vector3, float>[TotalValues];
+            FunctionValueGrid = GetFunctionValues();
+            var edgeValues = new EdgeValueGrid(FunctionValueGrid);
 
-            Vector3 probeAreaSize = BoundingBox.Diagonal;
-            int valueIndex = 0;
+            var triangles = edgeValues.Compute();
 
-            for (int x = 0; x < StepsAlongSide; x++)
-            {
-                for (int y = 0; y < StepsAlongSide; y++)
-                {
-                    for (int z = 0; z < StepsAlongSide; z++)
-                    {
-                        Vector3 probePosition =
-                            BoundingBox.Minimum
-                            + new Vector3(
-                            probeAreaSize.X * (x / (float)StepsAlongSide),
-                            probeAreaSize.Y * (y / (float)StepsAlongSide),
-                            probeAreaSize.Z * (z / (float)StepsAlongSide));
+            Mesh result = new Mesh(edgeValues.Vertices.ToArray(), triangles.ToArray());
 
-                        float distance = Surface.GetApproximateSurfaceDistance(probePosition);
+            return result;
+        }
 
-                        values[valueIndex] = new KeyValuePair<Vector3, float>(probePosition, distance);
+        private FunctionValueGrid GetFunctionValues()
+        {
+            var result = new FunctionValueGrid(
+                StepsAlongSide,
+                BoundingBox.Minimum,
+                BoundingBox.Diagonal / StepsAlongSide);
 
-                        valueIndex++;
-                    }
-                }
-            }
-
-            var result = new MarchingCubeResult
-            {
-                Result = values,
-            };
+            result.Compute(Surface);
 
             return result;
         }

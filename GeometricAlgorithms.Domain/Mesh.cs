@@ -33,6 +33,11 @@ namespace GeometricAlgorithms.Domain
         /// </summary>
         public ReadOnlyCollection<Triangle> FileFaces { get; private set; }
 
+        /// <summary>
+        /// Faces approximated by algorithm
+        /// </summary>
+        public Triangle[] ApproximatedFaces { get; set; }
+
         public Mesh(Vector3[] positions, Triangle[] fileFaces, Vector3[] fileNormals = null)
         {
             Positions = Array.AsReadOnly(positions) ?? throw new ArgumentNullException(nameof(positions));
