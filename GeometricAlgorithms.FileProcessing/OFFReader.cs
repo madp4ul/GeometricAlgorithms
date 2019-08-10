@@ -102,6 +102,8 @@ namespace GeometricAlgorithms.FileProcessing
                 ParseFloat(lineData[4]),
                 ParseFloat(lineData[5]));
 
+            normal.Normalize();
+
             return normal;
         }
 

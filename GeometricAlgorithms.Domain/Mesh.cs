@@ -16,17 +16,17 @@ namespace GeometricAlgorithms.Domain
         /// <summary>
         /// Normals read from file
         /// </summary>
-        public ReadOnlyCollection<Vector3> FileNormals { get; set; }
+        public ReadOnlyCollection<Vector3> FileUnitNormals { get; set; }
 
         /// <summary>
         /// Normals Approximated from faces of mesh
         /// </summary>
-        public Vector3[] FaceApproximatedNormals { get; set; }
+        public Vector3[] FaceApproximatedUnitNormals { get; set; }
 
         /// <summary>
         /// Normals approximated from pure point cloud
         /// </summary>
-        public Vector3[] PointApproximatedNormals { get; set; }
+        public Vector3[] PointApproximatedUnitNormals { get; set; }
 
         /// <summary>
         /// Faces of mesh
@@ -37,7 +37,7 @@ namespace GeometricAlgorithms.Domain
         {
             Positions = Array.AsReadOnly(positions) ?? throw new ArgumentNullException(nameof(positions));
             FileFaces = fileFaces != null ? Array.AsReadOnly(fileFaces) : null;
-            FileNormals = fileNormals != null ? Array.AsReadOnly(fileNormals) : null;
+            FileUnitNormals = fileNormals != null ? Array.AsReadOnly(fileNormals) : null;
 
             VertexCount = positions.Length;
         }
@@ -49,10 +49,10 @@ namespace GeometricAlgorithms.Domain
 
         public Mesh Copy(Vector3[] replacePositions = null)
         {
-            return new Mesh(replacePositions ?? Positions.ToArray(), FileFaces?.ToArray(), FileNormals?.ToArray())
+            return new Mesh(replacePositions ?? Positions.ToArray(), FileFaces?.ToArray(), FileUnitNormals?.ToArray())
             {
-                FaceApproximatedNormals = this.FaceApproximatedNormals?.ToArray(),
-                PointApproximatedNormals = this.PointApproximatedNormals?.ToArray(),
+                FaceApproximatedUnitNormals = this.FaceApproximatedUnitNormals?.ToArray(),
+                PointApproximatedUnitNormals = this.PointApproximatedUnitNormals?.ToArray(),
             };
         }
 

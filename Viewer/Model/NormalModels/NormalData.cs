@@ -59,7 +59,7 @@ namespace GeometricAlgorithms.Viewer.Model.NormalModels
 
         protected virtual IEnumerable<Vector3> SelectNormals(Mesh mesh)
         {
-            return mesh?.FileNormals;
+            return mesh?.FileUnitNormals;
         }
 
         protected virtual Vector3 GenerateColor(Vector3 position, Vector3 direction)

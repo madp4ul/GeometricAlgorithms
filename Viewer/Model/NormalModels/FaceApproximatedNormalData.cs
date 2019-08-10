@@ -31,7 +31,7 @@ namespace GeometricAlgorithms.Viewer.Model.NormalModels
 
             normalCalculation.GetResult((normals) =>
             {
-                Mesh.FaceApproximatedNormals = normals;
+                Mesh.FaceApproximatedUnitNormals = normals;
 
                 Reset();
             });
@@ -39,7 +39,7 @@ namespace GeometricAlgorithms.Viewer.Model.NormalModels
 
         protected override IEnumerable<Vector3> SelectNormals(Mesh mesh)
         {
-            return mesh.FaceApproximatedNormals;
+            return mesh.FaceApproximatedUnitNormals;
         }
     }
 }
