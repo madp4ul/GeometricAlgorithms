@@ -14,6 +14,10 @@ namespace GeometricAlgorithms.MonoGame.Forms.Extensions
             return new Microsoft.Xna.Framework.Vector3(v.X, v.Y, v.Z);
         }
 
+        public static Microsoft.Xna.Framework.Color ToXnaColor(this Domain.Vector3 v)
+        {
+            return new Microsoft.Xna.Framework.Color(v.X, v.Y, v.Z);
+        }
 
         public static Matrix4x4 ToDomain(this Microsoft.Xna.Framework.Matrix m)
         {

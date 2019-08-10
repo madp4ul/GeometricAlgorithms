@@ -75,6 +75,11 @@ namespace GeometricAlgorithms.MonoGame.PointRendering
             Techniques["PointHighlight"].Passes["P0"].Apply();
         }
 
+        public void ApplyPointColorDrawing()
+        {
+            Techniques["PointColorDrawing"].Passes["P0"].Apply();
+        }
+
         public static PointEffect FromEffect(Effect effect)
         {
             return new PointEffect(effect);

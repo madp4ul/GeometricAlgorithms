@@ -24,7 +24,10 @@ namespace GeometricAlgorithms.ImplicitSurfaces
             //All the neighbours are assumed to be on the surface
             var nearestPositions = KdTree.FindNearestVertices(position, UsedNearestPointCount);
 
-            float averageFunctionValue = 0;
+            float furthestDistance = nearestPositions.Keys[nearestPositions.Count - 1];
+
+            float weightedAverageFunctionValue = 0;
+            float sumOfWeights = 0;
 
             foreach (var neighbour in nearestPositions)
             {
@@ -34,13 +37,42 @@ namespace GeometricAlgorithms.ImplicitSurfaces
                 //get a value that represents how much the position is infront or behind the surface         
                 float side = Vector3.Dot(KdTree.Mesh.FileUnitNormals[neighbour.Value.OriginalIndex], normalizedNeighbourToPosition);
 
-                //multiply side with distance because of the distance is high the neighbour must be further away
-                averageFunctionValue += side * neighbour.Key;
+                float weight = GetWeight(furthestDistance, neighbour.Key);
+                sumOfWeights += weight;
+
+                //multiply side with distance because of the distance is high the neighbour must be further away.
+                weightedAverageFunctionValue += side * neighbour.Key * weight;
 
             }
-            averageFunctionValue /= UsedNearestPointCount;
 
-            return averageFunctionValue;
+            sumOfWeights /= UsedNearestPointCount;
+            weightedAverageFunctionValue /= sumOfWeights;
+
+            return weightedAverageFunctionValue;
+        }
+
+        /// <summary>
+        /// Get a weight by distance ranging from 0 to 1
+        /// </summary>
+        /// <param name="maxDistance"></param>
+        /// <param name="currentDistance"></param>
+        /// <returns></returns>
+        private float GetWeight(float maxDistance, float currentDistance)
+        {
+            return WendlandWeight(maxDistance, currentDistance);
+        }
+
+        private float WendlandWeight(float maxDistance, float currentDistance)
+        {
+            float relativeDistance = currentDistance / maxDistance;
+
+            float relativeCloseness = 1 - relativeDistance;
+            float relativeCloseness2 = relativeCloseness * relativeCloseness;
+            float relativeCloseness4 = relativeCloseness2 * relativeCloseness2;
+
+            float b = 4 * relativeDistance + 1;
+
+            return relativeCloseness4 * b;
         }
     }
 }

@@ -11,10 +11,13 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 {
-    class PointCloud : Domain.Drawables.IDrawable
+    abstract class PointCloud<TVertex> : Domain.Drawables.IDrawable
+         where TVertex : struct, IVertexType
     {
-        protected readonly VertexBuffer Vertices;
-        protected readonly IndexBuffer Indices;
+        private readonly Vector3[] Positions;
+
+        protected VertexBuffer Vertices { get; private set; }
+        protected IndexBuffer Indices { get; private set; }
         protected readonly PointEffect Effect;
 
         private GraphicsDevice Device { get { return Effect.GraphicsDevice; } }
@@ -26,30 +29,39 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 
         public PointCloud(PointEffect effect, Vector3[] positions, int pixelWidth = 2)
         {
+            if (positions.Length == 0)
+            {
+                throw new ArgumentException("Pointcloud needs at least 1 point");
+            }
+
+            Positions = positions;
             Transformation = new Transformation();
             Effect = effect;
             PixelWidth = pixelWidth;
+        }
 
+        protected void CreateBuffers()
+        {
             {
-                var vertices = new VertexPositionIndex[positions.Length * 4];
+                TVertex[] vertices = new TVertex[Positions.Length * 4];
 
-                for (int i = 0; i < positions.Length; i++)
+                for (int positionIndex = 0; positionIndex < Positions.Length; positionIndex++)
                 {
-                    int vOffset = i * 4;
+                    int vOffset = positionIndex * 4;
 
-                    for (int j = 0; j < 4; j++)
+                    for (int cornerIndex = 0; cornerIndex < 4; cornerIndex++)
                     {
-                        vertices[vOffset + j] = new VertexPositionIndex(positions[i], (Corner)j);
+                        vertices[vOffset + cornerIndex] = CreateVertex(Positions[positionIndex], (Corner)cornerIndex, positionIndex);
                     }
                 }
-                Vertices = new VertexBuffer(Device, VertexPositionIndex.VertexDeclaration, vertices.Length, BufferUsage.None);
-                Vertices.SetData(vertices);
+                Vertices = new VertexBuffer(Device, vertices[0].VertexDeclaration, vertices.Length, BufferUsage.None);
+                Vertices.SetData<TVertex>(vertices);
             }
 
             {
-                var indices = new int[positions.Length * 6];
+                var indices = new int[Positions.Length * 6];
 
-                for (int i = 0; i < positions.Length; i++)
+                for (int i = 0; i < Positions.Length; i++)
                 {
                     int offset = i * 4;
                     indices[i * 6] = offset;
@@ -65,6 +77,8 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
                 Indices.SetData(indices);
             }
         }
+
+        protected abstract TVertex CreateVertex(Vector3 position, Corner corner, int pointIndex);
 
         protected virtual void ApplyEffectPass()
         {

@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 
 namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 {
-    class HighlightedPointCloud : PointCloud
+    class HighlightedPointCloud : PointCloud<VertexPositionIndex>
     {
         public Vector3 HighlightColor { get; set; }
 
@@ -16,6 +16,8 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             : base(effect, positions, pixelWidth)
         {
             HighlightColor = highlightColor;
+
+            CreateBuffers();
         }
 
         protected override void ApplyEffectPass()
@@ -31,6 +33,11 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             base.Draw(camera);
 
             Effect.HighlightColor = previous;
+        }
+
+        protected override VertexPositionIndex CreateVertex(Vector3 position, Corner corner, int pointIndex)
+        {
+            return new VertexPositionIndex(position, corner);
         }
     }
 }

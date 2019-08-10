@@ -13,7 +13,7 @@ namespace GeometricAlgorithms.Domain.Drawables
     {
         IDrawable CreateBoundingBoxRepresentation(BoundingBox[] boxes, BoundingBoxColorGenerator colorGenerator = null);
         IDrawable CreateHighlightedPointCloud(IEnumerable<Vector3> points, Vector3 highlightColor, int radius);
-        IDrawable CreatePointCloud(IEnumerable<Vector3> points, int radius);
+        IDrawable CreatePointCloud(IEnumerable<Vector3> points, int radius, IEnumerable<Vector3> customColors = null);
         IDrawableMesh CreateSphereMesh(float radius);
         IDrawable CreateVectors(
             IEnumerable<Vector3> supportVectors,

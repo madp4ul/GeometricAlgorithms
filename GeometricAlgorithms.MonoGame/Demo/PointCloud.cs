@@ -54,7 +54,7 @@ namespace GeometricAlgorithms.MonoGame.Demo
                 indices[i * 6 + 5] = offset + 0;
             }
 
-            Vertices = new VertexBuffer(Device, VertexPositionIndex.VertexDeclaration, vertices.Length, BufferUsage.None);
+            Vertices = new VertexBuffer(Device, VertexPositionIndex.StaticVertexDeclaration, vertices.Length, BufferUsage.None);
             Indices = new IndexBuffer(Device, IndexElementSize.ThirtyTwoBits, indices.Length, BufferUsage.None);
 
             Vertices.SetData(vertices);

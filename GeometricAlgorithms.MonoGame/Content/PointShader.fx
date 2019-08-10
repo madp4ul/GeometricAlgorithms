@@ -19,19 +19,13 @@ const float FadeoffDistance = 0.1;
 struct VertexShaderInput
 {
 	float4 Position : POSITION0;
-	//float4 Color : COLOR0;
 	int Index : TEXCOORD0;
 };
 
-struct PointDrawingVertexShaderOutput
+struct VertexShaderColorOutput
 {
 	float4 Position : SV_POSITION;
 	float4 Color : COLOR0;
-};
-
-struct PointHighlightVertexShaderOutput
-{
-	float4 Position : SV_POSITION;
 };
 
 float4 ComputePointPosition(VertexShaderInput input) {
@@ -60,9 +54,9 @@ float4 ComputePointPosition(VertexShaderInput input) {
 	return position;
 }
 
-PointDrawingVertexShaderOutput MainPointDrawingVS(in VertexShaderInput input)
+VertexShaderColorOutput MainPointDrawingVS(in VertexShaderInput input)
 {
-	PointDrawingVertexShaderOutput output = (PointDrawingVertexShaderOutput)0;
+	VertexShaderColorOutput output = (VertexShaderColorOutput)0;
 
 	output.Position = ComputePointPosition(input);
 
@@ -72,9 +66,9 @@ PointDrawingVertexShaderOutput MainPointDrawingVS(in VertexShaderInput input)
 	return output;
 }
 
-float4 MainPointDrawingPS(PointDrawingVertexShaderOutput input) : COLOR
+float4 MainPointDrawingPS(VertexShaderColorOutput input) : COLOR
 {
-		return input.Color;
+	return input.Color;
 }
 
 technique PointDrawing
@@ -84,6 +78,11 @@ technique PointDrawing
 		VertexShader = compile VS_SHADERMODEL MainPointDrawingVS();
 		PixelShader = compile PS_SHADERMODEL MainPointDrawingPS();
 	}
+};
+
+struct PointHighlightVertexShaderOutput
+{
+	float4 Position : SV_POSITION;
 };
 
 PointHighlightVertexShaderOutput MainPointHighlightVS(in VertexShaderInput input)
@@ -107,5 +106,40 @@ technique PointHighlight
 	{
 		VertexShader = compile VS_SHADERMODEL MainPointHighlightVS();
 		PixelShader = compile PS_SHADERMODEL MainPointHighlightPS();
+	}
+};
+
+struct VertexShaderColorInput
+{
+	float4 Position : POSITION0;
+	float4 Color : COLOR0;
+	int Index : TEXCOORD0;
+};
+
+VertexShaderColorOutput MainPointColorDrawingVS(in VertexShaderColorInput input)
+{
+	VertexShaderColorOutput output = (VertexShaderColorOutput)0;
+
+	VertexShaderInput positionInput = (VertexShaderInput)0;
+	positionInput.Position = input.Position;
+	positionInput.Index = input.Index;
+
+	output.Position = ComputePointPosition(positionInput);
+	output.Color = input.Color;
+
+	return output;
+}
+
+float4 MainPointColorDrawingPS(VertexShaderColorOutput input) : COLOR
+{
+	return input.Color;
+}
+
+technique PointColorDrawing
+{
+	pass P0
+	{
+		VertexShader = compile VS_SHADERMODEL MainPointColorDrawingVS();
+		PixelShader = compile PS_SHADERMODEL MainPointColorDrawingPS();
 	}
 };

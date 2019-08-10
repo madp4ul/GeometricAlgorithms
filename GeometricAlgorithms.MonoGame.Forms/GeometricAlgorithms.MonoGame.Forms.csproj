@@ -69,6 +69,8 @@
     <Compile Include="Drawables\MeshDrawable.cs" />
     <Compile Include="Drawables\FlatShadedMeshDrawable.cs" />
     <Compile Include="Drawables\HighlightedPointCloud.cs" />
+    <Compile Include="Drawables\PointCloudAutoColored.cs" />
+    <Compile Include="Drawables\PointCloudVertexColored.cs" />
     <Compile Include="Drawables\VectorsDrawable.cs" />
     <Compile Include="Drawables\PointCloud.cs" />
     <Compile Include="Extensions\ConvertExtensions.cs" />

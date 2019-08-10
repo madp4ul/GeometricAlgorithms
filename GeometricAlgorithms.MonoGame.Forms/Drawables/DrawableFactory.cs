@@ -20,7 +20,7 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             ContentProvider = new ContentProvider(services, device);
         }
 
-        public IDrawable CreatePointCloud(IEnumerable<Vector3> points, int radius)
+        public IDrawable CreatePointCloud(IEnumerable<Vector3> points, int radius, IEnumerable<Vector3> customColors = null)
         {
             var xnaPoints = points
                 .Select(v => v.ToXna())
@@ -31,7 +31,16 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
                 return new EmptyDrawable();
             }
 
-            return new PointCloud(ContentProvider.PointEffect, xnaPoints, radius);
+            if (customColors == null)
+            {
+                return new PointCloudAutoColored(ContentProvider.PointEffect, xnaPoints, radius);
+            }
+            else
+            {
+                var xnaCustomColors = customColors.Select(v => v.ToXnaColor()).ToArray();
+
+                return new PointCloudVertexColored(ContentProvider.PointEffect, xnaPoints, xnaCustomColors, radius);
+            }
         }
 
         public IDrawable CreateBoundingBoxRepresentation(BoundingBox[] boxes, BoundingBoxColorGenerator colorGenerator = null)

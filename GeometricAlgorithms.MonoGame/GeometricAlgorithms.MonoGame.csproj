@@ -46,6 +46,8 @@
     <Compile Include="Demo\PointCloud.cs" />
     <Compile Include="IViewProjectionEffect.cs" />
     <Compile Include="IWorldEffect.cs" />
+    <Compile Include="PointRendering\Corner.cs" />
+    <Compile Include="PointRendering\VertexPositionIndexColor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
