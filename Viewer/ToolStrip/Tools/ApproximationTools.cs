@@ -25,5 +25,15 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
         {
             PointData.FaceApproximatedNormalData.CalculateApproximation();
         }
+
+        public void ApproximateFaces()
+        {
+            PointData.KdTreeData.ApproximatedFaceData.CalculateApproximation();
+        }
+
+        public bool EnableApproximateFaces()
+        {
+            return PointData.KdTreeData.ApproximatedFaceData.CanApproximate;
+        }
     }
 }

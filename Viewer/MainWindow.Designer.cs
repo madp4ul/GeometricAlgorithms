@@ -46,13 +46,15 @@
             this.kdTreeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showKdTreeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openKdTreeSettingStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.approximationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.normalApproximationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.approximateFromFacesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.backgroundWorkerProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.backgroundWorkerStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.approximationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.normalApproximationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewer = new GeometricAlgorithms.Viewer.GeometricAlgorithmViewer();
-            this.approximateFromFacesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.approximateFacesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.approximateFacesClickToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -210,6 +212,29 @@
             this.openKdTreeSettingStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.openKdTreeSettingStripMenuItem.Text = "Query";
             // 
+            // approximationToolStripMenuItem
+            // 
+            this.approximationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.normalApproximationToolStripMenuItem,
+            this.approximateFacesToolStripMenuItem});
+            this.approximationToolStripMenuItem.Name = "approximationToolStripMenuItem";
+            this.approximationToolStripMenuItem.Size = new System.Drawing.Size(98, 20);
+            this.approximationToolStripMenuItem.Text = "Approximation";
+            // 
+            // normalApproximationToolStripMenuItem
+            // 
+            this.normalApproximationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.approximateFromFacesToolStripMenuItem});
+            this.normalApproximationToolStripMenuItem.Name = "normalApproximationToolStripMenuItem";
+            this.normalApproximationToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.normalApproximationToolStripMenuItem.Text = "Normals";
+            // 
+            // approximateFromFacesToolStripMenuItem
+            // 
+            this.approximateFromFacesToolStripMenuItem.Name = "approximateFromFacesToolStripMenuItem";
+            this.approximateFromFacesToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
+            this.approximateFromFacesToolStripMenuItem.Text = "Approximate from faces";
+            // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -233,22 +258,6 @@
             this.backgroundWorkerStatusLabel.Size = new System.Drawing.Size(39, 17);
             this.backgroundWorkerStatusLabel.Text = "Ready";
             // 
-            // approximationToolStripMenuItem
-            // 
-            this.approximationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.normalApproximationToolStripMenuItem});
-            this.approximationToolStripMenuItem.Name = "approximationToolStripMenuItem";
-            this.approximationToolStripMenuItem.Size = new System.Drawing.Size(98, 20);
-            this.approximationToolStripMenuItem.Text = "Approximation";
-            // 
-            // normalApproximationToolStripMenuItem
-            // 
-            this.normalApproximationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.approximateFromFacesToolStripMenuItem});
-            this.normalApproximationToolStripMenuItem.Name = "normalApproximationToolStripMenuItem";
-            this.normalApproximationToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.normalApproximationToolStripMenuItem.Text = "Normals";
-            // 
             // viewer
             // 
             this.viewer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -259,11 +268,19 @@
             this.viewer.Size = new System.Drawing.Size(1017, 496);
             this.viewer.TabIndex = 0;
             // 
-            // approximateFromFacesToolStripMenuItem
+            // approximateFacesToolStripMenuItem
             // 
-            this.approximateFromFacesToolStripMenuItem.Name = "approximateFromFacesToolStripMenuItem";
-            this.approximateFromFacesToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
-            this.approximateFromFacesToolStripMenuItem.Text = "Approximate from faces";
+            this.approximateFacesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.approximateFacesClickToolStripMenuItem});
+            this.approximateFacesToolStripMenuItem.Name = "approximateFacesToolStripMenuItem";
+            this.approximateFacesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.approximateFacesToolStripMenuItem.Text = "Faces";
+            // 
+            // approximateFacesClickToolStripMenuItem
+            // 
+            this.approximateFacesClickToolStripMenuItem.Name = "approximateFacesClickToolStripMenuItem";
+            this.approximateFacesClickToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.approximateFacesClickToolStripMenuItem.Text = "Approximate";
             // 
             // MainWindow
             // 
@@ -314,6 +331,8 @@
         private System.Windows.Forms.ToolStripMenuItem approximationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem normalApproximationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem approximateFromFacesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem approximateFacesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem approximateFacesClickToolStripMenuItem;
     }
 }
 

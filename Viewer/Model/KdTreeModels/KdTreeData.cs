@@ -3,6 +3,7 @@ using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.Domain.Tasks;
 using GeometricAlgorithms.MeshQuerying;
 using GeometricAlgorithms.Viewer.Interfaces;
+using GeometricAlgorithms.Viewer.Model.FaceModels;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -23,6 +24,9 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
         public KdTreeRadiusQueryData RadiusQuerydata { get; private set; }
         public KdTreeNearestQueryData NearestQuerydata { get; private set; }
 
+        public readonly ApproximatedFaceData ApproximatedFaceData;
+
+
         public KdTreeData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {
             DrawableFactoryProvider = drawableFactoryProvider;
@@ -34,6 +38,8 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
 
             RadiusQuerydata = new KdTreeRadiusQueryData(drawableFactoryProvider, funcExecutor);
             NearestQuerydata = new KdTreeNearestQueryData(drawableFactoryProvider, funcExecutor);
+
+            ApproximatedFaceData = new ApproximatedFaceData(drawableFactoryProvider, funcExecutor);
         }
 
         public void Reset()
@@ -76,6 +82,8 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
 
                 RadiusQuerydata.Reset(KdTree);
                 NearestQuerydata.Reset(KdTree);
+
+                ApproximatedFaceData.Reset(KdTree);
             });
         }
 
@@ -85,6 +93,8 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
 
             RadiusQuerydata.Draw(camera);
             NearestQuerydata.Draw(camera);
+
+            ApproximatedFaceData.Draw(camera);
         }
     }
 }

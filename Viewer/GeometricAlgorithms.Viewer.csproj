@@ -99,8 +99,9 @@
     <Compile Include="Forms\KdTreeQueries.Designer.cs">
       <DependentUpon>KdTreeQueries.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\FaceModels\ApproximatedFaceData.cs" />
     <Compile Include="Model\FaceModels\FaceData.cs" />
-    <Compile Include="Model\NormalModels\FaceApproximatedNormalData.cs" />
+    <Compile Include="Model\NormalModels\ApproximatedNormalData.cs" />
     <Compile Include="Model\KdTreeModels\KdTreeNearestQueryData.cs" />
     <Compile Include="Model\KdTreeModels\KdTreeQueryResult.cs" />
     <Compile Include="Model\KdTreeModels\KdTreeRadiusQueryData.cs" />

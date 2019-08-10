@@ -21,7 +21,14 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Configurators
 
             var approximationMenu = GetMenu(menuStrip.Items, "approximationToolStripMenuItem");
             var normalMenu = GetMenu(approximationMenu.DropDownItems, "normalApproximationToolStripMenuItem");
+            ConfigureNormalMenu(normalMenu, approximationTools);
 
+            var facesMenu = GetMenu(approximationMenu.DropDownItems, "approximateFacesToolStripMenuItem");
+            ConfigureFacesMenu(facesMenu, approximationTools);
+        }
+
+        private void ConfigureNormalMenu(ToolStripMenuItem normalMenu, ApproximationTools approximationTools)
+        {
             var approximateNormalsFromFaces = GetMenu(normalMenu.DropDownItems, "approximateFromFacesToolStripMenuItem");
 
             normalMenu.DropDownOpening += (o, e) =>
@@ -30,6 +37,18 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Configurators
             };
 
             MakeClickAction(approximateNormalsFromFaces, approximationTools.ApproximateNormalsFromFaces);
+        }
+
+        private void ConfigureFacesMenu(ToolStripMenuItem facesMenu, ApproximationTools approximationTools)
+        {
+            var approximateFaces = GetMenu(facesMenu.DropDownItems, "approximateFacesClickToolStripMenuItem");
+
+            facesMenu.DropDownOpening += (o, e) =>
+            {
+                approximateFaces.Enabled = approximationTools.EnableApproximateFaces();
+            };
+
+            MakeClickAction(approximateFaces, approximationTools.ApproximateFaces);
         }
     }
 }

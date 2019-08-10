@@ -10,14 +10,14 @@ using GeometricAlgorithms.Viewer.Interfaces;
 
 namespace GeometricAlgorithms.Viewer.Model.NormalModels
 {
-    public class FaceApproximatedNormalData : NormalData
+    public class ApproximatedNormalData : NormalData
     {
         private readonly NormalApproximatorFromFaces Approximator;
         private readonly IFuncExecutor FuncExecutor;
 
         public bool CanApproximate => Mesh?.FileFaces != null;
 
-        public FaceApproximatedNormalData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
+        public ApproximatedNormalData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
             : base(drawableFactoryProvider)
         {
             FuncExecutor = funcExecutor;

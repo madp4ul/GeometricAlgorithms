@@ -45,7 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ImplicitSurfaces\CubeMarcher.cs" />
     <Compile Include="ImplicitSurfaces\IImplicitSurface.cs" />
+    <Compile Include="ImplicitSurfaces\MarchingCubeResult.cs" />
     <Compile Include="ImplicitSurfaces\ScalarProductSurface.cs" />
     <Compile Include="MeshQuerying\DistanceComparer.cs" />
     <Compile Include="MeshQuerying\KdTree.cs" />

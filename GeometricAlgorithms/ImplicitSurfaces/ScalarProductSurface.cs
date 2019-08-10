@@ -8,7 +8,7 @@ using GeometricAlgorithms.MeshQuerying;
 
 namespace GeometricAlgorithms.ImplicitSurfaces
 {
-    class ScalarProductSurface : IImplicitSurface
+    public class ScalarProductSurface : IImplicitSurface
     {
         public readonly KdTree KdTree;
         public readonly int UsedNearestPointCount;

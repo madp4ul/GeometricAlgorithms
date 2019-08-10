@@ -11,7 +11,7 @@ namespace GeometricAlgorithms.Viewer.Model.FaceModels
 {
     public class FaceData : ToggleableDrawable
     {
-        private readonly IDrawableFactoryProvider DrawableFactoryProvider;
+        protected readonly IDrawableFactoryProvider DrawableFactoryProvider;
 
         public Mesh Mesh { get; private set; }
 

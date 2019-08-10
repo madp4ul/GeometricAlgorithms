@@ -22,7 +22,7 @@ namespace GeometricAlgorithms.Viewer.Model
         public readonly KdTreeData KdTreeData;
 
         public readonly NormalData NormalData;
-        public readonly FaceApproximatedNormalData FaceApproximatedNormalData;
+        public readonly ApproximatedNormalData FaceApproximatedNormalData;
 
         public readonly FaceData FaceData;
 
@@ -33,7 +33,7 @@ namespace GeometricAlgorithms.Viewer.Model
             Drawable = new EmptyDrawable();
 
             NormalData = new NormalData(drawableFactoryProvider);
-            FaceApproximatedNormalData = new FaceApproximatedNormalData(drawableFactoryProvider, funcExecutor);
+            FaceApproximatedNormalData = new ApproximatedNormalData(drawableFactoryProvider, funcExecutor);
 
             FaceData = new FaceData(drawableFactoryProvider);
 

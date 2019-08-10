@@ -12,6 +12,8 @@ namespace GeometricAlgorithms.MeshQuerying
     {
         private readonly KdTreeNode Root;
 
+        public readonly BoundingBox MeshContainer;
+
         public Mesh Mesh { get; private set; }
 
         public KdTree(Mesh mesh, KdTreeConfiguration configuration = null, IProgressUpdater progressUpdater = null)
@@ -30,7 +32,7 @@ namespace GeometricAlgorithms.MeshQuerying
                 .ToArray();
 
             var range = Range<PositionIndex>.FromArray(positionMapping, 0, mesh.VertexCount);
-            var rootBoundingBox = BoundingBox.CreateContainer(mesh.Positions);
+            MeshContainer = BoundingBox.CreateContainer(mesh.Positions);
 
             var updater = new KdTreeProgressUpdater(
                 progressUpdater,
@@ -39,11 +41,11 @@ namespace GeometricAlgorithms.MeshQuerying
 
             if (mesh.VertexCount > configuration.MaximumPointsPerLeaf)
             {
-                Root = new KdTreeBranch(rootBoundingBox, range, configuration, updater);
+                Root = new KdTreeBranch(MeshContainer, range, configuration, updater);
             }
             else
             {
-                Root = new KdTreeLeaf(rootBoundingBox, range, updater);
+                Root = new KdTreeLeaf(MeshContainer, range, updater);
             }
 
             updater.IsCompleted();
