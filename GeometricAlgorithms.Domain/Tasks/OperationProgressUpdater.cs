@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.MeshQuerying
+namespace GeometricAlgorithms.Domain.Tasks
 {
-    class KdTreeProgressUpdater
+    public class OperationProgressUpdater
     {
         private readonly IProgressUpdater Updater;
 
@@ -22,7 +22,7 @@ namespace GeometricAlgorithms.MeshQuerying
         /// <param name="totalOperations">Predicted total amount of operations, 
         /// if unsure guess too high instead of too low</param>
         /// <param name="operationDescription"></param>
-        public KdTreeProgressUpdater(IProgressUpdater updater, int totalOperations, string operationDescription)
+        public OperationProgressUpdater(IProgressUpdater updater, int totalOperations, string operationDescription)
         {
             Updater = updater;
             OperationDescription = operationDescription;

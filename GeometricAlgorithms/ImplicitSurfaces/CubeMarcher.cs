@@ -1,11 +1,14 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.Domain.Tasks;
+using GeometricAlgorithms.ImplicitSurfaces.MarchingCubes;
+using GeometricAlgorithms.MeshQuerying;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.ImplicitSurfaces.MarchingCubes
+namespace GeometricAlgorithms.ImplicitSurfaces
 {
     public class CubeMarcher
     {
@@ -13,8 +16,6 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingCubes
         public int StepsAlongSide { get; set; }
 
         public IImplicitSurface Surface { get; set; }
-
-        public FunctionValueGrid FunctionValueGrid { get; private set; }
 
         public int TotalValues => StepsAlongSide * StepsAlongSide * StepsAlongSide;
 
@@ -25,26 +26,31 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingCubes
             Surface = surface ?? throw new ArgumentNullException(nameof(surface));
         }
 
-        public Mesh MarchCubes()
+        public Mesh GetSurface(FunctionValueGrid functionValueGrid, IProgressUpdater progressUpdater = null)
         {
-            FunctionValueGrid = GetFunctionValues();
-            var edgeValues = new EdgeValueGrid(FunctionValueGrid);
+            var edgeValues = new EdgeValueGrid(functionValueGrid);
 
-            var triangles = edgeValues.Compute();
+            var operationUpdater = new OperationProgressUpdater(progressUpdater, edgeValues.CubesTotal, "Marching cubes");
 
-            Mesh result = new Mesh(edgeValues.Vertices.ToArray(), triangles.ToArray());
+            edgeValues.Compute(operationUpdater);
 
-            return result;
+            operationUpdater.IsCompleted();
+
+            return edgeValues.ComputedSurface;
         }
 
-        private FunctionValueGrid GetFunctionValues()
+        public FunctionValueGrid GetFunctionValues(IProgressUpdater progressUpdater = null)
         {
+            var operationUpdater = new OperationProgressUpdater(progressUpdater, TotalValues, "Computing implicit function samples");
+
             var result = new FunctionValueGrid(
                 StepsAlongSide,
                 BoundingBox.Minimum,
                 BoundingBox.Diagonal / StepsAlongSide);
 
-            result.Compute(Surface);
+            result.Compute(Surface, operationUpdater);
+
+            operationUpdater.IsCompleted();
 
             return result;
         }

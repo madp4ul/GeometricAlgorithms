@@ -1,4 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.Domain.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingCubes
 
         }
 
-        public void Compute(IImplicitSurface implicitSurface)
+        public void Compute(IImplicitSurface implicitSurface, OperationProgressUpdater progressUpdater)
         {
             int valueIndex = 0;
 
@@ -48,6 +49,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingCubes
 
                         valueIndex++;
                     }
+
+                    progressUpdater.UpdateAddOperation(operationCount: Steps);
                 }
             }
         }

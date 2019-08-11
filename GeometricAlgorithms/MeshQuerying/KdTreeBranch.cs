@@ -1,4 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.Domain.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace GeometricAlgorithms.MeshQuerying
             BoundingBox boundingBox,
             Range<PositionIndex> vertices,
             KdTreeConfiguration configuration,
-            KdTreeProgressUpdater progressUpdater,
+            OperationProgressUpdater progressUpdater,
             Dimension halvedDimension = Dimension.X)
             : base(boundingBox, vertices.Length)
         {

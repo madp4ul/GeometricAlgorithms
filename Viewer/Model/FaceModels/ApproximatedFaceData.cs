@@ -76,20 +76,17 @@ namespace GeometricAlgorithms.Viewer.Model.FaceModels
 
             var cubeMarcher = CubeMarcher.AroundBox(KdTree.MeshContainer, 0.1f, approximation, StepsPerSide);
 
-            var faceCalculation = FuncExecutor.Execute((progress) => cubeMarcher.MarchCubes());
+            //Calculate function values
+            FuncExecutor.Execute(progress => cubeMarcher.GetFunctionValues(progress))
+                .GetResult((functionValueGrid) =>
+                {
+                    SetInnerFunctionValuesDrawable(functionValueGrid.FunctionValues);
+                    SetOuterFunctionValuesDrawable(functionValueGrid.FunctionValues);
 
-            faceCalculation.GetResult((mesh) =>
-            {
-                var positions = cubeMarcher.FunctionValueGrid.FunctionValues.Select(f => f.Position);
-                var colors = cubeMarcher.FunctionValueGrid.FunctionValues
-                    .Select(f => f.Value > 0 ? Color.Green.ToVector3() : Color.Red.ToVector3());
-
-                SetInnerFunctionValuesDrawable(cubeMarcher.FunctionValueGrid.FunctionValues);
-                SetOuterFunctionValuesDrawable(cubeMarcher.FunctionValueGrid.FunctionValues);
-
-                //Show approximated face data
-                FaceData.Reset(mesh);
-            });
+                    //Use function values to calculate surface
+                    FuncExecutor.Execute(progress => cubeMarcher.GetSurface(functionValueGrid, progress))
+                        .GetResult(mesh => FaceData.Reset(mesh));
+                });
         }
 
         private void SetInnerFunctionValuesDrawable(FunctionValue[] functionValues)

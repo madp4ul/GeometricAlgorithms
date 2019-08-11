@@ -1,4 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.Domain.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace GeometricAlgorithms.MeshQuerying
 
         public override int LeafCount { get => 1; protected set { } }
 
-        public KdTreeLeaf(BoundingBox boundingBox, Range<PositionIndex> vertices, KdTreeProgressUpdater progressUpdater)
+        public KdTreeLeaf(BoundingBox boundingBox, Range<PositionIndex> vertices, OperationProgressUpdater progressUpdater)
                : base(boundingBox, vertices.Length)
         {
             Vertices = vertices ?? throw new ArgumentNullException(nameof(vertices));

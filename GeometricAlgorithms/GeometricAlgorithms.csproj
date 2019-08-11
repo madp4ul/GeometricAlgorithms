@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ImplicitSurfaces\MarchingCubes\Cube.cs" />
-    <Compile Include="ImplicitSurfaces\MarchingCubes\CubeMarcher.cs" />
+    <Compile Include="ImplicitSurfaces\CubeMarcher.cs" />
     <Compile Include="ImplicitSurfaces\IImplicitSurface.cs" />
     <Compile Include="ImplicitSurfaces\MarchingCubes\IndexContainer.cs" />
     <Compile Include="ImplicitSurfaces\MarchingCubes\IndexEnums.cs" />
@@ -63,7 +63,6 @@
     <Compile Include="MeshQuerying\KdTreeConfiguration.cs" />
     <Compile Include="MeshQuerying\KdTreeLeaf.cs" />
     <Compile Include="MeshQuerying\KdTreeNode.cs" />
-    <Compile Include="MeshQuerying\KdTreeProgressUpdater.cs" />
     <Compile Include="MeshQuerying\QueryState.cs" />
     <Compile Include="MeshQuerying\Range.cs" />
     <Compile Include="MeshQuerying\PositionIndex.cs" />

@@ -30,11 +30,22 @@ namespace GeometricAlgorithms.Viewer.Utilities
 
             Worker.WorkerReportsProgress = true;
             Worker.ProgressChanged += Worker_ProgressChanged;
+            Worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
 
             WorkerStatusUpdater = new RateLimitedBackgroundWorkerProgressUpdater(Worker);
 
             FunctionQueue = new ConcurrentQueue<Action>();
         }
+
+        private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            //Restart if enqueue was missed
+            if (!FunctionQueue.IsEmpty && !Worker.IsBusy)
+            {
+                Worker.RunWorkerAsync();
+            }
+        }
+
         ~BackgroundWorkerFuncExecutor()
         {
             Dispose();

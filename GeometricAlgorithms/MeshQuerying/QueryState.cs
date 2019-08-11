@@ -1,4 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.Domain.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace GeometricAlgorithms.MeshQuerying
         public readonly Vector3 SearchPosition;
         public readonly int PointAmount;
         public readonly SortedList<float, PositionIndex> ResultSet;
-        public readonly KdTreeProgressUpdater ProgressUpdater;
+        public readonly OperationProgressUpdater ProgressUpdater;
 
         public float MaxSearchRadius = float.PositiveInfinity;
 
@@ -20,7 +21,7 @@ namespace GeometricAlgorithms.MeshQuerying
             Vector3 searchPosition,
             int pointAmount,
             SortedList<float, PositionIndex> resultSet,
-            KdTreeProgressUpdater progressUpdater)
+            OperationProgressUpdater progressUpdater)
         {
             SearchPosition = searchPosition;
             PointAmount = pointAmount;
@@ -35,9 +36,9 @@ namespace GeometricAlgorithms.MeshQuerying
         public readonly float SearchRadius;
         public readonly List<PositionIndex> ResultSet;
         public readonly float SearchRadiusSquared;
-        public readonly KdTreeProgressUpdater ProgressUpdater;
+        public readonly OperationProgressUpdater ProgressUpdater;
 
-        public InRadiusQuery(Vector3 seachCenter, float searchRadius, List<PositionIndex> resultSet, KdTreeProgressUpdater progressUpdater)
+        public InRadiusQuery(Vector3 seachCenter, float searchRadius, List<PositionIndex> resultSet, OperationProgressUpdater progressUpdater)
         {
             this.SeachCenter = seachCenter;
             this.SearchRadius = searchRadius;

@@ -1,4 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.Domain.Tasks;
 using System;
 using System.Collections.Generic;
 
@@ -12,7 +13,12 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingCubes
 
         public readonly List<Vector3> Vertices;
 
+        public Mesh ComputedSurface { get; private set; }
+
         public int Steps => FunctionValueGrid.Steps;
+
+        public int CubesPerSide => Steps - 1;
+        public int CubesTotal => CubesPerSide * CubesPerSide * CubesPerSide;
 
         public EdgeValueGrid(FunctionValueGrid functionValueGrid)
         {
@@ -32,9 +38,9 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingCubes
             //3. make values in edge array findable
         }
 
-        public List<Triangle> Compute()
+        public void Compute(OperationProgressUpdater progressUpdater)
         {
-            var result = new List<Triangle>();
+            var triangles = new List<Triangle>();
 
             //Because cubes already consider the corner at the next index of the current one
             //we dont want cubes for the last row
@@ -44,15 +50,17 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingCubes
             {
                 for (int y = 0; y < cubesLength; y++)
                 {
-                    for (int z = 0; z < cubesLength - 1; z++)
+                    for (int z = 0; z < cubesLength; z++)
                     {
                         Cube cube = new Cube(FunctionValueGrid, this, new Point(x, y, z));
-                        result.AddRange(cube.ComputeTriangles());
+                        triangles.AddRange(cube.ComputeTriangles());
                     }
+
+                    progressUpdater.UpdateAddOperation(operationCount: cubesLength);
                 }
             }
 
-            return result;
+            ComputedSurface = new Mesh(Vertices.ToArray(), triangles.ToArray());
         }
 
         /// <summary>

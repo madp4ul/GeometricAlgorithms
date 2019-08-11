@@ -34,7 +34,7 @@ namespace GeometricAlgorithms.MeshQuerying
             var range = Range<PositionIndex>.FromArray(positionMapping, 0, mesh.VertexCount);
             MeshContainer = BoundingBox.CreateContainer(mesh.Positions);
 
-            var updater = new KdTreeProgressUpdater(
+            var updater = new OperationProgressUpdater(
                 progressUpdater,
                 (2 * mesh.VertexCount) / configuration.MaximumPointsPerLeaf,
                 "Building Kd-Tree");
@@ -70,7 +70,7 @@ namespace GeometricAlgorithms.MeshQuerying
         {
             var resultList = new List<PositionIndex>();
 
-            var kdTreeProgress = new KdTreeProgressUpdater(progressUpdater, Root.LeafCount, "Looking for vertices in radius");
+            var kdTreeProgress = new OperationProgressUpdater(progressUpdater, Root.LeafCount, "Looking for vertices in radius");
 
             Root.FindInRadius(new InRadiusQuery(queryCenter, queryRadius, resultList, kdTreeProgress));
 
@@ -93,7 +93,7 @@ namespace GeometricAlgorithms.MeshQuerying
         {
             var resultSet = new SortedList<float, PositionIndex>(new DistanceComparer());
 
-            var kdTreeProgress = new KdTreeProgressUpdater(progressUpdater, Root.LeafCount, "Looking for nearest points");
+            var kdTreeProgress = new OperationProgressUpdater(progressUpdater, Root.LeafCount, "Looking for nearest points");
 
             Root.FindNearestVertices(new NearestVerticesQuery(
                 queryPosition,
