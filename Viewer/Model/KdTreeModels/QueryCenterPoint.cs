@@ -11,26 +11,38 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
 {
-    public class QueryCenterPoint : ToggleableDrawable
+    public class QueryCenterPoint
     {
         readonly IDrawableFactoryProvider DrawableFactoryProvider;
 
-        public QueryCenterPoint(IDrawableFactoryProvider drawableFactoryProvider) : base(false)
+        private readonly ContainerDrawable QueryCenterDrawable;
+
+        public bool Show { get => QueryCenterDrawable.EnableDraw; set => QueryCenterDrawable.EnableDraw = value; }
+
+        public QueryCenterPoint(IDrawableFactoryProvider drawableFactoryProvider)
         {
             DrawableFactoryProvider = drawableFactoryProvider ?? throw new ArgumentNullException(nameof(drawableFactoryProvider));
+            QueryCenterDrawable = new ContainerDrawable(enable: false);
         }
 
         public void Reset()
         {
-            Drawable = DrawableFactoryProvider.DrawableFactory.CreateHighlightedPointCloud(
+            var drawable = DrawableFactoryProvider.DrawableFactory.CreateHighlightedPointCloud(
                 points: new[] { Vector3.Zero },
                 highlightColor: Color.Red.ToVector3(),
                 radius: 10);
+
+            QueryCenterDrawable.SwapDrawable(drawable);
         }
 
         public void SetPosition(Vector3 position)
         {
-            Transformation.Position = position;
+            QueryCenterDrawable.Transformation.Position = position;
+        }
+
+        public IEnumerable<IDrawable> GetDrawables()
+        {
+            yield return QueryCenterDrawable;
         }
     }
 }

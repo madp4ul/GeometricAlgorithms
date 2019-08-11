@@ -33,7 +33,7 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
 
         public void SetOriginalFacesVisiblity(bool showOriginalFaces)
         {
-            Workspace.PointData.FaceData.EnableDraw = showOriginalFaces;
+            Workspace.PointData.FaceData.DrawFaces = showOriginalFaces;
         }
 
         public void SetDrawOriginalFacesAsWireframe(bool showWireframe)
@@ -43,17 +43,17 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
 
         public void SetPointCloudVisibility(bool showPointCloud)
         {
-            Workspace.PointData.EnableDraw = showPointCloud;
+            Workspace.PointData.DrawMeshPositions = showPointCloud;
         }
 
         public void SetNormalVisiblity(bool showNormals)
         {
-            Workspace.PointData.NormalData.EnableDraw = showNormals;
+            Workspace.PointData.NormalData.DrawNormals = showNormals;
         }
 
         public void SetApproximatedNormalVisiblity(bool showNormals)
         {
-            Workspace.PointData.FaceApproximatedNormalData.EnableDraw = showNormals;
+            Workspace.PointData.FaceApproximatedNormalData.DrawNormals = showNormals;
         }
     }
 }

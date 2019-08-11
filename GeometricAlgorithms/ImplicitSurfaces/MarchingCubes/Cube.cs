@@ -115,15 +115,19 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingCubes
 
         Vector3 VertexInterp(FunctionValue f1, FunctionValue f2)
         {
-            float interpolation;
+            const float interpolationMinimum = 0.00001f;
 
-            if (Math.Abs(f1.Value) < 0.00001)
+            float absValue1 = Math.Abs(f1.Value);
+            if (absValue1 < interpolationMinimum)
                 return f1.Position;
-            if (Math.Abs(f2.Value) < 0.00001)
+
+            float absValue2 = Math.Abs(f2.Value);
+            if (absValue2 < interpolationMinimum)
                 return f2.Position;
-            if (Math.Abs(f1.Value - f2.Value) < 0.00001)
+
+            if (Math.Abs(f1.Value - f2.Value) < interpolationMinimum)
                 return f1.Position;
-            interpolation = f1.Value / (f2.Value - f1.Value);
+            float interpolation = absValue1 / (absValue1 + absValue2);
 
             return f1.Position + interpolation * (f2.Position - f1.Position);
         }

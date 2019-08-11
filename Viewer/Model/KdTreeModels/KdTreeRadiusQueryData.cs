@@ -13,10 +13,10 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
 {
-    public class KdTreeRadiusQueryData : IDrawable
+    public class KdTreeRadiusQueryData
     {
         private readonly IFuncExecutor FuncExecutor;
-        private readonly ToggleableDrawable Drawable;
+        private readonly CameraChangedEventDrawable CameraChangedEvent;
 
         private MeshQuerying.KdTree KdTree;
 
@@ -26,42 +26,36 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
         public bool IsCalculating { get; private set; }
         public bool QueryHasChangedSinceLastCalculation { get; private set; }
 
-        private QueryCenterPoint QueryCenterDrawable { get; set; }
-        private KdTreeQueryResult QueryResultDrawable { get; set; }
+        public readonly QueryCenterPoint QueryCenterPoint;
+        public readonly KdTreeQueryResult QueryResult;
 
-
-        public bool ShowQueryHelper { get => QueryCenterDrawable.EnableDraw; set => QueryCenterDrawable.EnableDraw = value; }
-        public bool ShowQueryResult { get => QueryResultDrawable.EnableDraw; set => QueryResultDrawable.EnableDraw = value; }
         public bool CanQuery => KdTree != null;
-
-        public Transformation Transformation { get; set; }
 
         public KdTreeRadiusQueryData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {
             FuncExecutor = funcExecutor;
 
-            Transformation = Transformation.Identity;
             Radius = 0.1f;
-            QueryCenterDrawable = new QueryCenterPoint(drawableFactoryProvider);
+            QueryCenterPoint = new QueryCenterPoint(drawableFactoryProvider);
 
-            QueryResultDrawable = new KdTreeQueryResult(drawableFactoryProvider);
+            QueryResult = new KdTreeQueryResult(drawableFactoryProvider);
 
-            Drawable = new ToggleableDrawable(new CompositeDrawable(QueryCenterDrawable, QueryResultDrawable));
+            CameraChangedEvent = new CameraChangedEventDrawable();
+            CameraChangedEvent.CameraChanged += OnCameraChanged;
         }
-
 
         public void Reset(MeshQuerying.KdTree kdTree)
         {
             KdTree = kdTree;
 
-            QueryCenterDrawable.Reset();
-            QueryResultDrawable.Reset();
+            QueryCenterPoint.Reset();
+            QueryResult.Reset();
         }
 
         public void HideAll()
         {
-            ShowQueryHelper = false;
-            ShowQueryResult = false;
+            QueryCenterPoint.Show = false;
+            QueryResult.Show = false;
         }
 
         public void SetRadius(float radius)
@@ -83,14 +77,24 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
 
             radiusQuery.GetResult((vertexIndices) =>
             {
-                QueryResultDrawable.Reset(vertexIndices.Select(pi => pi.Position));
+                QueryResult.Reset(vertexIndices.Select(pi => pi.Position));
                 IsCalculating = false;
             });
         }
 
-        public void Draw(ACamera camera)
+        public IEnumerable<IDrawable> GetDrawables()
         {
-            //Refresh query center based on camera position - can only happen in draw
+            yield return CameraChangedEvent;
+            foreach (var drawable in QueryCenterPoint.GetDrawables()
+                .Concat(QueryResult.GetDrawables())
+                )
+            {
+                yield return drawable;
+            }
+        }
+
+        private void OnCameraChanged(ACamera camera)
+        {
             float centerDistance = 0.2f;
             Vector3 newQueryCenter = camera.Position + (camera.Forward.Normalized() * centerDistance);
 
@@ -98,16 +102,8 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
             {
                 QueryHasChangedSinceLastCalculation = true;
                 QueryCenter = newQueryCenter;
-                QueryCenterDrawable.SetPosition(QueryCenter);
+                QueryCenterPoint.SetPosition(QueryCenter);
             }
-
-            QueryCenterDrawable.Draw(camera);
-            QueryResultDrawable.Draw(camera);
-        }
-
-        public void Dispose()
-        {
-            Drawable.Dispose();
         }
     }
 }

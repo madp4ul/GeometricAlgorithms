@@ -36,11 +36,15 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingCubes
         {
             var result = new List<Triangle>();
 
-            for (int x = 0; x < Steps; x++)
+            //Because cubes already consider the corner at the next index of the current one
+            //we dont want cubes for the last row
+            int cubesLength = Steps - 1;
+
+            for (int x = 0; x < cubesLength; x++)
             {
-                for (int y = 0; y < Steps; y++)
+                for (int y = 0; y < cubesLength; y++)
                 {
-                    for (int z = 0; z < Steps; z++)
+                    for (int z = 0; z < cubesLength - 1; z++)
                     {
                         Cube cube = new Cube(FunctionValueGrid, this, new Point(x, y, z));
                         result.AddRange(cube.ComputeTriangles());

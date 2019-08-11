@@ -56,25 +56,25 @@ namespace GeometricAlgorithms.Viewer.Forms.KdTreeControls
 
         private void CbShowQueryResult_CheckedChanged(object sender, EventArgs e)
         {
-            QueryData.ShowQueryResult = cbShowQueryResult.Checked;
+            QueryData.QueryResult.Show = cbShowQueryResult.Checked;
         }
 
         private void CbShowQueryCenter_CheckedChanged(object sender, EventArgs e)
         {
-            QueryData.ShowQueryHelper = cbShowQueryCenter.Checked;
+            QueryData.QueryCenterPoint.Show = cbShowQueryCenter.Checked;
         }
 
         public void SetShowQuery(bool showQuery)
         {
             if (showQuery)
             {
-                QueryData.ShowQueryHelper = cbShowQueryResult.Checked;
-                QueryData.ShowQueryResult = cbShowQueryResult.Checked;
+                QueryData.QueryCenterPoint.Show = cbShowQueryResult.Checked;
+                QueryData.QueryResult.Show = cbShowQueryResult.Checked;
             }
             else
             {
-                QueryData.ShowQueryHelper = false;
-                QueryData.ShowQueryResult = false;
+                QueryData.QueryCenterPoint.Show = false;
+                QueryData.QueryResult.Show = false;
             }
         }
 

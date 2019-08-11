@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
 {
-    public class KdTreeData : ToggleableDrawable
+    public class KdTreeData
     {
         private readonly IDrawableFactoryProvider DrawableFactoryProvider;
         private readonly IFuncExecutor FuncExecutor;
@@ -26,15 +26,17 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
 
         public readonly ApproximatedFaceData ApproximatedFaceData;
 
+        private readonly ContainerDrawable KdTreeBoxDrawable;
+        public bool DrawKdTree { get => KdTreeBoxDrawable.EnableDraw; set => KdTreeBoxDrawable.EnableDraw = value; }
+
 
         public KdTreeData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {
             DrawableFactoryProvider = drawableFactoryProvider;
             FuncExecutor = funcExecutor;
 
-            EnableDraw = false;
+            KdTreeBoxDrawable = new ContainerDrawable(enable: false);
             Configuration = KdTreeConfiguration.Default;
-            KdTree = new MeshQuerying.KdTree(Mesh.CreateEmpty(), Configuration);
 
             RadiusQuerydata = new KdTreeRadiusQueryData(drawableFactoryProvider, funcExecutor);
             NearestQuerydata = new KdTreeNearestQueryData(drawableFactoryProvider, funcExecutor);
@@ -47,11 +49,11 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
             Reset(KdTree.Mesh);
         }
 
-        public void Reset(Mesh model)
+        public void Reset(Mesh mesh)
         {
             var buildKdTree = FuncExecutor.Execute((progress) =>
               {
-                  return new MeshQuerying.KdTree(model, Configuration, progress);
+                  return new MeshQuerying.KdTree(mesh, Configuration, progress);
               });
 
 
@@ -59,26 +61,13 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
             {
                 KdTree = kdTree;
 
-                if (Drawable != null)
-                {
-                    Drawable.Dispose();
-                }
-
                 var boxes = KdTree.GetBoundingBoxes().ToArray();
 
-                if (boxes.Length == 0)
-                {
-                    Drawable = new EmptyDrawable();
-                }
-                else
-                {
-                    float maxSideLength = boxes[0].Diagonal.MaximumComponent();
+                IDrawable newDrawable = boxes.Length == 0
+                    ? new EmptyDrawable()
+                    : CreateKdTreeDrawable(boxes);
 
-                    //have a minimum lightness and let the rest be dictated by box volume relative to the root box
-                    Vector3 colorGenerator(BoundingBox box) => new Vector3(1, (box.Diagonal.MaximumComponent() / maxSideLength), 0);
-
-                    Drawable = DrawableFactoryProvider.DrawableFactory.CreateBoundingBoxRepresentation(boxes, colorGenerator);
-                }
+                KdTreeBoxDrawable.SwapDrawable(newDrawable);
 
                 RadiusQuerydata.Reset(KdTree);
                 NearestQuerydata.Reset(KdTree);
@@ -87,14 +76,26 @@ namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
             });
         }
 
-        public override void Draw(ACamera camera)
+        private IDrawable CreateKdTreeDrawable(BoundingBox[] boxes)
         {
-            base.Draw(camera);
+            float maxSideLength = boxes[0].Diagonal.MaximumComponent();
 
-            RadiusQuerydata.Draw(camera);
-            NearestQuerydata.Draw(camera);
+            //have a minimum lightness and let the rest be dictated by box volume relative to the root box
+            Vector3 colorGenerator(BoundingBox box) => new Vector3(1, (box.Diagonal.MaximumComponent() / maxSideLength), 0);
 
-            ApproximatedFaceData.Draw(camera);
+            return DrawableFactoryProvider.DrawableFactory.CreateBoundingBoxRepresentation(boxes, colorGenerator);
+        }
+
+        public IEnumerable<IDrawable> GetDrawables()
+        {
+            yield return KdTreeBoxDrawable;
+            foreach (var drawable in RadiusQuerydata.GetDrawables()
+                .Concat(NearestQuerydata.GetDrawables())
+                .Concat(ApproximatedFaceData.GetDrawables())
+                )
+            {
+                yield return drawable;
+            }
         }
     }
 }

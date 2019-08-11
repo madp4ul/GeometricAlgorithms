@@ -3,43 +3,41 @@ using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.Domain.Tasks;
 using GeometricAlgorithms.Viewer.Extensions;
 using GeometricAlgorithms.Viewer.Interfaces;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace GeometricAlgorithms.Viewer.Model
 {
-    public class Workspace : IDrawable
+    public class Workspace
     {
         private readonly IDrawableFactoryProvider DrawableFactoryProvider;
-        public readonly PointData PointData;
 
-        private IDrawable ReferenceFrame;
+        public readonly PointData PointData;
+        private readonly ContainerDrawable ReferenceFrame;
 
         public Workspace(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {
             DrawableFactoryProvider = drawableFactoryProvider;
 
-            ReferenceFrame = new EmptyDrawable();
+            ReferenceFrame = new ContainerDrawable();
             PointData = new PointData(drawableFactoryProvider, funcExecutor);
         }
 
-        public Transformation Transformation { get => PointData.Transformation; set => PointData.Transformation = value; }
-
         public void LoadReferenceFrame()
         {
-            ReferenceFrame = DrawableFactoryProvider.DrawableFactory.CreateBoundingBoxRepresentation(
+            var drawable = DrawableFactoryProvider.DrawableFactory.CreateBoundingBoxRepresentation(
                 new[] { new BoundingBox(-Vector3.One, Vector3.One) }, (box) => Color.Blue.ToVector3());
+
+            ReferenceFrame.SwapDrawable(drawable);
         }
 
-        public void Dispose()
+        public IEnumerable<IDrawable> GetDrawables()
         {
-            ReferenceFrame.Dispose();
-            PointData.Dispose();
-        }
-
-        public void Draw(ACamera camera)
-        {
-            PointData.Draw(camera);
-            ReferenceFrame.Draw(camera);
+            yield return ReferenceFrame;
+            foreach (var drawable in PointData.GetDrawables())
+            {
+                yield return drawable;
+            }
         }
     }
 }

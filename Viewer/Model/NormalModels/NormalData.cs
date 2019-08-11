@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.Viewer.Model.NormalModels
 {
-    public class NormalData : ToggleableDrawable
+    public class NormalData
     {
         private readonly IDrawableFactoryProvider DrawableFactoryProvider;
 
@@ -19,42 +19,37 @@ namespace GeometricAlgorithms.Viewer.Model.NormalModels
 
         public bool HasNormals { get; set; }
 
+        private readonly ContainerDrawable NormalsDrawable;
+        public bool DrawNormals { get => NormalsDrawable.EnableDraw; set => NormalsDrawable.EnableDraw = value; }
+
+
         public NormalData(IDrawableFactoryProvider drawableFactoryProvider)
         {
             DrawableFactoryProvider = drawableFactoryProvider ?? throw new ArgumentNullException(nameof(drawableFactoryProvider));
 
             Length = 0.02f;
-
-            EnableDraw = true;
-        }
-
-        public void Reset()
-        {
-            HasNormals = MeshHasNormals(Mesh);
-
-            if (Drawable != null)
-            {
-                Drawable.Dispose();
-            }
-
-            if (HasNormals)
-            {
-                Drawable = DrawableFactoryProvider.DrawableFactory.CreateVectors(
-                     Mesh.Positions,
-                     SelectNormals(Mesh),
-                     Length,
-                     GenerateColor);
-            }
-            else
-            {
-                Drawable = new EmptyDrawable();
-            }
+            NormalsDrawable = new ContainerDrawable();
         }
 
         public void Reset(Mesh mesh)
         {
             Mesh = mesh ?? throw new ArgumentNullException(nameof(mesh));
             Reset();
+        }
+
+        public void Reset()
+        {
+            HasNormals = MeshHasNormals(Mesh);
+
+            var normals = !HasNormals
+                ? new EmptyDrawable()
+                : DrawableFactoryProvider.DrawableFactory.CreateVectors(
+                     Mesh.Positions,
+                     SelectNormals(Mesh),
+                     Length,
+                     GenerateColor);
+
+            NormalsDrawable.SwapDrawable(normals);
         }
 
         protected virtual IEnumerable<Vector3> SelectNormals(Mesh mesh)
@@ -71,6 +66,11 @@ namespace GeometricAlgorithms.Viewer.Model.NormalModels
         protected bool MeshHasNormals(Mesh mesh)
         {
             return SelectNormals(mesh) != null;
+        }
+
+        public IEnumerable<IDrawable> GetDrawables()
+        {
+            yield return NormalsDrawable;
         }
     }
 }

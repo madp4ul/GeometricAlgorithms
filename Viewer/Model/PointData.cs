@@ -13,24 +13,26 @@ using GeometricAlgorithms.Viewer.Model.FaceModels;
 
 namespace GeometricAlgorithms.Viewer.Model
 {
-    public class PointData : ToggleableDrawable
+    public class PointData
     {
         private readonly IDrawableFactoryProvider DrawableFactoryProvider;
 
         public Mesh Mesh { get; private set; }
 
         public readonly KdTreeData KdTreeData;
-
         public readonly NormalData NormalData;
         public readonly ApproximatedNormalData FaceApproximatedNormalData;
-
         public readonly FaceData FaceData;
+
+        private readonly ContainerDrawable MeshPositionDrawable;
+        public bool DrawMeshPositions { get => MeshPositionDrawable.EnableDraw; set => MeshPositionDrawable.EnableDraw = value; }
+
 
         public PointData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {
             DrawableFactoryProvider = drawableFactoryProvider;
             Mesh = Mesh.CreateEmpty();
-            Drawable = new EmptyDrawable();
+            MeshPositionDrawable = new ContainerDrawable();
 
             NormalData = new NormalData(drawableFactoryProvider);
             FaceApproximatedNormalData = new ApproximatedNormalData(drawableFactoryProvider, funcExecutor);
@@ -44,12 +46,9 @@ namespace GeometricAlgorithms.Viewer.Model
         {
             Mesh = mesh ?? throw new ArgumentNullException(nameof(mesh));
 
-            if (Drawable != null)
-            {
-                Drawable.Dispose();
-            }
-            Drawable = DrawableFactoryProvider.DrawableFactory.CreatePointCloud(
-                Mesh.Positions, pointRadius);
+            var pointCloud = DrawableFactoryProvider.DrawableFactory.CreatePointCloud(
+                            Mesh.Positions, pointRadius);
+            MeshPositionDrawable.SwapDrawable(pointCloud);
 
             NormalData.Reset(Mesh);
             FaceApproximatedNormalData.Reset(Mesh);
@@ -59,16 +58,18 @@ namespace GeometricAlgorithms.Viewer.Model
             KdTreeData.Reset(Mesh);
         }
 
-        public override void Draw(ACamera camera)
+        public IEnumerable<IDrawable> GetDrawables()
         {
-            base.Draw(camera);
-
-            NormalData.Draw(camera);
-            FaceApproximatedNormalData.Draw(camera);
-
-            FaceData.Draw(camera);
-
-            KdTreeData.Draw(camera);
+            yield return MeshPositionDrawable;
+            foreach (var drawable in KdTreeData.GetDrawables()
+                .Concat(NormalData.GetDrawables())
+                .Concat(FaceApproximatedNormalData.GetDrawables())
+                .Concat(FaceData.GetDrawables())
+                .Concat(NormalData.GetDrawables())
+                )
+            {
+                yield return drawable;
+            }
         }
     }
 }

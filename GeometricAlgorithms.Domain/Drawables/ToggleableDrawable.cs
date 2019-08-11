@@ -9,7 +9,7 @@ namespace GeometricAlgorithms.Domain.Drawables
 {
     public class ToggleableDrawable : IDrawable
     {
-        public IDrawable Drawable { get; protected set; }
+        public virtual IDrawable Drawable { get; protected set; }
 
         public bool EnableDraw { get; set; }
         public virtual Transformation Transformation { get => Drawable.Transformation; set => Drawable.Transformation = value; }

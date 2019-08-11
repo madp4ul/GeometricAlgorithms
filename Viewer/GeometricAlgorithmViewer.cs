@@ -59,7 +59,11 @@ namespace GeometricAlgorithms.Viewer
                 SetAspectRatio();
 
                 viewer.Scene.Camera = Camera;
-                viewer.Scene.Drawables.Add(Workspace);
+
+                foreach (var drawable in Workspace.GetDrawables())
+                {
+                    viewer.Scene.Drawables.Add(drawable);
+                }
             }
         }
 

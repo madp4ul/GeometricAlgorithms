@@ -15,37 +15,42 @@ using GeometricAlgorithms.Viewer.Interfaces;
 
 namespace GeometricAlgorithms.Viewer.Model.FaceModels
 {
-    public class ApproximatedFaceData : FaceData
+    public class ApproximatedFaceData
     {
+        private readonly IDrawableFactoryProvider DrawableFactoryProvider;
         private readonly IFuncExecutor FuncExecutor;
+
+        public readonly FaceData FaceData;
 
         public KdTree KdTree { get; private set; }
 
         public int UsedNearestPointCount { get; set; }
 
-        public IDrawable FunctionValuesDrawable { get; set; }
+        private readonly ContainerDrawable FunctionValuesDrawable;
+        public bool DrawFunctionValues
+        {
+            get => FunctionValuesDrawable.EnableDraw;
+            set => FunctionValuesDrawable.EnableDraw = value;
+        }
 
-        public PointData ApproximatedPointData { get; private set; }
 
         public bool CanApproximate => KdTree != null;
 
         public ApproximatedFaceData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
-            : base(drawableFactoryProvider)
         {
+            DrawableFactoryProvider = drawableFactoryProvider;
             FuncExecutor = funcExecutor;
-
             UsedNearestPointCount = 10;
+            FunctionValuesDrawable = new ContainerDrawable();
 
-            FunctionValuesDrawable = new EmptyDrawable();
-
-            //ApproximatedPointData = new PointData(drawableFactoryProvider, funcExecutor);
+            FaceData = new FaceData(drawableFactoryProvider);
         }
 
         public void Reset(KdTree kdTree)
         {
             KdTree = kdTree;
 
-            Reset(kdTree.Mesh);
+            FaceData.Reset(Mesh.CreateEmpty());
         }
 
         public void CalculateApproximation()
@@ -67,18 +72,23 @@ namespace GeometricAlgorithms.Viewer.Model.FaceModels
                 var colors = cubeMarcher.FunctionValueGrid.FunctionValues
                     .Select(f => f.Value > 0 ? Color.Green.ToVector3() : Color.Red.ToVector3());
 
-                FunctionValuesDrawable.Dispose();
-                FunctionValuesDrawable = DrawableFactoryProvider.DrawableFactory
-                .CreatePointCloud(positions, 5, colors);
+                //Show function value samples
+                FunctionValuesDrawable.SwapDrawable(
+                    DrawableFactoryProvider.DrawableFactory.CreatePointCloud(positions, 5, colors));
 
-                //ApproximatedPointData.Reset(mesh, 10);
+                //Show approximated face data
+                FaceData.Reset(mesh);
             });
         }
 
-        public override void Draw(ACamera camera)
+        public IEnumerable<IDrawable> GetDrawables()
         {
-            base.Draw(camera);
-            FunctionValuesDrawable.Draw(camera);
+            yield return FunctionValuesDrawable;
+
+            foreach (var drawable in FaceData.GetDrawables())
+            {
+                yield return drawable;
+            }
         }
     }
 }

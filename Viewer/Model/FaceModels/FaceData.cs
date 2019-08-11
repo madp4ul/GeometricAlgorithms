@@ -9,24 +9,38 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.Viewer.Model.FaceModels
 {
-    public class FaceData : ToggleableDrawable
+    public class FaceData
     {
         protected readonly IDrawableFactoryProvider DrawableFactoryProvider;
 
         public Mesh Mesh { get; private set; }
 
-        public bool HasFaces { get; set; }
+        public bool HasFaces { get; private set; }
 
-        public bool DrawAsWireframe { get; set; }
-        IDrawableMesh DrawableMesh => Drawable as IDrawableMesh;
+        private bool _DrawAsWireframe;
+        public bool DrawAsWireframe
+        {
+            get => _DrawAsWireframe; set
+            {
+                _DrawAsWireframe = value;
+                if (FacesDrawableMesh != null)
+                {
+                    FacesDrawableMesh.DrawWireframe = value;
+                }
+            }
+        }
+        IDrawableMesh FacesDrawableMesh => FacesDrawable.Drawable as IDrawableMesh;
+        private readonly ContainerDrawable FacesDrawable;
+        public bool DrawFaces { get => FacesDrawable.EnableDraw; set => FacesDrawable.EnableDraw = value; }
 
 
         public FaceData(IDrawableFactoryProvider drawableFactoryProvider)
         {
             DrawableFactoryProvider = drawableFactoryProvider ?? throw new ArgumentNullException(nameof(drawableFactoryProvider));
 
+            FacesDrawable = new ContainerDrawable();
+
             DrawAsWireframe = true;
-            EnableDraw = true;
         }
 
         public void Reset(Mesh mesh)
@@ -34,19 +48,18 @@ namespace GeometricAlgorithms.Viewer.Model.FaceModels
             Mesh = mesh ?? throw new ArgumentNullException(nameof(mesh));
             HasFaces = MeshHasFaces(mesh);
 
-            if (Drawable != null)
-            {
-                Drawable.Dispose();
-            }
-
+            IDrawable newDrawable;
             if (HasFaces)
             {
-                Drawable = DrawableFactoryProvider.DrawableFactory.CreateMesh(Mesh.Positions, SelectFaces(Mesh));
+                var drawableMesh = DrawableFactoryProvider.DrawableFactory.CreateMesh(Mesh.Positions, SelectFaces(Mesh));
+                drawableMesh.DrawWireframe = DrawAsWireframe;
+                newDrawable = drawableMesh;
             }
             else
             {
-                Drawable = new EmptyDrawable();
+                newDrawable = new EmptyDrawable();
             }
+            FacesDrawable.SwapDrawable(newDrawable);
         }
 
         protected virtual IEnumerable<Triangle> SelectFaces(Mesh mesh)
@@ -56,16 +69,14 @@ namespace GeometricAlgorithms.Viewer.Model.FaceModels
 
         protected bool MeshHasFaces(Mesh mesh)
         {
-            return SelectFaces(mesh) != null;
+            var faces = SelectFaces(mesh);
+
+            return faces != null && faces.Any();
         }
 
-        public override void Draw(ACamera camera)
+        public virtual IEnumerable<IDrawable> GetDrawables()
         {
-            if (DrawableMesh != null)
-            {
-                DrawableMesh.DrawWireframe = this.DrawAsWireframe;
-            }
-            base.Draw(camera);
+            yield return FacesDrawable;
         }
     }
 }

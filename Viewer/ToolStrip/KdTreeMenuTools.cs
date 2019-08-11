@@ -19,9 +19,9 @@ namespace GeometricAlgorithms.Viewer.ToolStrip
             KdTreeData = kdTreeData ?? throw new ArgumentNullException(nameof(kdTreeData));
         }
 
-        public void SetKdTreeVisibility(bool visible)
+        public void SetKdTreeVisibility(bool showKdTree)
         {
-            KdTreeData.EnableDraw = visible;
+            KdTreeData.DrawKdTree = showKdTree;
         }
 
         public void OpenKdTreeQueriesWindow(System.Windows.Forms.IWin32Window owner)
