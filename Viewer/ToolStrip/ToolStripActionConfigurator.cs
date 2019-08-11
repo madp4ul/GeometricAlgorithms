@@ -29,7 +29,7 @@ namespace GeometricAlgorithms.Viewer.ToolStrip
             new FileMenuConfigurator(Model).Configure(MenuStrip);
             new ViewerMenuConfigurator(Model).Configure(MenuStrip);
             new KdTreeMenuConfigurator(Model, MainWindow).Configure(MenuStrip);
-            new ApproximationConfigurator(Model).Configure(MenuStrip);
+            new ApproximationConfigurator(Model, MainWindow).Configure(MenuStrip);
         }
     }
 }

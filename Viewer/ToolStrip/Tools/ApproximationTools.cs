@@ -1,4 +1,5 @@
-﻿using GeometricAlgorithms.Viewer.Model;
+﻿using GeometricAlgorithms.Viewer.Forms;
+using GeometricAlgorithms.Viewer.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,9 +27,20 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
             PointData.FaceApproximatedNormalData.CalculateApproximation();
         }
 
-        public void ApproximateFaces()
+
+        private FaceApproximationForm QueriesWindow = null;
+        public void ApproximateFaces(System.Windows.Forms.IWin32Window owner)
         {
-            PointData.KdTreeData.ApproximatedFaceData.CalculateApproximation();
+            if (QueriesWindow == null)
+            {
+                QueriesWindow = new FaceApproximationForm(PointData.KdTreeData.ApproximatedFaceData);
+                QueriesWindow.FormClosed += (o, e) => QueriesWindow = null;
+                QueriesWindow.Show(owner);
+            }
+            else
+            {
+                QueriesWindow.Focus();
+            }
         }
 
         public bool EnableApproximateFaces()

@@ -6,13 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.Viewer.ToolStrip
+namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
 {
     class KdTreeMenuTools
     {
         public KdTreeData KdTreeData { get; set; }
 
-        private KdTreeQueries QueriesWindow = null;
 
         public KdTreeMenuTools(KdTreeData kdTreeData)
         {
@@ -24,11 +23,12 @@ namespace GeometricAlgorithms.Viewer.ToolStrip
             KdTreeData.DrawKdTree = showKdTree;
         }
 
+        private KdTreeQueriesForm QueriesWindow = null;
         public void OpenKdTreeQueriesWindow(System.Windows.Forms.IWin32Window owner)
         {
             if (QueriesWindow == null)
             {
-                QueriesWindow = new KdTreeQueries(KdTreeData);
+                QueriesWindow = new KdTreeQueriesForm(KdTreeData);
                 QueriesWindow.FormClosed += (o, e) => QueriesWindow = null;
                 QueriesWindow.Show(owner);
             }

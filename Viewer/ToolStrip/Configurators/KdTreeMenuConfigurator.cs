@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using GeometricAlgorithms.Viewer.Model;
+using GeometricAlgorithms.Viewer.ToolStrip.Tools;
 
 namespace GeometricAlgorithms.Viewer.ToolStrip.Configurators
 {

@@ -1,6 +1,6 @@
 ﻿namespace GeometricAlgorithms.Viewer.Forms
 {
-    partial class KdTreeQueries
+    partial class KdTreeQueriesForm
     {
         /// <summary>
         /// Required designer variable.

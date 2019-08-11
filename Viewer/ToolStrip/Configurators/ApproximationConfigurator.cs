@@ -11,8 +11,11 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Configurators
 {
     class ApproximationConfigurator : MenuConfigurator
     {
-        public ApproximationConfigurator(ModelData model) : base(model)
+        private readonly MainWindow MainWindow;
+
+        public ApproximationConfigurator(ModelData model, MainWindow mainWindow) : base(model)
         {
+            MainWindow = mainWindow;
         }
 
         public override void Configure(MenuStrip menuStrip)
@@ -48,7 +51,7 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Configurators
                 approximateFaces.Enabled = approximationTools.EnableApproximateFaces();
             };
 
-            MakeClickAction(approximateFaces, approximationTools.ApproximateFaces);
+            MakeClickAction(approximateFaces, () => approximationTools.ApproximateFaces(MainWindow));
         }
     }
 }

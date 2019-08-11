@@ -75,6 +75,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\ConvertExtensions.cs" />
+    <Compile Include="Forms\FaceApproximationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FaceApproximationForm.Designer.cs">
+      <DependentUpon>FaceApproximationForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\KdTreeControls\KdTreeConfigurationControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -93,11 +99,11 @@
     <Compile Include="Forms\KdTreeControls\RadiusQueryControl.Designer.cs">
       <DependentUpon>RadiusQueryControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\KdTreeQueries.cs">
+    <Compile Include="Forms\KdTreeQueriesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\KdTreeQueries.Designer.cs">
-      <DependentUpon>KdTreeQueries.cs</DependentUpon>
+    <Compile Include="Forms\KdTreeQueriesForm.Designer.cs">
+      <DependentUpon>KdTreeQueriesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\FaceModels\ApproximatedFaceData.cs" />
     <Compile Include="Model\FaceModels\FaceData.cs" />
@@ -143,9 +149,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Interfaces\IDrawableFactoryProvider.cs" />
     <Compile Include="ToolStrip\Tools\FileMenuTools.cs" />
-    <Compile Include="ToolStrip\KdTreeMenuTools.cs" />
+    <Compile Include="ToolStrip\Tools\KdTreeMenuTools.cs" />
     <Compile Include="ToolStrip\ToolStripActionConfigurator.cs" />
     <Compile Include="ToolStrip\Tools\ViewerMenuTools.cs" />
+    <EmbeddedResource Include="Forms\FaceApproximationForm.resx">
+      <DependentUpon>FaceApproximationForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\KdTreeControls\KdTreeConfigurationControl.resx">
       <DependentUpon>KdTreeConfigurationControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -155,8 +164,8 @@
     <EmbeddedResource Include="Forms\KdTreeControls\RadiusQueryControl.resx">
       <DependentUpon>RadiusQueryControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\KdTreeQueries.resx">
-      <DependentUpon>KdTreeQueries.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\KdTreeQueriesForm.resx">
+      <DependentUpon>KdTreeQueriesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GeometricAlgorithmViewer.resx">
       <DependentUpon>GeometricAlgorithmViewer.cs</DependentUpon>

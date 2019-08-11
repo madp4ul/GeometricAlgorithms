@@ -24,13 +24,21 @@ namespace GeometricAlgorithms.Viewer.Model.FaceModels
 
         public KdTree KdTree { get; private set; }
 
+        public int FunctionValueRadius { get; set; }
         public int UsedNearestPointCount { get; set; }
 
-        private readonly ContainerDrawable FunctionValuesDrawable;
-        public bool DrawFunctionValues
+        private readonly ContainerDrawable InnerFunctionValuesDrawable;
+        public bool DrawInnerFunctionValues
         {
-            get => FunctionValuesDrawable.EnableDraw;
-            set => FunctionValuesDrawable.EnableDraw = value;
+            get => InnerFunctionValuesDrawable.EnableDraw;
+            set => InnerFunctionValuesDrawable.EnableDraw = value;
+        }
+
+        private readonly ContainerDrawable OuterFunctionValuesDrawable;
+        public bool DrawOuterFunctionValues
+        {
+            get => OuterFunctionValuesDrawable.EnableDraw;
+            set => OuterFunctionValuesDrawable.EnableDraw = value;
         }
 
 
@@ -41,7 +49,9 @@ namespace GeometricAlgorithms.Viewer.Model.FaceModels
             DrawableFactoryProvider = drawableFactoryProvider;
             FuncExecutor = funcExecutor;
             UsedNearestPointCount = 10;
-            FunctionValuesDrawable = new ContainerDrawable();
+            FunctionValueRadius = 4;
+            InnerFunctionValuesDrawable = new ContainerDrawable();
+            OuterFunctionValuesDrawable = new ContainerDrawable();
 
             FaceData = new FaceData(drawableFactoryProvider);
         }
@@ -72,18 +82,40 @@ namespace GeometricAlgorithms.Viewer.Model.FaceModels
                 var colors = cubeMarcher.FunctionValueGrid.FunctionValues
                     .Select(f => f.Value > 0 ? Color.Green.ToVector3() : Color.Red.ToVector3());
 
-                //Show function value samples
-                FunctionValuesDrawable.SwapDrawable(
-                    DrawableFactoryProvider.DrawableFactory.CreatePointCloud(positions, 5, colors));
+                SetInnerFunctionValuesDrawable(cubeMarcher.FunctionValueGrid.FunctionValues);
+                SetOuterFunctionValuesDrawable(cubeMarcher.FunctionValueGrid.FunctionValues);
 
                 //Show approximated face data
                 FaceData.Reset(mesh);
             });
         }
 
+        private void SetInnerFunctionValuesDrawable(FunctionValue[] functionValues)
+        {
+            var innerValues = functionValues.Where(fv => fv.IsInside());
+
+            var positions = innerValues.Select(f => f.Position).ToArray();
+            var colors = Enumerable.Repeat(Color.Red.ToVector3(), positions.Length);
+
+            InnerFunctionValuesDrawable.SwapDrawable(
+                    DrawableFactoryProvider.DrawableFactory.CreatePointCloud(positions, FunctionValueRadius, colors));
+        }
+
+        private void SetOuterFunctionValuesDrawable(FunctionValue[] functionValues)
+        {
+            var outerValues = functionValues.Where(fv => !fv.IsInside());
+
+            var positions = outerValues.Select(f => f.Position).ToArray();
+            var colors = Enumerable.Repeat(Color.Green.ToVector3(), positions.Length);
+
+            OuterFunctionValuesDrawable.SwapDrawable(
+                    DrawableFactoryProvider.DrawableFactory.CreatePointCloud(positions, FunctionValueRadius, colors));
+        }
+
         public IEnumerable<IDrawable> GetDrawables()
         {
-            yield return FunctionValuesDrawable;
+            yield return InnerFunctionValuesDrawable;
+            yield return OuterFunctionValuesDrawable;
 
             foreach (var drawable in FaceData.GetDrawables())
             {

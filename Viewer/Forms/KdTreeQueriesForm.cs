@@ -11,11 +11,11 @@ using System.Windows.Forms;
 
 namespace GeometricAlgorithms.Viewer.Forms
 {
-    public partial class KdTreeQueries : Form
+    public partial class KdTreeQueriesForm : Form
     {
         public KdTreeData KdTreeData { get; set; }
 
-        public KdTreeQueries(KdTreeData kdTreeData)
+        public KdTreeQueriesForm(KdTreeData kdTreeData)
         {
             InitializeComponent();
 

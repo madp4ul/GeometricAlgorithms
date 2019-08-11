@@ -31,6 +31,21 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
             return Workspace.PointData.FaceData.HasFaces;
         }
 
+        public bool EnableOptionSetApproximatedFacesVisibility()
+        {
+            return Workspace.PointData.KdTreeData.ApproximatedFaceData.FaceData.HasFaces;
+        }
+
+        public void SetApproximatedFacesVisiblity(bool showOriginalFaces)
+        {
+            Workspace.PointData.KdTreeData.ApproximatedFaceData.FaceData.DrawFaces = showOriginalFaces;
+        }
+
+        public void SetDrawApproximatedFacesAsWireframe(bool showWireframe)
+        {
+            Workspace.PointData.KdTreeData.ApproximatedFaceData.FaceData.DrawAsWireframe = showWireframe;
+        }
+
         public void SetOriginalFacesVisiblity(bool showOriginalFaces)
         {
             Workspace.PointData.FaceData.DrawFaces = showOriginalFaces;

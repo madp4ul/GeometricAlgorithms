@@ -29,20 +29,29 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Configurators
             var showFaces = GetMenu(menu.DropDownItems, "showOriginalMeshToolStripMenuItem");
             var showFacesAsWireframe = GetMenu(showFaces.DropDownItems, "showOriginalFacesAsWireframeToolStripMenuItem");
 
+            var showApproximatedFaces = GetMenu(menu.DropDownItems, "showApproximatedFacesToolStripMenuItem");
+            var showApproximatedFacesAsWireframe = GetMenu(showApproximatedFaces.DropDownItems, "showApproximatedFacesAsWireframeToolStripMenuItem");
+
             //Set enabled on open menu
             menu.DropDownOpening += (o, e) =>
             {
                 showNormals.Enabled = viewerMenuTools.EnableOptionSetNormalVisiblity();
                 showFaceApproximatedNormals.Enabled = viewerMenuTools.EnableOptionSetApproximatedNormalVisiblity();
                 showFaces.Enabled = viewerMenuTools.EnableOptionSetOriginalFacesVisiblity();
+                showApproximatedFaces.Enabled = viewerMenuTools.EnableOptionSetApproximatedFacesVisibility();
             };
 
             //Configure action on click
             MakeClickToggle(showPositions, viewerMenuTools.SetPointCloudVisibility);
+
             MakeClickToggle(showNormals, viewerMenuTools.SetNormalVisiblity);
             MakeClickToggle(showFaceApproximatedNormals, viewerMenuTools.SetApproximatedNormalVisiblity);
+
             MakeClickToggle(showFaces, viewerMenuTools.SetOriginalFacesVisiblity);
             MakeClickToggle(showFacesAsWireframe, viewerMenuTools.SetDrawOriginalFacesAsWireframe);
+
+            MakeClickToggle(showApproximatedFaces, viewerMenuTools.SetApproximatedFacesVisiblity);
+            MakeClickToggle(showApproximatedFacesAsWireframe, viewerMenuTools.SetDrawApproximatedFacesAsWireframe);
         }
     }
 }
