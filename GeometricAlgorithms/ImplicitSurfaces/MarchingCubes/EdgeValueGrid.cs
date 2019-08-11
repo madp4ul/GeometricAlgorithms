@@ -79,6 +79,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingCubes
             Vertices.Add(vertex);
 
             edgeIndexContainer.Index = Vertices.Count - 1;
+            edgeIndexContainer.HasIndex = true;
 
             return edgeIndexContainer.Index;
         }
