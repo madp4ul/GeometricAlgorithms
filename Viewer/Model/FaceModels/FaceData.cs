@@ -64,7 +64,7 @@ namespace GeometricAlgorithms.Viewer.Model.FaceModels
 
         protected virtual IEnumerable<Triangle> SelectFaces(Mesh mesh)
         {
-            return mesh.FileFaces;
+            return mesh.Faces;
         }
 
         protected bool MeshHasFaces(Mesh mesh)

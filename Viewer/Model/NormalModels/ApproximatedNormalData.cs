@@ -4,42 +4,56 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.Domain.Tasks;
 using GeometricAlgorithms.NormalApproximation;
 using GeometricAlgorithms.Viewer.Interfaces;
 
 namespace GeometricAlgorithms.Viewer.Model.NormalModels
 {
-    public class ApproximatedNormalData : NormalData
+    public class ApproximatedNormalData
     {
         private readonly NormalApproximatorFromFaces Approximator;
         private readonly IFuncExecutor FuncExecutor;
 
-        public bool CanApproximate => Mesh?.FileFaces != null;
+        public readonly NormalData NormalData;
+
+        public Mesh SourceMesh { get; private set; }
+
+        public bool CanApproximate => NormalData.Mesh?.Faces != null;
 
         public ApproximatedNormalData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
-            : base(drawableFactoryProvider)
         {
             FuncExecutor = funcExecutor;
 
             Approximator = new NormalApproximatorFromFaces();
+            NormalData = new NormalData(drawableFactoryProvider);
+        }
+
+        public void Reset(Mesh mesh)
+        {
+            SourceMesh = mesh;
+            NormalData.Reset(Mesh.CreateEmpty());
         }
 
         public void CalculateApproximation()
         {
-            var normalCalculation = FuncExecutor.Execute((progress) => Approximator.GetNormals(Mesh.Positions, Mesh.FileFaces, progress));
+            var normalCalculation = FuncExecutor.Execute((progress) => Approximator.GetNormals(
+                SourceMesh.Positions,
+                SourceMesh.Faces,
+                progress));
 
             normalCalculation.GetResult((normals) =>
             {
-                Mesh.FaceApproximatedUnitNormals = normals;
+                var approximatedMesh = SourceMesh.Copy(replaceNormals: normals);
 
-                Reset();
+                NormalData.Reset(approximatedMesh);
             });
         }
 
-        protected override IEnumerable<Vector3> SelectNormals(Mesh mesh)
+        public IEnumerable<IDrawable> GetDrawables()
         {
-            return mesh.FaceApproximatedUnitNormals;
+            return NormalData.GetDrawables();
         }
     }
 }
