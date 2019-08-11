@@ -26,6 +26,7 @@ namespace GeometricAlgorithms.Viewer.Model.FaceModels
 
         public int FunctionValueRadius { get; set; }
         public int UsedNearestPointCount { get; set; }
+        public int StepsPerSide { get; set; }
 
         private readonly ContainerDrawable InnerFunctionValuesDrawable;
         public bool DrawInnerFunctionValues
@@ -49,6 +50,7 @@ namespace GeometricAlgorithms.Viewer.Model.FaceModels
             DrawableFactoryProvider = drawableFactoryProvider;
             FuncExecutor = funcExecutor;
             UsedNearestPointCount = 10;
+            StepsPerSide = 16;
             FunctionValueRadius = 4;
             InnerFunctionValuesDrawable = new ContainerDrawable();
             OuterFunctionValuesDrawable = new ContainerDrawable();
@@ -72,7 +74,7 @@ namespace GeometricAlgorithms.Viewer.Model.FaceModels
 
             var approximation = new ScalarProductSurface(KdTree, UsedNearestPointCount);
 
-            var cubeMarcher = CubeMarcher.AroundBox(KdTree.MeshContainer, 0.1f, approximation, 40);
+            var cubeMarcher = CubeMarcher.AroundBox(KdTree.MeshContainer, 0.1f, approximation, StepsPerSide);
 
             var faceCalculation = FuncExecutor.Execute((progress) => cubeMarcher.MarchCubes());
 

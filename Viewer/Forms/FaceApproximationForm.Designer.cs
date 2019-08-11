@@ -34,12 +34,15 @@
             this.btnStartMarchingCubes = new System.Windows.Forms.Button();
             this.cbShowInsideSamples = new System.Windows.Forms.CheckBox();
             this.cbShowOutsideSamples = new System.Windows.Forms.CheckBox();
+            this.neighboursPerValuenumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.samplesNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.neighboursPerValuenumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // samplesNumericUpDown
             // 
-            this.samplesNumericUpDown.Location = new System.Drawing.Point(105, 10);
+            this.samplesNumericUpDown.Location = new System.Drawing.Point(124, 10);
             this.samplesNumericUpDown.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -72,7 +75,7 @@
             // totalSamplesLabel
             // 
             this.totalSamplesLabel.AutoSize = true;
-            this.totalSamplesLabel.Location = new System.Drawing.Point(102, 33);
+            this.totalSamplesLabel.Location = new System.Drawing.Point(121, 33);
             this.totalSamplesLabel.Name = "totalSamplesLabel";
             this.totalSamplesLabel.Size = new System.Drawing.Size(72, 13);
             this.totalSamplesLabel.TabIndex = 2;
@@ -80,7 +83,7 @@
             // 
             // btnStartMarchingCubes
             // 
-            this.btnStartMarchingCubes.Location = new System.Drawing.Point(105, 65);
+            this.btnStartMarchingCubes.Location = new System.Drawing.Point(124, 80);
             this.btnStartMarchingCubes.Name = "btnStartMarchingCubes";
             this.btnStartMarchingCubes.Size = new System.Drawing.Size(120, 23);
             this.btnStartMarchingCubes.TabIndex = 3;
@@ -93,7 +96,7 @@
             this.cbShowInsideSamples.AutoSize = true;
             this.cbShowInsideSamples.Checked = true;
             this.cbShowInsideSamples.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbShowInsideSamples.Location = new System.Drawing.Point(105, 109);
+            this.cbShowInsideSamples.Location = new System.Drawing.Point(124, 109);
             this.cbShowInsideSamples.Name = "cbShowInsideSamples";
             this.cbShowInsideSamples.Size = new System.Drawing.Size(124, 17);
             this.cbShowInsideSamples.TabIndex = 4;
@@ -106,7 +109,7 @@
             this.cbShowOutsideSamples.AutoSize = true;
             this.cbShowOutsideSamples.Checked = true;
             this.cbShowOutsideSamples.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbShowOutsideSamples.Location = new System.Drawing.Point(105, 132);
+            this.cbShowOutsideSamples.Location = new System.Drawing.Point(124, 132);
             this.cbShowOutsideSamples.Name = "cbShowOutsideSamples";
             this.cbShowOutsideSamples.Size = new System.Drawing.Size(131, 17);
             this.cbShowOutsideSamples.TabIndex = 5;
@@ -114,11 +117,45 @@
             this.cbShowOutsideSamples.UseVisualStyleBackColor = true;
             this.cbShowOutsideSamples.CheckedChanged += new System.EventHandler(this.CbShowOutsideSamples_CheckedChanged);
             // 
+            // neighboursPerValuenumericUpDown
+            // 
+            this.neighboursPerValuenumericUpDown.Location = new System.Drawing.Point(124, 54);
+            this.neighboursPerValuenumericUpDown.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.neighboursPerValuenumericUpDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.neighboursPerValuenumericUpDown.Name = "neighboursPerValuenumericUpDown";
+            this.neighboursPerValuenumericUpDown.Size = new System.Drawing.Size(120, 20);
+            this.neighboursPerValuenumericUpDown.TabIndex = 6;
+            this.neighboursPerValuenumericUpDown.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.neighboursPerValuenumericUpDown.ValueChanged += new System.EventHandler(this.NeighboursPerValuenumericUpDown_ValueChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 56);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(108, 13);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "Neighbours per value";
+            // 
             // FaceApproximationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(263, 168);
+            this.ClientSize = new System.Drawing.Size(299, 168);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.neighboursPerValuenumericUpDown);
             this.Controls.Add(this.cbShowOutsideSamples);
             this.Controls.Add(this.cbShowInsideSamples);
             this.Controls.Add(this.btnStartMarchingCubes);
@@ -130,6 +167,7 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FaceApproximationForm_FormClosed);
             this.Load += new System.EventHandler(this.FaceApproximationForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.samplesNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.neighboursPerValuenumericUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -143,5 +181,7 @@
         private System.Windows.Forms.Button btnStartMarchingCubes;
         private System.Windows.Forms.CheckBox cbShowInsideSamples;
         private System.Windows.Forms.CheckBox cbShowOutsideSamples;
+        private System.Windows.Forms.NumericUpDown neighboursPerValuenumericUpDown;
+        private System.Windows.Forms.Label label2;
     }
 }
