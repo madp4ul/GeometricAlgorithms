@@ -4,16 +4,15 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GeometricAlgorithms.BusinessLogic.Extensions;
 using GeometricAlgorithms.Domain;
 using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.Domain.Tasks;
 using GeometricAlgorithms.ImplicitSurfaces;
 using GeometricAlgorithms.ImplicitSurfaces.MarchingCubes;
 using GeometricAlgorithms.MeshQuerying;
-using GeometricAlgorithms.Viewer.Extensions;
-using GeometricAlgorithms.Viewer.Interfaces;
 
-namespace GeometricAlgorithms.Viewer.Model.FaceModels
+namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
 {
     public class ApproximatedFaceData
     {

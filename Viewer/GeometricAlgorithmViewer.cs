@@ -11,9 +11,9 @@ using GeometricAlgorithms.Viewer.Model;
 using GeometricAlgorithms.MonoGame.Forms.Cameras;
 using GeometricAlgorithms.MonoGame.Forms;
 using GeometricAlgorithms.Domain;
-using GeometricAlgorithms.Viewer.Interfaces;
 using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.Viewer.Utilities;
+using GeometricAlgorithms.BusinessLogic;
 
 namespace GeometricAlgorithms.Viewer
 {
@@ -25,7 +25,7 @@ namespace GeometricAlgorithms.Viewer
         public ViewerConfiguration Configuration { get; set; }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Workspace Workspace { get; set; }
+        public IHasDrawables Model { get; set; }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IDrawableFactory DrawableFactory => Viewer3D.DrawableFactory;
@@ -60,7 +60,7 @@ namespace GeometricAlgorithms.Viewer
 
                 viewer.Scene.Camera = Camera;
 
-                foreach (var drawable in Workspace.GetDrawables())
+                foreach (var drawable in Model.GetDrawables())
                 {
                     viewer.Scene.Drawables.Add(drawable);
                 }

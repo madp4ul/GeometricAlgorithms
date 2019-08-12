@@ -1,5 +1,6 @@
-﻿using GeometricAlgorithms.Domain.Tasks;
-using GeometricAlgorithms.Viewer.Interfaces;
+﻿using GeometricAlgorithms.BusinessLogic;
+using GeometricAlgorithms.BusinessLogic.Model;
+using GeometricAlgorithms.Domain.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;

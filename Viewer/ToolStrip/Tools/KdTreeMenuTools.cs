@@ -1,5 +1,5 @@
-﻿using GeometricAlgorithms.Viewer.Forms;
-using GeometricAlgorithms.Viewer.Model.KdTreeModels;
+﻿using GeometricAlgorithms.BusinessLogic.Model.KdTreeModels;
+using GeometricAlgorithms.Viewer.Forms;
 using System;
 using System.Collections.Generic;
 using System.Linq;

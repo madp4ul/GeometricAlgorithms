@@ -1,5 +1,6 @@
-﻿using GeometricAlgorithms.Viewer.Model;
-using GeometricAlgorithms.Viewer.Model.NormalModels;
+﻿using GeometricAlgorithms.BusinessLogic.Model;
+using GeometricAlgorithms.BusinessLogic.Model.NormalModels;
+using GeometricAlgorithms.Viewer.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

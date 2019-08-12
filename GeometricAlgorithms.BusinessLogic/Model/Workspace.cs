@@ -1,14 +1,13 @@
-﻿using GeometricAlgorithms.Domain;
+﻿using GeometricAlgorithms.BusinessLogic.Extensions;
+using GeometricAlgorithms.Domain;
 using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.Domain.Tasks;
-using GeometricAlgorithms.Viewer.Extensions;
-using GeometricAlgorithms.Viewer.Interfaces;
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace GeometricAlgorithms.Viewer.Model
+namespace GeometricAlgorithms.BusinessLogic.Model
 {
-    public class Workspace
+    public class Workspace : IHasDrawables
     {
         private readonly IDrawableFactoryProvider DrawableFactoryProvider;
 

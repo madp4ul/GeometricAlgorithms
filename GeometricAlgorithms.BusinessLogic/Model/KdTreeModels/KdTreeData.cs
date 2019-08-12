@@ -1,9 +1,8 @@
-﻿using GeometricAlgorithms.Domain;
+﻿using GeometricAlgorithms.BusinessLogic.Model.FaceModels;
+using GeometricAlgorithms.Domain;
 using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.Domain.Tasks;
 using GeometricAlgorithms.MeshQuerying;
-using GeometricAlgorithms.Viewer.Interfaces;
-using GeometricAlgorithms.Viewer.Model.FaceModels;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -11,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
+namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
 {
     public class KdTreeData
     {

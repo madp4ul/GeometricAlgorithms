@@ -1,13 +1,12 @@
 ﻿using GeometricAlgorithms.Domain;
 using GeometricAlgorithms.Domain.Drawables;
-using GeometricAlgorithms.Viewer.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.Viewer.Model.FaceModels
+namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
 {
     public class FaceData
     {

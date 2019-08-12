@@ -1,5 +1,5 @@
-﻿using GeometricAlgorithms.Viewer.Forms;
-using GeometricAlgorithms.Viewer.Model;
+﻿using GeometricAlgorithms.BusinessLogic.Model;
+using GeometricAlgorithms.Viewer.Forms;
 using System;
 using System.Collections.Generic;
 using System.Linq;

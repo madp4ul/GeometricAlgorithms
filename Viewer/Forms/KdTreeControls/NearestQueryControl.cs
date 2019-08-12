@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using GeometricAlgorithms.Viewer.Model.KdTreeModels;
+using GeometricAlgorithms.BusinessLogic.Model.KdTreeModels;
 
 namespace GeometricAlgorithms.Viewer.Forms.KdTreeControls
 {

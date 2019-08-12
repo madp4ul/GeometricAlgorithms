@@ -1,4 +1,5 @@
-﻿using GeometricAlgorithms.Viewer.Model;
+﻿using GeometricAlgorithms.BusinessLogic.Model;
+using GeometricAlgorithms.Viewer.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;

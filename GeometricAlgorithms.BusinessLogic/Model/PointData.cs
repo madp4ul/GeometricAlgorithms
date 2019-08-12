@@ -1,17 +1,16 @@
-﻿using GeometricAlgorithms.Domain;
+﻿using GeometricAlgorithms.BusinessLogic.Model.FaceModels;
+using GeometricAlgorithms.BusinessLogic.Model.KdTreeModels;
+using GeometricAlgorithms.BusinessLogic.Model.NormalModels;
+using GeometricAlgorithms.Domain;
 using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.Domain.Tasks;
-using GeometricAlgorithms.Viewer.Model.KdTreeModels;
-using GeometricAlgorithms.Viewer.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GeometricAlgorithms.Viewer.Model.NormalModels;
-using GeometricAlgorithms.Viewer.Model.FaceModels;
 
-namespace GeometricAlgorithms.Viewer.Model
+namespace GeometricAlgorithms.BusinessLogic.Model
 {
     public class PointData
     {

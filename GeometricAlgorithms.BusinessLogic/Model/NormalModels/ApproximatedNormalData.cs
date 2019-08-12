@@ -7,9 +7,8 @@ using GeometricAlgorithms.Domain;
 using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.Domain.Tasks;
 using GeometricAlgorithms.NormalApproximation;
-using GeometricAlgorithms.Viewer.Interfaces;
 
-namespace GeometricAlgorithms.Viewer.Model.NormalModels
+namespace GeometricAlgorithms.BusinessLogic.Model.NormalModels
 {
     public class ApproximatedNormalData
     {

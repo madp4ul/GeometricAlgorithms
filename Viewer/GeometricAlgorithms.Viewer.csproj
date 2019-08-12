@@ -111,17 +111,7 @@
     <Compile Include="Forms\KdTreeQueriesForm.Designer.cs">
       <DependentUpon>KdTreeQueriesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\FaceModels\ApproximatedFaceData.cs" />
-    <Compile Include="Model\FaceModels\FaceData.cs" />
-    <Compile Include="Model\NormalModels\ApproximatedNormalData.cs" />
-    <Compile Include="Model\KdTreeModels\KdTreeNearestQueryData.cs" />
-    <Compile Include="Model\KdTreeModels\KdTreeQueryResult.cs" />
-    <Compile Include="Model\KdTreeModels\KdTreeRadiusQueryData.cs" />
-    <Compile Include="Model\KdTreeModels\QueryCenterPoint.cs" />
     <Compile Include="Model\ModelData.cs" />
-    <Compile Include="Model\KdTreeModels\KdTreeData.cs" />
-    <Compile Include="Model\NormalModels\NormalData.cs" />
-    <Compile Include="Model\PointData.cs" />
     <Compile Include="Model\ViewerConfiguration.cs" />
     <Compile Include="GeometricAlgorithmViewer.cs">
       <SubType>UserControl</SubType>
@@ -135,7 +125,6 @@
     <Compile Include="MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\Workspace.cs" />
     <Compile Include="ToolStrip\Configurators\ApproximationConfigurator.cs" />
     <Compile Include="ToolStrip\Configurators\KdTreeMenuConfigurator.cs" />
     <Compile Include="ToolStrip\Configurators\MenuConfigurator.cs" />
@@ -153,7 +142,6 @@
     <Compile Include="Utilities\MouseDragger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Interfaces\IDrawableFactoryProvider.cs" />
     <Compile Include="ToolStrip\Tools\FileMenuTools.cs" />
     <Compile Include="ToolStrip\Tools\KdTreeMenuTools.cs" />
     <Compile Include="ToolStrip\ToolStripActionConfigurator.cs" />
@@ -207,6 +195,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GeometricAlgorithms.BusinessLogic\GeometricAlgorithms.BusinessLogic.csproj">
+      <Project>{AAAE09BC-4D00-46BB-9CDD-B358AA195F48}</Project>
+      <Name>GeometricAlgorithms.BusinessLogic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GeometricAlgorithms.Domain\GeometricAlgorithms.Domain.csproj">
       <Project>{b2b4f93c-4cda-43be-9963-4ca03c459065}</Project>
       <Name>GeometricAlgorithms.Domain</Name>

@@ -1,7 +1,6 @@
-﻿using GeometricAlgorithms.Domain;
+﻿using GeometricAlgorithms.BusinessLogic.Extensions;
+using GeometricAlgorithms.Domain;
 using GeometricAlgorithms.Domain.Drawables;
-using GeometricAlgorithms.Viewer.Extensions;
-using GeometricAlgorithms.Viewer.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -9,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.Viewer.Model.KdTreeModels
+namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
 {
     public class QueryCenterPoint
     {
