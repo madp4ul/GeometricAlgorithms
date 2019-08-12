@@ -10,16 +10,16 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
 {
     class ApproximationTools
     {
-        public readonly PointData PointData;
+        public readonly Workspace Workspace;
 
-        public ApproximationTools(PointData pointData)
+        public ApproximationTools(Workspace workspace)
         {
-            PointData = pointData ?? throw new ArgumentNullException(nameof(pointData));
+            Workspace = workspace ?? throw new ArgumentNullException(nameof(workspace));
         }
 
         public bool EnableApproximateNormalsFromFaces()
         {
-            return PointData.ApproximatedNormalData.CanApproximateFromFaces;
+            return Workspace.ApproximatedNormalData.CanApproximateFromFaces;
         }
 
         private NormalApproximationForm NormalApproximationForm = null;
@@ -27,7 +27,7 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
         {
             if (FaceApproximationForm == null)
             {
-                NormalApproximationForm = new NormalApproximationForm(PointData);
+                NormalApproximationForm = new NormalApproximationForm(Workspace);
                 NormalApproximationForm.FormClosed += (o, e) => FaceApproximationForm = null;
                 NormalApproximationForm.Show(owner);
             }
@@ -43,7 +43,7 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
         {
             if (FaceApproximationForm == null)
             {
-                FaceApproximationForm = new FaceApproximationForm(PointData);
+                FaceApproximationForm = new FaceApproximationForm(Workspace);
                 FaceApproximationForm.FormClosed += (o, e) => FaceApproximationForm = null;
                 FaceApproximationForm.Show(owner);
             }
@@ -55,7 +55,7 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
 
         public bool EnableApproximateFaces()
         {
-            return PointData.KdTreeData.ApproximatedFaceData.CanApproximate;
+            return Workspace.ApproximatedFaceData.CanApproximate;
         }
     }
 }

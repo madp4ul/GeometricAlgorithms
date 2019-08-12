@@ -20,7 +20,7 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Configurators
 
         public override void Configure(MenuStrip menuStrip)
         {
-            var treeMenuTools = new KdTreeMenuTools(Model.Workspace.PointData.KdTreeData);
+            var treeMenuTools = new KdTreeMenuTools(Model.Workspace);
 
             var menu = GetMenu(menuStrip.Items, "kdTreeToolStripMenuItem");
 

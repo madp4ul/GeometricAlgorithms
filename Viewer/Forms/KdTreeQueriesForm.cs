@@ -1,4 +1,5 @@
-﻿using GeometricAlgorithms.BusinessLogic.Model.KdTreeModels;
+﻿using GeometricAlgorithms.BusinessLogic.Model;
+using GeometricAlgorithms.BusinessLogic.Model.KdTreeModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,19 +14,19 @@ namespace GeometricAlgorithms.Viewer.Forms
 {
     public partial class KdTreeQueriesForm : Form
     {
-        public KdTreeData KdTreeData { get; set; }
+        public Workspace Workspace { get; set; }
 
-        public KdTreeQueriesForm(KdTreeData kdTreeData)
+        public KdTreeQueriesForm(Workspace workspace)
         {
             InitializeComponent();
 
             if (!DesignMode)
             {
-                KdTreeData = kdTreeData;
+                Workspace = workspace;
 
-                radiusQueryControl.QueryData = kdTreeData.RadiusQuerydata;
-                nearestQueryControl.QueryData = kdTreeData.NearestQuerydata;
-                kdTreeConfigurationControl.KdTreeData = kdTreeData;
+                radiusQueryControl.QueryData = workspace.RadiusQuerydata;
+                nearestQueryControl.QueryData = workspace.NearestQuerydata;
+                kdTreeConfigurationControl.Workspace = workspace;
             }
         }
 
@@ -44,8 +45,8 @@ namespace GeometricAlgorithms.Viewer.Forms
 
         private void HideAllKdTreeQueries()
         {
-            KdTreeData.RadiusQuerydata.HideAll();
-            KdTreeData.NearestQuerydata.HideAll();
+            Workspace.RadiusQuerydata.HideAll();
+            Workspace.NearestQuerydata.HideAll();
         }
 
         private void TabControl_SelectedIndexChanged(object sender, EventArgs e)

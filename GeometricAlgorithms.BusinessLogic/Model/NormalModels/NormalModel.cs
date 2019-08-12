@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.BusinessLogic.Model.NormalModels
 {
-    public class NormalData
+    public class NormalModel : IHasDrawables, IUpdatable<Mesh>
     {
         private readonly IDrawableFactoryProvider DrawableFactoryProvider;
 
@@ -19,10 +19,13 @@ namespace GeometricAlgorithms.BusinessLogic.Model.NormalModels
         public bool HasNormals { get; set; }
 
         private readonly ContainerDrawable NormalsDrawable;
+
+        public event Action Updated;
+
         public bool DrawNormals { get => NormalsDrawable.EnableDraw; set => NormalsDrawable.EnableDraw = value; }
 
 
-        public NormalData(IDrawableFactoryProvider drawableFactoryProvider)
+        public NormalModel(IDrawableFactoryProvider drawableFactoryProvider)
         {
             DrawableFactoryProvider = drawableFactoryProvider ?? throw new ArgumentNullException(nameof(drawableFactoryProvider));
 
@@ -30,14 +33,10 @@ namespace GeometricAlgorithms.BusinessLogic.Model.NormalModels
             NormalsDrawable = new ContainerDrawable();
         }
 
-        public void Reset(Mesh mesh)
+        public void Update(Mesh mesh)
         {
             Mesh = mesh ?? throw new ArgumentNullException(nameof(mesh));
-            Reset();
-        }
 
-        public void Reset()
-        {
             HasNormals = MeshHasNormals(Mesh);
 
             var normals = !HasNormals
@@ -49,6 +48,8 @@ namespace GeometricAlgorithms.BusinessLogic.Model.NormalModels
                      GenerateColor);
 
             NormalsDrawable.SwapDrawable(normals);
+
+            Updated?.Invoke();
         }
 
         protected virtual IEnumerable<Vector3> SelectNormals(Mesh mesh)

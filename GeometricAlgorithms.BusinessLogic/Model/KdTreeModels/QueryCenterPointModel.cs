@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
 {
-    public class QueryCenterPoint
+    public class QueryCenterPointModel
     {
         readonly IDrawableFactoryProvider DrawableFactoryProvider;
 
@@ -18,7 +18,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
 
         public bool Show { get => QueryCenterDrawable.EnableDraw; set => QueryCenterDrawable.EnableDraw = value; }
 
-        public QueryCenterPoint(IDrawableFactoryProvider drawableFactoryProvider)
+        public QueryCenterPointModel(IDrawableFactoryProvider drawableFactoryProvider)
         {
             DrawableFactoryProvider = drawableFactoryProvider ?? throw new ArgumentNullException(nameof(drawableFactoryProvider));
             QueryCenterDrawable = new ContainerDrawable(enable: false);

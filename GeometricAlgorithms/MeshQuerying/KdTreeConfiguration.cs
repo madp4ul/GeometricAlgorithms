@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.MeshQuerying
 {
-    public class KdTreeConfiguration
+    public struct KdTreeConfiguration
     {
         public int MaximumPointsPerLeaf { get; set; }
 

@@ -1,4 +1,4 @@
-﻿using GeometricAlgorithms.BusinessLogic.Model.KdTreeModels;
+﻿using GeometricAlgorithms.BusinessLogic.Model;
 using GeometricAlgorithms.Viewer.Forms;
 using System;
 using System.Collections.Generic;
@@ -10,17 +10,17 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
 {
     class KdTreeMenuTools
     {
-        public KdTreeData KdTreeData { get; set; }
+        public Workspace Workspace { get; set; }
 
 
-        public KdTreeMenuTools(KdTreeData kdTreeData)
+        public KdTreeMenuTools(Workspace workspace)
         {
-            KdTreeData = kdTreeData ?? throw new ArgumentNullException(nameof(kdTreeData));
+            Workspace = workspace ?? throw new ArgumentNullException(nameof(workspace));
         }
 
         public void SetKdTreeVisibility(bool showKdTree)
         {
-            KdTreeData.DrawKdTree = showKdTree;
+            Workspace.KdTreeData.DrawKdTree = showKdTree;
         }
 
         private KdTreeQueriesForm QueriesWindow = null;
@@ -28,7 +28,7 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
         {
             if (QueriesWindow == null)
             {
-                QueriesWindow = new KdTreeQueriesForm(KdTreeData);
+                QueriesWindow = new KdTreeQueriesForm(Workspace);
                 QueriesWindow.FormClosed += (o, e) => QueriesWindow = null;
                 QueriesWindow.Show(owner);
             }

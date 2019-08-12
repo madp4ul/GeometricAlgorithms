@@ -34,9 +34,9 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     var reader = new ModelReader();
-                    var model = reader.ReadPoints(openFileDialog.FileName);
+                    var mesh = reader.ReadPoints(openFileDialog.FileName);
 
-                    ViewerModel.Workspace.PointData.Reset(model, ViewerModel.ViewerConfiguration.PointRadius);
+                    ViewerModel.Workspace.PointData.Update(mesh);
                 }
             }
         }

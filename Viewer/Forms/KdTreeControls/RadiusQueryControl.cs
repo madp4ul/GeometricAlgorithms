@@ -14,7 +14,7 @@ namespace GeometricAlgorithms.Viewer.Forms.KdTreeControls
 {
     public partial class RadiusQueryControl : UserControl
     {
-        public KdTreeRadiusQueryData QueryData { get; set; }
+        public KdTreeRadiusQueryModel QueryData { get; set; }
 
         public RadiusQueryControl()
         {

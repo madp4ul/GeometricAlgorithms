@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
 {
-    public class FaceData
+    public class FacesModel : IHasDrawables, IUpdatable<Mesh>
     {
         protected readonly IDrawableFactoryProvider DrawableFactoryProvider;
 
@@ -30,10 +30,13 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
         }
         IDrawableMesh FacesDrawableMesh => FacesDrawable.Drawable as IDrawableMesh;
         private readonly ContainerDrawable FacesDrawable;
+
+        public event Action Updated;
+
         public bool DrawFaces { get => FacesDrawable.EnableDraw; set => FacesDrawable.EnableDraw = value; }
 
 
-        public FaceData(IDrawableFactoryProvider drawableFactoryProvider)
+        public FacesModel(IDrawableFactoryProvider drawableFactoryProvider)
         {
             DrawableFactoryProvider = drawableFactoryProvider ?? throw new ArgumentNullException(nameof(drawableFactoryProvider));
 
@@ -42,7 +45,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
             DrawAsWireframe = true;
         }
 
-        public void Reset(Mesh mesh)
+        public void Update(Mesh mesh)
         {
             Mesh = mesh ?? throw new ArgumentNullException(nameof(mesh));
             HasFaces = MeshHasFaces(mesh);
@@ -59,6 +62,8 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
                 newDrawable = new EmptyDrawable();
             }
             FacesDrawable.SwapDrawable(newDrawable);
+
+            Updated?.Invoke();
         }
 
         protected virtual IEnumerable<Triangle> SelectFaces(Mesh mesh)

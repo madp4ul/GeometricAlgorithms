@@ -45,16 +45,17 @@
     <Compile Include="Extensions\ConvertExtensions.cs" />
     <Compile Include="IDrawableFactoryProvider.cs" />
     <Compile Include="IHasDrawables.cs" />
-    <Compile Include="Model\FaceModels\ApproximatedFaceData.cs" />
-    <Compile Include="Model\FaceModels\FaceData.cs" />
-    <Compile Include="Model\KdTreeModels\KdTreeData.cs" />
-    <Compile Include="Model\KdTreeModels\KdTreeNearestQueryData.cs" />
-    <Compile Include="Model\KdTreeModels\KdTreeQueryResult.cs" />
-    <Compile Include="Model\KdTreeModels\KdTreeRadiusQueryData.cs" />
-    <Compile Include="Model\KdTreeModels\QueryCenterPoint.cs" />
-    <Compile Include="Model\NormalModels\ApproximatedNormalData.cs" />
-    <Compile Include="Model\NormalModels\NormalData.cs" />
-    <Compile Include="Model\PointData.cs" />
+    <Compile Include="IUpdatable.cs" />
+    <Compile Include="Model\FaceModels\FaceApproximationModel.cs" />
+    <Compile Include="Model\FaceModels\FacesModel.cs" />
+    <Compile Include="Model\KdTreeModels\KdTreeModel.cs" />
+    <Compile Include="Model\KdTreeModels\KdTreeNearestQueryModel.cs" />
+    <Compile Include="Model\KdTreeModels\KdTreeQueryResultModel.cs" />
+    <Compile Include="Model\KdTreeModels\KdTreeRadiusQueryModel.cs" />
+    <Compile Include="Model\KdTreeModels\QueryCenterPointModel.cs" />
+    <Compile Include="Model\NormalModels\NormalApproximationModel.cs" />
+    <Compile Include="Model\NormalModels\NormalModel.cs" />
+    <Compile Include="Model\PositionModel.cs" />
     <Compile Include="Model\Workspace.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

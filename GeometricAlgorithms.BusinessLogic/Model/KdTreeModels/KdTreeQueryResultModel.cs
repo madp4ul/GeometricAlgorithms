@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
 {
-    public class KdTreeQueryResult
+    public class KdTreeQueryResultModel
     {
         readonly IDrawableFactoryProvider DrawableFactoryProvider;
 
@@ -19,7 +19,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
         private readonly ContainerDrawable HighlightDrawable;
         public bool Show { get => HighlightDrawable.EnableDraw; set => HighlightDrawable.EnableDraw = value; }
 
-        public KdTreeQueryResult(IDrawableFactoryProvider drawableFactoryProvider)
+        public KdTreeQueryResultModel(IDrawableFactoryProvider drawableFactoryProvider)
         {
             DrawableFactoryProvider = drawableFactoryProvider;
             PointRadius = 10;

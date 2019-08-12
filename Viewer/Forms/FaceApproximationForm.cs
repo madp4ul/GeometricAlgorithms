@@ -15,16 +15,16 @@ namespace GeometricAlgorithms.Viewer.Forms
 {
     public partial class FaceApproximationForm : Form
     {
-        private readonly PointData PointData;
-        private ApproximatedFaceData ApproximatedFaceData => PointData.KdTreeData.ApproximatedFaceData;
+        private readonly Workspace Workspace;
+        private FaceApproximationModel ApproximatedFaceData => Workspace.ApproximatedFaceData;
 
-        public FaceApproximationForm(PointData pointData)
+        public FaceApproximationForm(Workspace workspace)
         {
             InitializeComponent();
 
             if (!DesignMode)
             {
-                PointData = pointData;
+                Workspace = workspace;
             }
         }
 
@@ -99,7 +99,7 @@ namespace GeometricAlgorithms.Viewer.Forms
         {
             if (ApproximatedFaceData.FaceData.HasFaces)
             {
-                PointData.Reset(ApproximatedFaceData.FaceData.Mesh);
+                Workspace.PointData.Update(ApproximatedFaceData.FaceData.Mesh);
             }
         }
     }

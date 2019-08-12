@@ -20,7 +20,7 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Configurators
 
         public override void Configure(MenuStrip menuStrip)
         {
-            var approximationTools = new ApproximationTools(Model.Workspace.PointData);
+            var approximationTools = new ApproximationTools(Model.Workspace);
 
             var approximationMenu = GetMenu(menuStrip.Items, "approximationToolStripMenuItem");
 

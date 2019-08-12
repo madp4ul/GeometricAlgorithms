@@ -12,24 +12,21 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
 {
-    public class KdTreeData
+    public class KdTreeModel : IHasDrawables, IUpdatable<Mesh>, IUpdatable<KdTreeConfiguration>
     {
         private readonly IDrawableFactoryProvider DrawableFactoryProvider;
         private readonly IFuncExecutor FuncExecutor;
 
-        public MeshQuerying.KdTree KdTree { get; private set; }
-        public KdTreeConfiguration Configuration { get; set; }
-
-        public KdTreeRadiusQueryData RadiusQuerydata { get; private set; }
-        public KdTreeNearestQueryData NearestQuerydata { get; private set; }
-
-        public readonly ApproximatedFaceData ApproximatedFaceData;
+        public KdTree KdTree { get; private set; }
+        public KdTreeConfiguration Configuration { get; private set; }
 
         private readonly ContainerDrawable KdTreeBoxDrawable;
+
+        public event Action Updated;
+
         public bool DrawKdTree { get => KdTreeBoxDrawable.EnableDraw; set => KdTreeBoxDrawable.EnableDraw = value; }
 
-
-        public KdTreeData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
+        public KdTreeModel(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {
             DrawableFactoryProvider = drawableFactoryProvider;
             FuncExecutor = funcExecutor;
@@ -37,24 +34,21 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
             KdTreeBoxDrawable = new ContainerDrawable(enable: false);
             Configuration = KdTreeConfiguration.Default;
 
-            RadiusQuerydata = new KdTreeRadiusQueryData(drawableFactoryProvider, funcExecutor);
-            NearestQuerydata = new KdTreeNearestQueryData(drawableFactoryProvider, funcExecutor);
-
-            ApproximatedFaceData = new ApproximatedFaceData(drawableFactoryProvider, funcExecutor);
         }
 
-        public void Reset()
+        public void Update(KdTreeConfiguration configuration)
         {
-            Reset(KdTree.Mesh);
+            Configuration = configuration;
+
+            Update(KdTree.Mesh);
         }
 
-        public void Reset(Mesh mesh)
+        public void Update(Mesh mesh)
         {
             var buildKdTree = FuncExecutor.Execute((progress) =>
-              {
-                  return new MeshQuerying.KdTree(mesh, Configuration, progress);
-              });
-
+            {
+                return new MeshQuerying.KdTree(mesh, Configuration, progress);
+            });
 
             buildKdTree.GetResult(kdTree =>
             {
@@ -68,10 +62,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
 
                 KdTreeBoxDrawable.SwapDrawable(newDrawable);
 
-                RadiusQuerydata.Reset(KdTree);
-                NearestQuerydata.Reset(KdTree);
-
-                ApproximatedFaceData.Reset(KdTree);
+                Updated?.Invoke();
             });
         }
 
@@ -88,13 +79,6 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
         public IEnumerable<IDrawable> GetDrawables()
         {
             yield return KdTreeBoxDrawable;
-            foreach (var drawable in RadiusQuerydata.GetDrawables()
-                .Concat(NearestQuerydata.GetDrawables())
-                .Concat(ApproximatedFaceData.GetDrawables())
-                )
-            {
-                yield return drawable;
-            }
         }
     }
 }

@@ -13,7 +13,7 @@ namespace GeometricAlgorithms.Viewer.Forms.KdTreeControls
 {
     public partial class NearestQueryControl : UserControl
     {
-        public KdTreeNearestQueryData QueryData { get; set; }
+        public KdTreeNearestQueryModel QueryData { get; set; }
 
         public NearestQueryControl()
         {

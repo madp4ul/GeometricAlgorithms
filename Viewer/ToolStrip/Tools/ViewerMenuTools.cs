@@ -19,42 +19,42 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
 
         public bool EnableOptionSetNormalVisiblity()
         {
-            return Workspace.PointData.NormalData.HasNormals;
+            return Workspace.NormalData.HasNormals;
         }
 
         public bool EnableOptionSetApproximatedNormalVisiblity()
         {
-            return Workspace.PointData.ApproximatedNormalData.NormalData.HasNormals;
+            return Workspace.ApproximatedNormalData.NormalData.HasNormals;
         }
 
         public bool EnableOptionSetOriginalFacesVisiblity()
         {
-            return Workspace.PointData.FaceData.HasFaces;
+            return Workspace.FaceData.HasFaces;
         }
 
         public bool EnableOptionSetApproximatedFacesVisibility()
         {
-            return Workspace.PointData.KdTreeData.ApproximatedFaceData.FaceData.HasFaces;
+            return Workspace.ApproximatedFaceData.FaceData.HasFaces;
         }
 
         public void SetApproximatedFacesVisiblity(bool showOriginalFaces)
         {
-            Workspace.PointData.KdTreeData.ApproximatedFaceData.FaceData.DrawFaces = showOriginalFaces;
+            Workspace.ApproximatedFaceData.FaceData.DrawFaces = showOriginalFaces;
         }
 
         public void SetDrawApproximatedFacesAsWireframe(bool showWireframe)
         {
-            Workspace.PointData.KdTreeData.ApproximatedFaceData.FaceData.DrawAsWireframe = showWireframe;
+            Workspace.ApproximatedFaceData.FaceData.DrawAsWireframe = showWireframe;
         }
 
         public void SetOriginalFacesVisiblity(bool showOriginalFaces)
         {
-            Workspace.PointData.FaceData.DrawFaces = showOriginalFaces;
+            Workspace.FaceData.DrawFaces = showOriginalFaces;
         }
 
         public void SetDrawOriginalFacesAsWireframe(bool showWireframe)
         {
-            Workspace.PointData.FaceData.DrawAsWireframe = showWireframe;
+            Workspace.FaceData.DrawAsWireframe = showWireframe;
         }
 
         public void SetPointCloudVisibility(bool showPointCloud)
@@ -64,12 +64,12 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
 
         public void SetNormalVisiblity(bool showNormals)
         {
-            Workspace.PointData.NormalData.DrawNormals = showNormals;
+            Workspace.NormalData.DrawNormals = showNormals;
         }
 
         public void SetApproximatedNormalVisiblity(bool showNormals)
         {
-            Workspace.PointData.ApproximatedNormalData.NormalData.DrawNormals = showNormals;
+            Workspace.ApproximatedNormalData.NormalData.DrawNormals = showNormals;
         }
     }
 }

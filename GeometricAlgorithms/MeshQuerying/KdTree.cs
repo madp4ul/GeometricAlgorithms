@@ -16,9 +16,9 @@ namespace GeometricAlgorithms.MeshQuerying
 
         public Mesh Mesh { get; private set; }
 
-        public KdTree(Mesh mesh, KdTreeConfiguration configuration = null, IProgressUpdater progressUpdater = null)
+        public KdTree(Mesh mesh, KdTreeConfiguration? configuration = null, IProgressUpdater progressUpdater = null)
         {
-            if (configuration == null)
+            if (!configuration.HasValue)
             {
                 configuration = KdTreeConfiguration.Default;
             }
@@ -36,12 +36,12 @@ namespace GeometricAlgorithms.MeshQuerying
 
             var updater = new OperationProgressUpdater(
                 progressUpdater,
-                (2 * mesh.VertexCount) / configuration.MaximumPointsPerLeaf,
+                (2 * mesh.VertexCount) / configuration.Value.MaximumPointsPerLeaf,
                 "Building Kd-Tree");
 
-            if (mesh.VertexCount > configuration.MaximumPointsPerLeaf)
+            if (mesh.VertexCount > configuration.Value.MaximumPointsPerLeaf)
             {
-                Root = new KdTreeBranch(MeshContainer, range, configuration, updater);
+                Root = new KdTreeBranch(MeshContainer, range, configuration.Value, updater);
             }
             else
             {

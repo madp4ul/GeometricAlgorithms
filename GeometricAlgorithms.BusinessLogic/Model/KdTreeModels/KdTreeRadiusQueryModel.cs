@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
 {
-    public class KdTreeNearestQueryData
+    public class KdTreeRadiusQueryModel : IHasDrawables, IUpdatable<KdTree>
     {
         private readonly IFuncExecutor FuncExecutor;
         private readonly CameraChangedEventDrawable CameraChangedEvent;
@@ -18,29 +18,30 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
         private MeshQuerying.KdTree KdTree;
 
         public Vector3 QueryCenter { get; set; }
-        public int PointCount { get; private set; }
+        public float Radius { get; private set; }
 
         public bool IsCalculating { get; private set; }
         public bool QueryHasChangedSinceLastCalculation { get; private set; }
 
-        public readonly QueryCenterPoint QueryCenterPoint;
-        public readonly KdTreeQueryResult QueryResult;
+        public readonly QueryCenterPointModel QueryCenterPoint;
+        public readonly KdTreeQueryResultModel QueryResult;
+
+        public event Action Updated;
 
         public bool CanQuery => KdTree != null;
 
-        public KdTreeNearestQueryData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
+        public KdTreeRadiusQueryModel(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {
             FuncExecutor = funcExecutor;
 
-            PointCount = 100;
-            QueryCenterPoint = new QueryCenterPoint(drawableFactoryProvider);
+            Radius = 0.1f;
+            QueryCenterPoint = new QueryCenterPointModel(drawableFactoryProvider);
 
-            QueryResult = new KdTreeQueryResult(drawableFactoryProvider);
+            QueryResult = new KdTreeQueryResultModel(drawableFactoryProvider);
 
             CameraChangedEvent = new CameraChangedEventDrawable();
             CameraChangedEvent.CameraChanged += OnCameraChanged;
         }
-
 
         public void Reset(MeshQuerying.KdTree kdTree)
         {
@@ -50,15 +51,25 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
             QueryResult.Reset();
         }
 
+        public void Update(KdTree kdTree)
+        {
+            KdTree = kdTree;
+
+            QueryCenterPoint.Reset();
+            QueryResult.Reset();
+
+            Updated?.Invoke();
+        }
+
         public void HideAll()
         {
             QueryCenterPoint.Show = false;
             QueryResult.Show = false;
         }
 
-        public void SetPointCount(int pointCount)
+        public void SetRadius(float radius)
         {
-            PointCount = pointCount;
+            Radius = radius;
             QueryHasChangedSinceLastCalculation = true;
         }
 
@@ -71,12 +82,11 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
 
             IsCalculating = true;
             QueryHasChangedSinceLastCalculation = false;
-
-            var radiusQuery = FuncExecutor.Execute((progress) => KdTree.FindNearestVertices(QueryCenter, PointCount, progress));
+            var radiusQuery = FuncExecutor.Execute((progress) => KdTree.FindInRadius(QueryCenter, Radius, progress));
 
             radiusQuery.GetResult((vertexIndices) =>
             {
-                QueryResult.Reset(vertexIndices.Values.Select(pi => pi.Position));
+                QueryResult.Reset(vertexIndices.Select(pi => pi.Position));
                 IsCalculating = false;
             });
         }
@@ -94,7 +104,6 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
 
         private void OnCameraChanged(ACamera camera)
         {
-            //Refresh query center based on camera position - can only happen in draw
             float centerDistance = 0.2f;
             Vector3 newQueryCenter = camera.Position + (camera.Forward.Normalized() * centerDistance);
 

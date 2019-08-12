@@ -14,14 +14,14 @@ using GeometricAlgorithms.MeshQuerying;
 
 namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
 {
-    public class ApproximatedFaceData
+    public class FaceApproximationModel : IHasDrawables, IUpdatable<KdTree>
     {
         private const float RoomAroundModel = 0.02f;
 
         private readonly IDrawableFactoryProvider DrawableFactoryProvider;
         private readonly IFuncExecutor FuncExecutor;
 
-        public readonly FaceData FaceData;
+        public readonly FacesModel FaceData;
 
         public KdTree KdTree { get; private set; }
 
@@ -51,6 +51,9 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
         }
 
         private readonly ContainerDrawable OuterFunctionValuesDrawable;
+
+        public event Action Updated;
+
         public bool DrawOuterFunctionValues
         {
             get => OuterFunctionValuesDrawable.EnableDraw;
@@ -59,7 +62,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
 
         public bool CanApproximate => KdTree?.Mesh.UnitNormals != null;
 
-        public ApproximatedFaceData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
+        public FaceApproximationModel(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {
             DrawableFactoryProvider = drawableFactoryProvider;
             FuncExecutor = funcExecutor;
@@ -70,7 +73,20 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
             OuterFunctionValuesDrawable = new ContainerDrawable();
 
             CubeMarcher = CubeMarcher.CreateDummy();
-            FaceData = new FaceData(drawableFactoryProvider);
+            FaceData = new FacesModel(drawableFactoryProvider);
+        }
+
+        public void Update(KdTree kdTree)
+        {
+            KdTree = kdTree;
+            ImplicitSurface = new ScalarProductSurface(kdTree, UsedNearestPointCount);
+            CubeMarcher = CubeMarcher.AroundBox(KdTree.MeshContainer, RoomAroundModel, ImplicitSurface, SamplesOnLongestSideSide);
+
+            InnerFunctionValuesDrawable.SwapDrawable(new EmptyDrawable());
+            OuterFunctionValuesDrawable.SwapDrawable(new EmptyDrawable());
+            FaceData.Update(Mesh.CreateEmpty());
+
+            Updated?.Invoke();
         }
 
         public void Reset(KdTree kdTree)
@@ -81,7 +97,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
 
             InnerFunctionValuesDrawable.SwapDrawable(new EmptyDrawable());
             OuterFunctionValuesDrawable.SwapDrawable(new EmptyDrawable());
-            FaceData.Reset(Mesh.CreateEmpty());
+            FaceData.Update(Mesh.CreateEmpty());
         }
 
         public void CalculateApproximation()
@@ -102,7 +118,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
 
                     //Use function values to calculate surface
                     FuncExecutor.Execute(progress => currentCubeMarcher.GetSurface(functionValueGrid, progress))
-                        .GetResult(mesh => FaceData.Reset(mesh));
+                        .GetResult(mesh => FaceData.Update(mesh));
                 });
         }
 

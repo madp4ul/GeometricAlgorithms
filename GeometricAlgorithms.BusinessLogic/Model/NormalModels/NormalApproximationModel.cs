@@ -10,29 +10,33 @@ using GeometricAlgorithms.NormalApproximation;
 
 namespace GeometricAlgorithms.BusinessLogic.Model.NormalModels
 {
-    public class ApproximatedNormalData
+    public class NormalApproximationModel : IHasDrawables, IUpdatable<Mesh>
     {
         private readonly NormalApproximatorFromFaces Approximator;
         private readonly IFuncExecutor FuncExecutor;
 
-        public readonly NormalData NormalData;
+        public readonly NormalModel NormalData;
+
+        public event Action Updated;
 
         public Mesh SourceMesh { get; private set; }
 
         public bool CanApproximateFromFaces => NormalData.Mesh?.Faces != null;
 
-        public ApproximatedNormalData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
+        public NormalApproximationModel(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {
             FuncExecutor = funcExecutor;
 
             Approximator = new NormalApproximatorFromFaces();
-            NormalData = new NormalData(drawableFactoryProvider);
+            NormalData = new NormalModel(drawableFactoryProvider);
         }
 
-        public void Reset(Mesh mesh)
+        public void Update(Mesh mesh)
         {
             SourceMesh = mesh;
-            NormalData.Reset(Mesh.CreateEmpty());
+            NormalData.Update(Mesh.CreateEmpty());
+
+            Updated?.Invoke();
         }
 
         public void CalculateApproximationFromFaces()
@@ -46,7 +50,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.NormalModels
             {
                 var approximatedMesh = SourceMesh.Copy(replaceNormals: normals);
 
-                NormalData.Reset(approximatedMesh);
+                NormalData.Update(approximatedMesh);
             });
         }
 

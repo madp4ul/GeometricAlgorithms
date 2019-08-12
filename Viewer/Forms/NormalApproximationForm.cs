@@ -15,17 +15,17 @@ namespace GeometricAlgorithms.Viewer.Forms
 {
     public partial class NormalApproximationForm : Form
     {
-        private readonly PointData PointData;
-        private ApproximatedNormalData ApproximatedNormalData => PointData.ApproximatedNormalData;
+        private readonly Workspace Workspace;
+        private NormalApproximationModel ApproximatedNormalData => Workspace.ApproximatedNormalData;
 
 
-        public NormalApproximationForm(PointData pointData)
+        public NormalApproximationForm(Workspace workspace)
         {
             InitializeComponent();
 
             if (!DesignMode)
             {
-                PointData = pointData;
+                Workspace = workspace;
             }
         }
 
@@ -59,7 +59,7 @@ namespace GeometricAlgorithms.Viewer.Forms
         {
             if (ApproximatedNormalData.NormalData.HasNormals)
             {
-                PointData.Reset(ApproximatedNormalData.NormalData.Mesh);
+                Workspace.PointData.Update(ApproximatedNormalData.NormalData.Mesh);
             }
         }
     }
