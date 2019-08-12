@@ -23,14 +23,15 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Configurators
 
             //Get Menu Items
             var showPositions = GetMenu(menu.DropDownItems, "showPointCloudToolStripMenuItem");
-            var showNormals = GetMenu(menu.DropDownItems, "showOriginalNormalsToolStripMenuItem");
-            var showFaceApproximatedNormals = GetMenu(menu.DropDownItems, "showFaceApproximatedNormalsToolStripMenuItem");
+            var showNormals = GetMenu(menu.DropDownItems, "showNormalsToolStripMenuItem");
+            var showFaces = GetMenu(menu.DropDownItems, "showFacesToolStripMenuItem");
 
-            var showFaces = GetMenu(menu.DropDownItems, "showOriginalMeshToolStripMenuItem");
-            var showFacesAsWireframe = GetMenu(showFaces.DropDownItems, "showOriginalFacesAsWireframeToolStripMenuItem");
+            var showFaceApproximatedNormals = GetMenu(menu.DropDownItems, "showNormalApproximationToolStripMenuItem");
 
-            var showApproximatedFaces = GetMenu(menu.DropDownItems, "showApproximatedFacesToolStripMenuItem");
-            var showApproximatedFacesAsWireframe = GetMenu(showApproximatedFaces.DropDownItems, "showApproximatedFacesAsWireframeToolStripMenuItem");
+            var showFacesAsWireframe = GetMenu(showFaces.DropDownItems, "showFacesAsWireframeToolStripMenuItem");
+
+            var showApproximatedFaces = GetMenu(menu.DropDownItems, "showFaceApproximationToolStripMenuItem");
+            var showApproximatedFacesAsWireframe = GetMenu(showApproximatedFaces.DropDownItems, "showFaceApproximationAsWireframeToolStripMenuItem");
 
             //Set enabled on open menu
             menu.DropDownOpening += (o, e) =>

@@ -20,7 +20,7 @@ namespace GeometricAlgorithms.Viewer.Model.NormalModels
 
         public Mesh SourceMesh { get; private set; }
 
-        public bool CanApproximate => NormalData.Mesh?.Faces != null;
+        public bool CanApproximateFromFaces => NormalData.Mesh?.Faces != null;
 
         public ApproximatedNormalData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {
@@ -36,7 +36,7 @@ namespace GeometricAlgorithms.Viewer.Model.NormalModels
             NormalData.Reset(Mesh.CreateEmpty());
         }
 
-        public void CalculateApproximation()
+        public void CalculateApproximationFromFaces()
         {
             var normalCalculation = FuncExecutor.Execute((progress) => Approximator.GetNormals(
                 SourceMesh.Positions,

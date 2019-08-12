@@ -36,6 +36,7 @@
             this.cbShowOutsideSamples = new System.Windows.Forms.CheckBox();
             this.neighboursPerValuenumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
+            this.btnUseApproximatedFaces = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.samplesNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.neighboursPerValuenumericUpDown)).BeginInit();
             this.SuspendLayout();
@@ -54,7 +55,7 @@
             0,
             0});
             this.samplesNumericUpDown.Name = "samplesNumericUpDown";
-            this.samplesNumericUpDown.Size = new System.Drawing.Size(120, 20);
+            this.samplesNumericUpDown.Size = new System.Drawing.Size(131, 20);
             this.samplesNumericUpDown.TabIndex = 0;
             this.samplesNumericUpDown.Value = new decimal(new int[] {
             16,
@@ -85,7 +86,7 @@
             // 
             this.btnStartMarchingCubes.Location = new System.Drawing.Point(124, 80);
             this.btnStartMarchingCubes.Name = "btnStartMarchingCubes";
-            this.btnStartMarchingCubes.Size = new System.Drawing.Size(120, 23);
+            this.btnStartMarchingCubes.Size = new System.Drawing.Size(131, 23);
             this.btnStartMarchingCubes.TabIndex = 3;
             this.btnStartMarchingCubes.Text = "Start Marching Cubes";
             this.btnStartMarchingCubes.UseVisualStyleBackColor = true;
@@ -129,7 +130,7 @@
             0,
             0});
             this.neighboursPerValuenumericUpDown.Name = "neighboursPerValuenumericUpDown";
-            this.neighboursPerValuenumericUpDown.Size = new System.Drawing.Size(120, 20);
+            this.neighboursPerValuenumericUpDown.Size = new System.Drawing.Size(131, 20);
             this.neighboursPerValuenumericUpDown.TabIndex = 6;
             this.neighboursPerValuenumericUpDown.Value = new decimal(new int[] {
             10,
@@ -147,11 +148,22 @@
             this.label2.TabIndex = 7;
             this.label2.Text = "Neighbours per value";
             // 
+            // btnUseApproximatedFaces
+            // 
+            this.btnUseApproximatedFaces.Location = new System.Drawing.Point(124, 157);
+            this.btnUseApproximatedFaces.Name = "btnUseApproximatedFaces";
+            this.btnUseApproximatedFaces.Size = new System.Drawing.Size(131, 23);
+            this.btnUseApproximatedFaces.TabIndex = 8;
+            this.btnUseApproximatedFaces.Text = "Use approximated faces";
+            this.btnUseApproximatedFaces.UseVisualStyleBackColor = true;
+            this.btnUseApproximatedFaces.Click += new System.EventHandler(this.BtnUseApproximatedFaces_Click);
+            // 
             // FaceApproximationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(299, 168);
+            this.ClientSize = new System.Drawing.Size(299, 192);
+            this.Controls.Add(this.btnUseApproximatedFaces);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.neighboursPerValuenumericUpDown);
             this.Controls.Add(this.cbShowOutsideSamples);
@@ -181,5 +193,6 @@
         private System.Windows.Forms.CheckBox cbShowOutsideSamples;
         private System.Windows.Forms.NumericUpDown neighboursPerValuenumericUpDown;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnUseApproximatedFaces;
     }
 }

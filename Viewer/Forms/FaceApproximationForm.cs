@@ -1,4 +1,5 @@
-﻿using GeometricAlgorithms.Viewer.Model.FaceModels;
+﻿using GeometricAlgorithms.Viewer.Model;
+using GeometricAlgorithms.Viewer.Model.FaceModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,15 +14,16 @@ namespace GeometricAlgorithms.Viewer.Forms
 {
     public partial class FaceApproximationForm : Form
     {
-        private readonly ApproximatedFaceData ApproximatedFaceData;
+        private readonly PointData PointData;
+        private ApproximatedFaceData ApproximatedFaceData => PointData.KdTreeData.ApproximatedFaceData;
 
-        public FaceApproximationForm(ApproximatedFaceData approximatedFaceData)
+        public FaceApproximationForm(PointData pointData)
         {
             InitializeComponent();
 
             if (!DesignMode)
             {
-                ApproximatedFaceData = approximatedFaceData;
+                PointData = pointData;
             }
         }
 
@@ -29,24 +31,39 @@ namespace GeometricAlgorithms.Viewer.Forms
         {
             if (!DesignMode)
             {
-                ApproximatedFaceData.UsedNearestPointCount = (int)neighboursPerValuenumericUpDown.Value;
-                ApproximatedFaceData.SamplesPerSide = (int)samplesNumericUpDown.Value;
-
-                ApproximatedFaceData.DrawInnerFunctionValues = cbShowInsideSamples.Checked;
-                ApproximatedFaceData.DrawOuterFunctionValues = cbShowOutsideSamples.Checked;
+                PutFormValuesIntoModel();
 
                 SetTotalSamplesLabelText();
             }
         }
 
+        private void FaceApproximationForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            HideFunctionValues();
+        }
+
+        private void PutFormValuesIntoModel()
+        {
+            ApproximatedFaceData.UsedNearestPointCount = (int)neighboursPerValuenumericUpDown.Value;
+            ApproximatedFaceData.SamplesOnLongestSideSide = (int)samplesNumericUpDown.Value;
+
+            ApproximatedFaceData.DrawInnerFunctionValues = cbShowInsideSamples.Checked;
+            ApproximatedFaceData.DrawOuterFunctionValues = cbShowOutsideSamples.Checked;
+        }
+
+
         private void BtnStartMarchingCubes_Click(object sender, EventArgs e)
         {
-            ApproximatedFaceData.CalculateApproximation();
+            if (ApproximatedFaceData.CanApproximate)
+            {
+                PutFormValuesIntoModel();
+                ApproximatedFaceData.CalculateApproximation();
+            }
         }
 
         private void SamplesNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            ApproximatedFaceData.SamplesPerSide = (int)samplesNumericUpDown.Value;
+            PutFormValuesIntoModel();
 
             SetTotalSamplesLabelText();
         }
@@ -58,17 +75,12 @@ namespace GeometricAlgorithms.Viewer.Forms
 
         private void CbShowInsideSamples_CheckedChanged(object sender, EventArgs e)
         {
-            ApproximatedFaceData.DrawInnerFunctionValues = cbShowInsideSamples.Checked;
+            PutFormValuesIntoModel();
         }
 
         private void CbShowOutsideSamples_CheckedChanged(object sender, EventArgs e)
         {
-            ApproximatedFaceData.DrawOuterFunctionValues = cbShowOutsideSamples.Checked;
-        }
-
-        private void FaceApproximationForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            HideFunctionValues();
+            PutFormValuesIntoModel();
         }
 
         private void HideFunctionValues()
@@ -79,7 +91,15 @@ namespace GeometricAlgorithms.Viewer.Forms
 
         private void NeighboursPerValuenumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            ApproximatedFaceData.UsedNearestPointCount = (int)neighboursPerValuenumericUpDown.Value;
+            PutFormValuesIntoModel();
+        }
+
+        private void BtnUseApproximatedFaces_Click(object sender, EventArgs e)
+        {
+            if (ApproximatedFaceData.FaceData.HasFaces)
+            {
+                PointData.Reset(ApproximatedFaceData.FaceData.Mesh);
+            }
         }
     }
 }

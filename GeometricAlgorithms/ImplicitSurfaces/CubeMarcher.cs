@@ -59,9 +59,10 @@ namespace GeometricAlgorithms.ImplicitSurfaces
 
             float longestLength = BoundingBox.Diagonal.MaximumComponent();
             var result = new FunctionValueGrid(
-                Steps,
-                BoundingBox.Minimum,
-                longestLength / StepsAlongLongestSide);
+              steps: Steps,
+              minCorner: BoundingBox.Minimum,
+              stepSize: longestLength / (StepsAlongLongestSide - 1)); //-1 because the first step stays at zero.
+            //So there is one step less to get from min-corner to max-corner
 
             result.Compute(Surface, operationUpdater);
 
@@ -81,6 +82,11 @@ namespace GeometricAlgorithms.ImplicitSurfaces
             var surroundingBox = new BoundingBox(boundingBox.Minimum - distance3, boundingBox.Maximum + distance3);
 
             return new CubeMarcher(surroundingBox, surface, stepsAlongSide);
+        }
+
+        public static CubeMarcher CreateDummy()
+        {
+            return new CubeMarcher(new BoundingBox(Vector3.Zero, Vector3.Zero), new EmptySurface(), 2);
         }
     }
 }

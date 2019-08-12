@@ -93,6 +93,12 @@
     <Compile Include="Forms\KdTreeControls\NearestQueryControl.Designer.cs">
       <DependentUpon>NearestQueryControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\NormalApproximationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\NormalApproximationForm.Designer.cs">
+      <DependentUpon>NormalApproximationForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\KdTreeControls\RadiusQueryControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -160,6 +166,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\KdTreeControls\NearestQueryControl.resx">
       <DependentUpon>NearestQueryControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NormalApproximationForm.resx">
+      <DependentUpon>NormalApproximationForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\KdTreeControls\RadiusQueryControl.resx">
       <DependentUpon>RadiusQueryControl.cs</DependentUpon>

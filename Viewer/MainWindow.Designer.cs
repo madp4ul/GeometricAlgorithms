@@ -34,23 +34,18 @@
             this.saveFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showPointCloudToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showOriginalNormalsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showFaceApproximatedNormalsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showPointApproximatedNormalsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showOriginalMeshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showOriginalFacesAsWireframeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showApproximatedFacesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showApproximatedFacesAsWireframeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showApproximatedFacesFromApproximatedNormalsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showApproximatedFacesFromApproximatedNormalsAsWireframeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showNormalsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showFacesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showFacesAsWireframeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showNormalApproximationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showFaceApproximationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showFaceApproximationAsWireframeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.kdTreeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showKdTreeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openKdTreeSettingStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.approximationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.normalApproximationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.approximateFromFacesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.approximateFacesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.approximateFacesClickToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.backgroundWorkerProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.backgroundWorkerStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -97,12 +92,10 @@
             // 
             this.viewerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.showPointCloudToolStripMenuItem,
-            this.showOriginalNormalsToolStripMenuItem,
-            this.showFaceApproximatedNormalsToolStripMenuItem,
-            this.showPointApproximatedNormalsToolStripMenuItem,
-            this.showOriginalMeshToolStripMenuItem,
-            this.showApproximatedFacesToolStripMenuItem,
-            this.showApproximatedFacesFromApproximatedNormalsToolStripMenuItem});
+            this.showNormalsToolStripMenuItem,
+            this.showFacesToolStripMenuItem,
+            this.showNormalApproximationToolStripMenuItem,
+            this.showFaceApproximationToolStripMenuItem});
             this.viewerToolStripMenuItem.Name = "viewerToolStripMenuItem";
             this.viewerToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
             this.viewerToolStripMenuItem.Text = "Viewer";
@@ -112,84 +105,60 @@
             this.showPointCloudToolStripMenuItem.Checked = true;
             this.showPointCloudToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showPointCloudToolStripMenuItem.Name = "showPointCloudToolStripMenuItem";
-            this.showPointCloudToolStripMenuItem.Size = new System.Drawing.Size(360, 22);
+            this.showPointCloudToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
             this.showPointCloudToolStripMenuItem.Text = "Show vertex locations";
             // 
-            // showOriginalNormalsToolStripMenuItem
+            // showNormalsToolStripMenuItem
             // 
-            this.showOriginalNormalsToolStripMenuItem.Checked = true;
-            this.showOriginalNormalsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.showOriginalNormalsToolStripMenuItem.Name = "showOriginalNormalsToolStripMenuItem";
-            this.showOriginalNormalsToolStripMenuItem.Size = new System.Drawing.Size(360, 22);
-            this.showOriginalNormalsToolStripMenuItem.Text = "Show original normals";
+            this.showNormalsToolStripMenuItem.Checked = true;
+            this.showNormalsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showNormalsToolStripMenuItem.Name = "showNormalsToolStripMenuItem";
+            this.showNormalsToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
+            this.showNormalsToolStripMenuItem.Text = "Show normals";
             // 
-            // showFaceApproximatedNormalsToolStripMenuItem
+            // showFacesToolStripMenuItem
             // 
-            this.showFaceApproximatedNormalsToolStripMenuItem.Checked = true;
-            this.showFaceApproximatedNormalsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.showFaceApproximatedNormalsToolStripMenuItem.Name = "showFaceApproximatedNormalsToolStripMenuItem";
-            this.showFaceApproximatedNormalsToolStripMenuItem.Size = new System.Drawing.Size(360, 22);
-            this.showFaceApproximatedNormalsToolStripMenuItem.Text = "Show face approximated normals";
+            this.showFacesToolStripMenuItem.Checked = true;
+            this.showFacesToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showFacesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showFacesAsWireframeToolStripMenuItem});
+            this.showFacesToolStripMenuItem.Name = "showFacesToolStripMenuItem";
+            this.showFacesToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
+            this.showFacesToolStripMenuItem.Text = "Show faces";
             // 
-            // showPointApproximatedNormalsToolStripMenuItem
+            // showFacesAsWireframeToolStripMenuItem
             // 
-            this.showPointApproximatedNormalsToolStripMenuItem.Checked = true;
-            this.showPointApproximatedNormalsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.showPointApproximatedNormalsToolStripMenuItem.Name = "showPointApproximatedNormalsToolStripMenuItem";
-            this.showPointApproximatedNormalsToolStripMenuItem.Size = new System.Drawing.Size(360, 22);
-            this.showPointApproximatedNormalsToolStripMenuItem.Text = "Show point approximated normals";
+            this.showFacesAsWireframeToolStripMenuItem.Checked = true;
+            this.showFacesAsWireframeToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showFacesAsWireframeToolStripMenuItem.Name = "showFacesAsWireframeToolStripMenuItem";
+            this.showFacesAsWireframeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.showFacesAsWireframeToolStripMenuItem.Text = "Show as wireframe";
             // 
-            // showOriginalMeshToolStripMenuItem
+            // showNormalApproximationToolStripMenuItem
             // 
-            this.showOriginalMeshToolStripMenuItem.Checked = true;
-            this.showOriginalMeshToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.showOriginalMeshToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.showOriginalFacesAsWireframeToolStripMenuItem});
-            this.showOriginalMeshToolStripMenuItem.Name = "showOriginalMeshToolStripMenuItem";
-            this.showOriginalMeshToolStripMenuItem.Size = new System.Drawing.Size(360, 22);
-            this.showOriginalMeshToolStripMenuItem.Text = "Show original faces";
+            this.showNormalApproximationToolStripMenuItem.Checked = true;
+            this.showNormalApproximationToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showNormalApproximationToolStripMenuItem.Name = "showNormalApproximationToolStripMenuItem";
+            this.showNormalApproximationToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
+            this.showNormalApproximationToolStripMenuItem.Text = "Show normal approximation";
             // 
-            // showOriginalFacesAsWireframeToolStripMenuItem
+            // showFaceApproximationToolStripMenuItem
             // 
-            this.showOriginalFacesAsWireframeToolStripMenuItem.Checked = true;
-            this.showOriginalFacesAsWireframeToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.showOriginalFacesAsWireframeToolStripMenuItem.Name = "showOriginalFacesAsWireframeToolStripMenuItem";
-            this.showOriginalFacesAsWireframeToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
-            this.showOriginalFacesAsWireframeToolStripMenuItem.Text = "Show as wireframe";
+            this.showFaceApproximationToolStripMenuItem.Checked = true;
+            this.showFaceApproximationToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showFaceApproximationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showFaceApproximationAsWireframeToolStripMenuItem});
+            this.showFaceApproximationToolStripMenuItem.Name = "showFaceApproximationToolStripMenuItem";
+            this.showFaceApproximationToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
+            this.showFaceApproximationToolStripMenuItem.Text = "Show face approximation";
             // 
-            // showApproximatedFacesToolStripMenuItem
+            // showFaceApproximationAsWireframeToolStripMenuItem
             // 
-            this.showApproximatedFacesToolStripMenuItem.Checked = true;
-            this.showApproximatedFacesToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.showApproximatedFacesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.showApproximatedFacesAsWireframeToolStripMenuItem});
-            this.showApproximatedFacesToolStripMenuItem.Name = "showApproximatedFacesToolStripMenuItem";
-            this.showApproximatedFacesToolStripMenuItem.Size = new System.Drawing.Size(360, 22);
-            this.showApproximatedFacesToolStripMenuItem.Text = "Show approximated faces from original normals";
-            // 
-            // showApproximatedFacesAsWireframeToolStripMenuItem
-            // 
-            this.showApproximatedFacesAsWireframeToolStripMenuItem.Checked = true;
-            this.showApproximatedFacesAsWireframeToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.showApproximatedFacesAsWireframeToolStripMenuItem.Name = "showApproximatedFacesAsWireframeToolStripMenuItem";
-            this.showApproximatedFacesAsWireframeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.showApproximatedFacesAsWireframeToolStripMenuItem.Text = "Show as wireframe";
-            // 
-            // showApproximatedFacesFromApproximatedNormalsToolStripMenuItem
-            // 
-            this.showApproximatedFacesFromApproximatedNormalsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.showApproximatedFacesFromApproximatedNormalsAsWireframeToolStripMenuItem});
-            this.showApproximatedFacesFromApproximatedNormalsToolStripMenuItem.Name = "showApproximatedFacesFromApproximatedNormalsToolStripMenuItem";
-            this.showApproximatedFacesFromApproximatedNormalsToolStripMenuItem.Size = new System.Drawing.Size(360, 22);
-            this.showApproximatedFacesFromApproximatedNormalsToolStripMenuItem.Text = "Show approximated faces from approximated normals";
-            // 
-            // showApproximatedFacesFromApproximatedNormalsAsWireframeToolStripMenuItem
-            // 
-            this.showApproximatedFacesFromApproximatedNormalsAsWireframeToolStripMenuItem.Checked = true;
-            this.showApproximatedFacesFromApproximatedNormalsAsWireframeToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.showApproximatedFacesFromApproximatedNormalsAsWireframeToolStripMenuItem.Name = "showApproximatedFacesFromApproximatedNormalsAsWireframeToolStripMenuItem";
-            this.showApproximatedFacesFromApproximatedNormalsAsWireframeToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
-            this.showApproximatedFacesFromApproximatedNormalsAsWireframeToolStripMenuItem.Text = "Show as wireframe";
+            this.showFaceApproximationAsWireframeToolStripMenuItem.Checked = true;
+            this.showFaceApproximationAsWireframeToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showFaceApproximationAsWireframeToolStripMenuItem.Name = "showFaceApproximationAsWireframeToolStripMenuItem";
+            this.showFaceApproximationAsWireframeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.showFaceApproximationAsWireframeToolStripMenuItem.Text = "Show as wireframe";
             // 
             // kdTreeToolStripMenuItem
             // 
@@ -223,31 +192,15 @@
             // 
             // normalApproximationToolStripMenuItem
             // 
-            this.normalApproximationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.approximateFromFacesToolStripMenuItem});
             this.normalApproximationToolStripMenuItem.Name = "normalApproximationToolStripMenuItem";
             this.normalApproximationToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.normalApproximationToolStripMenuItem.Text = "Normals";
             // 
-            // approximateFromFacesToolStripMenuItem
-            // 
-            this.approximateFromFacesToolStripMenuItem.Name = "approximateFromFacesToolStripMenuItem";
-            this.approximateFromFacesToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
-            this.approximateFromFacesToolStripMenuItem.Text = "Approximate from faces";
-            // 
             // approximateFacesToolStripMenuItem
             // 
-            this.approximateFacesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.approximateFacesClickToolStripMenuItem});
             this.approximateFacesToolStripMenuItem.Name = "approximateFacesToolStripMenuItem";
             this.approximateFacesToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.approximateFacesToolStripMenuItem.Text = "Faces";
-            // 
-            // approximateFacesClickToolStripMenuItem
-            // 
-            this.approximateFacesClickToolStripMenuItem.Name = "approximateFacesClickToolStripMenuItem";
-            this.approximateFacesClickToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
-            this.approximateFacesClickToolStripMenuItem.Text = "Approximate";
             // 
             // statusStrip1
             // 
@@ -319,20 +272,15 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripProgressBar backgroundWorkerProgressBar;
         private System.Windows.Forms.ToolStripStatusLabel backgroundWorkerStatusLabel;
-        private System.Windows.Forms.ToolStripMenuItem showOriginalNormalsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showFaceApproximatedNormalsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showPointApproximatedNormalsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showOriginalMeshToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showOriginalFacesAsWireframeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showApproximatedFacesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showApproximatedFacesAsWireframeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showApproximatedFacesFromApproximatedNormalsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showApproximatedFacesFromApproximatedNormalsAsWireframeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showNormalsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showNormalApproximationToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showFacesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showFacesAsWireframeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showFaceApproximationToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showFaceApproximationAsWireframeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem approximationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem normalApproximationToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem approximateFromFacesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem approximateFacesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem approximateFacesClickToolStripMenuItem;
     }
 }
 

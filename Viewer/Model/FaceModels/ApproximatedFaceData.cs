@@ -17,6 +17,8 @@ namespace GeometricAlgorithms.Viewer.Model.FaceModels
 {
     public class ApproximatedFaceData
     {
+        private const float RoomAroundModel = 0.02f;
+
         private readonly IDrawableFactoryProvider DrawableFactoryProvider;
         private readonly IFuncExecutor FuncExecutor;
 
@@ -35,7 +37,7 @@ namespace GeometricAlgorithms.Viewer.Model.FaceModels
                 }
             }
         }
-        public int SamplesPerSide { get => CubeMarcher?.StepsAlongLongestSide ?? 0; set => CubeMarcher?.SetSteps(value); }
+        public int SamplesOnLongestSideSide { get => CubeMarcher?.StepsAlongLongestSide ?? 0; set => CubeMarcher?.SetSteps(value); }
         public int TotalSamples => CubeMarcher?.TotalValues ?? 0;
 
         private ScalarProductSurface ImplicitSurface;
@@ -56,19 +58,19 @@ namespace GeometricAlgorithms.Viewer.Model.FaceModels
             set => OuterFunctionValuesDrawable.EnableDraw = value;
         }
 
-        public bool CanApproximate => KdTree != null;
+        public bool CanApproximate => KdTree?.Mesh.UnitNormals != null;
 
         public ApproximatedFaceData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {
             DrawableFactoryProvider = drawableFactoryProvider;
             FuncExecutor = funcExecutor;
             UsedNearestPointCount = 10;
-            SamplesPerSide = 16;
+            SamplesOnLongestSideSide = 16;
             FunctionValueRadius = 4;
             InnerFunctionValuesDrawable = new ContainerDrawable();
             OuterFunctionValuesDrawable = new ContainerDrawable();
 
-            CubeMarcher = new CubeMarcher(new BoundingBox(Vector3.Zero, Vector3.Zero), new EmptySurface(), 2);
+            CubeMarcher = CubeMarcher.CreateDummy();
             FaceData = new FaceData(drawableFactoryProvider);
         }
 
@@ -76,7 +78,7 @@ namespace GeometricAlgorithms.Viewer.Model.FaceModels
         {
             KdTree = kdTree;
             ImplicitSurface = new ScalarProductSurface(kdTree, UsedNearestPointCount);
-            CubeMarcher = CubeMarcher.AroundBox(KdTree.MeshContainer, 0.1f, ImplicitSurface, SamplesPerSide);
+            CubeMarcher = CubeMarcher.AroundBox(KdTree.MeshContainer, RoomAroundModel, ImplicitSurface, SamplesOnLongestSideSide);
 
             InnerFunctionValuesDrawable.SwapDrawable(new EmptyDrawable());
             OuterFunctionValuesDrawable.SwapDrawable(new EmptyDrawable());

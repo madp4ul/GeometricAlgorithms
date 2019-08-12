@@ -23,7 +23,7 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
 
         public bool EnableOptionSetApproximatedNormalVisiblity()
         {
-            return Workspace.PointData.FaceApproximatedNormalData.NormalData.HasNormals;
+            return Workspace.PointData.ApproximatedNormalData.NormalData.HasNormals;
         }
 
         public bool EnableOptionSetOriginalFacesVisiblity()
@@ -68,7 +68,7 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
 
         public void SetApproximatedNormalVisiblity(bool showNormals)
         {
-            Workspace.PointData.FaceApproximatedNormalData.NormalData.DrawNormals = showNormals;
+            Workspace.PointData.ApproximatedNormalData.NormalData.DrawNormals = showNormals;
         }
     }
 }

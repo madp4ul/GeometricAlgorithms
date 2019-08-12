@@ -23,26 +23,30 @@ namespace GeometricAlgorithms.Domain
         /// </summary>
         public ReadOnlyCollection<Triangle> Faces { get; private set; }
 
-        public Mesh(Vector3[] positions, Triangle[] fileFaces, Vector3[] fileNormals = null)
+        public Mesh(Vector3[] positions, Triangle[] faces, Vector3[] normals = null)
         {
             Positions = Array.AsReadOnly(positions) ?? throw new ArgumentNullException(nameof(positions));
-            Faces = fileFaces != null ? Array.AsReadOnly(fileFaces) : null;
-            UnitNormals = fileNormals != null ? Array.AsReadOnly(fileNormals) : null;
+            Faces = faces != null ? Array.AsReadOnly(faces) : null;
+            UnitNormals = normals != null ? Array.AsReadOnly(normals) : null;
 
             VertexCount = positions.Length;
         }
 
-        public IEnumerable<Vector3> GetFacePositions(int index)
+        public Mesh Copy(
+            ICollection<Vector3> replacePositions = null,
+            ICollection<Vector3> replaceNormals = null)
         {
-            return Faces[index].Select(vIndex => Positions[vIndex]);
-        }
+            if (replacePositions != null && replacePositions.Count != Positions.Count
+                || replaceNormals != null && replaceNormals.Count != Positions.Count)
+            {
+                throw new ArgumentException(
+                    "Can not replace positions or normals with different amount of position or normals");
+            }
 
-        public Mesh Copy(Vector3[] replacePositions = null, Vector3[] replaceNormals = null)
-        {
             return new Mesh(
-                replacePositions ?? Positions.ToArray(),
+                (replacePositions ?? Positions).ToArray(),
                 Faces?.ToArray(),
-                replaceNormals ?? UnitNormals?.ToArray());
+                (replaceNormals ?? UnitNormals)?.ToArray());
         }
 
         public static Mesh CreateEmpty()

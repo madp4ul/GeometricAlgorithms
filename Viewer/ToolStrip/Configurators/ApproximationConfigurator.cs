@@ -23,35 +23,18 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Configurators
             var approximationTools = new ApproximationTools(Model.Workspace.PointData);
 
             var approximationMenu = GetMenu(menuStrip.Items, "approximationToolStripMenuItem");
+
             var normalMenu = GetMenu(approximationMenu.DropDownItems, "normalApproximationToolStripMenuItem");
-            ConfigureNormalMenu(normalMenu, approximationTools);
-
             var facesMenu = GetMenu(approximationMenu.DropDownItems, "approximateFacesToolStripMenuItem");
-            ConfigureFacesMenu(facesMenu, approximationTools);
-        }
 
-        private void ConfigureNormalMenu(ToolStripMenuItem normalMenu, ApproximationTools approximationTools)
-        {
-            var approximateNormalsFromFaces = GetMenu(normalMenu.DropDownItems, "approximateFromFacesToolStripMenuItem");
-
-            normalMenu.DropDownOpening += (o, e) =>
+            approximationMenu.DropDownOpening += (e, o) =>
             {
-                approximateNormalsFromFaces.Enabled = approximationTools.EnableApproximateNormalsFromFaces();
+                normalMenu.Enabled = approximationTools.EnableApproximateNormalsFromFaces();
+                facesMenu.Enabled = approximationTools.EnableApproximateFaces();
             };
 
-            MakeClickAction(approximateNormalsFromFaces, approximationTools.ApproximateNormalsFromFaces);
-        }
-
-        private void ConfigureFacesMenu(ToolStripMenuItem facesMenu, ApproximationTools approximationTools)
-        {
-            var approximateFaces = GetMenu(facesMenu.DropDownItems, "approximateFacesClickToolStripMenuItem");
-
-            facesMenu.DropDownOpening += (o, e) =>
-            {
-                approximateFaces.Enabled = approximationTools.EnableApproximateFaces();
-            };
-
-            MakeClickAction(approximateFaces, () => approximationTools.ApproximateFaces(MainWindow));
+            MakeClickAction(normalMenu, () => approximationTools.OpenNormalApproximationForm(MainWindow));
+            MakeClickAction(facesMenu, () => approximationTools.OpenFaceApproximationForm(MainWindow));
         }
     }
 }

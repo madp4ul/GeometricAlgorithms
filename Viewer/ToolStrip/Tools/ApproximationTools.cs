@@ -19,27 +19,37 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
 
         public bool EnableApproximateNormalsFromFaces()
         {
-            return PointData.FaceApproximatedNormalData.CanApproximate;
+            return PointData.ApproximatedNormalData.CanApproximateFromFaces;
         }
 
-        public void ApproximateNormalsFromFaces()
+        private NormalApproximationForm NormalApproximationForm = null;
+        public void OpenNormalApproximationForm(System.Windows.Forms.IWin32Window owner)
         {
-            PointData.FaceApproximatedNormalData.CalculateApproximation();
-        }
-
-
-        private FaceApproximationForm QueriesWindow = null;
-        public void ApproximateFaces(System.Windows.Forms.IWin32Window owner)
-        {
-            if (QueriesWindow == null)
+            if (FaceApproximationForm == null)
             {
-                QueriesWindow = new FaceApproximationForm(PointData.KdTreeData.ApproximatedFaceData);
-                QueriesWindow.FormClosed += (o, e) => QueriesWindow = null;
-                QueriesWindow.Show(owner);
+                NormalApproximationForm = new NormalApproximationForm(PointData);
+                NormalApproximationForm.FormClosed += (o, e) => FaceApproximationForm = null;
+                NormalApproximationForm.Show(owner);
             }
             else
             {
-                QueriesWindow.Focus();
+                FaceApproximationForm.Focus();
+            }
+        }
+
+
+        private FaceApproximationForm FaceApproximationForm = null;
+        public void OpenFaceApproximationForm(System.Windows.Forms.IWin32Window owner)
+        {
+            if (FaceApproximationForm == null)
+            {
+                FaceApproximationForm = new FaceApproximationForm(PointData);
+                FaceApproximationForm.FormClosed += (o, e) => FaceApproximationForm = null;
+                FaceApproximationForm.Show(owner);
+            }
+            else
+            {
+                FaceApproximationForm.Focus();
             }
         }
 
