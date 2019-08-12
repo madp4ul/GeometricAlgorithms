@@ -19,4 +19,18 @@ namespace GeometricAlgorithms.BusinessLogic
         /// <param name="data"></param>
         void Update(T data);
     }
+
+    public interface IUpdatable
+    {
+        /// <summary>
+        /// Is called after update completed
+        /// </summary>
+        event Action Updated;
+
+        /// <summary>
+        /// Updates the updatable with new data
+        /// </summary>
+        /// <param name="data"></param>
+        void Update();
+    }
 }

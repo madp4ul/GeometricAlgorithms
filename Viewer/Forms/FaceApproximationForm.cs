@@ -16,7 +16,7 @@ namespace GeometricAlgorithms.Viewer.Forms
     public partial class FaceApproximationForm : Form
     {
         private readonly Workspace Workspace;
-        private FaceApproximationModel ApproximatedFaceData => Workspace.ApproximatedFaceData;
+        private FaceApproximationModel ApproximatedFaceData => Workspace.ApproximatedFaces;
 
         public FaceApproximationForm(Workspace workspace)
         {
@@ -99,7 +99,7 @@ namespace GeometricAlgorithms.Viewer.Forms
         {
             if (ApproximatedFaceData.FaceData.HasFaces)
             {
-                Workspace.PointData.Update(ApproximatedFaceData.FaceData.Mesh);
+                Workspace.Positions.Update(ApproximatedFaceData.FaceData.Mesh);
             }
         }
     }

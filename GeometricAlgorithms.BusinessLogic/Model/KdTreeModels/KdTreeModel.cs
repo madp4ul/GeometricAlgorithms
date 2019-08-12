@@ -26,6 +26,9 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
 
         public bool DrawKdTree { get => KdTreeBoxDrawable.EnableDraw; set => KdTreeBoxDrawable.EnableDraw = value; }
 
+        public readonly KdTreeRadiusQueryModel RadiusQuery;
+        public readonly KdTreeNearestQueryModel NearestQuery;
+
         public KdTreeModel(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {
             DrawableFactoryProvider = drawableFactoryProvider;
@@ -34,6 +37,8 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
             KdTreeBoxDrawable = new ContainerDrawable(enable: false);
             Configuration = KdTreeConfiguration.Default;
 
+            RadiusQuery = new KdTreeRadiusQueryModel(drawableFactoryProvider, funcExecutor);
+            NearestQuery = new KdTreeNearestQueryModel(drawableFactoryProvider, funcExecutor);
         }
 
         public void Update(KdTreeConfiguration configuration)
@@ -47,7 +52,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
         {
             var buildKdTree = FuncExecutor.Execute((progress) =>
             {
-                return new MeshQuerying.KdTree(mesh, Configuration, progress);
+                return new KdTree(mesh, Configuration, progress);
             });
 
             buildKdTree.GetResult(kdTree =>
@@ -61,6 +66,9 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
                     : CreateKdTreeDrawable(boxes);
 
                 KdTreeBoxDrawable.SwapDrawable(newDrawable);
+
+                RadiusQuery.Update(kdTree);
+                NearestQuery.Update(kdTree);
 
                 Updated?.Invoke();
             });
@@ -79,6 +87,12 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
         public IEnumerable<IDrawable> GetDrawables()
         {
             yield return KdTreeBoxDrawable;
+
+            foreach (var item in RadiusQuery.GetDrawables()
+                .Concat(NearestQuery.GetDrawables()))
+            {
+                yield return item;
+            }
         }
     }
 }

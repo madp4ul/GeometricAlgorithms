@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
 {
-    public class KdTreeRadiusQueryModel : IHasDrawables, IUpdatable<KdTree>
+    public class KdTreeRadiusQueryModel : IHasDrawables, IUpdatable<MeshQuerying.KdTree>
     {
         private readonly IFuncExecutor FuncExecutor;
         private readonly CameraChangedEventDrawable CameraChangedEvent;
@@ -43,20 +43,12 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
             CameraChangedEvent.CameraChanged += OnCameraChanged;
         }
 
-        public void Reset(MeshQuerying.KdTree kdTree)
+        public void Update(MeshQuerying.KdTree kdTree)
         {
             KdTree = kdTree;
 
-            QueryCenterPoint.Reset();
-            QueryResult.Reset();
-        }
-
-        public void Update(KdTree kdTree)
-        {
-            KdTree = kdTree;
-
-            QueryCenterPoint.Reset();
-            QueryResult.Reset();
+            QueryCenterPoint.Update();
+            QueryResult.Update(vertices: null);
 
             Updated?.Invoke();
         }
@@ -86,7 +78,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
 
             radiusQuery.GetResult((vertexIndices) =>
             {
-                QueryResult.Reset(vertexIndices.Select(pi => pi.Position));
+                QueryResult.Update(vertexIndices.Select(pi => pi.Position));
                 IsCalculating = false;
             });
         }

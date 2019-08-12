@@ -15,7 +15,7 @@ namespace GeometricAlgorithms.Viewer.Forms.KdTreeControls
 {
     public partial class KdTreeConfigurationControl : UserControl
     {
-        public Workspace Workspace { get; set; }
+        public KdTreeModel KdTree { get; set; }
 
         public KdTreeConfigurationControl()
         {
@@ -27,7 +27,7 @@ namespace GeometricAlgorithms.Viewer.Forms.KdTreeControls
             if (!DesignMode)
             {
                 //Take default values from model
-                numericPointsPerLeaf.Value = Workspace.KdTreeData.Configuration.MaximumPointsPerLeaf;
+                numericPointsPerLeaf.Value = KdTree.Configuration.MaximumPointsPerLeaf;
             }
         }
 
@@ -38,7 +38,7 @@ namespace GeometricAlgorithms.Viewer.Forms.KdTreeControls
                 MaximumPointsPerLeaf = (int)numericPointsPerLeaf.Value
             };
 
-            Workspace.KdTreeData.Update(config);
+            KdTree.Update(config);
         }
     }
 }

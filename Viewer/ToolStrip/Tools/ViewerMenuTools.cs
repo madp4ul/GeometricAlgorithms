@@ -19,57 +19,57 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
 
         public bool EnableOptionSetNormalVisiblity()
         {
-            return Workspace.NormalData.HasNormals;
+            return Workspace.Normals.HasNormals;
         }
 
         public bool EnableOptionSetApproximatedNormalVisiblity()
         {
-            return Workspace.ApproximatedNormalData.NormalData.HasNormals;
+            return Workspace.ApproximatedNormals.NormalData.HasNormals;
         }
 
         public bool EnableOptionSetOriginalFacesVisiblity()
         {
-            return Workspace.FaceData.HasFaces;
+            return Workspace.Faces.HasFaces;
         }
 
         public bool EnableOptionSetApproximatedFacesVisibility()
         {
-            return Workspace.ApproximatedFaceData.FaceData.HasFaces;
+            return Workspace.ApproximatedFaces.FaceData.HasFaces;
         }
 
         public void SetApproximatedFacesVisiblity(bool showOriginalFaces)
         {
-            Workspace.ApproximatedFaceData.FaceData.DrawFaces = showOriginalFaces;
+            Workspace.ApproximatedFaces.FaceData.DrawFaces = showOriginalFaces;
         }
 
         public void SetDrawApproximatedFacesAsWireframe(bool showWireframe)
         {
-            Workspace.ApproximatedFaceData.FaceData.DrawAsWireframe = showWireframe;
+            Workspace.ApproximatedFaces.FaceData.DrawAsWireframe = showWireframe;
         }
 
         public void SetOriginalFacesVisiblity(bool showOriginalFaces)
         {
-            Workspace.FaceData.DrawFaces = showOriginalFaces;
+            Workspace.Faces.DrawFaces = showOriginalFaces;
         }
 
         public void SetDrawOriginalFacesAsWireframe(bool showWireframe)
         {
-            Workspace.FaceData.DrawAsWireframe = showWireframe;
+            Workspace.Faces.DrawAsWireframe = showWireframe;
         }
 
         public void SetPointCloudVisibility(bool showPointCloud)
         {
-            Workspace.PointData.DrawMeshPositions = showPointCloud;
+            Workspace.Positions.DrawMeshPositions = showPointCloud;
         }
 
         public void SetNormalVisiblity(bool showNormals)
         {
-            Workspace.NormalData.DrawNormals = showNormals;
+            Workspace.Normals.DrawNormals = showNormals;
         }
 
         public void SetApproximatedNormalVisiblity(bool showNormals)
         {
-            Workspace.ApproximatedNormalData.NormalData.DrawNormals = showNormals;
+            Workspace.ApproximatedNormals.NormalData.DrawNormals = showNormals;
         }
     }
 }

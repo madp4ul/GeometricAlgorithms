@@ -10,11 +10,13 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
 {
-    public class QueryCenterPointModel
+    public class QueryCenterPointModel : IHasDrawables, IUpdatable
     {
         readonly IDrawableFactoryProvider DrawableFactoryProvider;
 
         private readonly ContainerDrawable QueryCenterDrawable;
+
+        public event Action Updated;
 
         public bool Show { get => QueryCenterDrawable.EnableDraw; set => QueryCenterDrawable.EnableDraw = value; }
 
@@ -24,7 +26,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
             QueryCenterDrawable = new ContainerDrawable(enable: false);
         }
 
-        public void Reset()
+        public void Update()
         {
             var drawable = DrawableFactoryProvider.DrawableFactory.CreateHighlightedPointCloud(
                 points: new[] { Vector3.Zero },
@@ -32,6 +34,8 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
                 radius: 10);
 
             QueryCenterDrawable.SwapDrawable(drawable);
+
+            Updated?.Invoke();
         }
 
         public void SetPosition(Vector3 position)

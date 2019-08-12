@@ -19,7 +19,7 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
 
         public bool EnableApproximateNormalsFromFaces()
         {
-            return Workspace.ApproximatedNormalData.CanApproximateFromFaces;
+            return Workspace.ApproximatedNormals.CanApproximateFromFaces;
         }
 
         private NormalApproximationForm NormalApproximationForm = null;
@@ -55,7 +55,7 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
 
         public bool EnableApproximateFaces()
         {
-            return Workspace.ApproximatedFaceData.CanApproximate;
+            return Workspace.ApproximatedFaces.CanApproximate;
         }
     }
 }

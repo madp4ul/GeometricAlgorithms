@@ -101,7 +101,7 @@
             this.kdTreeConfigurationControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.kdTreeConfigurationControl.Workspace = null;
+            this.kdTreeConfigurationControl.KdTree = null;
             this.kdTreeConfigurationControl.Location = new System.Drawing.Point(16, 159);
             this.kdTreeConfigurationControl.Name = "kdTreeConfigurationControl";
             this.kdTreeConfigurationControl.Size = new System.Drawing.Size(242, 63);

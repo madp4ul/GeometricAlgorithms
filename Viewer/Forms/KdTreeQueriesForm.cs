@@ -14,19 +14,19 @@ namespace GeometricAlgorithms.Viewer.Forms
 {
     public partial class KdTreeQueriesForm : Form
     {
-        public Workspace Workspace { get; set; }
+        public KdTreeModel KdTree { get; set; }
 
-        public KdTreeQueriesForm(Workspace workspace)
+        public KdTreeQueriesForm(KdTreeModel kdTree)
         {
             InitializeComponent();
 
             if (!DesignMode)
             {
-                Workspace = workspace;
+                KdTree = kdTree;
 
-                radiusQueryControl.QueryData = workspace.RadiusQuerydata;
-                nearestQueryControl.QueryData = workspace.NearestQuerydata;
-                kdTreeConfigurationControl.Workspace = workspace;
+                radiusQueryControl.QueryData = kdTree.RadiusQuery;
+                nearestQueryControl.QueryData = kdTree.NearestQuery;
+                kdTreeConfigurationControl.KdTree = kdTree;
             }
         }
 
@@ -45,8 +45,8 @@ namespace GeometricAlgorithms.Viewer.Forms
 
         private void HideAllKdTreeQueries()
         {
-            Workspace.RadiusQuerydata.HideAll();
-            Workspace.NearestQuerydata.HideAll();
+            KdTree.RadiusQuery.HideAll();
+            KdTree.NearestQuery.HideAll();
         }
 
         private void TabControl_SelectedIndexChanged(object sender, EventArgs e)

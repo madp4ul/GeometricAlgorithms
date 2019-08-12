@@ -36,7 +36,7 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
                     var reader = new ModelReader();
                     var mesh = reader.ReadPoints(openFileDialog.FileName);
 
-                    ViewerModel.Workspace.PointData.Update(mesh);
+                    ViewerModel.Workspace.Positions.Update(mesh);
                 }
             }
         }

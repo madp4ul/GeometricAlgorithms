@@ -17,17 +17,13 @@ namespace GeometricAlgorithms.BusinessLogic.Model
         private readonly IDrawableFactoryProvider DrawableFactoryProvider;
         private readonly ContainerDrawable ReferenceFrame;
 
-        public readonly PositionModel PointData;
-
-        public readonly KdTreeModels.KdTreeModel KdTreeData;
-        public readonly NormalModel NormalData;
-        public readonly NormalApproximationModel ApproximatedNormalData;
-        public readonly FacesModel FaceData;
-        public readonly FaceApproximationModel ApproximatedFaceData;
-
-        public readonly KdTreeRadiusQueryModel RadiusQuerydata;
-        public readonly KdTreeNearestQueryModel NearestQuerydata;
-
+        public readonly PositionModel Positions;
+        public readonly KdTreeModel KdTree;
+        public readonly NormalModel Normals;
+        public readonly NormalApproximationModel ApproximatedNormals;
+        public readonly FacesModel Faces;
+        public readonly FaceApproximationModel ApproximatedFaces;
+               
         public event Action Updated;
 
         public Workspace(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
@@ -36,16 +32,15 @@ namespace GeometricAlgorithms.BusinessLogic.Model
 
             ReferenceFrame = new ContainerDrawable();
 
-            PointData = new PositionModel(drawableFactoryProvider);
+            Positions = new PositionModel(drawableFactoryProvider);
 
-            NormalData = new NormalModel(drawableFactoryProvider);
-            ApproximatedNormalData = new NormalApproximationModel(drawableFactoryProvider, funcExecutor);
-            FaceData = new FacesModel(drawableFactoryProvider);
-            KdTreeData = new KdTreeModels.KdTreeModel(drawableFactoryProvider, funcExecutor);
-            ApproximatedFaceData = new FaceApproximationModel(drawableFactoryProvider, funcExecutor);
+            Normals = new NormalModel(drawableFactoryProvider);
+            ApproximatedNormals = new NormalApproximationModel(drawableFactoryProvider, funcExecutor);
+            Faces = new FacesModel(drawableFactoryProvider);
+            KdTree = new KdTreeModels.KdTreeModel(drawableFactoryProvider, funcExecutor);
+            ApproximatedFaces = new FaceApproximationModel(drawableFactoryProvider, funcExecutor);
 
-            RadiusQuerydata = new KdTreeRadiusQueryModel(drawableFactoryProvider, funcExecutor);
-            NearestQuerydata = new KdTreeNearestQueryModel(drawableFactoryProvider, funcExecutor);
+
 
             SetUpdateDependencies();
         }
@@ -53,23 +48,21 @@ namespace GeometricAlgorithms.BusinessLogic.Model
         private void SetUpdateDependencies()
         {
             //TODO make all depend directly on workspace
-            PointData.Updated += () =>
+            Positions.Updated += () =>
             {
-                var mesh = PointData.Mesh;
+                var mesh = Positions.Mesh;
 
-                NormalData.Update(mesh);
-                ApproximatedNormalData.Update(mesh);
-                FaceData.Update(mesh);
-                KdTreeData.Update(mesh);
+                Normals.Update(mesh);
+                ApproximatedNormals.Update(mesh);
+                Faces.Update(mesh);
+                KdTree.Update(mesh);
             };
 
-            KdTreeData.Updated += () =>
+            KdTree.Updated += () =>
             {
-                var kdTree = KdTreeData.KdTree;
+                var kdTree = KdTree.KdTree;
 
-                ApproximatedFaceData.Update(kdTree);
-                RadiusQuerydata.Update(kdTree);
-                NearestQuerydata.Update(kdTree);
+                ApproximatedFaces.Update(kdTree);
             };
 
         }
@@ -77,11 +70,11 @@ namespace GeometricAlgorithms.BusinessLogic.Model
         public void Update(Mesh mesh)
         {
             //TODO use this
-            PointData.Update(mesh);
-            NormalData.Update(mesh);
-            ApproximatedNormalData.Update(mesh);
-            FaceData.Update(mesh);
-            KdTreeData.Update(mesh);
+            Positions.Update(mesh);
+            Normals.Update(mesh);
+            ApproximatedNormals.Update(mesh);
+            Faces.Update(mesh);
+            KdTree.Update(mesh);
 
             Updated?.Invoke();
         }
@@ -97,14 +90,12 @@ namespace GeometricAlgorithms.BusinessLogic.Model
         public IEnumerable<IDrawable> GetDrawables()
         {
             yield return ReferenceFrame;
-            foreach (var drawable in PointData.GetDrawables()
-                .Concat(NormalData.GetDrawables())
-                .Concat(ApproximatedNormalData.GetDrawables())
-                .Concat(FaceData.GetDrawables())
-                .Concat(KdTreeData.GetDrawables())
-                .Concat(ApproximatedFaceData.GetDrawables())
-                .Concat(RadiusQuerydata.GetDrawables())
-                .Concat(NearestQuerydata.GetDrawables())
+            foreach (var drawable in Positions.GetDrawables()
+                .Concat(Normals.GetDrawables())
+                .Concat(ApproximatedNormals.GetDrawables())
+                .Concat(Faces.GetDrawables())
+                .Concat(KdTree.GetDrawables())
+                .Concat(ApproximatedFaces.GetDrawables())
                 )
             {
                 yield return drawable;

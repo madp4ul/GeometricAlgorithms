@@ -16,7 +16,7 @@ namespace GeometricAlgorithms.Viewer.Forms
     public partial class NormalApproximationForm : Form
     {
         private readonly Workspace Workspace;
-        private NormalApproximationModel ApproximatedNormalData => Workspace.ApproximatedNormalData;
+        private NormalApproximationModel ApproximatedNormalData => Workspace.ApproximatedNormals;
 
 
         public NormalApproximationForm(Workspace workspace)
@@ -59,7 +59,7 @@ namespace GeometricAlgorithms.Viewer.Forms
         {
             if (ApproximatedNormalData.NormalData.HasNormals)
             {
-                Workspace.PointData.Update(ApproximatedNormalData.NormalData.Mesh);
+                Workspace.Positions.Update(ApproximatedNormalData.NormalData.Mesh);
             }
         }
     }

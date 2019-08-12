@@ -10,13 +10,16 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
 {
-    public class KdTreeQueryResultModel
+    public class KdTreeQueryResultModel : IHasDrawables, IUpdatable<IEnumerable<Vector3>>
     {
         readonly IDrawableFactoryProvider DrawableFactoryProvider;
 
         public int PointRadius { get; set; }
 
         private readonly ContainerDrawable HighlightDrawable;
+
+        public event Action Updated;
+
         public bool Show { get => HighlightDrawable.EnableDraw; set => HighlightDrawable.EnableDraw = value; }
 
         public KdTreeQueryResultModel(IDrawableFactoryProvider drawableFactoryProvider)
@@ -27,17 +30,19 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
             HighlightDrawable = new ContainerDrawable(enable: false);
         }
 
-        public void Reset()
+        public void Update(IEnumerable<Vector3> vertices)
         {
-            Reset(Enumerable.Empty<Vector3>());
-        }
+            if (vertices == null)
+            {
+                vertices = Enumerable.Empty<Vector3>();
+            }
 
-        public void Reset(IEnumerable<Vector3> vertices)
-        {
             var drawable = DrawableFactoryProvider.DrawableFactory.CreateHighlightedPointCloud(
-                vertices, Color.LightBlue.ToVector3(), PointRadius);
+                    vertices, Color.LightBlue.ToVector3(), PointRadius);
 
             HighlightDrawable.SwapDrawable(drawable);
+
+            Updated?.Invoke();
         }
 
         public IEnumerable<IDrawable> GetDrawables()
