@@ -13,16 +13,19 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingCubes
     {
         public readonly FunctionValue[] FunctionValues;
 
-        public readonly int Steps;
+        public readonly int TotalSteps;
+        public readonly Point StepAmounts;
         public readonly Vector3 MinCorner;
-        public readonly Vector3 StepSize;
+        public readonly float StepSize;
 
-        public FunctionValueGrid(int steps, Vector3 minCorner, Vector3 stepSize)
+        public FunctionValueGrid(Point steps, Vector3 minCorner, float stepSize)
         {
-            Steps = steps;
+            StepAmounts = steps;
+            TotalSteps = steps.X * steps.Y * steps.Z;
+
             MinCorner = minCorner;
             StepSize = stepSize;
-            FunctionValues = new FunctionValue[steps * steps * steps];
+            FunctionValues = new FunctionValue[steps.X * steps.Y * steps.Z];
 
         }
 
@@ -30,18 +33,17 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingCubes
         {
             int valueIndex = 0;
 
-            for (int x = 0; x < Steps; x++)
+            for (int x = 0; x < StepAmounts.X; x++)
             {
-                for (int y = 0; y < Steps; y++)
+                for (int y = 0; y < StepAmounts.Y; y++)
                 {
-                    for (int z = 0; z < Steps; z++)
+                    for (int z = 0; z < StepAmounts.Z; z++)
                     {
-                        Vector3 probePosition =
-                            MinCorner
+                        Vector3 probePosition = MinCorner
                             + new Vector3(
-                                StepSize.X * x,
-                                StepSize.Y * y,
-                                StepSize.Z * z);
+                                StepSize * x,
+                                StepSize * y,
+                                StepSize * z);
 
                         float approximateDistance = implicitSurface.GetApproximateSurfaceDistance(probePosition);
 
@@ -50,14 +52,14 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingCubes
                         valueIndex++;
                     }
 
-                    progressUpdater.UpdateAddOperation(operationCount: Steps);
+                    progressUpdater.UpdateAddOperation(operationCount: StepAmounts.Z);
                 }
             }
         }
 
         public FunctionValue GetValue(int x, int y, int z)
         {
-            return FunctionValues[x * Steps * Steps + y * Steps + z];
+            return FunctionValues[x * StepAmounts.Y * StepAmounts.Z + y * StepAmounts.Z + z];
         }
 
 

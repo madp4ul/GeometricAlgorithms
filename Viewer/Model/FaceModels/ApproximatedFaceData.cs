@@ -25,8 +25,22 @@ namespace GeometricAlgorithms.Viewer.Model.FaceModels
         public KdTree KdTree { get; private set; }
 
         public int FunctionValueRadius { get; set; }
-        public int UsedNearestPointCount { get; set; }
-        public int StepsPerSide { get; set; }
+        public int UsedNearestPointCount
+        {
+            get => ImplicitSurface?.UsedNearestPointCount ?? 0; set
+            {
+                if (ImplicitSurface != null)
+                {
+                    ImplicitSurface.UsedNearestPointCount = value;
+                }
+            }
+        }
+        public int SamplesPerSide { get => CubeMarcher?.StepsAlongLongestSide ?? 0; set => CubeMarcher?.SetSteps(value); }
+        public int TotalSamples => CubeMarcher?.TotalValues ?? 0;
+
+        private ScalarProductSurface ImplicitSurface;
+        private CubeMarcher CubeMarcher;
+
 
         private readonly ContainerDrawable InnerFunctionValuesDrawable;
         public bool DrawInnerFunctionValues
@@ -42,7 +56,6 @@ namespace GeometricAlgorithms.Viewer.Model.FaceModels
             set => OuterFunctionValuesDrawable.EnableDraw = value;
         }
 
-
         public bool CanApproximate => KdTree != null;
 
         public ApproximatedFaceData(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
@@ -50,18 +63,23 @@ namespace GeometricAlgorithms.Viewer.Model.FaceModels
             DrawableFactoryProvider = drawableFactoryProvider;
             FuncExecutor = funcExecutor;
             UsedNearestPointCount = 10;
-            StepsPerSide = 16;
+            SamplesPerSide = 16;
             FunctionValueRadius = 4;
             InnerFunctionValuesDrawable = new ContainerDrawable();
             OuterFunctionValuesDrawable = new ContainerDrawable();
 
+            CubeMarcher = new CubeMarcher(new BoundingBox(Vector3.Zero, Vector3.Zero), new EmptySurface(), 2);
             FaceData = new FaceData(drawableFactoryProvider);
         }
 
         public void Reset(KdTree kdTree)
         {
             KdTree = kdTree;
+            ImplicitSurface = new ScalarProductSurface(kdTree, UsedNearestPointCount);
+            CubeMarcher = CubeMarcher.AroundBox(KdTree.MeshContainer, 0.1f, ImplicitSurface, SamplesPerSide);
 
+            InnerFunctionValuesDrawable.SwapDrawable(new EmptyDrawable());
+            OuterFunctionValuesDrawable.SwapDrawable(new EmptyDrawable());
             FaceData.Reset(Mesh.CreateEmpty());
         }
 
@@ -72,19 +90,17 @@ namespace GeometricAlgorithms.Viewer.Model.FaceModels
                 throw new InvalidOperationException("Reset with tree first");
             }
 
-            var approximation = new ScalarProductSurface(KdTree, UsedNearestPointCount);
-
-            var cubeMarcher = CubeMarcher.AroundBox(KdTree.MeshContainer, 0.1f, approximation, StepsPerSide);
+            var currentCubeMarcher = CubeMarcher;
 
             //Calculate function values
-            FuncExecutor.Execute(progress => cubeMarcher.GetFunctionValues(progress))
+            FuncExecutor.Execute(progress => currentCubeMarcher.GetFunctionValues(progress))
                 .GetResult((functionValueGrid) =>
                 {
                     SetInnerFunctionValuesDrawable(functionValueGrid.FunctionValues);
                     SetOuterFunctionValuesDrawable(functionValueGrid.FunctionValues);
 
                     //Use function values to calculate surface
-                    FuncExecutor.Execute(progress => cubeMarcher.GetSurface(functionValueGrid, progress))
+                    FuncExecutor.Execute(progress => currentCubeMarcher.GetSurface(functionValueGrid, progress))
                         .GetResult(mesh => FaceData.Reset(mesh));
                 });
         }

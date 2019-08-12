@@ -30,7 +30,7 @@ namespace GeometricAlgorithms.Viewer.Forms
             if (!DesignMode)
             {
                 ApproximatedFaceData.UsedNearestPointCount = (int)neighboursPerValuenumericUpDown.Value;
-                ApproximatedFaceData.StepsPerSide = (int)samplesNumericUpDown.Value;
+                ApproximatedFaceData.SamplesPerSide = (int)samplesNumericUpDown.Value;
 
                 ApproximatedFaceData.DrawInnerFunctionValues = cbShowInsideSamples.Checked;
                 ApproximatedFaceData.DrawOuterFunctionValues = cbShowOutsideSamples.Checked;
@@ -46,17 +46,14 @@ namespace GeometricAlgorithms.Viewer.Forms
 
         private void SamplesNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            ApproximatedFaceData.StepsPerSide = (int)samplesNumericUpDown.Value;
+            ApproximatedFaceData.SamplesPerSide = (int)samplesNumericUpDown.Value;
 
             SetTotalSamplesLabelText();
         }
 
         private void SetTotalSamplesLabelText()
         {
-            int samplesPerSide = (int)samplesNumericUpDown.Value;
-            int totalSamples = samplesPerSide * samplesPerSide * samplesPerSide;
-
-            totalSamplesLabel.Text = $"{totalSamples} samples in total";
+            totalSamplesLabel.Text = $"{ApproximatedFaceData.TotalSamples} samples in total";
         }
 
         private void CbShowInsideSamples_CheckedChanged(object sender, EventArgs e)

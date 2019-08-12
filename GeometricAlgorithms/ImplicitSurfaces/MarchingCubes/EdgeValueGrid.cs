@@ -15,17 +15,20 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingCubes
 
         public Mesh ComputedSurface { get; private set; }
 
-        public int Steps => FunctionValueGrid.Steps;
+        public Point Steps => FunctionValueGrid.StepAmounts;
 
-        public int CubesPerSide => Steps - 1;
-        public int CubesTotal => CubesPerSide * CubesPerSide * CubesPerSide;
+        public readonly Point Cubes;
+        public readonly int TotalCubes;
 
         public EdgeValueGrid(FunctionValueGrid functionValueGrid)
         {
             FunctionValueGrid = functionValueGrid;
 
+            Cubes = new Point(Steps.X - 1, Steps.Y - 1, Steps.Z - 1);
+            TotalCubes = Cubes.X * Cubes.Y * Cubes.Z;
+
             Vertices = new List<Vector3>();
-            EdgeValues = new TripleEdge[Steps * Steps * Steps];
+            EdgeValues = new TripleEdge[FunctionValueGrid.TotalSteps];
 
             for (int i = 0; i < EdgeValues.Length; i++)
             {
@@ -44,19 +47,19 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingCubes
 
             //Because cubes already consider the corner at the next index of the current one
             //we dont want cubes for the last row
-            int cubesLength = Steps - 1;
+            Point cubes = Cubes;
 
-            for (int x = 0; x < cubesLength; x++)
+            for (int x = 0; x < cubes.X; x++)
             {
-                for (int y = 0; y < cubesLength; y++)
+                for (int y = 0; y < cubes.Y; y++)
                 {
-                    for (int z = 0; z < cubesLength; z++)
+                    for (int z = 0; z < cubes.Z; z++)
                     {
                         Cube cube = new Cube(FunctionValueGrid, this, new Point(x, y, z));
                         triangles.AddRange(cube.ComputeTriangles());
                     }
 
-                    progressUpdater.UpdateAddOperation(operationCount: cubesLength);
+                    progressUpdater.UpdateAddOperation(operationCount: cubes.Z);
                 }
             }
 
@@ -174,7 +177,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingCubes
 
         private int CoordToIndex(Point coord)
         {
-            return coord.X * Steps * Steps + coord.Y * Steps + coord.Z;
+            return coord.X * Steps.Y * Steps.Z + coord.Y * Steps.Z + coord.Z;
         }
     }
 }

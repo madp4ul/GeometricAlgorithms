@@ -107,8 +107,6 @@
             // cbShowOutsideSamples
             // 
             this.cbShowOutsideSamples.AutoSize = true;
-            this.cbShowOutsideSamples.Checked = true;
-            this.cbShowOutsideSamples.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbShowOutsideSamples.Location = new System.Drawing.Point(124, 132);
             this.cbShowOutsideSamples.Name = "cbShowOutsideSamples";
             this.cbShowOutsideSamples.Size = new System.Drawing.Size(131, 17);

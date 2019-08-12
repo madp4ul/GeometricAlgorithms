@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ImplicitSurfaces\EmptySurface.cs" />
     <Compile Include="ImplicitSurfaces\MarchingCubes\Cube.cs" />
     <Compile Include="ImplicitSurfaces\CubeMarcher.cs" />
     <Compile Include="ImplicitSurfaces\IImplicitSurface.cs" />

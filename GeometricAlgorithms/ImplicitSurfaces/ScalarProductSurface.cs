@@ -11,7 +11,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces
     public class ScalarProductSurface : IImplicitSurface
     {
         public readonly KdTree KdTree;
-        public readonly int UsedNearestPointCount;
+        public int UsedNearestPointCount;
 
         public ScalarProductSurface(KdTree kdTree, int usedNearestPointCount)
         {
