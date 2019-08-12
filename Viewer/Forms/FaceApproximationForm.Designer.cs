@@ -37,6 +37,7 @@
             this.neighboursPerValuenumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.btnUseApproximatedFaces = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.samplesNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.neighboursPerValuenumericUpDown)).BeginInit();
             this.SuspendLayout();
@@ -150,19 +151,28 @@
             // 
             // btnUseApproximatedFaces
             // 
-            this.btnUseApproximatedFaces.Location = new System.Drawing.Point(124, 157);
+            this.btnUseApproximatedFaces.Location = new System.Drawing.Point(124, 170);
             this.btnUseApproximatedFaces.Name = "btnUseApproximatedFaces";
-            this.btnUseApproximatedFaces.Size = new System.Drawing.Size(131, 23);
+            this.btnUseApproximatedFaces.Size = new System.Drawing.Size(131, 27);
             this.btnUseApproximatedFaces.TabIndex = 8;
             this.btnUseApproximatedFaces.Text = "Use approximated faces";
             this.btnUseApproximatedFaces.UseVisualStyleBackColor = true;
             this.btnUseApproximatedFaces.Click += new System.EventHandler(this.BtnUseApproximatedFaces_Click);
             // 
+            // label3
+            // 
+            this.label3.Location = new System.Drawing.Point(12, 157);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(108, 74);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "Replace positions and faces with approximated mesh. Normals will be lost";
+            // 
             // FaceApproximationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(299, 192);
+            this.ClientSize = new System.Drawing.Size(282, 226);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.btnUseApproximatedFaces);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.neighboursPerValuenumericUpDown);
@@ -172,8 +182,14 @@
             this.Controls.Add(this.totalSamplesLabel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.samplesNumericUpDown);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FaceApproximationForm";
-            this.Text = "FaceApproximation";
+            this.Opacity = 0.97D;
+            this.ShowIcon = false;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.Text = "Face Approximation";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FaceApproximationForm_FormClosed);
             this.Load += new System.EventHandler(this.FaceApproximationForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.samplesNumericUpDown)).EndInit();
@@ -194,5 +210,6 @@
         private System.Windows.Forms.NumericUpDown neighboursPerValuenumericUpDown;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnUseApproximatedFaces;
+        private System.Windows.Forms.Label label3;
     }
 }

@@ -21,7 +21,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
         private readonly IDrawableFactoryProvider DrawableFactoryProvider;
         private readonly IFuncExecutor FuncExecutor;
 
-        public readonly FacesModel FaceData;
+        public readonly FacesModel Faces;
 
         public KdTree KdTree { get; private set; }
 
@@ -36,8 +36,8 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
                 }
             }
         }
-        public int SamplesOnLongestSideSide { get => CubeMarcher?.StepsAlongLongestSide ?? 0; set => CubeMarcher?.SetSteps(value); }
-        public int TotalSamples => CubeMarcher?.TotalValues ?? 0;
+        public int SamplesOnLongestSideSide { get => CubeMarcher.StepsAlongLongestSide; set => CubeMarcher?.SetSteps(value); }
+        public int TotalSamples => CubeMarcher.TotalValues;
 
         private ScalarProductSurface ImplicitSurface;
         private CubeMarcher CubeMarcher;
@@ -60,7 +60,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
             set => OuterFunctionValuesDrawable.EnableDraw = value;
         }
 
-        public bool CanApproximate => KdTree?.Mesh.UnitNormals != null;
+        public bool CanApproximate => KdTree.Mesh.HasNormals;
 
         public FaceApproximationModel(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {
@@ -73,7 +73,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
             OuterFunctionValuesDrawable = new ContainerDrawable();
 
             CubeMarcher = CubeMarcher.CreateDummy();
-            FaceData = new FacesModel(drawableFactoryProvider);
+            Faces = new FacesModel(drawableFactoryProvider);
         }
 
         public void Update(KdTree kdTree)
@@ -84,7 +84,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
 
             InnerFunctionValuesDrawable.SwapDrawable(new EmptyDrawable());
             OuterFunctionValuesDrawable.SwapDrawable(new EmptyDrawable());
-            FaceData.Update(Mesh.CreateEmpty());
+            Faces.Update(Mesh.CreateEmpty());
 
             Updated?.Invoke();
         }
@@ -107,7 +107,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
 
                     //Use function values to calculate surface
                     FuncExecutor.Execute(progress => currentCubeMarcher.GetSurface(functionValueGrid, progress))
-                        .GetResult(mesh => FaceData.Update(mesh));
+                        .GetResult(mesh => Faces.Update(mesh));
                 });
         }
 
@@ -138,7 +138,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
             yield return InnerFunctionValuesDrawable;
             yield return OuterFunctionValuesDrawable;
 
-            foreach (var drawable in FaceData.GetDrawables())
+            foreach (var drawable in Faces.GetDrawables())
             {
                 yield return drawable;
             }

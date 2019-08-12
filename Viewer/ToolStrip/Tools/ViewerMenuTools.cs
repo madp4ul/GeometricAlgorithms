@@ -24,7 +24,7 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
 
         public bool EnableOptionSetApproximatedNormalVisiblity()
         {
-            return Workspace.ApproximatedNormals.NormalData.HasNormals;
+            return Workspace.ApproximatedNormals.Normals.HasNormals;
         }
 
         public bool EnableOptionSetOriginalFacesVisiblity()
@@ -34,17 +34,17 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
 
         public bool EnableOptionSetApproximatedFacesVisibility()
         {
-            return Workspace.ApproximatedFaces.FaceData.HasFaces;
+            return Workspace.ApproximatedFaces.Faces.HasFaces;
         }
 
         public void SetApproximatedFacesVisiblity(bool showOriginalFaces)
         {
-            Workspace.ApproximatedFaces.FaceData.DrawFaces = showOriginalFaces;
+            Workspace.ApproximatedFaces.Faces.DrawFaces = showOriginalFaces;
         }
 
         public void SetDrawApproximatedFacesAsWireframe(bool showWireframe)
         {
-            Workspace.ApproximatedFaces.FaceData.DrawAsWireframe = showWireframe;
+            Workspace.ApproximatedFaces.Faces.DrawAsWireframe = showWireframe;
         }
 
         public void SetOriginalFacesVisiblity(bool showOriginalFaces)
@@ -69,7 +69,7 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
 
         public void SetApproximatedNormalVisiblity(bool showNormals)
         {
-            Workspace.ApproximatedNormals.NormalData.DrawNormals = showNormals;
+            Workspace.ApproximatedNormals.Normals.DrawNormals = showNormals;
         }
     }
 }

@@ -25,6 +25,19 @@ namespace GeometricAlgorithms.Viewer.Forms
             if (!DesignMode)
             {
                 Workspace = workspace;
+                ApproximatedFaceData.Updated += UpdateApproximationOptions;
+                ApproximatedFaceData.Faces.Updated += SetEnableButtonUseApproximatedFaces;
+            }
+        }
+
+        private void UpdateApproximationOptions()
+        {
+            SetTotalSamplesLabelText();
+            SetEnableButtonUseApproximatedFaces();
+
+            if (!ApproximatedFaceData.CanApproximate)
+            {
+                Close();
             }
         }
 
@@ -33,14 +46,20 @@ namespace GeometricAlgorithms.Viewer.Forms
             if (!DesignMode)
             {
                 PutFormValuesIntoModel();
-
-                SetTotalSamplesLabelText();
+                UpdateApproximationOptions();
             }
         }
 
         private void FaceApproximationForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             HideFunctionValues();
+            ApproximatedFaceData.Updated -= UpdateApproximationOptions;
+            ApproximatedFaceData.Faces.Updated -= SetEnableButtonUseApproximatedFaces;
+        }
+
+        private void SetEnableButtonUseApproximatedFaces()
+        {
+            btnUseApproximatedFaces.Enabled = ApproximatedFaceData.Faces.HasFaces;
         }
 
         private void PutFormValuesIntoModel()
@@ -97,9 +116,9 @@ namespace GeometricAlgorithms.Viewer.Forms
 
         private void BtnUseApproximatedFaces_Click(object sender, EventArgs e)
         {
-            if (ApproximatedFaceData.FaceData.HasFaces)
+            if (ApproximatedFaceData.Faces.HasFaces)
             {
-                Workspace.Positions.Update(ApproximatedFaceData.FaceData.Mesh);
+                Workspace.Update(ApproximatedFaceData.Faces.Mesh);
             }
         }
     }

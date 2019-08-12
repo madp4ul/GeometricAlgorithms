@@ -25,15 +25,15 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
         private NormalApproximationForm NormalApproximationForm = null;
         public void OpenNormalApproximationForm(System.Windows.Forms.IWin32Window owner)
         {
-            if (FaceApproximationForm == null)
+            if (NormalApproximationForm == null)
             {
                 NormalApproximationForm = new NormalApproximationForm(Workspace);
-                NormalApproximationForm.FormClosed += (o, e) => FaceApproximationForm = null;
+                NormalApproximationForm.FormClosed += (o, e) => NormalApproximationForm = null;
                 NormalApproximationForm.Show(owner);
             }
             else
             {
-                FaceApproximationForm.Focus();
+                NormalApproximationForm.Focus();
             }
         }
 

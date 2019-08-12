@@ -15,26 +15,26 @@ namespace GeometricAlgorithms.BusinessLogic.Model.NormalModels
         private readonly NormalApproximatorFromFaces Approximator;
         private readonly IFuncExecutor FuncExecutor;
 
-        public readonly NormalModel NormalData;
+        public readonly NormalModel Normals;
 
         public event Action Updated;
 
         public Mesh SourceMesh { get; private set; }
 
-        public bool CanApproximateFromFaces => NormalData.Mesh?.Faces != null;
+        public bool CanApproximateFromFaces => SourceMesh?.Faces != null;
 
         public NormalApproximationModel(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {
             FuncExecutor = funcExecutor;
 
             Approximator = new NormalApproximatorFromFaces();
-            NormalData = new NormalModel(drawableFactoryProvider);
+            Normals = new NormalModel(drawableFactoryProvider);
         }
 
         public void Update(Mesh mesh)
         {
             SourceMesh = mesh;
-            NormalData.Update(Mesh.CreateEmpty());
+            Normals.Update(Mesh.CreateEmpty());
 
             Updated?.Invoke();
         }
@@ -50,13 +50,13 @@ namespace GeometricAlgorithms.BusinessLogic.Model.NormalModels
             {
                 var approximatedMesh = SourceMesh.Copy(replaceNormals: normals);
 
-                NormalData.Update(approximatedMesh);
+                Normals.Update(approximatedMesh);
             });
         }
 
         public IEnumerable<IDrawable> GetDrawables()
         {
-            return NormalData.GetDrawables();
+            return Normals.GetDrawables();
         }
     }
 }

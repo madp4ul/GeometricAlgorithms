@@ -26,12 +26,20 @@ namespace GeometricAlgorithms.Viewer.Forms
             if (!DesignMode)
             {
                 Workspace = workspace;
+                ApproximatedNormalData.Updated += UpdateApproximationOptions;
+                ApproximatedNormalData.Normals.Updated += SetEnableButtonUseApproximatedNormals;
             }
+        }
+
+        private void SetEnableButtonUseApproximatedNormals()
+        {
+            btnUseApproximateNormals.Enabled = ApproximatedNormalData.Normals.HasNormals;
         }
 
         private void NormalApproximationForm_Load(object sender, EventArgs e)
         {
-            rbUseFaces.Enabled = ApproximatedNormalData.CanApproximateFromFaces;
+            UpdateApproximationOptions();
+            SetEnableButtonUseApproximatedNormals();
 
             if (rbUseFaces.Enabled)
             {
@@ -40,6 +48,26 @@ namespace GeometricAlgorithms.Viewer.Forms
             else
             {
                 rbUsePositions.Checked = true;
+            }
+        }
+
+        private void NormalApproximationForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            ApproximatedNormalData.Updated -= UpdateApproximationOptions;
+            ApproximatedNormalData.Normals.Updated -= SetEnableButtonUseApproximatedNormals;
+        }
+
+        private void UpdateApproximationOptions()
+        {
+            rbUseFaces.Enabled = ApproximatedNormalData.CanApproximateFromFaces;
+            rbUseFaces.Checked = rbUseFaces.Checked && rbUseFaces.Enabled;
+
+            SetEnableButtonStartApproximation();
+
+            //If normal approximation not possible on current mesh
+            if (ApproximatedNormalData.SourceMesh.Positions.Count == 0)
+            {
+                Close();
             }
         }
 
@@ -57,10 +85,25 @@ namespace GeometricAlgorithms.Viewer.Forms
 
         private void BtnUseApproximateNormals_Click(object sender, EventArgs e)
         {
-            if (ApproximatedNormalData.NormalData.HasNormals)
+            if (ApproximatedNormalData.Normals.HasNormals)
             {
-                Workspace.Positions.Update(ApproximatedNormalData.NormalData.Mesh);
+                Workspace.Update(ApproximatedNormalData.Normals.Mesh);
             }
+        }
+
+        private void SetEnableButtonStartApproximation()
+        {
+            btnApproximateNormals.Enabled = rbUseFaces.Checked ^ rbUsePositions.Checked;
+        }
+
+        private void RbUseFaces_CheckedChanged(object sender, EventArgs e)
+        {
+            SetEnableButtonStartApproximation();
+        }
+
+        private void RbUsePositions_CheckedChanged(object sender, EventArgs e)
+        {
+            SetEnableButtonStartApproximation();
         }
     }
 }

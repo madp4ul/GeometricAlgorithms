@@ -107,14 +107,20 @@
             this.kdTreeConfigurationControl.Size = new System.Drawing.Size(242, 63);
             this.kdTreeConfigurationControl.TabIndex = 1;
             // 
-            // KdTreeQueries
+            // KdTreeQueriesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(274, 228);
             this.Controls.Add(this.kdTreeConfigurationControl);
             this.Controls.Add(this.tabControl);
-            this.Name = "KdTreeQueries";
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "KdTreeQueriesForm";
+            this.Opacity = 0.97D;
+            this.ShowIcon = false;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Query Kd-Tree";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.KdTreeSettings_FormClosed);
             this.Load += new System.EventHandler(this.KdTreeOptions_Load);

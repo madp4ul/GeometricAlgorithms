@@ -23,7 +23,7 @@ namespace GeometricAlgorithms.Domain
         /// </summary>
         public ReadOnlyCollection<Triangle> Faces { get; private set; }
 
-        public Mesh(Vector3[] positions, Triangle[] faces, Vector3[] normals = null)
+        public Mesh(Vector3[] positions, Triangle[] faces = null, Vector3[] normals = null)
         {
             Positions = Array.AsReadOnly(positions) ?? throw new ArgumentNullException(nameof(positions));
             Faces = faces != null ? Array.AsReadOnly(faces) : null;
@@ -31,6 +31,9 @@ namespace GeometricAlgorithms.Domain
 
             VertexCount = positions.Length;
         }
+
+        public bool HasFaces => Faces != null;
+        public bool HasNormals => UnitNormals != null;
 
         public Mesh Copy(
             ICollection<Vector3> replacePositions = null,
@@ -51,7 +54,7 @@ namespace GeometricAlgorithms.Domain
 
         public static Mesh CreateEmpty()
         {
-            return new Mesh(new Vector3[0], new Triangle[0]);
+            return new Mesh(new Vector3[0]);
         }
     }
 }
