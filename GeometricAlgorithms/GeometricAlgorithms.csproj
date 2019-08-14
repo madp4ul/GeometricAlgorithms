@@ -78,6 +78,8 @@
       <Name>GeometricAlgorithms.Domain</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="NormalOrientation\Documentation\Minimaler Abstand zweier Geraden bei selbem Parameterwert.docx" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
