@@ -749,6 +749,54 @@ namespace GeometricAlgorithms.Domain
         {
             return Math.Max(X, Math.Max(Y, Z));
         }
+
+        /// <summary>
+        /// Returns if the vector is lenearly dependant of the other vector.
+        /// Or if it can be transformed to the other vector by multiplying it
+        /// with a scalar
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public float? IsLinearDependantOf(Vector3 other)
+        {
+            float? defaultElem = default(float?);
+            float? scalarX = X == 0 ? defaultElem : other.X / X;
+            float? scalarY = Y == 0 ? defaultElem : other.Y / Y;
+            float? scalarZ = Z == 0 ? defaultElem : other.Z / Z;
+
+            float? scalar = defaultElem;
+
+            if (scalarX.HasValue)
+            {
+                scalar = scalarX;
+            }
+
+            if (scalar.HasValue)
+            {
+                if (scalarY.HasValue && scalarY.Value != scalar.Value)
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                scalar = scalarY;
+            }
+
+            if (scalar.HasValue)
+            {
+                if (scalarZ.HasValue && scalarZ.Value != scalar.Value)
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                scalar = scalarZ;
+            }
+
+            return scalar;
+        }
     }
 }
 

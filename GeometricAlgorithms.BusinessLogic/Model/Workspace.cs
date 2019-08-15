@@ -5,6 +5,7 @@ using GeometricAlgorithms.BusinessLogic.Model.NormalModels;
 using GeometricAlgorithms.Domain;
 using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.Domain.Tasks;
+using GeometricAlgorithms.NormalOrientation;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -23,7 +24,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model
         public readonly NormalApproximationModel ApproximatedNormals;
         public readonly FacesModel Faces;
         public readonly FaceApproximationModel ApproximatedFaces;
-               
+
         public event Action Updated;
 
         public Workspace(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
@@ -47,29 +48,16 @@ namespace GeometricAlgorithms.BusinessLogic.Model
 
         private void SetUpdateDependencies()
         {
-            //TODO make all depend directly on workspace
-            Positions.Updated += () =>
-            {
-                var mesh = Positions.Mesh;
-
-                Normals.Update(mesh);
-                ApproximatedNormals.Update(mesh);
-                Faces.Update(mesh);
-                KdTree.Update(mesh);
-            };
-
             KdTree.Updated += () =>
             {
                 var kdTree = KdTree.KdTree;
 
                 ApproximatedFaces.Update(kdTree);
             };
-
         }
 
         public void Update(Mesh mesh)
         {
-            //TODO use this
             Positions.Update(mesh);
             Normals.Update(mesh);
             ApproximatedNormals.Update(mesh);

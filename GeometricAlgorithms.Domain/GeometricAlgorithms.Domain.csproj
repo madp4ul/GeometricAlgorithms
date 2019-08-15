@@ -53,6 +53,7 @@
     <Compile Include="Drawables\IDrawableMesh.cs" />
     <Compile Include="Drawables\ToggleableDrawable.cs" />
     <Compile Include="Drawables\Transformation.cs" />
+    <Compile Include="Line3.cs" />
     <Compile Include="Tasks\OperationProgressUpdater.cs" />
     <Compile Include="Triangle.cs" />
     <Compile Include="IVertex.cs" />

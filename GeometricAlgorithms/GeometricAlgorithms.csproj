@@ -70,6 +70,7 @@
     <Compile Include="NormalApproximation\FromFaces\FaceNormalWeightByArea.cs" />
     <Compile Include="NormalApproximation\FromFaces\FaceNormalWeightSum.cs" />
     <Compile Include="NormalApproximation\NormalApproximatorFromFaces.cs" />
+    <Compile Include="NormalOrientation\NormalOrientationFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

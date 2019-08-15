@@ -24,7 +24,9 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
 
             using (var openFileDialog = new OpenFileDialog
             {
-                Filter = "Off-Dateien|*.off"
+                //InitialDirectory = @"C:\",
+                Filter = "Off-Dateien|*.off",
+                RestoreDirectory = true,
             })
             {
                 //TODO try to find bug by checking permission
@@ -36,7 +38,7 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
                     var reader = new ModelReader();
                     var mesh = reader.ReadPoints(openFileDialog.FileName);
 
-                    ViewerModel.Workspace.Positions.Update(mesh);
+                    ViewerModel.Workspace.Update(mesh);
                 }
             }
         }
