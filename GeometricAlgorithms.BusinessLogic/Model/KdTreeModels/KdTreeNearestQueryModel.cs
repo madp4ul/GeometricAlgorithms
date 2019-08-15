@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
 {
-    public class KdTreeNearestQueryModel : IHasDrawables, IUpdatable<MeshQuerying.KdTree>
+    public class KdTreeNearestQueryModel : IHasDrawables, IUpdatable<KdTree>
     {
         private readonly IFuncExecutor FuncExecutor;
         private readonly CameraChangedEventDrawable CameraChangedEvent;
 
-        private MeshQuerying.KdTree KdTree;
+        private KdTree KdTree;
 
         public Vector3 QueryCenter { get; set; }
         public int PointCount { get; private set; }

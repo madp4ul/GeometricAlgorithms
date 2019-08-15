@@ -58,11 +58,11 @@ namespace GeometricAlgorithms.BusinessLogic.Model
 
         public void Update(Mesh mesh)
         {
-            Positions.Update(mesh);
-            Normals.Update(mesh);
-            ApproximatedNormals.Update(mesh);
-            Faces.Update(mesh);
-            KdTree.Update(mesh);
+            Positions.Update(mesh);//pos
+            Normals.Update(mesh);//norm
+            ApproximatedNormals.Update(mesh);//pos/face
+            Faces.Update(mesh);//face
+            KdTree.Update(mesh);//pos
 
             Updated?.Invoke();
         }

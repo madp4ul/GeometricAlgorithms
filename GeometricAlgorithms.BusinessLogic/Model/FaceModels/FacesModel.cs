@@ -14,7 +14,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
 
         public Mesh Mesh { get; private set; }
 
-        public bool HasFaces { get; private set; }
+        public bool HasFaces => Mesh.HasFaces;
 
         private bool _DrawAsWireframe;
         public bool DrawAsWireframe
@@ -48,12 +48,11 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
         public void Update(Mesh mesh)
         {
             Mesh = mesh ?? throw new ArgumentNullException(nameof(mesh));
-            HasFaces = MeshHasFaces(mesh);
 
             IDrawable newDrawable;
-            if (HasFaces)
+            if (Mesh.HasFaces)
             {
-                var drawableMesh = DrawableFactoryProvider.DrawableFactory.CreateMesh(Mesh.Positions, SelectFaces(Mesh));
+                var drawableMesh = DrawableFactoryProvider.DrawableFactory.CreateMesh(Mesh.Positions, mesh.Faces);
                 drawableMesh.DrawWireframe = DrawAsWireframe;
                 newDrawable = drawableMesh;
             }
@@ -64,18 +63,6 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
             FacesDrawable.SwapDrawable(newDrawable);
 
             Updated?.Invoke();
-        }
-
-        protected virtual IEnumerable<Triangle> SelectFaces(Mesh mesh)
-        {
-            return mesh.Faces;
-        }
-
-        protected bool MeshHasFaces(Mesh mesh)
-        {
-            var faces = SelectFaces(mesh);
-
-            return faces != null && faces.Any();
         }
 
         public virtual IEnumerable<IDrawable> GetDrawables()

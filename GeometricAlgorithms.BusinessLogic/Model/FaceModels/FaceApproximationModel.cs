@@ -14,7 +14,7 @@ using GeometricAlgorithms.MeshQuerying;
 
 namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
 {
-    public class FaceApproximationModel : IHasDrawables, IUpdatable<MeshQuerying.KdTree>
+    public class FaceApproximationModel : IHasDrawables, IUpdatable<KdTree>
     {
         private const float RoomAroundModel = 0.02f;
 
@@ -80,7 +80,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
         {
             KdTree = kdTree;
             ImplicitSurface = new ScalarProductSurface(kdTree, UsedNearestPointCount);
-            CubeMarcher = CubeMarcher.AroundBox((BoundingBox)KdTree.MeshContainer, RoomAroundModel, ImplicitSurface, SamplesOnLongestSideSide);
+            CubeMarcher = CubeMarcher.AroundBox(KdTree.MeshContainer, RoomAroundModel, ImplicitSurface, SamplesOnLongestSideSide);
 
             InnerFunctionValuesDrawable.SwapDrawable(new EmptyDrawable());
             OuterFunctionValuesDrawable.SwapDrawable(new EmptyDrawable());
@@ -93,7 +93,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
         {
             if (KdTree == null)
             {
-                throw new InvalidOperationException("Reset with tree first");
+                throw new InvalidOperationException("update with tree first");
             }
 
             var currentCubeMarcher = CubeMarcher;

@@ -32,7 +32,7 @@ namespace GeometricAlgorithms.Domain
             VertexCount = positions.Length;
         }
 
-        public bool HasFaces => Faces != null;
+        public bool HasFaces => Faces != null && Faces.Count > 0;
         public bool HasNormals => UnitNormals != null;
 
         public Mesh Copy(
