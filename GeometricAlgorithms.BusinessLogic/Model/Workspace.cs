@@ -22,6 +22,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model
         public readonly KdTreeModel KdTree;
         public readonly NormalModel Normals;
         public readonly NormalApproximationModel ApproximatedNormals;
+        public readonly NormalOrientationModel NormalOrientation;
         public readonly FacesModel Faces;
         public readonly FaceApproximationModel ApproximatedFaces;
 
@@ -37,6 +38,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model
 
             Normals = new NormalModel(drawableFactoryProvider);
             ApproximatedNormals = new NormalApproximationModel(drawableFactoryProvider, funcExecutor);
+            NormalOrientation = new NormalOrientationModel(funcExecutor);
             Faces = new FacesModel(drawableFactoryProvider);
             KdTree = new KdTreeModels.KdTreeModel(drawableFactoryProvider, funcExecutor);
             ApproximatedFaces = new FaceApproximationModel(drawableFactoryProvider, funcExecutor);
@@ -53,6 +55,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model
                 var kdTree = KdTree.KdTree;
 
                 ApproximatedFaces.Update(kdTree);
+                NormalOrientation.Update(kdTree);
             };
         }
 

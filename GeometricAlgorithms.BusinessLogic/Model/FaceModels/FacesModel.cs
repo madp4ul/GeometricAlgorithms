@@ -14,7 +14,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
 
         public Mesh Mesh { get; private set; }
 
-        public bool HasFaces => Mesh.HasFaces;
+        public bool HasFaces => Mesh?.HasFaces ?? false;
 
         private bool _DrawAsWireframe;
         public bool DrawAsWireframe

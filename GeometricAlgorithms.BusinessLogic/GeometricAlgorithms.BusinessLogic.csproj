@@ -55,6 +55,7 @@
     <Compile Include="Model\KdTreeModels\QueryCenterPointModel.cs" />
     <Compile Include="Model\NormalModels\NormalApproximationModel.cs" />
     <Compile Include="Model\NormalModels\NormalModel.cs" />
+    <Compile Include="Model\NormalModels\NormalOrientationModel.cs" />
     <Compile Include="Model\PositionModel.cs" />
     <Compile Include="Model\Workspace.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

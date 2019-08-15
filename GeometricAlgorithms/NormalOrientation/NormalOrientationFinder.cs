@@ -1,4 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.Domain.Tasks;
 using GeometricAlgorithms.MeshQuerying;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace GeometricAlgorithms.NormalOrientation
             }
         }
 
-        public bool NormalsAreOrientedOutwards()
+        public bool NormalsAreOrientedOutwards(IProgressUpdater progressUpdater = null)
         {
             int sampleOffset = Mesh.VertexCount / SampleCount;
             if (sampleOffset < 1)
@@ -37,19 +38,22 @@ namespace GeometricAlgorithms.NormalOrientation
                 sampleOffset = 1;
             }
 
+            var progress = new OperationProgressUpdater(progressUpdater, SampleCount, "calculating normal orientation");
+
             //leave for now
             //float minimumPositionSum = 0;
             //float minimumPositionSumInverted = 0;
             int positiveMinuesNegativeValues = 0;
 
-            for (int i = 0; i < Mesh.VertexCount; i += sampleOffset)
-            {
-                var neighbours = KdTree.FindNearestVertices(Mesh.Positions[i], NearPointCount)
-                    .Where(neighbour => neighbour.Value.OriginalIndex != i);
 
-                foreach (var neighbour in neighbours)
+            for (int currentPointIndex = 0; currentPointIndex < Mesh.VertexCount; currentPointIndex += sampleOffset)
+            {
+                var comparePositions = KdTree.FindNearestVertices(Mesh.Positions[currentPointIndex], NearPointCount)
+                    .Where(neighbour => neighbour.Value.OriginalIndex != currentPointIndex);
+
+                foreach (var comparePosition in comparePositions)
                 {
-                    float value = GetMinimalDistancePositionOfNormals(i, neighbour.Value.OriginalIndex);
+                    float value = GetMinimalDistancePositionOfNormals(currentPointIndex, comparePosition.Value.OriginalIndex);
 
                     //Simply counting the cases turned out best for now
                     //Other (commented out) criteria might be helpful later
@@ -62,12 +66,23 @@ namespace GeometricAlgorithms.NormalOrientation
                     //    minimumPositionSumInverted += 1 / value;
                     //}
                 }
+
+                progress.UpdateAddOperation();
             }
+
+            progress.IsCompleted();
 
             //if the minima are behind the positions in normal direction, 
             //they must point "away" from each other going forward.
             //Thus they must be pointing to the outside of a curve and be oriented outwards.
             return positiveMinuesNegativeValues <= 0;
+
+            //int negativeCriteria =
+            //    +(positiveMinuesNegativeValues < 0 ? 1 : 0)
+            //    + (minimumPositionSum < 0 ? 1 : 0)
+            //    + (minimumPositionSumInverted < 0 ? 1 : 0);
+
+            //return negativeCriteria > 1;
         }
 
         /// <summary>
@@ -77,7 +92,7 @@ namespace GeometricAlgorithms.NormalOrientation
         /// <param name="indexOfFirst"></param>
         /// <param name="indexOfSecond"></param>
         /// <returns></returns>
-        public float GetMinimalDistancePositionOfNormals(int indexOfFirst, int indexOfSecond)
+        private float GetMinimalDistancePositionOfNormals(int indexOfFirst, int indexOfSecond)
         {
             //first is g in docs, second is h
 

@@ -30,6 +30,7 @@ namespace GeometricAlgorithms.Viewer.ToolStrip
             new ViewerMenuConfigurator(Model).Configure(MenuStrip);
             new KdTreeMenuConfigurator(Model, MainWindow).Configure(MenuStrip);
             new ApproximationConfigurator(Model, MainWindow).Configure(MenuStrip);
+            new NormalOrientationConfigurator(Model).Configure(MenuStrip);
         }
     }
 }

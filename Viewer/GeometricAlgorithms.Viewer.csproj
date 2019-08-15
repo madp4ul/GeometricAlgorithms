@@ -129,8 +129,10 @@
     <Compile Include="ToolStrip\Configurators\KdTreeMenuConfigurator.cs" />
     <Compile Include="ToolStrip\Configurators\MenuConfigurator.cs" />
     <Compile Include="ToolStrip\Configurators\FileMenuConfigurator.cs" />
+    <Compile Include="ToolStrip\Configurators\NormalOrientationConfigurator.cs" />
     <Compile Include="ToolStrip\Configurators\ViewerMenuConfigurator.cs" />
     <Compile Include="ToolStrip\Tools\ApproximationTools.cs" />
+    <Compile Include="ToolStrip\Tools\NormalOrientationTools.cs" />
     <Compile Include="Utilities\BackgroundWorkerFuncExecutor.cs" />
     <Compile Include="Utilities\BackgroundWorkerFunctions\BackgroundWorkerExecution.cs" />
     <Compile Include="Utilities\BackgroundWorkerFunctions\FunctionProgress.cs" />
