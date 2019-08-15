@@ -34,7 +34,8 @@ namespace GeometricAlgorithms.Viewer.Forms.KdTreeControls
             if (!DesignMode
                 && QueryData.CanQuery
                 && QueryData.QueryHasChangedSinceLastCalculation
-                && !QueryData.IsCalculating)
+                && !QueryData.IsCalculating
+                && QueryData.QueryResult.Show)
             {
                 QueryData.CalculateQueryResult();
             }

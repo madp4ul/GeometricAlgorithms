@@ -30,13 +30,15 @@
         {
             this.buttonApplyPointsPerLeaf = new System.Windows.Forms.Button();
             this.numericPointsPerLeaf = new System.Windows.Forms.NumericUpDown();
+            this.cbMinimizeBranches = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numericPointsPerLeaf)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonApplyPointsPerLeaf
             // 
             this.buttonApplyPointsPerLeaf.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonApplyPointsPerLeaf.Location = new System.Drawing.Point(121, 15);
+            this.buttonApplyPointsPerLeaf.Location = new System.Drawing.Point(105, 70);
             this.buttonApplyPointsPerLeaf.Name = "buttonApplyPointsPerLeaf";
             this.buttonApplyPointsPerLeaf.Size = new System.Drawing.Size(105, 23);
             this.buttonApplyPointsPerLeaf.TabIndex = 0;
@@ -48,7 +50,7 @@
             // 
             this.numericPointsPerLeaf.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.numericPointsPerLeaf.Location = new System.Drawing.Point(3, 16);
+            this.numericPointsPerLeaf.Location = new System.Drawing.Point(105, 21);
             this.numericPointsPerLeaf.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -58,17 +60,41 @@
             this.numericPointsPerLeaf.Size = new System.Drawing.Size(112, 20);
             this.numericPointsPerLeaf.TabIndex = 1;
             // 
+            // cbMinimizeBranches
+            // 
+            this.cbMinimizeBranches.AutoSize = true;
+            this.cbMinimizeBranches.Checked = true;
+            this.cbMinimizeBranches.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbMinimizeBranches.Location = new System.Drawing.Point(105, 47);
+            this.cbMinimizeBranches.Name = "cbMinimizeBranches";
+            this.cbMinimizeBranches.Size = new System.Drawing.Size(113, 17);
+            this.cbMinimizeBranches.TabIndex = 2;
+            this.cbMinimizeBranches.Text = "Minimize branches";
+            this.cbMinimizeBranches.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(25, 23);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(74, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Points per leaf";
+            // 
             // KdTreeConfigurationControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.cbMinimizeBranches);
             this.Controls.Add(this.numericPointsPerLeaf);
             this.Controls.Add(this.buttonApplyPointsPerLeaf);
             this.Name = "KdTreeConfigurationControl";
-            this.Size = new System.Drawing.Size(229, 58);
+            this.Size = new System.Drawing.Size(229, 110);
             this.Load += new System.EventHandler(this.KdTreeConfigurationControl_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericPointsPerLeaf)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -76,5 +102,7 @@
 
         private System.Windows.Forms.Button buttonApplyPointsPerLeaf;
         private System.Windows.Forms.NumericUpDown numericPointsPerLeaf;
+        private System.Windows.Forms.CheckBox cbMinimizeBranches;
+        private System.Windows.Forms.Label label1;
     }
 }

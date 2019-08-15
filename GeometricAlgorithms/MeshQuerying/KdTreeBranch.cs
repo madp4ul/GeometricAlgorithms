@@ -41,8 +41,12 @@ namespace GeometricAlgorithms.MeshQuerying
             Range<PositionIndex> maxChildVertices = vertices.GetRange(halfIndex, vertices.Length - halfIndex);
 
             //Create bounding box halves along median
-            BoundingBox minChildBox = BoundingBox.CreateContainer(minChildVertices.Select(v => v.Position));// boundingBox.GetMinHalfAlongDimension(halvedDimension, halfSpace);
-            BoundingBox maxChildBox = BoundingBox.CreateContainer(maxChildVertices.Select(v => v.Position));// boundingBox.GetMaxHalfAlongDimension(halvedDimension, halfSpace);
+            BoundingBox minChildBox = configuration.MinimizeContainers
+                ? BoundingBox.CreateContainer(minChildVertices.Select(v => v.Position))
+                : boundingBox.GetMinHalfAlongDimension(halvedDimension, halfSpace);
+            BoundingBox maxChildBox = configuration.MinimizeContainers
+                ? BoundingBox.CreateContainer(maxChildVertices.Select(v => v.Position))
+                : boundingBox.GetMaxHalfAlongDimension(halvedDimension, halfSpace);
 
             //If more vertices than what fits into to leafs, create more branches
             if (vertices.Length > configuration.MaximumPointsPerLeaf * 2)

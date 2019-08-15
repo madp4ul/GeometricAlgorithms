@@ -8,18 +8,20 @@ namespace GeometricAlgorithms.MeshQuerying
 {
     public struct KdTreeConfiguration
     {
-        public int MaximumPointsPerLeaf { get; set; }
+        public readonly int MaximumPointsPerLeaf;
+        public readonly bool MinimizeContainers;
 
-
-        public static KdTreeConfiguration Default
+        public KdTreeConfiguration(int maximumPointsPerLeaf = 2, bool minimizeContainers = true)
         {
-            get
-            {
-                return new KdTreeConfiguration
-                {
-                    MaximumPointsPerLeaf = 2,
-                };
-            }
+            MaximumPointsPerLeaf = maximumPointsPerLeaf;
+            MinimizeContainers = minimizeContainers;
+        }
+
+        public static KdTreeConfiguration CreateChange(KdTreeConfiguration changedConfig, int? maximumPointsPerLeaf = null, bool? minimizeContainers = null)
+        {
+            return new KdTreeConfiguration(
+                maximumPointsPerLeaf: maximumPointsPerLeaf ?? changedConfig.MaximumPointsPerLeaf,
+                minimizeContainers: minimizeContainers ?? changedConfig.MinimizeContainers);
         }
     }
 }

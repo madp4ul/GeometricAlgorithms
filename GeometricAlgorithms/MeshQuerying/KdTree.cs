@@ -20,7 +20,7 @@ namespace GeometricAlgorithms.MeshQuerying
         {
             if (!configuration.HasValue)
             {
-                configuration = KdTreeConfiguration.Default;
+                configuration = new KdTreeConfiguration();
             }
 
             Mesh = mesh;

@@ -28,17 +28,19 @@ namespace GeometricAlgorithms.Viewer.Forms.KdTreeControls
             {
                 //Take default values from model
                 numericPointsPerLeaf.Value = KdTree.Configuration.MaximumPointsPerLeaf;
+                cbMinimizeBranches.Checked = KdTree.Configuration.MinimizeContainers;
             }
         }
 
         private void ButtonApplyPointsPerLeaf_Click(object sender, EventArgs e)
         {
-            var config = new KdTreeConfiguration
-            {
-                MaximumPointsPerLeaf = (int)numericPointsPerLeaf.Value
-            };
+            var config = KdTreeConfiguration.CreateChange(KdTree.Configuration,
+                maximumPointsPerLeaf: (int)numericPointsPerLeaf.Value,
+                minimizeContainers: cbMinimizeBranches.Checked);
 
             KdTree.Update(config);
         }
+
+
     }
 }

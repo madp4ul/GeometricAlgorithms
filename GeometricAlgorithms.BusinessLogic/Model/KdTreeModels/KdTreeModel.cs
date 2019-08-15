@@ -35,7 +35,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
             FuncExecutor = funcExecutor;
 
             KdTreeBoxDrawable = new ContainerDrawable(enable: false);
-            Configuration = KdTreeConfiguration.Default;
+            Configuration = new KdTreeConfiguration();
 
             RadiusQuery = new KdTreeRadiusQueryModel(drawableFactoryProvider, funcExecutor);
             NearestQuery = new KdTreeNearestQueryModel(drawableFactoryProvider, funcExecutor);
