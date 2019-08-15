@@ -9,11 +9,11 @@ using GeometricAlgorithms.Viewer.ToolStrip.Tools;
 
 namespace GeometricAlgorithms.Viewer.ToolStrip.Configurators
 {
-    class ApproximationConfigurator : MenuConfigurator
+    class ApproximationMenuConfigurator : MenuConfigurator
     {
         private readonly MainWindow MainWindow;
 
-        public ApproximationConfigurator(ModelData model, MainWindow mainWindow) : base(model)
+        public ApproximationMenuConfigurator(ModelData model, MainWindow mainWindow) : base(model)
         {
             MainWindow = mainWindow;
         }

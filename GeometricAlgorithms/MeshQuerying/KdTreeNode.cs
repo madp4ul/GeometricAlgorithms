@@ -26,9 +26,8 @@ namespace GeometricAlgorithms.MeshQuerying
 
         public abstract void FindNearestVertices(NearestVerticesQuery query);
 
-        public virtual void AddBoundingBoxes(List<BoundingBox> boundingBoxes)
-        {
-            boundingBoxes.Add(BoundingBox);
-        }
+        public abstract void AddBranches(List<KdTreeBranch> branches);
+
+        public abstract void AddLeaves(List<KdTreeLeaf> leaves);
     }
 }

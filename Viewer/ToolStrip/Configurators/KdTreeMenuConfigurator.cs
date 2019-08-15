@@ -24,7 +24,8 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Configurators
 
             var menu = GetMenu(menuStrip.Items, "kdTreeToolStripMenuItem");
 
-            MakeClickToggle(GetMenu(menu.DropDownItems, "showKdTreeToolStripMenuItem"), treeMenuTools.SetKdTreeVisibility);
+            MakeClickToggle(GetMenu(menu.DropDownItems, "showKdTreeBranchesToolStripMenuItem"), treeMenuTools.SetShowKdTreeBranches);
+            MakeClickToggle(GetMenu(menu.DropDownItems, "showKdTreeLeavesToolStripMenuItem"), treeMenuTools.SetShowKdTreeLeaves);
 
             MakeClickAction(
                 GetMenu(menu.DropDownItems, "openKdTreeSettingStripMenuItem"),

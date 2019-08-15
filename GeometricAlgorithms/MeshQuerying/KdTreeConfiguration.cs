@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.MeshQuerying
 {
-    public struct KdTreeConfiguration
+    public class KdTreeConfiguration
     {
         public readonly int MaximumPointsPerLeaf;
         public readonly bool MinimizeContainers;

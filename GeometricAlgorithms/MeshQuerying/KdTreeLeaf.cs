@@ -59,5 +59,15 @@ namespace GeometricAlgorithms.MeshQuerying
 
             query.ProgressUpdater.UpdateAddOperation();
         }
+
+        public override void AddLeaves(List<KdTreeLeaf> leaves)
+        {
+            leaves.Add(this);
+        }
+
+        public override void AddBranches(List<KdTreeBranch> branches)
+        {
+
+        }
     }
 }

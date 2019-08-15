@@ -20,11 +20,13 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
         public KdTree KdTree { get; private set; }
         public KdTreeConfiguration Configuration { get; private set; }
 
-        private readonly ContainerDrawable KdTreeBoxDrawable;
+        private readonly ContainerDrawable KdTreeBranchesDrawable;
+        private readonly ContainerDrawable KdTreeLeavesDrawable;
 
         public event Action Updated;
 
-        public bool DrawKdTree { get => KdTreeBoxDrawable.EnableDraw; set => KdTreeBoxDrawable.EnableDraw = value; }
+        public bool DrawKdTreeBranches { get => KdTreeBranchesDrawable.EnableDraw; set => KdTreeBranchesDrawable.EnableDraw = value; }
+        public bool DrawKdTreeLeaves { get => KdTreeLeavesDrawable.EnableDraw; set => KdTreeLeavesDrawable.EnableDraw = value; }
 
         public readonly KdTreeRadiusQueryModel RadiusQuery;
         public readonly KdTreeNearestQueryModel NearestQuery;
@@ -34,7 +36,8 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
             DrawableFactoryProvider = drawableFactoryProvider;
             FuncExecutor = funcExecutor;
 
-            KdTreeBoxDrawable = new ContainerDrawable(enable: false);
+            KdTreeBranchesDrawable = new ContainerDrawable(enable: false);
+            KdTreeLeavesDrawable = new ContainerDrawable(enable: false);
             Configuration = new KdTreeConfiguration();
 
             RadiusQuery = new KdTreeRadiusQueryModel(drawableFactoryProvider, funcExecutor);
@@ -59,13 +62,8 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
             {
                 KdTree = kdTree;
 
-                var boxes = KdTree.GetBoundingBoxes().ToArray();
-
-                IDrawable newDrawable = boxes.Length == 0
-                    ? new EmptyDrawable()
-                    : CreateKdTreeDrawable(boxes);
-
-                KdTreeBoxDrawable.SwapDrawable(newDrawable);
+                CreateLeavesDrawable(kdTree);
+                CreateBranchesDrawable(kdTree);
 
                 RadiusQuery.Update(kdTree);
                 NearestQuery.Update(kdTree);
@@ -74,8 +72,27 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
             });
         }
 
+        private void CreateLeavesDrawable(KdTree kdTree)
+        {
+            var boxes = kdTree.GetLeafBoudingBoxes().ToArray();
+
+            KdTreeLeavesDrawable.SwapDrawable(CreateKdTreeDrawable(boxes));
+        }
+
+        private void CreateBranchesDrawable(KdTree kdTree)
+        {
+            var boxes = kdTree.GetBranchBoudingBoxes().ToArray();
+
+            KdTreeBranchesDrawable.SwapDrawable(CreateKdTreeDrawable(boxes));
+        }
+
         private IDrawable CreateKdTreeDrawable(BoundingBox[] boxes)
         {
+            if (boxes.Length == 0)
+            {
+                return new EmptyDrawable();
+            }
+
             float maxSideLength = boxes[0].Diagonal.MaximumComponent();
 
             //have a minimum lightness and let the rest be dictated by box volume relative to the root box
@@ -86,7 +103,8 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
 
         public IEnumerable<IDrawable> GetDrawables()
         {
-            yield return KdTreeBoxDrawable;
+            yield return KdTreeBranchesDrawable;
+            yield return KdTreeLeavesDrawable;
 
             foreach (var item in RadiusQuery.GetDrawables()
                 .Concat(NearestQuery.GetDrawables()))

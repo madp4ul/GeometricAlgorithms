@@ -9,9 +9,9 @@ using GeometricAlgorithms.Viewer.ToolStrip.Tools;
 
 namespace GeometricAlgorithms.Viewer.ToolStrip.Configurators
 {
-    class NormalOrientationConfigurator : MenuConfigurator
+    class NormalOrientationMenuConfigurator : MenuConfigurator
     {
-        public NormalOrientationConfigurator(ModelData model) : base(model)
+        public NormalOrientationMenuConfigurator(ModelData model) : base(model)
         {
         }
 

@@ -125,11 +125,11 @@
     <Compile Include="MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="ToolStrip\Configurators\ApproximationConfigurator.cs" />
+    <Compile Include="ToolStrip\Configurators\ApproximationMenuConfigurator.cs" />
     <Compile Include="ToolStrip\Configurators\KdTreeMenuConfigurator.cs" />
     <Compile Include="ToolStrip\Configurators\MenuConfigurator.cs" />
     <Compile Include="ToolStrip\Configurators\FileMenuConfigurator.cs" />
-    <Compile Include="ToolStrip\Configurators\NormalOrientationConfigurator.cs" />
+    <Compile Include="ToolStrip\Configurators\NormalOrientationMenuConfigurator.cs" />
     <Compile Include="ToolStrip\Configurators\ViewerMenuConfigurator.cs" />
     <Compile Include="ToolStrip\Tools\ApproximationTools.cs" />
     <Compile Include="ToolStrip\Tools\NormalOrientationTools.cs" />

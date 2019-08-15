@@ -41,18 +41,19 @@
             this.showFaceApproximationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showFaceApproximationAsWireframeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.kdTreeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showKdTreeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showKdTreeBranchesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openKdTreeSettingStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.approximationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.normalApproximationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.approximateFacesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.normalOrientationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.automaticNormalOrientationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mirrorNormalsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.backgroundWorkerProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.backgroundWorkerStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.viewer = new GeometricAlgorithms.Viewer.GeometricAlgorithmViewer();
-            this.normalOrientationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.automaticNormalOrientationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mirrorNormalsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showKdTreeLeavesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -167,22 +168,23 @@
             // kdTreeToolStripMenuItem
             // 
             this.kdTreeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.showKdTreeToolStripMenuItem,
+            this.showKdTreeBranchesToolStripMenuItem,
+            this.showKdTreeLeavesToolStripMenuItem,
             this.openKdTreeSettingStripMenuItem});
             this.kdTreeToolStripMenuItem.Name = "kdTreeToolStripMenuItem";
             this.kdTreeToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
             this.kdTreeToolStripMenuItem.Text = "Kd-Tree";
             // 
-            // showKdTreeToolStripMenuItem
+            // showKdTreeBranchesToolStripMenuItem
             // 
-            this.showKdTreeToolStripMenuItem.Name = "showKdTreeToolStripMenuItem";
-            this.showKdTreeToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
-            this.showKdTreeToolStripMenuItem.Text = "Show Kd-Tree";
+            this.showKdTreeBranchesToolStripMenuItem.Name = "showKdTreeBranchesToolStripMenuItem";
+            this.showKdTreeBranchesToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.showKdTreeBranchesToolStripMenuItem.Text = "Show Kd-Tree branches";
             // 
             // openKdTreeSettingStripMenuItem
             // 
             this.openKdTreeSettingStripMenuItem.Name = "openKdTreeSettingStripMenuItem";
-            this.openKdTreeSettingStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.openKdTreeSettingStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.openKdTreeSettingStripMenuItem.Text = "Query";
             // 
             // approximationToolStripMenuItem
@@ -197,14 +199,37 @@
             // normalApproximationToolStripMenuItem
             // 
             this.normalApproximationToolStripMenuItem.Name = "normalApproximationToolStripMenuItem";
-            this.normalApproximationToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.normalApproximationToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.normalApproximationToolStripMenuItem.Text = "Normals";
             // 
             // approximateFacesToolStripMenuItem
             // 
             this.approximateFacesToolStripMenuItem.Name = "approximateFacesToolStripMenuItem";
-            this.approximateFacesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.approximateFacesToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.approximateFacesToolStripMenuItem.Text = "Faces";
+            // 
+            // normalOrientationToolStripMenuItem
+            // 
+            this.normalOrientationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.automaticNormalOrientationToolStripMenuItem,
+            this.mirrorNormalsToolStripMenuItem});
+            this.normalOrientationToolStripMenuItem.Name = "normalOrientationToolStripMenuItem";
+            this.normalOrientationToolStripMenuItem.Size = new System.Drawing.Size(122, 20);
+            this.normalOrientationToolStripMenuItem.Text = "Normal Orientation";
+            // 
+            // automaticNormalOrientationToolStripMenuItem
+            // 
+            this.automaticNormalOrientationToolStripMenuItem.Checked = true;
+            this.automaticNormalOrientationToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.automaticNormalOrientationToolStripMenuItem.Name = "automaticNormalOrientationToolStripMenuItem";
+            this.automaticNormalOrientationToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+            this.automaticNormalOrientationToolStripMenuItem.Text = "Automatic orientation";
+            // 
+            // mirrorNormalsToolStripMenuItem
+            // 
+            this.mirrorNormalsToolStripMenuItem.Name = "mirrorNormalsToolStripMenuItem";
+            this.mirrorNormalsToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+            this.mirrorNormalsToolStripMenuItem.Text = "Mirror normals";
             // 
             // statusStrip1
             // 
@@ -239,28 +264,11 @@
             this.viewer.Size = new System.Drawing.Size(1017, 496);
             this.viewer.TabIndex = 0;
             // 
-            // normalOrientationToolStripMenuItem
+            // showKdTreeLeavesToolStripMenuItem
             // 
-            this.normalOrientationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.automaticNormalOrientationToolStripMenuItem,
-            this.mirrorNormalsToolStripMenuItem});
-            this.normalOrientationToolStripMenuItem.Name = "normalOrientationToolStripMenuItem";
-            this.normalOrientationToolStripMenuItem.Size = new System.Drawing.Size(122, 20);
-            this.normalOrientationToolStripMenuItem.Text = "Normal Orientation";
-            // 
-            // automaticNormalOrientationToolStripMenuItem
-            // 
-            this.automaticNormalOrientationToolStripMenuItem.Checked = true;
-            this.automaticNormalOrientationToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.automaticNormalOrientationToolStripMenuItem.Name = "automaticNormalOrientationToolStripMenuItem";
-            this.automaticNormalOrientationToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
-            this.automaticNormalOrientationToolStripMenuItem.Text = "Automatic orientation";
-            // 
-            // mirrorNormalsToolStripMenuItem
-            // 
-            this.mirrorNormalsToolStripMenuItem.Name = "mirrorNormalsToolStripMenuItem";
-            this.mirrorNormalsToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
-            this.mirrorNormalsToolStripMenuItem.Text = "Mirror normals";
+            this.showKdTreeLeavesToolStripMenuItem.Name = "showKdTreeLeavesToolStripMenuItem";
+            this.showKdTreeLeavesToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.showKdTreeLeavesToolStripMenuItem.Text = "Show Kd-Tree leaves";
             // 
             // MainWindow
             // 
@@ -294,7 +302,7 @@
         private System.Windows.Forms.ToolStripMenuItem saveFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showPointCloudToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem kdTreeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showKdTreeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showKdTreeBranchesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openKdTreeSettingStripMenuItem;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripProgressBar backgroundWorkerProgressBar;
@@ -311,6 +319,7 @@
         private System.Windows.Forms.ToolStripMenuItem normalOrientationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem automaticNormalOrientationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem mirrorNormalsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showKdTreeLeavesToolStripMenuItem;
     }
 }
 

@@ -143,11 +143,17 @@ namespace GeometricAlgorithms.MeshQuerying
             }
         }
 
-        public override void AddBoundingBoxes(List<BoundingBox> boundingBoxes)
+        public override void AddBranches(List<KdTreeBranch> branches)
         {
-            base.AddBoundingBoxes(boundingBoxes);
-            MinimumChild.AddBoundingBoxes(boundingBoxes);
-            MaximumChild.AddBoundingBoxes(boundingBoxes);
+            branches.Add(this);
+            MinimumChild.AddBranches(branches);
+            MaximumChild.AddBranches(branches);
+        }
+
+        public override void AddLeaves(List<KdTreeLeaf> leaves)
+        {
+            MinimumChild.AddLeaves(leaves);
+            MaximumChild.AddLeaves(leaves);
         }
 
         private class VertexComparer : IComparer<PositionIndex>

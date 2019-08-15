@@ -16,9 +16,9 @@ namespace GeometricAlgorithms.MeshQuerying
 
         public Mesh Mesh { get; private set; }
 
-        public KdTree(Mesh mesh, KdTreeConfiguration? configuration = null, IProgressUpdater progressUpdater = null)
+        public KdTree(Mesh mesh, KdTreeConfiguration configuration = null, IProgressUpdater progressUpdater = null)
         {
-            if (!configuration.HasValue)
+            if (configuration == null)
             {
                 configuration = new KdTreeConfiguration();
             }
@@ -36,12 +36,12 @@ namespace GeometricAlgorithms.MeshQuerying
 
             var updater = new OperationProgressUpdater(
                 progressUpdater,
-                (2 * mesh.VertexCount) / configuration.Value.MaximumPointsPerLeaf,
+                (2 * mesh.VertexCount) / configuration.MaximumPointsPerLeaf,
                 "Building Kd-Tree");
 
-            if (mesh.VertexCount > configuration.Value.MaximumPointsPerLeaf)
+            if (mesh.VertexCount > configuration.MaximumPointsPerLeaf)
             {
-                Root = new KdTreeBranch(MeshContainer, range, configuration.Value, updater);
+                Root = new KdTreeBranch(MeshContainer, range, configuration, updater);
             }
             else
             {
@@ -107,11 +107,18 @@ namespace GeometricAlgorithms.MeshQuerying
             return resultSet;
         }
 
-        public List<BoundingBox> GetBoundingBoxes()
+        public List<BoundingBox> GetLeafBoudingBoxes()
         {
-            var boxes = new List<BoundingBox>();
-            Root.AddBoundingBoxes(boxes);
-            return boxes;
+            var leaves = new List<KdTreeLeaf>();
+            Root.AddLeaves(leaves);
+            return leaves.Select(leaf => leaf.BoundingBox).ToList();
+        }
+
+        public List<BoundingBox> GetBranchBoudingBoxes()
+        {
+            var branches = new List<KdTreeBranch>();
+            Root.AddBranches(branches);
+            return branches.Select(leaf => leaf.BoundingBox).ToList();
         }
     }
 }

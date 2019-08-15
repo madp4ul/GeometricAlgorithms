@@ -45,6 +45,11 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 
         public IDrawable CreateBoundingBoxRepresentation(BoundingBox[] boxes, BoundingBoxColorGenerator colorGenerator = null)
         {
+            if (boxes.Length == 0)
+            {
+                return new EmptyDrawable();
+            }
+
             Func<BoundingBox, Microsoft.Xna.Framework.Vector3> xnaColorGenerator = null;
             if (colorGenerator != null)
             {
