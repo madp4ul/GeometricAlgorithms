@@ -71,6 +71,7 @@
     <Compile Include="NormalApproximation\FromFaces\FaceNormalWeightSum.cs" />
     <Compile Include="NormalApproximation\NormalApproximatorFromFaces.cs" />
     <Compile Include="NormalOrientation\NormalOrientationFinder.cs" />
+    <Compile Include="NormalOrientation\RandomEnumerable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

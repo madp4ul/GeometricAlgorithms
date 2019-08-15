@@ -11,18 +11,13 @@ namespace GeometricAlgorithms.NormalOrientation
 {
     public class NormalOrientationFinder
     {
-        public readonly int NearPointCount;
-        public readonly int SampleCount;
-
         public readonly KdTree KdTree;
         public Mesh Mesh => KdTree.Mesh;
 
 
-        public NormalOrientationFinder(KdTree kdTreeOfMeshWithNormals, int sampleCount = 1000, int nearPointCount = 5)
+        public NormalOrientationFinder(KdTree kdTreeOfMeshWithNormals)
         {
             KdTree = kdTreeOfMeshWithNormals ?? throw new ArgumentNullException(nameof(kdTreeOfMeshWithNormals));
-            NearPointCount = nearPointCount;
-            SampleCount = sampleCount;
 
             if (!KdTree.Mesh.HasNormals)
             {
@@ -32,57 +27,34 @@ namespace GeometricAlgorithms.NormalOrientation
 
         public bool NormalsAreOrientedOutwards(IProgressUpdater progressUpdater = null)
         {
-            int sampleOffset = Mesh.VertexCount / SampleCount;
-            if (sampleOffset < 1)
-            {
-                sampleOffset = 1;
-            }
+            var progress = new OperationProgressUpdater(progressUpdater, Mesh.VertexCount, "calculating normal orientation");
 
-            var progress = new OperationProgressUpdater(progressUpdater, SampleCount, "calculating normal orientation");
-
-            //leave for now
-            //float minimumPositionSum = 0;
-            //float minimumPositionSumInverted = 0;
             int positiveMinuesNegativeValues = 0;
 
+            var compareIndices = new RandomEnumerable(Mesh.VertexCount);
 
-            for (int currentPointIndex = 0; currentPointIndex < Mesh.VertexCount; currentPointIndex += sampleOffset)
+            for (int currentPointIndex = 0; currentPointIndex < Mesh.VertexCount; currentPointIndex++)
             {
-                var comparePositions = KdTree.FindNearestVertices(Mesh.Positions[currentPointIndex], NearPointCount)
-                    .Where(neighbour => neighbour.Value.OriginalIndex != currentPointIndex);
 
-                foreach (var comparePosition in comparePositions)
+                foreach (var compareIndex in compareIndices.Take(5))
                 {
-                    float value = GetMinimalDistancePositionOfNormals(currentPointIndex, comparePosition.Value.OriginalIndex);
+                    float value = GetMinimalDistancePositionOfNormals(currentPointIndex, compareIndex);
 
                     //Simply counting the cases turned out best for now
                     //Other (commented out) criteria might be helpful later
                     positiveMinuesNegativeValues += value > 0 ? 1 : (value < 0 ? -1 : 0);
-
-                    //leave for now
-                    //minimumPositionSum += value;
-                    //if (value != 0)
-                    //{
-                    //    minimumPositionSumInverted += 1 / value;
-                    //}
                 }
 
                 progress.UpdateAddOperation();
             }
 
             progress.IsCompleted();
+            Console.WriteLine(positiveMinuesNegativeValues);
 
             //if the minima are behind the positions in normal direction, 
             //they must point "away" from each other going forward.
             //Thus they must be pointing to the outside of a curve and be oriented outwards.
             return positiveMinuesNegativeValues <= 0;
-
-            //int negativeCriteria =
-            //    +(positiveMinuesNegativeValues < 0 ? 1 : 0)
-            //    + (minimumPositionSum < 0 ? 1 : 0)
-            //    + (minimumPositionSumInverted < 0 ? 1 : 0);
-
-            //return negativeCriteria > 1;
         }
 
         /// <summary>
