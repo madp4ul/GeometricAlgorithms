@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
 {
-    public class KdTreeNearestQueryModel : IHasDrawables, IUpdatable<KdTree>
+    public class KdTreeNearestQueryModel : IHasDrawables, IUpdatable<ATree>
     {
         private readonly IFuncExecutor FuncExecutor;
         private readonly CameraChangedEventDrawable CameraChangedEvent;
 
-        private KdTree KdTree;
+        private ATree Tree;
 
         public Vector3 QueryCenter { get; set; }
         public int PointCount { get; private set; }
@@ -28,7 +28,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
 
         public event Action Updated;
 
-        public bool CanQuery => KdTree != null;
+        public bool CanQuery => Tree != null;
 
         public KdTreeNearestQueryModel(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {
@@ -43,9 +43,9 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
             CameraChangedEvent.CameraChanged += OnCameraChanged;
         }
 
-        public void Update(MeshQuerying.KdTree kdTree)
+        public void Update(ATree tree)
         {
-            KdTree = kdTree;
+            Tree = tree;
 
             QueryCenterPoint.Update();
             QueryResult.Update(vertices: null);
@@ -75,7 +75,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
             IsCalculating = true;
             QueryHasChangedSinceLastCalculation = false;
 
-            var radiusQuery = FuncExecutor.Execute((progress) => KdTree.FindNearestVertices(QueryCenter, PointCount, progress));
+            var radiusQuery = FuncExecutor.Execute((progress) => Tree.FindNearestVertices(QueryCenter, PointCount, progress));
 
             radiusQuery.GetResult((vertexIndices) =>
             {

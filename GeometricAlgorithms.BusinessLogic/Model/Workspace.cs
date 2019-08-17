@@ -52,7 +52,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model
         {
             KdTree.Updated += () =>
             {
-                var kdTree = KdTree.KdTree;
+                var kdTree = KdTree.Tree;
 
                 ApproximatedFaces.Update(kdTree);
                 NormalOrientation.Update(kdTree);

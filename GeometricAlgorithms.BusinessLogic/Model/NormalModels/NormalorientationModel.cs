@@ -10,12 +10,12 @@ using GeometricAlgorithms.NormalOrientation;
 
 namespace GeometricAlgorithms.BusinessLogic.Model.NormalModels
 {
-    public class NormalOrientationModel : IUpdatable<KdTree>
+    public class NormalOrientationModel : IUpdatable<ATree>
     {
         private readonly IFuncExecutor FuncExecutor;
 
-        public KdTree KdTree { get; private set; }
-        public bool CanCalculateOrientation => KdTree != null && KdTree.Mesh.HasNormals;
+        public ATree Tree { get; private set; }
+        public bool CanCalculateOrientation => Tree != null && Tree.Mesh.HasNormals;
         public bool CanMirrorNormals => CanCalculateOrientation;
 
         private NormalOrientationFinder Finder;
@@ -41,23 +41,23 @@ namespace GeometricAlgorithms.BusinessLogic.Model.NormalModels
 
         public Mesh CreateMeshWithMirrorNormals()
         {
-            if (KdTree == null || !KdTree.Mesh.HasNormals)
+            if (Tree == null || !Tree.Mesh.HasNormals)
             {
                 throw new InvalidOperationException();
             }
 
-            var mirroredNormals = KdTree.Mesh.UnitNormals
+            var mirroredNormals = Tree.Mesh.UnitNormals
                 .Select(n => -n)
                 .ToList();
 
-            return KdTree.Mesh.Copy(replaceNormals: mirroredNormals);
+            return Tree.Mesh.Copy(replaceNormals: mirroredNormals);
         }
 
-        public void Update(KdTree kdTree)
+        public void Update(ATree tree)
         {
-            KdTree = kdTree;
+            Tree = tree;
 
-            Finder = CanCalculateOrientation ? new NormalOrientationFinder(kdTree) : null;
+            Finder = CanCalculateOrientation ? new NormalOrientationFinder(tree) : null;
 
             Updated?.Invoke();
         }

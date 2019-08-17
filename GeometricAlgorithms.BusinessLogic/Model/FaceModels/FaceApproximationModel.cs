@@ -14,7 +14,7 @@ using GeometricAlgorithms.MeshQuerying;
 
 namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
 {
-    public class FaceApproximationModel : IHasDrawables, IUpdatable<KdTree>
+    public class FaceApproximationModel : IHasDrawables, IUpdatable<ATree>
     {
         private const float RoomAroundModel = 0.02f;
 
@@ -23,7 +23,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
 
         public readonly FacesModel Faces;
 
-        public KdTree KdTree { get; private set; }
+        public ATree Tree { get; private set; }
 
         public int FunctionValueRadius { get; set; }
         public int UsedNearestPointCount
@@ -60,7 +60,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
             set => OuterFunctionValuesDrawable.EnableDraw = value;
         }
 
-        public bool CanApproximate => KdTree.Mesh.HasNormals;
+        public bool CanApproximate => Tree.Mesh.HasNormals;
 
         public FaceApproximationModel(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {
@@ -76,11 +76,11 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
             Faces = new FacesModel(drawableFactoryProvider);
         }
 
-        public void Update(KdTree kdTree)
+        public void Update(ATree tree)
         {
-            KdTree = kdTree;
-            ImplicitSurface = new ScalarProductSurface(kdTree, UsedNearestPointCount);
-            CubeMarcher = CubeMarcher.AroundBox(KdTree.MeshContainer, RoomAroundModel, ImplicitSurface, SamplesOnLongestSideSide);
+            Tree = tree;
+            ImplicitSurface = new ScalarProductSurface(tree, UsedNearestPointCount);
+            CubeMarcher = CubeMarcher.AroundBox(Tree.MeshContainer, RoomAroundModel, ImplicitSurface, SamplesOnLongestSideSide);
 
             InnerFunctionValuesDrawable.SwapDrawable(new EmptyDrawable());
             OuterFunctionValuesDrawable.SwapDrawable(new EmptyDrawable());
@@ -91,7 +91,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
 
         public void CalculateApproximation()
         {
-            if (KdTree == null)
+            if (Tree == null)
             {
                 throw new InvalidOperationException("update with tree first");
             }

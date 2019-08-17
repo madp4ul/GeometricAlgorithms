@@ -10,13 +10,17 @@ namespace GeometricAlgorithms.MeshQuerying
 {
     public class KdTree : ATree
     {
-        private readonly ATreeNode RootNode;
+        private readonly ATreeNode _Root;
+        protected override ATreeNode Root => _Root;
 
-        public readonly BoundingBox MeshContainer;
 
-        public Mesh Mesh { get; private set; }
+        private readonly Mesh _Mesh;
+        public override Mesh Mesh => _Mesh;
 
-        protected override ATreeNode Root => RootNode;
+
+        private readonly BoundingBox _MeshContainer;
+        public override BoundingBox MeshContainer => _MeshContainer;
+
 
         public KdTree(Mesh mesh, KdTreeConfiguration configuration = null, IProgressUpdater progressUpdater = null)
         {
@@ -25,7 +29,7 @@ namespace GeometricAlgorithms.MeshQuerying
                 configuration = new KdTreeConfiguration();
             }
 
-            Mesh = mesh;
+            _Mesh = mesh;
 
             //Needs position mapping to preserve original indices because 
             //they are necessary to find the other related data in the model
@@ -34,7 +38,7 @@ namespace GeometricAlgorithms.MeshQuerying
                 .ToArray();
 
             var range = Range<PositionIndex>.FromArray(positionMapping, 0, mesh.VertexCount);
-            MeshContainer = BoundingBox.CreateContainer(mesh.Positions);
+            _MeshContainer = BoundingBox.CreateContainer(mesh.Positions);
 
             var updater = new OperationProgressUpdater(
                 progressUpdater,
@@ -43,11 +47,11 @@ namespace GeometricAlgorithms.MeshQuerying
 
             if (mesh.VertexCount > configuration.MaximumPointsPerLeaf)
             {
-                RootNode = new KdTreeBranch(MeshContainer, range, configuration, updater);
+                _Root = new KdTreeBranch(MeshContainer, range, configuration, updater);
             }
             else
             {
-                RootNode = new TreeLeaf(MeshContainer, range, updater);
+                _Root = new TreeLeaf(MeshContainer, range, updater);
             }
 
             updater.IsCompleted();

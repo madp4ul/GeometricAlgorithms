@@ -10,19 +10,19 @@ namespace GeometricAlgorithms.ImplicitSurfaces
 {
     public class ScalarProductSurface : IImplicitSurface
     {
-        public readonly KdTree KdTree;
+        public readonly ATree Tree;
         public int UsedNearestPointCount;
 
-        public ScalarProductSurface(KdTree kdTree, int usedNearestPointCount)
+        public ScalarProductSurface(ATree tree, int usedNearestPointCount)
         {
-            KdTree = kdTree ?? throw new ArgumentNullException(nameof(kdTree));
+            Tree = tree ?? throw new ArgumentNullException(nameof(tree));
             UsedNearestPointCount = usedNearestPointCount;
         }
 
         public float GetApproximateSurfaceDistance(Vector3 position)
         {
             //All the neighbours are assumed to be on the surface
-            var nearestPositions = KdTree.FindNearestVertices(position, UsedNearestPointCount);
+            var nearestPositions = Tree.FindNearestVertices(position, UsedNearestPointCount);
 
             float furthestDistance = nearestPositions.Keys[nearestPositions.Count - 1];
 
@@ -35,7 +35,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces
 
                 //dot product of neighbour normal and vector from neighbour to position to 
                 //get a value that represents how much the position is infront or behind the surface         
-                float side = Vector3.Dot(KdTree.Mesh.UnitNormals[neighbour.Value.OriginalIndex], normalizedNeighbourToPosition);
+                float side = Vector3.Dot(Tree.Mesh.UnitNormals[neighbour.Value.OriginalIndex], normalizedNeighbourToPosition);
 
                 float weight = GetWeight(furthestDistance, neighbour.Key);
                 sumOfWeights += weight;

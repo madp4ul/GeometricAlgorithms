@@ -11,6 +11,8 @@ namespace GeometricAlgorithms.MeshQuerying
     public abstract class ATree
     {
         protected abstract ATreeNode Root { get; }
+        public abstract Mesh Mesh { get; }
+        public abstract BoundingBox MeshContainer { get; }
 
         public List<BoundingBox> GetLeafBoudingBoxes()
         {

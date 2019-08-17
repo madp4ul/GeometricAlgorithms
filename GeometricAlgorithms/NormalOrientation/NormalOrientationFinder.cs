@@ -11,15 +11,15 @@ namespace GeometricAlgorithms.NormalOrientation
 {
     public class NormalOrientationFinder
     {
-        public readonly KdTree KdTree;
-        public Mesh Mesh => KdTree.Mesh;
+        public readonly ATree Tree;
+        public Mesh Mesh => Tree.Mesh;
 
 
-        public NormalOrientationFinder(KdTree kdTreeOfMeshWithNormals)
+        public NormalOrientationFinder(ATree treeOfMeshWithNormals)
         {
-            KdTree = kdTreeOfMeshWithNormals ?? throw new ArgumentNullException(nameof(kdTreeOfMeshWithNormals));
+            Tree = treeOfMeshWithNormals ?? throw new ArgumentNullException(nameof(treeOfMeshWithNormals));
 
-            if (!KdTree.Mesh.HasNormals)
+            if (!Tree.Mesh.HasNormals)
             {
                 throw new ArgumentException("Mesh needs normals");
             }

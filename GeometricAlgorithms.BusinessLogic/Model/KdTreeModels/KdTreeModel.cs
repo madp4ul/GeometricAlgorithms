@@ -17,7 +17,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
         private readonly IDrawableFactoryProvider DrawableFactoryProvider;
         private readonly IFuncExecutor FuncExecutor;
 
-        public KdTree KdTree { get; private set; }
+        public ATree Tree { get; private set; }
         public KdTreeConfiguration Configuration { get; private set; }
 
         private readonly ContainerDrawable KdTreeBranchesDrawable;
@@ -48,7 +48,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
         {
             Configuration = configuration;
 
-            Update(KdTree.Mesh);
+            Update(Tree.Mesh);
         }
 
         public void Update(Mesh mesh)
@@ -58,30 +58,30 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
                 return new KdTree(mesh, Configuration, progress);
             });
 
-            buildKdTree.GetResult(kdTree =>
+            buildKdTree.GetResult(tree =>
             {
-                KdTree = kdTree;
+                Tree = tree;
 
-                CreateLeavesDrawable(kdTree);
-                CreateBranchesDrawable(kdTree);
+                CreateLeavesDrawable(tree);
+                CreateBranchesDrawable(tree);
 
-                RadiusQuery.Update(kdTree);
-                NearestQuery.Update(kdTree);
+                RadiusQuery.Update(tree);
+                NearestQuery.Update(tree);
 
                 Updated?.Invoke();
             });
         }
 
-        private void CreateLeavesDrawable(KdTree kdTree)
+        private void CreateLeavesDrawable(ATree tree)
         {
-            var boxes = kdTree.GetLeafBoudingBoxes().ToArray();
+            var boxes = tree.GetLeafBoudingBoxes().ToArray();
 
             KdTreeLeavesDrawable.SwapDrawable(CreateKdTreeDrawable(boxes));
         }
 
-        private void CreateBranchesDrawable(KdTree kdTree)
+        private void CreateBranchesDrawable(ATree tree)
         {
-            var boxes = kdTree.GetBranchBoudingBoxes().ToArray();
+            var boxes = tree.GetBranchBoudingBoxes().ToArray();
 
             KdTreeBranchesDrawable.SwapDrawable(CreateKdTreeDrawable(boxes));
         }
