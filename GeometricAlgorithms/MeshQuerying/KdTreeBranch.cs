@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.MeshQuerying
 {
-    class KdTreeBranch : KdTreeNode
+    class KdTreeBranch : ATreeBranch
     {
-        public KdTreeNode MinimumChild { get; set; }
-        public KdTreeNode MaximumChild { get; set; }
+        public ATreeNode MinimumChild { get; set; }
+        public ATreeNode MaximumChild { get; set; }
         public override int NodeCount { get; protected set; }
         public override int LeafCount { get; protected set; }
 
@@ -58,12 +58,12 @@ namespace GeometricAlgorithms.MeshQuerying
             }
             else //create leafs
             {
-                MinimumChild = new KdTreeLeaf(
+                MinimumChild = new TreeLeaf(
                     minChildBox,
                     minChildVertices,
                     progressUpdater);
 
-                MaximumChild = new KdTreeLeaf(
+                MaximumChild = new TreeLeaf(
                     maxChildBox,
                     maxChildVertices,
                     progressUpdater);
@@ -77,55 +77,6 @@ namespace GeometricAlgorithms.MeshQuerying
         protected virtual Dimension GetNextDimension(Dimension dimension)
         {
             return (Dimension)((int)(dimension + 1) % (int)Dimension.Count);
-        }
-
-        public override void FindInRadius(InRadiusQuery query)
-        {
-
-            if (MinimumChild.BoundingBox.GetMinimumDistance(query.SeachCenter) < query.SearchRadius)
-            {
-                MinimumChild.FindInRadius(query);
-            }
-            else
-            {
-                //If branch can be skipped, add progress for whole branch
-                query.ProgressUpdater.UpdateAddOperation(MinimumChild.LeafCount);
-            }
-
-            if (MaximumChild.BoundingBox.GetMinimumDistance(query.SeachCenter) < query.SearchRadius)
-            {
-                MaximumChild.FindInRadius(query);
-            }
-            else
-            {
-                query.ProgressUpdater.UpdateAddOperation(MaximumChild.LeafCount);
-            }
-        }
-
-        public override void FindNearestVertices(NearestVerticesQuery query)
-        {
-            //Enter child if still more more required to fill result or if distance is smaller than maxSearchRadius
-            //which means that child potentially contains better points
-            if (query.ResultSet.Count < query.PointAmount
-                || MinimumChild.BoundingBox.GetMinimumDistance(query.SearchPosition) < query.MaxSearchRadius)
-            {
-                MinimumChild.FindNearestVertices(query);
-            }
-            else
-            {
-                //If branch can be skipped, add progress for whole branch
-                query.ProgressUpdater.UpdateAddOperation(MinimumChild.LeafCount);
-            }
-
-            if (query.ResultSet.Count < query.PointAmount
-                || MaximumChild.BoundingBox.GetMinimumDistance(query.SearchPosition) < query.MaxSearchRadius)
-            {
-                MaximumChild.FindNearestVertices(query);
-            }
-            else
-            {
-                query.ProgressUpdater.UpdateAddOperation(MaximumChild.LeafCount);
-            }
         }
 
         private static Func<Vector3, float> GetDimensionSelector(Dimension dimension)
@@ -143,17 +94,10 @@ namespace GeometricAlgorithms.MeshQuerying
             }
         }
 
-        public override void AddBranches(List<KdTreeBranch> branches)
+        public override IEnumerable<ATreeNode> GetChildren()
         {
-            branches.Add(this);
-            MinimumChild.AddBranches(branches);
-            MaximumChild.AddBranches(branches);
-        }
-
-        public override void AddLeaves(List<KdTreeLeaf> leaves)
-        {
-            MinimumChild.AddLeaves(leaves);
-            MaximumChild.AddLeaves(leaves);
+            yield return MinimumChild;
+            yield return MaximumChild;
         }
 
         private class VertexComparer : IComparer<PositionIndex>

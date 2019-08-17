@@ -1,28 +1,39 @@
-﻿using GeometricAlgorithms.Domain;
-using GeometricAlgorithms.Domain.Tasks;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.Domain.Tasks;
 
 namespace GeometricAlgorithms.MeshQuerying
 {
-    class KdTreeLeaf : KdTreeNode
+    internal class TreeLeaf : ATreeNode
     {
         public Range<PositionIndex> Vertices { get; set; }
-        public override int NodeCount { get => 1; protected set { } }
 
-        public override int LeafCount { get => 1; protected set { } }
+        public sealed override int NodeCount { get => 1; protected set { } }
 
-        public KdTreeLeaf(BoundingBox boundingBox, Range<PositionIndex> vertices, OperationProgressUpdater progressUpdater)
+        public sealed override int LeafCount { get => 1; protected set { } }
+
+        public TreeLeaf(BoundingBox boundingBox, Range<PositionIndex> vertices, OperationProgressUpdater progressUpdater)
                : base(boundingBox, vertices.Length)
         {
             Vertices = vertices ?? throw new ArgumentNullException(nameof(vertices));
             progressUpdater.UpdateAddOperation();
         }
 
-        public override void FindInRadius(InRadiusQuery query)
+        internal sealed override void AddLeaves(List<TreeLeaf> leaves)
+        {
+            leaves.Add(this);
+        }
+
+        internal sealed override void AddBranches(List<ATreeBranch> branches)
+        {
+
+        }
+
+        internal sealed override void FindInRadius(InRadiusQuery query)
         {
             foreach (var vertex in Vertices)
             {
@@ -34,7 +45,7 @@ namespace GeometricAlgorithms.MeshQuerying
             query.ProgressUpdater.UpdateAddOperation();
         }
 
-        public override void FindNearestVertices(NearestVerticesQuery query)
+        internal sealed override void FindNearestVertices(NearestVerticesQuery query)
         {
             foreach (var vertex in Vertices)
             {
@@ -58,16 +69,6 @@ namespace GeometricAlgorithms.MeshQuerying
             }
 
             query.ProgressUpdater.UpdateAddOperation();
-        }
-
-        public override void AddLeaves(List<KdTreeLeaf> leaves)
-        {
-            leaves.Add(this);
-        }
-
-        public override void AddBranches(List<KdTreeBranch> branches)
-        {
-
         }
     }
 }

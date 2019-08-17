@@ -58,12 +58,14 @@
     <Compile Include="ImplicitSurfaces\MarchingCubes\Tables.cs" />
     <Compile Include="ImplicitSurfaces\MarchingCubes\TripleEdge.cs" />
     <Compile Include="ImplicitSurfaces\ScalarProductSurface.cs" />
+    <Compile Include="MeshQuerying\ATree.cs" />
+    <Compile Include="MeshQuerying\ATreeBranch.cs" />
+    <Compile Include="MeshQuerying\TreeLeaf.cs" />
+    <Compile Include="MeshQuerying\ATreeNode.cs" />
     <Compile Include="MeshQuerying\DistanceComparer.cs" />
     <Compile Include="MeshQuerying\KdTree.cs" />
     <Compile Include="MeshQuerying\KdTreeBranch.cs" />
     <Compile Include="MeshQuerying\KdTreeConfiguration.cs" />
-    <Compile Include="MeshQuerying\KdTreeLeaf.cs" />
-    <Compile Include="MeshQuerying\KdTreeNode.cs" />
     <Compile Include="MeshQuerying\QueryState.cs" />
     <Compile Include="MeshQuerying\Range.cs" />
     <Compile Include="MeshQuerying\PositionIndex.cs" />

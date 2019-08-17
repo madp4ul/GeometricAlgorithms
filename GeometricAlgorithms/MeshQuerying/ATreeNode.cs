@@ -7,27 +7,27 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.MeshQuerying
 {
-    abstract class KdTreeNode
+    public abstract class ATreeNode
     {
         public int VertexCount { get; set; }
-
         public BoundingBox BoundingBox { get; private set; }
 
         public abstract int NodeCount { get; protected set; }
         public abstract int LeafCount { get; protected set; }
 
-        protected KdTreeNode(BoundingBox boundingBox, int verticesCount)
+        protected ATreeNode(BoundingBox boundingBox, int verticesCount)
         {
             VertexCount = verticesCount;
             BoundingBox = boundingBox ?? throw new ArgumentNullException(nameof(boundingBox));
         }
 
-        public abstract void FindInRadius(InRadiusQuery query);
 
-        public abstract void FindNearestVertices(NearestVerticesQuery query);
+        internal abstract void FindInRadius(InRadiusQuery query);
 
-        public abstract void AddBranches(List<KdTreeBranch> branches);
+        internal abstract void FindNearestVertices(NearestVerticesQuery query);
 
-        public abstract void AddLeaves(List<KdTreeLeaf> leaves);
+        internal abstract void AddBranches(List<ATreeBranch> branches);
+
+        internal abstract void AddLeaves(List<TreeLeaf> leaves);
     }
 }
