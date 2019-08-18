@@ -10,17 +10,15 @@ namespace GeometricAlgorithms.MeshQuerying
 {
     class KdTreeBranch : ATreeBranch
     {
-        public ATreeNode MinimumChild { get; set; }
-        public ATreeNode MaximumChild { get; set; }
-        public override int NodeCount { get; protected set; }
-        public override int LeafCount { get; protected set; }
+        public ATreeNode MinimumChild { get; private set; }
+        public ATreeNode MaximumChild { get; private set; }
 
         private readonly Func<Vector3, float> DimensionSelector;
 
         public KdTreeBranch(
             BoundingBox boundingBox,
             Range<PositionIndex> vertices,
-            KdTreeConfiguration configuration,
+            TreeConfiguration configuration,
             OperationProgressUpdater progressUpdater,
             Dimension halvedDimension = Dimension.X)
             : base(boundingBox, vertices.Length)
@@ -30,7 +28,7 @@ namespace GeometricAlgorithms.MeshQuerying
             DimensionSelector = GetDimensionSelector(halvedDimension);
 
             //Sort values along current dimension
-            var comparer = new VertexComparer(DimensionSelector);
+            var comparer = new PositionIndexComparer(DimensionSelector);
             vertices.NthElement(halfIndex, comparer.Compare);
 
             //Split space at median along halved dimension
@@ -100,30 +98,5 @@ namespace GeometricAlgorithms.MeshQuerying
             yield return MaximumChild;
         }
 
-        private class VertexComparer : IComparer<PositionIndex>
-        {
-            public Func<Vector3, float> DimensionSelector { get; private set; }
-
-            public VertexComparer(Func<Vector3, float> dimensionSelector)
-            {
-                DimensionSelector = dimensionSelector;
-            }
-
-            public int Compare(PositionIndex v1, PositionIndex v2)
-            {
-                float diff = DimensionSelector(v1.Position) - DimensionSelector(v2.Position);
-
-                if (diff > 0)
-                {
-                    return 1;
-                }
-                if (diff < 0)
-                {
-                    return -1;
-                }
-
-                return 0;
-            }
-        }
     }
 }

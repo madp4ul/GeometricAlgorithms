@@ -1,14 +1,14 @@
-﻿using GeometricAlgorithms.Domain;
-using GeometricAlgorithms.Domain.Tasks;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.Domain.Tasks;
 
 namespace GeometricAlgorithms.MeshQuerying
 {
-    public class KdTree : ATree
+    class Octree : ATree
     {
         private readonly ATreeNode _Root;
         protected override ATreeNode Root => _Root;
@@ -21,8 +21,7 @@ namespace GeometricAlgorithms.MeshQuerying
         private readonly BoundingBox _MeshContainer;
         public override BoundingBox MeshContainer => _MeshContainer;
 
-
-        public KdTree(Mesh mesh, TreeConfiguration configuration = null, IProgressUpdater progressUpdater = null)
+        public Octree(Mesh mesh, TreeConfiguration configuration = null, IProgressUpdater progressUpdater = null)
         {
             if (configuration == null)
             {
@@ -47,7 +46,7 @@ namespace GeometricAlgorithms.MeshQuerying
 
             if (mesh.VertexCount > configuration.MaximumPointsPerLeaf)
             {
-                _Root = new KdTreeBranch(MeshContainer, range, configuration, updater);
+                _Root = new OctreeBranch(MeshContainer, range, configuration, updater);
             }
             else
             {

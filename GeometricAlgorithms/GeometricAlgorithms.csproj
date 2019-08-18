@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="ImplicitSurfaces\EmptySurface.cs" />
     <Compile Include="ImplicitSurfaces\MarchingCubes\Cube.cs" />
     <Compile Include="ImplicitSurfaces\CubeMarcher.cs" />
@@ -60,15 +61,18 @@
     <Compile Include="ImplicitSurfaces\ScalarProductSurface.cs" />
     <Compile Include="MeshQuerying\ATree.cs" />
     <Compile Include="MeshQuerying\ATreeBranch.cs" />
+    <Compile Include="MeshQuerying\Octree.cs" />
+    <Compile Include="MeshQuerying\OctreeBranch.cs" />
     <Compile Include="MeshQuerying\TreeLeaf.cs" />
     <Compile Include="MeshQuerying\ATreeNode.cs" />
     <Compile Include="MeshQuerying\DistanceComparer.cs" />
     <Compile Include="MeshQuerying\KdTree.cs" />
     <Compile Include="MeshQuerying\KdTreeBranch.cs" />
-    <Compile Include="MeshQuerying\KdTreeConfiguration.cs" />
+    <Compile Include="MeshQuerying\TreeConfiguration.cs" />
     <Compile Include="MeshQuerying\QueryState.cs" />
     <Compile Include="MeshQuerying\Range.cs" />
     <Compile Include="MeshQuerying\PositionIndex.cs" />
+    <Compile Include="MeshQuerying\PositionIndexComparer.cs" />
     <Compile Include="NormalApproximation\FromFaces\FaceNormalWeightByArea.cs" />
     <Compile Include="NormalApproximation\FromFaces\FaceNormalWeightSum.cs" />
     <Compile Include="NormalApproximation\NormalApproximatorFromFaces.cs" />

@@ -34,7 +34,7 @@ namespace GeometricAlgorithms.Viewer.Forms.KdTreeControls
 
         private void ButtonApplyPointsPerLeaf_Click(object sender, EventArgs e)
         {
-            var config = KdTreeConfiguration.CreateChange(KdTree.Configuration,
+            var config = TreeConfiguration.CreateChange(KdTree.Configuration,
                 maximumPointsPerLeaf: (int)numericPointsPerLeaf.Value,
                 minimizeContainers: cbMinimizeBranches.Checked);
 

@@ -12,13 +12,13 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
 {
-    public class KdTreeModel : IHasDrawables, IUpdatable<Mesh>, IUpdatable<KdTreeConfiguration>
+    public class KdTreeModel : IHasDrawables, IUpdatable<Mesh>, IUpdatable<TreeConfiguration>
     {
         private readonly IDrawableFactoryProvider DrawableFactoryProvider;
         private readonly IFuncExecutor FuncExecutor;
 
         public ATree Tree { get; private set; }
-        public KdTreeConfiguration Configuration { get; private set; }
+        public TreeConfiguration Configuration { get; private set; }
 
         private readonly ContainerDrawable KdTreeBranchesDrawable;
         private readonly ContainerDrawable KdTreeLeavesDrawable;
@@ -38,13 +38,13 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
 
             KdTreeBranchesDrawable = new ContainerDrawable(enable: false);
             KdTreeLeavesDrawable = new ContainerDrawable(enable: false);
-            Configuration = new KdTreeConfiguration();
+            Configuration = new TreeConfiguration();
 
             RadiusQuery = new KdTreeRadiusQueryModel(drawableFactoryProvider, funcExecutor);
             NearestQuery = new KdTreeNearestQueryModel(drawableFactoryProvider, funcExecutor);
         }
 
-        public void Update(KdTreeConfiguration configuration)
+        public void Update(TreeConfiguration configuration)
         {
             Configuration = configuration;
 

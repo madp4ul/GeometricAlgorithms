@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.MeshQuerying
 {
-    public class KdTreeConfiguration
+    public class TreeConfiguration
     {
         public readonly int MaximumPointsPerLeaf;
         public readonly bool MinimizeContainers;
 
-        public KdTreeConfiguration(int maximumPointsPerLeaf = 2, bool minimizeContainers = true)
+        public TreeConfiguration(int maximumPointsPerLeaf = 2, bool minimizeContainers = true)
         {
             MaximumPointsPerLeaf = maximumPointsPerLeaf;
             MinimizeContainers = minimizeContainers;
         }
 
-        public static KdTreeConfiguration CreateChange(KdTreeConfiguration changedConfig, int? maximumPointsPerLeaf = null, bool? minimizeContainers = null)
+        public static TreeConfiguration CreateChange(TreeConfiguration changedConfig, int? maximumPointsPerLeaf = null, bool? minimizeContainers = null)
         {
-            return new KdTreeConfiguration(
+            return new TreeConfiguration(
                 maximumPointsPerLeaf: maximumPointsPerLeaf ?? changedConfig.MaximumPointsPerLeaf,
                 minimizeContainers: minimizeContainers ?? changedConfig.MinimizeContainers);
         }
