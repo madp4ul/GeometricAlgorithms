@@ -20,8 +20,9 @@ namespace GeometricAlgorithms.MeshQuerying
             Range<PositionIndex> vertices,
             TreeConfiguration configuration,
             OperationProgressUpdater progressUpdater,
+            int depth,
             Dimension halvedDimension = Dimension.X)
-            : base(boundingBox, vertices.Length)
+            : base(boundingBox, vertices.Length, depth)
         {
             int halfIndex = vertices.Length / 2;
 
@@ -51,20 +52,14 @@ namespace GeometricAlgorithms.MeshQuerying
             {
                 Dimension nextDimension = GetNextDimension(halvedDimension);
 
-                MinimumChild = new KdTreeBranch(minChildBox, minChildVertices, configuration, progressUpdater, nextDimension);
-                MaximumChild = new KdTreeBranch(maxChildBox, maxChildVertices, configuration, progressUpdater, nextDimension);
+                MinimumChild = new KdTreeBranch(minChildBox, minChildVertices, configuration, progressUpdater, depth, nextDimension);
+                MaximumChild = new KdTreeBranch(maxChildBox, maxChildVertices, configuration, progressUpdater, depth, nextDimension);
             }
             else //create leafs
             {
-                MinimumChild = new TreeLeaf(
-                    minChildBox,
-                    minChildVertices,
-                    progressUpdater);
+                MinimumChild = new TreeLeaf(minChildBox, minChildVertices, progressUpdater, depth + 1);
 
-                MaximumChild = new TreeLeaf(
-                    maxChildBox,
-                    maxChildVertices,
-                    progressUpdater);
+                MaximumChild = new TreeLeaf(maxChildBox, maxChildVertices, progressUpdater, depth + 1);
             }
 
             //Add self and children count

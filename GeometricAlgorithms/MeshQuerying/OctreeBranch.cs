@@ -11,170 +11,152 @@ namespace GeometricAlgorithms.MeshQuerying
 {
     internal class OctreeBranch : ATreeBranch
     {
-        public ATreeNode Child000 { get; private set; }
-        public ATreeNode Child001 { get; private set; }
-        public ATreeNode Child010 { get; private set; }
-        public ATreeNode Child011 { get; private set; }
-        public ATreeNode Child100 { get; private set; }
-        public ATreeNode Child101 { get; private set; }
-        public ATreeNode Child110 { get; private set; }
-        public ATreeNode Child111 { get; private set; }
+        private readonly ATreeNode[,,] Children;
 
         public readonly Vector3 Middle;
-
 
         public OctreeBranch(
             BoundingBox boundingBox,
             Range<PositionIndex> vertices,
             TreeConfiguration configuration,
-            OperationProgressUpdater progressUpdater)
-            : base(boundingBox, vertices.Length)
+            OperationProgressUpdater progressUpdater,
+            int depth)
+            : base(boundingBox, vertices.Length, depth)
         {
-            //TODO
+            Children = new ATreeNode[2, 2, 2];
+            var childData = new ChildData[2, 2, 2];
+
             //Sort by x and find index of first element of bigger half
             //then each half by y and then each of the 4 halfs by z
             //unlike kdtree for each child individually create a branch or leaf!
-
             Middle = boundingBox.Minimum + (boundingBox.Diagonal / 2f);
 
-            SplitVerticesByX(configuration, vertices, boundingBox, new int[3], progressUpdater);
+            firstSplit();
 
+            for (int x = 0; x < 2; x++)
+            {
+                for (int y = 0; y < 2; y++)
+                {
+                    for (int z = 0; z < 2; z++)
+                    {
+                        ChildData data = childData[x, y, z];
+                        var child = data.IsBranch
+                            ? new OctreeBranch(data.BoundingBox, data.Vertices, configuration, progressUpdater, depth + 1) as ATreeNode
+                            : new TreeLeaf(data.BoundingBox, data.Vertices, progressUpdater, depth + 1) as ATreeNode;
 
-
+                        Children[x, y, z] = child;
+                    }
+                }
+            }
 
             //Add self and children count
             NodeCount = 1 + GetChildren().Sum(c => c.NodeCount);
             LeafCount = GetChildren().Sum(c => c.LeafCount);
-        }
 
-        private void SplitVerticesByX(
-            TreeConfiguration configuration,
-            Range<PositionIndex> vertices,
-            BoundingBox boundingBox,
-            int[] dimensionOffset,
-            OperationProgressUpdater progressUpdater)
-        {
-            float selectDimension(Vector3 v) => v.X;
-            Dimension dimension = Dimension.X;
-
-            SplitVertices(configuration, vertices, boundingBox, selectDimension, dimension, dimensionOffset, progressUpdater, SplitVerticesByY);
-        }
-
-        private void SplitVerticesByY(
-            TreeConfiguration configuration,
-            Range<PositionIndex> vertices,
-            BoundingBox boundingBox,
-            int[] dimensionOffset,
-            OperationProgressUpdater progressUpdater)
-        {
-            float selectDimension(Vector3 v) => v.Y;
-            Dimension dimension = Dimension.Y;
-
-            SplitVertices(configuration, vertices, boundingBox, selectDimension, dimension, dimensionOffset, progressUpdater, SplitVerticesByZ);
-        }
-
-        private void SplitVerticesByZ(
-            TreeConfiguration configuration,
-            Range<PositionIndex> vertices, BoundingBox boundingBox,
-            int[] dimensionOffset,
-            OperationProgressUpdater progressUpdater)
-        {
-            float selectDimension(Vector3 v) => v.Z;
-            Dimension dimension = Dimension.Z;
-
-            SplitVertices(configuration, vertices, boundingBox, selectDimension, dimension, dimensionOffset, progressUpdater, SelectChild);
-        }
-
-        private void SelectChild(
-            TreeConfiguration configuration,
-            Range<PositionIndex> vertices,
-            BoundingBox boundingBox,
-            int[] dimensionOffset,
-            OperationProgressUpdater progressUpdater)
-        {
-            var child = CreateChild(configuration, vertices, boundingBox, progressUpdater);
-
-            if (dimensionOffset[(int)Dimension.X] == 0)
-            {
-                if (dimensionOffset[(int)Dimension.Y] == 0)
-                {
-                    if (dimensionOffset[(int)Dimension.Z] == 0)
-                    {
-                        Child000 = child;
-                    }
-                    else
-                    {
-                        //TODO make all this nice
-                    }
-                }
-                else
-                {
-
-                }
-            }
-            else
-            {
-
-            }
-        }
-
-        private ATreeNode CreateChild(TreeConfiguration configuration, Range<PositionIndex> vertices, BoundingBox boundingBox, OperationProgressUpdater progressUpdater)
-        {
-            if (configuration.MaximumPointsPerLeaf < vertices.Length)
-            {
-                return new OctreeBranch(boundingBox, vertices, configuration, progressUpdater);
-            }
-            else
-            {
-                return new TreeLeaf(boundingBox, vertices, progressUpdater);
-            }
-        }
-
-        private void SplitVertices(
-            TreeConfiguration configuration,
-            Range<PositionIndex> vertices,
-            BoundingBox boundingBox,
+            //////////////Local functions below            
+            void splitVertices(
+            Range<PositionIndex> verticesToSplit,
+            BoundingBox boundingBoxOfVerticesToSplit,
             Func<Vector3, float> dimensionSelector,
             Dimension dimension,
             int[] dimensionOffset,
-            OperationProgressUpdater progressUpdater,
-            Action<TreeConfiguration, Range<PositionIndex>, BoundingBox, int[], OperationProgressUpdater> nextSplit)
-        {
-            vertices.Sort(new PositionIndexComparer(dimensionSelector));
-            int offsetOfBiggerHalf = vertices
-                .Select(v => v.Position)
-                .FirstIndexOrDefault(pos => dimensionSelector(pos) > Middle.X)
-                ?? vertices.Length;
+            Action<Range<PositionIndex>, BoundingBox, int[]> nextSplit)
+            {
+                float middleDimension = dimensionSelector(Middle);
 
-            Range<PositionIndex> minHalf = vertices.GetRange(0, offsetOfBiggerHalf);
-            Range<PositionIndex> maxHalf = vertices.GetRange(offsetOfBiggerHalf, vertices.Length - offsetOfBiggerHalf);
+                verticesToSplit.Sort(new PositionIndexComparer(dimensionSelector));
+                int offsetOfBiggerHalf = verticesToSplit
+                    .Select(v => v.Position)
+                    .FirstIndexOrDefault(pos => dimensionSelector(pos) > middleDimension)
+                    ?? verticesToSplit.Length;
 
-            //Create bounding box halves along median
-            BoundingBox minChildBox = configuration.MinimizeContainers
-                ? BoundingBox.CreateContainer(minHalf.Select(v => v.Position))
-                : boundingBox.GetMinHalfAlongDimension(dimension, dimensionSelector(Middle));
-            BoundingBox maxChildBox = configuration.MinimizeContainers
-                ? BoundingBox.CreateContainer(maxHalf.Select(v => v.Position))
-                : boundingBox.GetMaxHalfAlongDimension(dimension, dimensionSelector(Middle));
+                Range<PositionIndex> minHalf = verticesToSplit.GetRange(0, offsetOfBiggerHalf);
+                Range<PositionIndex> maxHalf = verticesToSplit.GetRange(offsetOfBiggerHalf, verticesToSplit.Length - offsetOfBiggerHalf);
 
-            nextSplit(configuration, minHalf, minChildBox, dimensionOffset, progressUpdater);
+                //Create bounding box halves along median
+                BoundingBox minChildBox = configuration.MinimizeContainers
+                    ? BoundingBox.CreateContainer(minHalf.Select(v => v.Position))
+                    : boundingBoxOfVerticesToSplit.GetMinHalfAlongDimension(dimension, middleDimension);
+                BoundingBox maxChildBox = configuration.MinimizeContainers
+                    ? BoundingBox.CreateContainer(maxHalf.Select(v => v.Position))
+                    : boundingBoxOfVerticesToSplit.GetMaxHalfAlongDimension(dimension, middleDimension);
 
-            dimensionOffset[(int)dimension] = 1;
+                dimensionOffset[(int)dimension] = 0;
+                nextSplit(minHalf, minChildBox, dimensionOffset);
 
-            nextSplit(configuration, maxHalf, maxChildBox, dimensionOffset, progressUpdater);
+                dimensionOffset[(int)dimension] = 1;
+                nextSplit(maxHalf, maxChildBox, dimensionOffset);
+            }
 
+            void firstSplit()
+            {
+                float selectDimension(Vector3 v) => v.X;
+                Dimension dimension = Dimension.X;
+
+                splitVertices(vertices, boundingBox, selectDimension, dimension, new int[3], secondSplit);
+            }
+
+            void secondSplit(Range<PositionIndex> verticesHalf, BoundingBox splitBoundingBox, int[] dimensionOffset)
+            {
+                float selectDimension(Vector3 v) => v.Y;
+                Dimension dimension = Dimension.Y;
+
+                splitVertices(verticesHalf, splitBoundingBox, selectDimension, dimension, dimensionOffset, thirdSplit);
+            }
+
+            void thirdSplit(Range<PositionIndex> verticesHalf, BoundingBox splitBoundingBox, int[] dimensionOffset)
+            {
+                float selectDimension(Vector3 v) => v.Z;
+                Dimension dimension = Dimension.Z;
+
+                splitVertices(verticesHalf, splitBoundingBox, selectDimension, dimension, dimensionOffset, selectChild);
+            }
+
+            void selectChild(Range<PositionIndex> verticesHalf, BoundingBox splitBoundingBox, int[] dimensionOffset)
+            {
+                var child = createChild(verticesHalf, splitBoundingBox);
+
+                childData[dimensionOffset[0], dimensionOffset[1], dimensionOffset[2]] = child;
+            }
+
+            ChildData createChild(Range<PositionIndex> verticesHalf, BoundingBox splitBoundingBox)
+            {
+                return new ChildData(
+                   isBranch: configuration.MaximumPointsPerLeaf < verticesHalf.Length,
+                   boundingBox: splitBoundingBox,
+                   vertices: verticesHalf);
+            }
         }
 
         public override IEnumerable<ATreeNode> GetChildren()
         {
-            yield return Child000;
-            yield return Child001;
-            yield return Child010;
-            yield return Child011;
-            yield return Child100;
-            yield return Child101;
-            yield return Child110;
-            yield return Child111;
+            yield return Children[0, 0, 0];
+            yield return Children[0, 0, 1];
+            yield return Children[0, 1, 0];
+            yield return Children[0, 1, 1];
+            yield return Children[1, 0, 0];
+            yield return Children[1, 0, 1];
+            yield return Children[1, 1, 0];
+            yield return Children[1, 1, 1];
+        }
+
+        public ATreeNode this[int x, int y, int z]
+        {
+            get => Children[x, y, z];
+        }
+
+        private class ChildData
+        {
+            public readonly bool IsBranch;
+            public readonly BoundingBox BoundingBox;
+            public readonly Range<PositionIndex> Vertices;
+
+            public ChildData(bool isBranch, BoundingBox boundingBox, Range<PositionIndex> vertices)
+            {
+                IsBranch = isBranch;
+                BoundingBox = boundingBox ?? throw new ArgumentNullException(nameof(boundingBox));
+                Vertices = vertices ?? throw new ArgumentNullException(nameof(vertices));
+            }
         }
     }
 }

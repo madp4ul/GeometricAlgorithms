@@ -48,14 +48,17 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
         {
             Configuration = configuration;
 
-            Update(Tree.Mesh);
+            if (Tree != null)
+            {
+                Update(Tree.Mesh);
+            }
         }
 
         public void Update(Mesh mesh)
         {
             var buildKdTree = FuncExecutor.Execute((progress) =>
             {
-                return new KdTree(mesh, Configuration, progress);
+                return new Octree(mesh, Configuration, progress);
             });
 
             buildKdTree.GetResult(tree =>

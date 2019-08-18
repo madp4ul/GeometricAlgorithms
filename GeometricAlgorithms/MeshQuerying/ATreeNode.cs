@@ -9,15 +9,17 @@ namespace GeometricAlgorithms.MeshQuerying
 {
     public abstract class ATreeNode
     {
-        public int VertexCount { get; set; }
+        public int Depth { get; private set; }
+        public int VertexCount { get; private set; }
         public BoundingBox BoundingBox { get; private set; }
 
         public abstract int NodeCount { get; protected set; }
         public abstract int LeafCount { get; protected set; }
 
-        protected ATreeNode(BoundingBox boundingBox, int verticesCount)
+        protected ATreeNode(BoundingBox boundingBox, int verticesCount, int depth)
         {
             VertexCount = verticesCount;
+            Depth = depth;
             BoundingBox = boundingBox ?? throw new ArgumentNullException(nameof(boundingBox));
         }
 

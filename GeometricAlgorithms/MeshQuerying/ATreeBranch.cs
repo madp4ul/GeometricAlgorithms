@@ -9,10 +9,10 @@ namespace GeometricAlgorithms.MeshQuerying
 {
     abstract class ATreeBranch : ATreeNode
     {
-        public override int NodeCount { get => throw new NotImplementedException(); protected set => throw new NotImplementedException(); }
-        public override int LeafCount { get => throw new NotImplementedException(); protected set => throw new NotImplementedException(); }
+        public override int NodeCount { get; protected set; }
+        public override int LeafCount { get; protected set; }
 
-        public ATreeBranch(BoundingBox boundingBox, int verticesCount) : base(boundingBox, verticesCount)
+        public ATreeBranch(BoundingBox boundingBox, int verticesCount, int depth) : base(boundingBox, verticesCount, depth)
         {
         }
 

@@ -154,5 +154,15 @@ namespace GeometricAlgorithms.Domain
 
             return new BoundingBox(new Vector3(minX, minY, minZ), new Vector3(maxX, maxY, maxZ));
         }
+
+        public static BoundingBox CreateCubicContainer(BoundingBox boundingBox)
+        {
+            Vector3 halfDiagonal = boundingBox.Diagonal / 2;
+            Vector3 middle = boundingBox.Minimum + halfDiagonal;
+
+            Vector3 newHalfDiagonal = new Vector3(halfDiagonal.MaximumComponent());
+
+            return new BoundingBox(middle - newHalfDiagonal, middle + newHalfDiagonal);
+        }
     }
 }

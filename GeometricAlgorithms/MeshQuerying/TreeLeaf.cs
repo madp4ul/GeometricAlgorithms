@@ -16,8 +16,8 @@ namespace GeometricAlgorithms.MeshQuerying
 
         public sealed override int LeafCount { get => 1; protected set { } }
 
-        public TreeLeaf(BoundingBox boundingBox, Range<PositionIndex> vertices, OperationProgressUpdater progressUpdater)
-               : base(boundingBox, vertices.Length)
+        public TreeLeaf(BoundingBox boundingBox, Range<PositionIndex> vertices, OperationProgressUpdater progressUpdater, int depth)
+               : base(boundingBox, vertices.Length, depth)
         {
             Vertices = vertices ?? throw new ArgumentNullException(nameof(vertices));
             progressUpdater.UpdateAddOperation();

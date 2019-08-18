@@ -47,11 +47,11 @@ namespace GeometricAlgorithms.MeshQuerying
 
             if (mesh.VertexCount > configuration.MaximumPointsPerLeaf)
             {
-                _Root = new KdTreeBranch(MeshContainer, range, configuration, updater);
+                _Root = new KdTreeBranch(MeshContainer, range, configuration, updater, depth: 1);
             }
             else
             {
-                _Root = new TreeLeaf(MeshContainer, range, updater);
+                _Root = new TreeLeaf(MeshContainer, range, updater, depth: 1);
             }
 
             updater.IsCompleted();

@@ -8,7 +8,7 @@ using GeometricAlgorithms.Domain.Tasks;
 
 namespace GeometricAlgorithms.MeshQuerying
 {
-    class Octree : ATree
+    public class Octree : ATree
     {
         private readonly ATreeNode _Root;
         protected override ATreeNode Root => _Root;
@@ -37,20 +37,22 @@ namespace GeometricAlgorithms.MeshQuerying
                 .ToArray();
 
             var range = Range<PositionIndex>.FromArray(positionMapping, 0, mesh.VertexCount);
-            _MeshContainer = BoundingBox.CreateContainer(mesh.Positions);
+
+            var container = BoundingBox.CreateContainer(mesh.Positions);
+            _MeshContainer = BoundingBox.CreateCubicContainer(container);
 
             var updater = new OperationProgressUpdater(
                 progressUpdater,
-                (2 * mesh.VertexCount) / configuration.MaximumPointsPerLeaf,
+                (8 * mesh.VertexCount) / configuration.MaximumPointsPerLeaf,
                 "Building Kd-Tree");
 
             if (mesh.VertexCount > configuration.MaximumPointsPerLeaf)
             {
-                _Root = new OctreeBranch(MeshContainer, range, configuration, updater);
+                _Root = new OctreeBranch(MeshContainer, range, configuration, updater, depth: 1);
             }
             else
             {
-                _Root = new TreeLeaf(MeshContainer, range, updater);
+                _Root = new TreeLeaf(MeshContainer, range, updater, depth: 1);
             }
 
             updater.IsCompleted();
