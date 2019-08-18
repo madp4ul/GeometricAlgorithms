@@ -22,7 +22,10 @@ namespace GeometricAlgorithms.FileProcessing
                 throw new NotImplementedException("This file format is not supported");
             }
 
-            return ScaleAndMoveToUnitCubeAroundOrigin(mesh);
+            var scaledMesh = ScaleAndMoveToUnitCubeAroundOrigin(mesh);
+            var meshWithoutDoubles = new MeshDoublePositionRemover().RemoveDoublePositions(scaledMesh);
+
+            return meshWithoutDoubles;
         }
 
         private Mesh ScaleAndMoveToUnitCubeAroundOrigin(Mesh mesh)
