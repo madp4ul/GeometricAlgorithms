@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.ImplicitSurfaces
+namespace GeometricAlgorithms.ImplicitSurfaces.MarchingCubes
 {
     public class CubeMarcher
     {

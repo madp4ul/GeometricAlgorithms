@@ -10,7 +10,7 @@ namespace GeometricAlgorithms.MeshQuerying
 {
     public abstract class ATree
     {
-        protected abstract ATreeNode Root { get; }
+        internal abstract ATreeNode Root { get; }
         public abstract Mesh Mesh { get; }
         public abstract BoundingBox MeshContainer { get; }
 

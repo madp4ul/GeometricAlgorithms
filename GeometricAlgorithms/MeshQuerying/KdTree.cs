@@ -11,7 +11,7 @@ namespace GeometricAlgorithms.MeshQuerying
     public class KdTree : ATree
     {
         private readonly ATreeNode _Root;
-        protected override ATreeNode Root => _Root;
+        internal override ATreeNode Root => _Root;
 
 
         private readonly Mesh _Mesh;

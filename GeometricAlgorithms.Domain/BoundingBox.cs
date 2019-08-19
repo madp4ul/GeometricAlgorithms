@@ -24,6 +24,13 @@ namespace GeometricAlgorithms.Domain
 
         public BoundingBox(Vector3 minimum, Vector3 maximum)
         {
+            if (minimum.X > maximum.X
+                || minimum.Y > maximum.Y
+                || minimum.Z > maximum.Z)
+            {
+                throw new ArgumentException();
+            }
+
             Minimum = minimum;
             Maximum = maximum;
         }
@@ -123,6 +130,8 @@ namespace GeometricAlgorithms.Domain
             float maxY = float.MinValue;
             float maxZ = float.MinValue;
 
+            bool foundVertex = false;
+
             foreach (var position in vertices)
             {
                 if (position.X < minX)
@@ -150,9 +159,17 @@ namespace GeometricAlgorithms.Domain
                 {
                     maxZ = position.Z;
                 }
+                foundVertex = true;
             }
 
-            return new BoundingBox(new Vector3(minX, minY, minZ), new Vector3(maxX, maxY, maxZ));
+            if (foundVertex)
+            {
+                return new BoundingBox(new Vector3(minX, minY, minZ), new Vector3(maxX, maxY, maxZ));
+            }
+            else
+            {
+                return new BoundingBox(Vector3.Zero, Vector3.Zero);
+            }
         }
 
         public static BoundingBox CreateCubicContainer(BoundingBox boundingBox)

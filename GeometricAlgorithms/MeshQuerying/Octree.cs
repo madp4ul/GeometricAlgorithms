@@ -11,7 +11,7 @@ namespace GeometricAlgorithms.MeshQuerying
     public class Octree : ATree
     {
         private readonly ATreeNode _Root;
-        protected override ATreeNode Root => _Root;
+        internal override ATreeNode Root => _Root;
 
 
         private readonly Mesh _Mesh;
@@ -21,13 +21,11 @@ namespace GeometricAlgorithms.MeshQuerying
         private readonly BoundingBox _MeshContainer;
         public override BoundingBox MeshContainer => _MeshContainer;
 
+        public readonly TreeConfiguration Configuration;
+
         public Octree(Mesh mesh, TreeConfiguration configuration = null, IProgressUpdater progressUpdater = null)
         {
-            if (configuration == null)
-            {
-                configuration = new TreeConfiguration();
-            }
-
+            Configuration = configuration ?? new TreeConfiguration();
             _Mesh = mesh;
 
             //Needs position mapping to preserve original indices because 

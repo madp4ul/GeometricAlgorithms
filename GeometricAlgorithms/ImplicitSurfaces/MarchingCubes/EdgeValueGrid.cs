@@ -95,67 +95,67 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingCubes
             return edgeIndexContainer.Index;
         }
 
-        public IndexContainer GetEdgeIndex(Point coord, EdgeIndex edge)
+        public IndexContainer GetEdgeIndex(Point cubeCoordinate, EdgeIndex edge)
         {
             if (edge == EdgeIndex._000x)
             {
-                return GetEdge(coord, Dimension.X);
+                return GetEdge(cubeCoordinate, Dimension.X);
             }
             if (edge == EdgeIndex._000y)
             {
-                return GetEdge(coord, Dimension.Y);
+                return GetEdge(cubeCoordinate, Dimension.Y);
             }
             if (edge == EdgeIndex._000z)
             {
-                return GetEdge(coord, Dimension.Z);
+                return GetEdge(cubeCoordinate, Dimension.Z);
             }
 
             if (edge == EdgeIndex._001x)
             {
-                return GetEdge(new Point(coord.X, coord.Y, coord.Z + 1), Dimension.X);
+                return GetEdge(new Point(cubeCoordinate.X, cubeCoordinate.Y, cubeCoordinate.Z + 1), Dimension.X);
             }
             if (edge == EdgeIndex._001y)
             {
-                return GetEdge(new Point(coord.X, coord.Y, coord.Z + 1), Dimension.Y);
+                return GetEdge(new Point(cubeCoordinate.X, cubeCoordinate.Y, cubeCoordinate.Z + 1), Dimension.Y);
             }
 
             if (edge == EdgeIndex._010x)
             {
-                return GetEdge(new Point(coord.X, coord.Y + 1, coord.Z), Dimension.X);
+                return GetEdge(new Point(cubeCoordinate.X, cubeCoordinate.Y + 1, cubeCoordinate.Z), Dimension.X);
             }
             if (edge == EdgeIndex._010z)
             {
-                return GetEdge(new Point(coord.X, coord.Y + 1, coord.Z), Dimension.Z);
+                return GetEdge(new Point(cubeCoordinate.X, cubeCoordinate.Y + 1, cubeCoordinate.Z), Dimension.Z);
             }
 
             if (edge == EdgeIndex._100y)
             {
-                return GetEdge(new Point(coord.X + 1, coord.Y, coord.Z), Dimension.Y);
+                return GetEdge(new Point(cubeCoordinate.X + 1, cubeCoordinate.Y, cubeCoordinate.Z), Dimension.Y);
             }
             if (edge == EdgeIndex._100z)
             {
-                return GetEdge(new Point(coord.X + 1, coord.Y, coord.Z), Dimension.Z);
+                return GetEdge(new Point(cubeCoordinate.X + 1, cubeCoordinate.Y, cubeCoordinate.Z), Dimension.Z);
             }
 
             if (edge == EdgeIndex._101y)
             {
-                return GetEdge(new Point(coord.X + 1, coord.Y, coord.Z + 1), Dimension.Y);
+                return GetEdge(new Point(cubeCoordinate.X + 1, cubeCoordinate.Y, cubeCoordinate.Z + 1), Dimension.Y);
             }
             if (edge == EdgeIndex._110z)
             {
-                return GetEdge(new Point(coord.X + 1, coord.Y + 1, coord.Z), Dimension.Z);
+                return GetEdge(new Point(cubeCoordinate.X + 1, cubeCoordinate.Y + 1, cubeCoordinate.Z), Dimension.Z);
             }
             if (edge == EdgeIndex._011x)
             {
-                return GetEdge(new Point(coord.X, coord.Y + 1, coord.Z + 1), Dimension.X);
+                return GetEdge(new Point(cubeCoordinate.X, cubeCoordinate.Y + 1, cubeCoordinate.Z + 1), Dimension.X);
             }
 
             throw new ArgumentException();
         }
 
-        private IndexContainer GetEdge(Point coord, Dimension dimension)
+        private IndexContainer GetEdge(Point minVertexCoordinate, Dimension dimension)
         {
-            TripleEdge tripleEdge = EdgeValues[CoordToIndex(coord)];
+            TripleEdge tripleEdge = EdgeValues[CoordinateToIndex(minVertexCoordinate)];
 
             if (dimension == Dimension.X)
             {
@@ -175,7 +175,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingCubes
             }
         }
 
-        private int CoordToIndex(Point coord)
+        private int CoordinateToIndex(Point coord)
         {
             return coord.X * Steps.Y * Steps.Z + coord.Y * Steps.Z + coord.Z;
         }
