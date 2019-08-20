@@ -10,10 +10,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 {
     class EdgeTree
     {
-        EdgeTreeNode Root;
-
-        public List<Vector3> Vertices = new List<Vector3>();
-        public List<Triangle> Faces = new List<Triangle>();
+        readonly EdgeTreeNode Root;
+        readonly SurfaceResult SurfaceResult;
 
         public EdgeTree(Octree octree)
         {
@@ -22,7 +20,9 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                 throw new ArgumentException();
             }
 
-            Root = new EdgeTreeNode(null, new Point(0, 0, 0), octree.Root);
+            SurfaceResult = new SurfaceResult();
+
+            Root = CreateNode(null, new Point(0, 0, 0), octree.Root);
 
             //Do with bfs so that all nodes of higher level are created when creating a node of lower level
             Queue<EdgeTreeNode> nodeQueue = new Queue<EdgeTreeNode>();
@@ -32,44 +32,53 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             {
                 EdgeTreeNode currentNode = nodeQueue.Dequeue();
 
-                //if cound not add children we are in a leaf and want to load or create edges
-                if (!TryAddChildren(currentNode, nodeQueue))
-                {
-
-                }
-
-                //TODO 
-                //1. try load or create edges
-                //2. add children
-                //3. repeat with next
+                AddChildren(currentNode, nodeQueue);
             }
         }
 
-        private bool TryAddChildren(EdgeTreeNode parent, Queue<EdgeTreeNode> queue)
+        private EdgeTreeNode CreateNode(EdgeTreeNode parent, Point parentOffset, ATreeNode octreeNode)
         {
-            if (parent.OctreeNode is OctreeBranch branch)
+            if (octreeNode is OctreeBranch branch)
             {
+                return new EdgeTreeBranch(parent, parentOffset, branch);
+            }
+            else if (octreeNode is TreeLeaf leaf)
+            {
+                return new EdgeTreeLeaf(parent, parentOffset, leaf, SurfaceResult);
+            }
+            else
+            {
+                throw new ArgumentException("parameter octreeNode is not an octree node");
+            }
+        }
+
+        /// <summary>
+        /// adds the parents children on the octree to the parent in the edge tree if there are any children.
+        /// It also put the children into the node queue
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="queue"></param>
+        private void AddChildren(EdgeTreeNode parent, Queue<EdgeTreeNode> queue)
+        {
+            if (parent is EdgeTreeBranch branch)
+            {
+                OctreeBranch octreeBranch = branch.OctreeNode as OctreeBranch;
+
                 for (int x = 0; x < 2; x++)
                 {
                     for (int y = 0; y < 2; y++)
                     {
                         for (int z = 0; z < 2; z++)
                         {
-                            var octreeChild = branch[x, y, z];
+                            var octreeChild = octreeBranch[x, y, z];
 
-                            var childEdgeNode = new EdgeTreeNode(parent, new Point(x, y, z), octreeChild);
+                            var childEdgeNode = CreateNode(parent, new Point(x, y, z), octreeChild);
 
-                            parent.Children[x, y, z] = childEdgeNode;
+                            branch.Children[x, y, z] = childEdgeNode;
                             queue.Enqueue(childEdgeNode);
                         }
                     }
                 }
-
-                return true;
-            }
-            else
-            {
-                return false;
             }
         }
 

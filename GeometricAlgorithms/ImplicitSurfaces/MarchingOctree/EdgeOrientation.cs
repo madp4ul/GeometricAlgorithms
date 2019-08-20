@@ -9,35 +9,35 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 {
     class EdgeOrientation
     {
-        private const int XDirBitPosition = 1;
-        private const int XNegBitPosition = 2;
-        private const int YDirBitPosition = 3;
-        private const int YNegBitPosition = 4;
-        private const int ZDirBitPosition = 5;
-        private const int ZNegBitPosition = 6;
+        private const int XDirectionBitPosition = 0;
+        private const int XPositiveBitPosition = 1;
+        private const int YDirectionBitPosition = 2;
+        private const int YPositiveBitPosition = 3;
+        private const int ZDirectionBitPosition = 4;
+        private const int ZPositiveBitPosition = 5;
 
         public readonly EdgeIndex Index;
-        public readonly EdgeDirection DirectionX;
-        public readonly EdgeDirection DirectionY;
-        public readonly EdgeDirection DirectionZ;
+        public bool IsInXDirection => BitCalculator.IsOn((int)Index, XDirectionBitPosition);
+        public bool IsXPositive => BitCalculator.IsOn((int)Index, XPositiveBitPosition);
+
+        public bool IsInYDirection => BitCalculator.IsOn((int)Index, YDirectionBitPosition);
+        public bool IsYPositive => BitCalculator.IsOn((int)Index, YPositiveBitPosition);
+
+        public bool IsInZDirection => BitCalculator.IsOn((int)Index, ZDirectionBitPosition);
+        public bool IsZPositive => BitCalculator.IsOn((int)Index, ZPositiveBitPosition);
 
         public EdgeOrientation(EdgeIndex index)
         {
             Index = index;
-            int intex = (int)index;
-
-            DirectionX = new EdgeDirection(BitCalculator.IsOn(intex, XDirBitPosition), BitCalculator.IsOn(intex, XNegBitPosition));
-            DirectionY = new EdgeDirection(BitCalculator.IsOn(intex, YDirBitPosition), BitCalculator.IsOn(intex, YNegBitPosition));
-            DirectionZ = new EdgeDirection(BitCalculator.IsOn(intex, ZDirBitPosition), BitCalculator.IsOn(intex, ZNegBitPosition));
         }
 
         public Dimension[] GetDirections()
         {
-            if (!DirectionX.IsInDirection)
+            if (!IsInXDirection)
             {
                 return new[] { Dimension.Y, Dimension.Z };
             }
-            else if (!DirectionY.IsInDirection)
+            else if (!IsInYDirection)
             {
                 return new[] { Dimension.X, Dimension.Z };
             }
@@ -53,15 +53,15 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             int bitPositionToToggle;
             if (dimension == Dimension.X)
             {
-                bitPositionToToggle = XNegBitPosition;
+                bitPositionToToggle = XPositiveBitPosition;
             }
             else if (dimension == Dimension.Y)
             {
-                bitPositionToToggle = YNegBitPosition;
+                bitPositionToToggle = YPositiveBitPosition;
             }
             else if (dimension == Dimension.Z)
             {
-                bitPositionToToggle = ZNegBitPosition;
+                bitPositionToToggle = ZPositiveBitPosition;
             }
             else
             {
@@ -72,9 +72,47 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
             return new EdgeOrientation(mirrored);
         }
+
+        public int GetArrayIndex()
+        {
+            return GetArrayIndex(Index);
+        }
+
+        public static int GetArrayIndex(EdgeIndex index)
+        {
+            switch (index)
+            {
+                case EdgeIndex._000x:
+                    return 0;
+                case EdgeIndex._100z:
+                    return 1;
+                case EdgeIndex._001x:
+                    return 2;
+                case EdgeIndex._000z:
+                    return 3;
+                case EdgeIndex._010x:
+                    return 4;
+                case EdgeIndex._110z:
+                    return 5;
+                case EdgeIndex._011x:
+                    return 6;
+                case EdgeIndex._010z:
+                    return 7;
+                case EdgeIndex._000y:
+                    return 8;
+                case EdgeIndex._100y:
+                    return 9;
+                case EdgeIndex._101y:
+                    return 10;
+                case EdgeIndex._001y:
+                    return 11;
+                default:
+                    throw new ArgumentException();
+            }
+        }
     }
 
-    class EdgeDirection
+    struct EdgeDirection
     {
         public readonly bool IsInDirection;
         public readonly bool Negative;

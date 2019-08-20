@@ -23,19 +23,4 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         _101y = 0b110011,//10,
         _001y = 0b100011,//11,
     }
-
-    public enum SideIndex : int
-    {
-        //first 3 bit determite axis, last determines min/max
-        minX = 0b1000,
-        maxX = 0b1001,
-        minY = 0b0100,
-        maxY = 0b0101,
-        minZ = 0b0010,
-        maxZ = 0b0011,
-    }
-
-    public enum VertexIndex : int
-    {
-    }
 }

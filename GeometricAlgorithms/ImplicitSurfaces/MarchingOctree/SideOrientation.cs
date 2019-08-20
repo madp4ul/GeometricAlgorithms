@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeometricAlgorithms.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,36 +9,48 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 {
     class SideOrientation
     {
-        private const int MinMaxBit = 0b0001;
-        private const int MinMaxBitInverted = 0b1110;
-        private const int XBit = 0b1000;
-        private const int YBit = 0b010;
-        private const int ZBit = 0b0010;
+        private const int XBit = 0;
+        private const int YBit = 1;
+        private const int ZBit = 2;
+        private const int MaxBit = 3;
 
-        public readonly bool IsMax;
-        public readonly bool IsX;
-        public readonly bool IsY;
-        public readonly bool IsZ;
         public readonly SideIndex Index;
+
+        public bool IsX => BitCalculator.IsOn((int)Index, XBit);
+        public bool IsY => BitCalculator.IsOn((int)Index, YBit);
+        public bool IsZ => BitCalculator.IsOn((int)Index, ZBit);
+        public bool IsMax => BitCalculator.IsOn((int)Index, MaxBit);
 
         public SideOrientation(SideIndex sideIndex)
         {
             Index = sideIndex;
-            IsMax = ((int)sideIndex & MinMaxBit) > 0;
-
-            IsZ = ((int)sideIndex & ZBit) > 0;
-            IsY = ((int)sideIndex & YBit) > 0;
-            IsX = ((int)sideIndex & XBit) > 0;
         }
 
         public SideOrientation GetMirrored()
         {
-            SideIndex mirrored = Index;
-
-            //if is max, turn max off, else turn max on
-            mirrored = (SideIndex)(((int)mirrored & MinMaxBit) > 0 ? ((int)mirrored & MinMaxBitInverted) : ((int)mirrored | MinMaxBit));
+            SideIndex mirrored = (SideIndex)BitCalculator.ToggleBit((int)Index, MaxBit);
 
             return new SideOrientation(mirrored);
+        }
+
+        public Dimension GetDirection()
+        {
+            if (IsX)
+            {
+                return Dimension.X;
+            }
+            else if (IsY)
+            {
+                return Dimension.Y;
+            }
+            else if (IsZ)
+            {
+                return Dimension.Z;
+            }
+            else
+            {
+                throw new Exception();
+            }
         }
 
         public int GetArrayIndex()
