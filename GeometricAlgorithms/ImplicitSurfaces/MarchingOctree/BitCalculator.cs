@@ -24,5 +24,12 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
             return (integer & testBit) > 0;
         }
+
+        public static int TurnOn(int integer, int bitPosition)
+        {
+            int testBit = 1 << bitPosition;
+
+            return (integer | testBit);
+        }
     }
 }

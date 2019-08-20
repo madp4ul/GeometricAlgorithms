@@ -34,11 +34,6 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingCubes
             {
                 EdgeValues[i] = new TripleEdge();
             }
-
-            //TODO
-            //1. Compute vertices for all edges
-            //2. store existing vertices in 1-dim array and put index into edge array
-            //3. make values in edge array findable
         }
 
         public void Compute(OperationProgressUpdater progressUpdater)

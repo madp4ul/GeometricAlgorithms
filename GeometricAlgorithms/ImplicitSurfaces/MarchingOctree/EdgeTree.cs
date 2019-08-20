@@ -22,7 +22,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
             SurfaceResult = new SurfaceResult();
 
-            Root = CreateNode(null, new Point(0, 0, 0), octree.Root);
+            Root = CreateNode(null, new OctreeOffset(0, 0, 0), octree.Root);
 
             //Do with bfs so that all nodes of higher level are created when creating a node of lower level
             Queue<EdgeTreeNode> nodeQueue = new Queue<EdgeTreeNode>();
@@ -36,7 +36,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             }
         }
 
-        private EdgeTreeNode CreateNode(EdgeTreeNode parent, Point parentOffset, ATreeNode octreeNode)
+        private EdgeTreeNode CreateNode(EdgeTreeBranch parent, OctreeOffset parentOffset, ATreeNode octreeNode)
         {
             if (octreeNode is OctreeBranch branch)
             {
@@ -72,7 +72,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                         {
                             var octreeChild = octreeBranch[x, y, z];
 
-                            var childEdgeNode = CreateNode(parent, new Point(x, y, z), octreeChild);
+                            var childEdgeNode = CreateNode(branch, new OctreeOffset(x, y, z), octreeChild);
 
                             branch.Children[x, y, z] = childEdgeNode;
                             queue.Enqueue(childEdgeNode);

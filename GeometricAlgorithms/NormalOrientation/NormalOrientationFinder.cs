@@ -84,7 +84,6 @@ namespace GeometricAlgorithms.NormalOrientation
             // try to set derivative to zero
             float derivativeNstDenominator = Vector3.Dot(directionDiff, directionDiff);
 
-            //TODO check if float inaccuracy could be or cause a problem
             if (derivativeNstDenominator != 0)
             {
 

@@ -12,35 +12,43 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         public FunctionValue Start;
         public FunctionValue End;
 
-        public float? InterpolationVsalue;
+        /// <summary>
+        /// if the edge is not completed no valid function values can be retrieved from it.
+        /// however the child edges still may be complete and can be used
+        /// </summary>
+        public bool IsComplete => Start != null && End != null;
+
+        /// <summary>
+        /// How far away the vertex is from the start. only has a value
+        /// if function values cross zero (surface) on this edge
+        /// </summary>
+        public float? InterpolationValue;
+
+        /// <summary>
+        /// Index of Vertex on this edge. only has a value
+        /// if function values cross zero (surface) on this edge
+        /// </summary>
         public int? VertexIndex;
 
         private Edge[] Children;
 
-        public readonly int Depth;
-
-        public Edge(FunctionValue start, FunctionValue end, int depth)
+        public Edge(FunctionValue start, FunctionValue end)
         {
             Start = start ?? throw new ArgumentNullException(nameof(start));
             End = end ?? throw new ArgumentNullException(nameof(end));
-            Depth = depth;
 
             Children = new Edge[2];
+
+            //TODO compute interpolation and add vertex to result
         }
 
         public Edge(Edge child0, Edge child1)
         {
-            if (child0.Depth != child1.Depth)
-            {
-                throw new ArgumentException("edges dont match");
-            }
-
             Children = new Edge[2]
             {
                 child0,
                 child1
             };
-            Depth = child0.Depth + 1;
 
             Start = child0.Start;
             End = child1.End;

@@ -31,7 +31,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             Index = index;
         }
 
-        public Dimension[] GetDirections()
+        public Dimension[] GetAxis()
         {
             if (!IsInXDirection)
             {
@@ -71,6 +71,13 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             EdgeIndex mirrored = (EdgeIndex)BitCalculator.ToggleBit((int)Index, bitPositionToToggle);
 
             return new EdgeOrientation(mirrored);
+        }
+
+        public bool IsPositive(Dimension dimension)
+        {
+            return (dimension == Dimension.X && IsXPositive)
+                || (dimension == Dimension.Y && IsYPositive)
+                || (dimension == Dimension.Z && IsZPositive);
         }
 
         public int GetArrayIndex()

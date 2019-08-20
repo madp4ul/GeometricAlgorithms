@@ -77,12 +77,6 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             return new HighlightedPointCloud(ContentProvider.PointEffect, xnaPoints, highlightColor.ToXna(), radius);
         }
 
-        public IDrawableMesh CreateSphereMesh(float radius)
-        {
-            //TODO
-            throw new NotImplementedException();
-        }
-
         public IDrawable CreateVectors(
             IEnumerable<Vector3> supportVectors,
             IEnumerable<Vector3> directionVectors,

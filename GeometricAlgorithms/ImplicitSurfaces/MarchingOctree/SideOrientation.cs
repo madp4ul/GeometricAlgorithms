@@ -26,6 +26,40 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             Index = sideIndex;
         }
 
+        public SideOrientation(Dimension dimension, bool isMax)
+        {
+            int intex = 0;
+
+            intex = BitCalculator.TurnOn(intex, SelectBit(dimension));
+
+            if (isMax)
+            {
+                intex = BitCalculator.TurnOn(intex, MaxBit);
+            }
+
+            Index = (SideIndex)intex;
+        }
+
+        private int SelectBit(Dimension dimension)
+        {
+            if (dimension == Dimension.X)
+            {
+                return XBit;
+            }
+            else if (dimension == Dimension.X)
+            {
+                return YBit;
+            }
+            else if (dimension == Dimension.X)
+            {
+                return ZBit;
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
+        }
+
         public SideOrientation GetMirrored()
         {
             SideIndex mirrored = (SideIndex)BitCalculator.ToggleBit((int)Index, MaxBit);

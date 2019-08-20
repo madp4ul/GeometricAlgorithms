@@ -9,7 +9,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 {
     class EdgeTreeLeaf : EdgeTreeNode
     {
-        public EdgeTreeLeaf(EdgeTreeNode parent, Point parentOffset, TreeLeaf leaf, SurfaceResult result)
+        public EdgeTreeLeaf(EdgeTreeBranch parent, OctreeOffset parentOffset, TreeLeaf leaf, SurfaceResult result)
             : base(parent, parentOffset, leaf)
         {
             //TODO get functionvalues or compute them
@@ -34,34 +34,34 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             //      and compute triangles at the end and put them into result
         }
 
-        public override Edge QueryChildrenEdge(EdgeOrientation edgeOrientation)
+        private FunctionValue FindFunctionValueInTree(FunctionValueOrientation functionValueOrientation)
+            => Parent.QueryFunctionValueForChild(functionValueOrientation, ParentOffset);
+
+        private Edge FindEdgeInTree(EdgeOrientation edgeOrientation)
+            => Parent.QueryEdgeForChild(edgeOrientation, ParentOffset);
+
+        private Side FindSideInTree(SideOrientation sideOrientation)
+            => Parent.QuerySideForChild(sideOrientation, ParentOffset);
+
+        public override Edge QueryEdgeForParent(EdgeOrientation edgeOrientation)
         {
-            throw new NotImplementedException();
+            int index = edgeOrientation.GetArrayIndex();
+
+            return Edges[index];
         }
 
-        public override FunctionValue QueryChildrenFunctionValue(FunctionValueOrientation functionValueOrientation)
+        public override FunctionValue QueryFunctionValueForParent(FunctionValueOrientation functionValueOrientation)
         {
-            throw new NotImplementedException();
+            int index = functionValueOrientation.GetArrayIndex();
+
+            return FunctionValues[index];
         }
 
-        public override Side QueryChildrenSide(SideOrientation sideOrientation)
+        public override Side QuerySideForParent(SideOrientation sideOrientation)
         {
-            throw new NotImplementedException();
-        }
+            int index = sideOrientation.GetArrayIndex();
 
-        public override Edge QueryParentsEdge(EdgeOrientation edgeOrientation, Point childOffset)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override FunctionValue QueryParentsFunctionValue(FunctionValueOrientation functionValueOrientation, Point childOffset)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Side QueryParentsSide(SideOrientation sideOrientation, Point childOffset)
-        {
-            throw new NotImplementedException();
+            return Sides[index];
         }
     }
 }

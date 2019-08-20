@@ -45,7 +45,7 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
 
         public void SaveToFile()
         {
-            //TODO
+            //TODO save mesh to file
         }
     }
 }
