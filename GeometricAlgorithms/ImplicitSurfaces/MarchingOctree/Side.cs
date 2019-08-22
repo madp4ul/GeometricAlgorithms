@@ -43,9 +43,22 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             Children = new Side[2, 2];
         }
 
+        /// <summary>
+        /// Create side from children. Children could be null. If all given children exist,
+        /// the parent side information can be calculated and the parent is complete
+        /// </summary>
+        /// <param name="dimension"></param>
+        /// <param name="child00"></param>
+        /// <param name="child01"></param>
+        /// <param name="child10"></param>
+        /// <param name="child11"></param>
+        /// <param name="result"></param>
         public Side(Dimension dimension, Side child00, Side child01, Side child10, Side child11)
         {
-            if (child00.Axis != dimension || child01.Axis != dimension || child10.Axis != dimension || child11.Axis != dimension)
+            if ((child00 != null && child00.Axis != dimension)
+                || (child01 != null && child01.Axis != dimension)
+                || (child10 != null && child10.Axis != dimension)
+                || (child11 != null && child11.Axis != dimension))
             {
                 throw new ArgumentException("Child sides dont belong to same side");
             }
@@ -58,6 +71,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                 {child10, child11 },
             };
 
+            //Try to create as much information as possible from known children
             Edge smallerDimMin = child00 != null && child01 != null ? new Edge(child00.Edges[0], child01.Edges[0]) : null;
             Edge smallerDimMax = child10 != null && child11 != null ? new Edge(child10.Edges[1], child11.Edges[1]) : null;
             Edge biggerDimMin = child00 != null && child10 != null ? new Edge(child00.Edges[2], child10.Edges[2]) : null;

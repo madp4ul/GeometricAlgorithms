@@ -9,49 +9,133 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 {
     class Edge
     {
-        public FunctionValue Start;
-        public FunctionValue End;
+        public FunctionValue Minimum;
+        public FunctionValue Maximum;
 
         /// <summary>
         /// if the edge is not completed no valid function values can be retrieved from it.
         /// however the child edges still may be complete and can be used
         /// </summary>
-        public bool IsComplete => Start != null && End != null;
+        public bool IsComplete => Minimum != null && Maximum != null;
 
         /// <summary>
         /// How far away the vertex is from the start. only has a value
         /// if function values cross zero (surface) on this edge
         /// </summary>
-        public float? InterpolationValue;
+        public readonly float? Interpolation;
 
         /// <summary>
         /// Index of Vertex on this edge. only has a value
         /// if function values cross zero (surface) on this edge
         /// </summary>
-        public int? VertexIndex;
+        public readonly int? VertexIndex;
 
-        private Edge[] Children;
+        private readonly Edge[] Children;
 
-        public Edge(FunctionValue start, FunctionValue end)
+        public Edge(FunctionValue start, FunctionValue end, SurfaceResult result)
+            : this(start, end)
         {
-            Start = start ?? throw new ArgumentNullException(nameof(start));
-            End = end ?? throw new ArgumentNullException(nameof(end));
+            if (IsComplete && Minimum.Value * Maximum.Value <= 0)
+            {
+                float absMinValue = Math.Abs(Minimum.Value);
+                float absMaxValue = Math.Abs(Maximum.Value);
 
-            Children = new Edge[2];
+                float valueSum = absMinValue + absMaxValue;
+                Interpolation = absMinValue / valueSum;
 
-            //TODO compute interpolation and add vertex to result
+                Vector3 vertex = Minimum.Position + (Maximum.Position - Minimum.Position) * Interpolation.Value;
+                VertexIndex = result.AddPosition(vertex);
+            }
         }
 
         public Edge(Edge child0, Edge child1)
+            : this(child0?.Minimum, child1?.Maximum)
         {
-            Children = new Edge[2]
-            {
-                child0,
-                child1
-            };
+            Children[0] = child0;
+            Children[1] = child1;
 
-            Start = child0.Start;
-            End = child1.End;
+            if (child0.Interpolation.HasValue && !child1.Interpolation.HasValue)
+            {
+                Interpolation = child0.Interpolation.Value / 2;
+                VertexIndex = child0.VertexIndex;
+            }
+            else if (!child0.Interpolation.HasValue && child1.Interpolation.HasValue)
+            {
+                Interpolation = 0.5f + child1.Interpolation.Value / 2;
+                VertexIndex = child1.VertexIndex;
+            }
+        }
+
+        /// <summary>
+        /// Only use from other constructor because it doesnt compute vertex
+        /// </summary>
+        /// <param name="start">min value or null</param>
+        /// <param name="end">max value or null</param>
+        private Edge(FunctionValue start, FunctionValue end)
+        {
+            Minimum = start;
+            Maximum = end;
+
+            Children = new Edge[2];
+        }
+
+        private Edge(FunctionValue start, FunctionValue end, float? interpolationValue, int? vertexIndex)
+            : this(start, end)
+        {
+            Interpolation = interpolationValue;
+            VertexIndex = vertexIndex;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="childIndex">0 or 1</param>
+        /// <returns></returns>
+        public Edge GetChild(int childIndex)
+        {
+            if (Children[childIndex] == null && IsComplete)
+            {
+                Vector3 middlePosition = Minimum.Position + (Maximum.Position - Minimum.Position) / 2;
+                float middleValue = Minimum.Value + (Maximum.Value - Minimum.Value) / 2;
+                FunctionValue middle = new FunctionValue(middlePosition, middleValue);
+
+                //Set both child edges because the same data needs to be calculated to create both of them
+                if (Interpolation.HasValue)
+                {
+                    if (Interpolation.Value > 0.5)
+                    {
+                        Children[0] = new Edge(Minimum, middle, null, null);
+                        Children[1] = new Edge(middle, Maximum, 2 * (Interpolation.Value - 0.5f), VertexIndex.Value);
+                    }
+                    else
+                    {
+                        Children[0] = new Edge(Minimum, middle, 2 * (Interpolation.Value), VertexIndex.Value);
+                        Children[1] = new Edge(middle, Maximum, null, null);
+                    }
+                }
+                else
+                {
+                    Children[0] = new Edge(Minimum, middle, null, null);
+                    Children[1] = new Edge(middle, Maximum, null, null);
+                }
+            }
+
+            return Children[childIndex];
+        }
+
+        public static Edge Merge(IEnumerable<Edge> edges)
+        {
+            var edge = edges.FirstOrDefault(e => e.IsComplete);
+
+            if (edge != null)
+            {
+                return edge;
+            }
+
+            Edge child0 = Merge(edges.Select(e => e.GetChild(0)).ToList());
+            Edge child1 = Merge(edges.Select(e => e.GetChild(1)).ToList());
+
+            return new Edge(child0, child1);
         }
     }
 }

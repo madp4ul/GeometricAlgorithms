@@ -38,7 +38,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             return value == 0 ? 1 : 0;
         }
 
-        public OctreeOffset SetDimension(Dimension dimension, int value)
+        public OctreeOffset SetValue(Dimension dimension, int value)
         {
             return new OctreeOffset(
                 dimension == Dimension.X ? value : X,
@@ -82,6 +82,49 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             }
         }
 
+        public int ExcludeDimensions(Dimension[] dimensions)
+        {
+            if (!dimensions.Contains(Dimension.X))
+            {
+                return X;
+            }
+            else if (!dimensions.Contains(Dimension.Y))
+            {
+                return Y;
+            }
+            else if (!dimensions.Contains(Dimension.Z))
+            {
+                return Z;
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
+        }
+
+        public IEnumerable<Dimension> GetDifferingDemensions(OctreeOffset other)
+        {
+            if (other.X != X)
+            {
+                yield return Dimension.X;
+            }
+            if (other.Y != Y)
+            {
+                yield return Dimension.Y;
+            }
+            if (other.Z != Z)
+            {
+                yield return Dimension.Z;
+            }
+        }
+
+        public bool HasOnlyDifferencesOnDimensions(Dimension[] dimensions, OctreeOffset other)
+        {
+            return (other.X != X && !dimensions.Contains(Dimension.X))
+                || (other.Y != Y && !dimensions.Contains(Dimension.Y))
+                || (other.Z != Z && !dimensions.Contains(Dimension.Z));
+        }
+
         public static OctreeOffset WithValueAtDimension(Dimension dimension, int valueAtDimension, int otherValue1, int othervalue2)
         {
             if (dimension == Dimension.X)
@@ -100,6 +143,39 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             {
                 throw new ArgumentException();
             }
+        }
+
+        public static OctreeOffset WithValuesAtDimension(
+            Dimension dimension1, int valueAtDimension1,
+            Dimension dimension2, int valueAtDimension2,
+            int otherValue)
+        {
+            if (dimension1 == dimension2)
+            {
+                throw new ArgumentException("cant set same dimension to two different values");
+            }
+
+            return new OctreeOffset(
+                dimension1 == Dimension.X ? valueAtDimension1 : (dimension2 == Dimension.X ? valueAtDimension2 : otherValue),
+                dimension1 == Dimension.Y ? valueAtDimension1 : (dimension2 == Dimension.Y ? valueAtDimension2 : otherValue),
+                dimension1 == Dimension.Z ? valueAtDimension1 : (dimension2 == Dimension.Z ? valueAtDimension2 : otherValue));
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is OctreeOffset offset &&
+                   X == offset.X &&
+                   Y == offset.Y &&
+                   Z == offset.Z;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = -307843816;
+            hashCode = hashCode * -1521134295 + X.GetHashCode();
+            hashCode = hashCode * -1521134295 + Y.GetHashCode();
+            hashCode = hashCode * -1521134295 + Z.GetHashCode();
+            return hashCode;
         }
     }
 }

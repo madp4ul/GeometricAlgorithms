@@ -12,6 +12,12 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         private readonly List<Vector3> Positions;
         private readonly List<Triangle> Faces;
 
+        public SurfaceResult()
+        {
+            Positions = new List<Vector3>();
+            Faces = new List<Triangle>();
+        }
+
         /// <summary>
         /// 
         /// </summary>

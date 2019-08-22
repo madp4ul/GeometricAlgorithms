@@ -49,6 +49,26 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             return new FunctionValueOrientation(mirrored);
         }
 
+        public bool IsMaximum(Dimension dimension)
+        {
+            if (dimension == Dimension.X)
+            {
+                return IsXMaximum;
+            }
+            else if (dimension == Dimension.Y)
+            {
+                return IsYMaximum;
+            }
+            else if (dimension == Dimension.Z)
+            {
+                return IsZMaximum;
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
+        }
+
         public int GetArrayIndex()
         {
             return GetArrayIndex(Index);
