@@ -141,5 +141,41 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                     throw new ArgumentException();
             }
         }
+
+        public static bool TryGetContainingOrientation(EdgeOrientation edge1, EdgeOrientation edge2, out SideOrientation sideOrientation)
+        {
+            var axis1 = edge1.GetAxis().Select(d => new Axis { Dimension = d, Positive = edge1.IsPositive(d) });
+            var axis2 = edge2.GetAxis().Select(d => new Axis { Dimension = d, Positive = edge1.IsPositive(d) });
+
+            var sideAxis = axis1.Union(axis2, new AxisComparer()).FirstOrDefault();
+
+            if (sideAxis != null)
+            {
+                sideOrientation = new SideOrientation(sideAxis.Dimension, sideAxis.Positive);
+                return true;
+            }
+            sideOrientation = new SideOrientation();
+            return false;
+        }
+
+        private class Axis
+        {
+            public Dimension Dimension;
+            public bool Positive;
+        }
+
+        private class AxisComparer : IEqualityComparer<Axis>
+        {
+            public bool Equals(Axis x, Axis y)
+            {
+                return x.Dimension == y.Dimension && x.Positive == y.Positive;
+            }
+
+            public int GetHashCode(Axis obj)
+            {
+                return (int)obj.Dimension;
+            }
+        }
+
     }
 }

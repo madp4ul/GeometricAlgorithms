@@ -95,6 +95,8 @@
     <Compile Include="ImplicitSurfaces\MarchingOctree\SideIndex.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\SideOrientation.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\SurfaceResult.cs" />
+    <Compile Include="ImplicitSurfaces\MarchingOctree\Tables.cs" />
+    <Compile Include="ImplicitSurfaces\MarchingOctree\TriangleEdge.cs" />
     <Compile Include="ImplicitSurfaces\ScalarProductSurface.cs" />
     <Compile Include="MeshQuerying\ATree.cs" />
     <Compile Include="MeshQuerying\ATreeBranch.cs" />

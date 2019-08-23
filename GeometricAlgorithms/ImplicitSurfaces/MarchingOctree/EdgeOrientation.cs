@@ -81,8 +81,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             var other = Dimensions.All.Except(axis).Single();
 
             return new FunctionValueOrientation(
-                axis[0], IsPositive(axis[0]), 
-                axis[1], IsPositive(axis[1]), 
+                axis[0], IsPositive(axis[0]),
+                axis[1], IsPositive(axis[1]),
                 other, valueIndex == 1);
         }
 

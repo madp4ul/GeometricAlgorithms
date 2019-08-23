@@ -13,8 +13,6 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         public EdgeTreeLeaf(EdgeTreeBranch parent, OctreeOffset parentOffset, TreeLeaf leaf, IImplicitSurface surface, SurfaceResult result)
             : base(parent, parentOffset, leaf)
         {
-            //TODO get functionvalues or compute them
-
             //1. query for sides and store them in cube if found
             //for each found side take its edges in side-space and convert their orientation to cube-space
             //and store them in the cube if edge not already there from a previously found side.
@@ -37,7 +35,65 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             //6. for each side that wasnt found yet, compute it from edges and store it
             ComputeMissingSides();
 
-            //7. Compute triangles at the end and put them into result
+            //7. TODO Compute triangles at the end and put them into result
+        }
+
+        private void ComputeTriangles(SurfaceResult result)
+        {
+            int cubeIndex = 0;
+
+            if (FunctionValues[0].Value < 0) cubeIndex |= 1;
+            if (FunctionValues[1].Value < 0) cubeIndex |= 2;
+            if (FunctionValues[2].Value < 0) cubeIndex |= 4;
+            if (FunctionValues[3].Value < 0) cubeIndex |= 8;
+            if (FunctionValues[4].Value < 0) cubeIndex |= 16;
+            if (FunctionValues[5].Value < 0) cubeIndex |= 32;
+            if (FunctionValues[6].Value < 0) cubeIndex |= 64;
+            if (FunctionValues[7].Value < 0) cubeIndex |= 128;
+
+            /* Cube is entirely in/out of the surface */
+            if (Tables.EdgeTable[cubeIndex] == 0)
+                return;
+
+            /* Create the triangle */
+            for (int i = 0; Tables.TriangleIndexTable[cubeIndex, i] != -1; i += 3)
+            {
+                int edgeIndex0 = Tables.TriangleIndexTable[cubeIndex, i];
+                int edgeIndex1 = Tables.TriangleIndexTable[cubeIndex, i + 1];
+                int edgeIndex2 = Tables.TriangleIndexTable[cubeIndex, i + 2];
+
+                AddTriangleToSides(edgeIndex0, edgeIndex1, edgeIndex2);
+
+                Triangle triangle = new Triangle(
+                    Edges[edgeIndex0].VertexIndex.Value,
+                    Edges[edgeIndex1].VertexIndex.Value,
+                    Edges[edgeIndex2].VertexIndex.Value
+                );
+
+                result.AddFace(triangle);
+            }
+        }
+
+        private void AddTriangleToSides(int edgeIndex0, int edgeIndex1, int edgeIndex2)
+        {
+            var orientation1 = new EdgeOrientation(EdgeOrientation.GetEdgeIndex(edgeIndex0));
+            var orientation2 = new EdgeOrientation(EdgeOrientation.GetEdgeIndex(edgeIndex0));
+            var orientation3 = new EdgeOrientation(EdgeOrientation.GetEdgeIndex(edgeIndex0));
+
+            void addTriangleEdge(EdgeOrientation edgeStart, EdgeOrientation edgeEnd)
+            {
+                if (SideOrientation.TryGetContainingOrientation(edgeStart, edgeEnd, out SideOrientation sideOrientation))
+                {
+                    Sides[sideOrientation.GetArrayIndex()].AddTriangleEdge(
+                        new TriangleEdge(
+                            Edges[edgeStart.GetArrayIndex()],
+                            Edges[edgeEnd.GetArrayIndex()]));
+                }
+            }
+
+            addTriangleEdge(orientation1, orientation2);
+            addTriangleEdge(orientation2, orientation3);
+            addTriangleEdge(orientation3, orientation1);
         }
 
         private void QueryForSides()

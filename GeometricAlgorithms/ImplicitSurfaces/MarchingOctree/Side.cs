@@ -21,6 +21,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
         private readonly Edge[] Edges;
 
+        private readonly List<TriangleEdge> TriangleEdges = new List<TriangleEdge>();
 
         /// <summary>
         /// Construct side from edges. Side has a main dimension which has to be
@@ -85,6 +86,11 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                 biggerDimMin,
                 biggerDimMax,
             };
+        }
+
+        public void AddTriangleEdge(TriangleEdge triangleEdge)
+        {
+            TriangleEdges.Add(triangleEdge);
         }
 
         /// <summary>

@@ -157,12 +157,54 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
         public static int GetArrayIndex(FunctionValueIndex index)
         {
-            return (int)index;
+            //map to match expectation in triangulation table
+            switch (index)
+            {
+                case FunctionValueIndex._000:
+                    return 0;
+                case FunctionValueIndex._001:
+                    return 3;
+                case FunctionValueIndex._010:
+                    return 4;
+                case FunctionValueIndex._011:
+                    return 7;
+                case FunctionValueIndex._100:
+                    return 1;
+                case FunctionValueIndex._101:
+                    return 2;
+                case FunctionValueIndex._110:
+                    return 5;
+                case FunctionValueIndex._111:
+                    return 6;
+                default:
+                    throw new ArgumentException();
+            }
         }
 
         public static FunctionValueIndex GetFunctionValueIndex(int index)
         {
-            return (FunctionValueIndex)index;
+            //map to match expectation in triangulation table
+            switch (index)
+            {
+                case 0:
+                    return FunctionValueIndex._000;
+                case 1:
+                    return FunctionValueIndex._100;
+                case 2:
+                    return FunctionValueIndex._101;
+                case 3:
+                    return FunctionValueIndex._001;
+                case 4:
+                    return FunctionValueIndex._010;
+                case 5:
+                    return FunctionValueIndex._110;
+                case 6:
+                    return FunctionValueIndex._111;
+                case 7:
+                    return FunctionValueIndex._011;
+                default:
+                    throw new ArgumentException();
+            }
         }
     }
 }
