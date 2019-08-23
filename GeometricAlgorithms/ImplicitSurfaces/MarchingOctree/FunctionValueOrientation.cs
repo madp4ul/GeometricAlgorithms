@@ -49,6 +49,22 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             return new FunctionValueOrientation(mirrored);
         }
 
+        public Dimension[] GetInsideDimensions(OctreeOffset offset)
+        {
+            var self = this;
+            return new Dimension[] { Dimension.X, Dimension.Y, Dimension.Z }
+                 .Where(axis => (self.IsMaximum(axis) ? 0 : 1) == offset.GetValue(axis))
+                 .ToArray();
+        }
+
+        public Dimension[] GetOutsideDimensions(OctreeOffset offset)
+        {
+            var self = this;
+            return new Dimension[] { Dimension.X, Dimension.Y, Dimension.Z }
+                 .Where(axis => (self.IsMaximum(axis) ? 1 : 0) == offset.GetValue(axis))
+                 .ToArray();
+        }
+
         public bool IsMaximum(Dimension dimension)
         {
             if (dimension == Dimension.X)

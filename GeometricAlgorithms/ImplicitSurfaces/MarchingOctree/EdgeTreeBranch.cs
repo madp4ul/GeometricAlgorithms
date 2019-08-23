@@ -33,44 +33,152 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                 return FunctionValues[index];
             }
 
-            int insideAxis = new Dimension[] { Dimension.X, Dimension.Y, Dimension.Z }
-                .Select(axis => (functionValueOrientation.IsMaximum(axis) ? 0 : 1) == childOffset.GetValue(axis))
-                .Where(axisInside => axisInside)
-                .Count();
+            Dimension[] insideAxis = functionValueOrientation.GetInsideDimensions(childOffset);
 
             FunctionValue result;
 
-            if (insideAxis == 3)
+            if (insideAxis.Length == 3)
             {
-                //functionvalue is in the middle of children
 
-                result = this.Where(otherChild => !otherChild.ParentOffset.Equals(childOffset))
-                     .Select(otherChild =>
-                     {
-                         var valueOrientationInOtherChild = functionValueOrientation;
-
-                         foreach (Dimension dimension in childOffset.GetDifferingDemensions(otherChild.ParentOffset))
-                         {
-                             valueOrientationInOtherChild = valueOrientationInOtherChild.GetMirrored(dimension);
-                         }
-
-                         return otherChild.QueryFunctionValueForParent(valueOrientationInOtherChild);
-                     })
-                     .FirstOrDefault();
+                result = QueryInsideFunctionValueForChild(functionValueOrientation, childOffset);
             }
-            else if (insideAxis == 2)
+            else if (insideAxis.Length == 2)
             {
-                //function value is in middle of outside area
-
-
-
+                result = QueryOutsideAreaFunctionValueForChild(functionValueOrientation, childOffset, insideAxis);
+            }
+            else if (insideAxis.Length == 1)
+            {
+                result = QueryFunctionValueOnEdgeForChild(functionValueOrientation, childOffset, insideAxis);
+            }
+            else
+            {
+                result = Parent.QueryFunctionValueForChild(functionValueOrientation, ParentOffset);
             }
 
+            if (result != null)
+            {
+                FunctionValues[index] = result;
+            }
+
+            return result;
+        }
+
+        private FunctionValue QueryFunctionValueOnEdgeForChild(
+            FunctionValueOrientation functionValueOrientation,
+            OctreeOffset childOffset,
+            Dimension[] insideAxis)
+        {
+            FunctionValueOrientation mirrored = functionValueOrientation.GetMirrored(insideAxis[0]);
+            var mirroredChildOffset = childOffset.ToggleDimension(insideAxis[0]);
+            FunctionValue fromMirroredChild = this[mirroredChildOffset]?.QueryFunctionValueForParent(mirrored);
+
+            if (fromMirroredChild != null)
+            {
+                return fromMirroredChild;
+            }
+
+            Dimension[] outsideDimension = functionValueOrientation.GetOutsideDimensions(childOffset);
+
+            EdgeOrientation edgeOrientation = new EdgeOrientation(
+               dim1: outsideDimension[0],
+               dim1Positive: functionValueOrientation.IsMaximum(outsideDimension[0]),
+               dim2: outsideDimension[1],
+               dim2Positive: functionValueOrientation.IsMaximum(outsideDimension[1]));
+
+            Edge parentEdge = Parent.QueryEdgeForChild(edgeOrientation, ParentOffset);
+
+            if (parentEdge != null)
+            {
+                return parentEdge.GetChild(0)?.Maximum
+                    ?? parentEdge.GetChild(1).Minimum;
+            }
+
+            return null;
+        }
+
+        private FunctionValue QueryInsideFunctionValueForChild(
+            FunctionValueOrientation functionValueOrientation,
+            OctreeOffset childOffset)
+        {
+            //functionvalue is in the middle of children
+            return this.Where(otherChild => !otherChild.ParentOffset.Equals(childOffset))
+              .Select(otherChild =>
+              {
+                  var valueOrientationInOtherChild = functionValueOrientation;
+
+                  foreach (Dimension dimension in childOffset.GetDifferingDemensions(otherChild.ParentOffset))
+                  {
+                      valueOrientationInOtherChild = valueOrientationInOtherChild.GetMirrored(dimension);
+                  }
+
+                  return otherChild.QueryFunctionValueForParent(valueOrientationInOtherChild);
+              })
+              .FirstOrDefault();
+        }
+
+        private FunctionValue QueryOutsideAreaFunctionValueForChild(
+            FunctionValueOrientation functionValueOrientation,
+            OctreeOffset childOffset,
+            Dimension[] insideAxis)
+        {
+            //function value is in middle of outside area
+            Dimension outsideAxis = functionValueOrientation.GetOutsideDimensions(childOffset)[0];
+            bool outsideAtMaximum = functionValueOrientation.IsMaximum(outsideAxis);
+
+            SideOrientation sideOrientation = new SideOrientation(outsideAxis, outsideAtMaximum);
+            Side parentSide = Parent.QuerySideForChild(sideOrientation, ParentOffset);
+
+            for (int a = 0; a < 2; a++)
+            {
+                for (int b = 0; b < 2; b++)
+                {
+                    Side childSide = parentSide.GetChildSide(a, b);
+
+                    if (childSide == null)
+                    {
+                        continue;
+                    }
+
+                    FunctionValue value = getValue(a, b) ?? getValue(b, a);
+
+                    if (value != null)
+                    {
+                        return value;
+                    }
+
+                    FunctionValue getValue(int indexOfOrientedDimension, int indexOfUnOrientedDimension)
+                    {
+                        EdgeOrientation orientationOnChild = new EdgeOrientation(
+                            dim1: outsideAxis,
+                            dim1Positive: outsideAtMaximum,
+                            dim2: insideAxis[indexOfOrientedDimension],
+                            dim2Positive: indexOfOrientedDimension == 0);
+
+                        Edge childEdge = childSide.GetEdge(orientationOnChild);
+
+                        if (childEdge == null)
+                        {
+                            return null;
+                        }
+
+                        return indexOfUnOrientedDimension == 0
+                            ? childEdge.Maximum
+                            : childEdge.Minimum;
+                    }
+                }
+            }
+
+            return null;
         }
 
         public override FunctionValue QueryFunctionValueForParent(FunctionValueOrientation functionValueOrientation)
         {
-            throw new NotImplementedException();
+            var offset = new OctreeOffset(
+                functionValueOrientation.IsXMaximum ? 1 : 0,
+                functionValueOrientation.IsYMaximum ? 1 : 0,
+                functionValueOrientation.IsZMaximum ? 1 : 0);
+
+            return this[offset]?.QueryFunctionValueForParent(functionValueOrientation);
         }
 
         public Edge QueryEdgeForChild(EdgeOrientation edgeOrientation, OctreeOffset childOffset)
@@ -132,7 +240,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             OctreeOffset mirroredChildOffset = childOffset.ToggleDimension(dimensionToMirror);
 
             var mirroredEdgeOrientation = edgeOrientation.GetMirrored(dimensionToMirror);
-            Edge mirroredEdge = this[mirroredChildOffset].QueryEdgeForParent(mirroredEdgeOrientation);
+            Edge mirroredEdge = this[mirroredChildOffset]?.QueryEdgeForParent(mirroredEdgeOrientation);
 
             if (mirroredEdge.IsComplete)
             {
@@ -158,7 +266,9 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         private Edge QueryInsideEdgeForChild(EdgeOrientation edgeOrientation, OctreeOffset childOffset, Dimension[] edgeAxis)
         {
             //only query 3 children that share the edge and merge the edges if incomplete to get the best result.
-            var neighbourEdges = this.Where(child => !childOffset.Equals(child.ParentOffset)
+            var neighbourEdges = this.Where(child =>
+                    child != null
+                    && !childOffset.Equals(child.ParentOffset)
                     && childOffset.HasOnlyDifferencesOnDimensions(edgeAxis, child.ParentOffset))
                  .Select(edgeSharingChild =>
                  {
@@ -214,8 +324,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                    valueAtDimension2: dimensionValues[1],
                    otherValue: 1);
 
-                Edge minChild = this[minOffset].QueryEdgeForParent(edgeOrientation);
-                Edge maxChild = this[maxOffset].QueryEdgeForParent(edgeOrientation);
+                Edge minChild = this[minOffset]?.QueryEdgeForParent(edgeOrientation);
+                Edge maxChild = this[maxOffset]?.QueryEdgeForParent(edgeOrientation);
 
                 var edge = new Edge(minChild, maxChild);
 

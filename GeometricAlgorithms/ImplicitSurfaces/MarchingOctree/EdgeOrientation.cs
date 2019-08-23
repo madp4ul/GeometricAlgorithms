@@ -10,11 +10,11 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
     class EdgeOrientation
     {
         private const int XDirectionBitPosition = 0;
-        private const int XPositiveBitPosition = 1;
+        private const int XPositiveBitPosition = 1 + XDirectionBitPosition;
         private const int YDirectionBitPosition = 2;
-        private const int YPositiveBitPosition = 3;
+        private const int YPositiveBitPosition = 1 + YDirectionBitPosition;
         private const int ZDirectionBitPosition = 4;
-        private const int ZPositiveBitPosition = 5;
+        private const int ZPositiveBitPosition = 1 + ZDirectionBitPosition;
 
         public readonly EdgeIndex Index;
         public bool IsInXDirection => BitCalculator.IsOn((int)Index, XDirectionBitPosition);
@@ -29,6 +29,50 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         public EdgeOrientation(EdgeIndex index)
         {
             Index = index;
+        }
+
+        public EdgeOrientation(Dimension dim1, bool dim1Positive, Dimension dim2, bool dim2Positive)
+        {
+            int intex = 0;
+
+            intex = BitCalculator.TurnOn(intex, SelectInDirectionBit(dim1));
+            intex = BitCalculator.TurnOn(intex, SelectInDirectionBit(dim2));
+
+            if (dim1Positive)
+            {
+                intex = BitCalculator.TurnOn(intex, SelectIsPositiveBit(dim1));
+            }
+            if (dim2Positive)
+            {
+                intex = BitCalculator.TurnOn(intex, SelectIsPositiveBit(dim2));
+            }
+
+            Index = (EdgeIndex)intex;
+        }
+
+        private int SelectInDirectionBit(Dimension dimension)
+        {
+            if (dimension == Dimension.X)
+            {
+                return XDirectionBitPosition;
+            }
+            else if (dimension == Dimension.X)
+            {
+                return YDirectionBitPosition;
+            }
+            else if (dimension == Dimension.X)
+            {
+                return ZDirectionBitPosition;
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
+        }
+
+        private int SelectIsPositiveBit(Dimension dimension)
+        {
+            return SelectInDirectionBit(dimension) + 1;
         }
 
         public Dimension[] GetAxis()

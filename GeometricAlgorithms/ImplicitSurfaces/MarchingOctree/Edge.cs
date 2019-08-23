@@ -54,15 +54,18 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             Children[0] = child0;
             Children[1] = child1;
 
-            if (child0.Interpolation.HasValue && !child1.Interpolation.HasValue)
+            if (child0 != null && child1 != null)
             {
-                Interpolation = child0.Interpolation.Value / 2;
-                VertexIndex = child0.VertexIndex;
-            }
-            else if (!child0.Interpolation.HasValue && child1.Interpolation.HasValue)
-            {
-                Interpolation = 0.5f + child1.Interpolation.Value / 2;
-                VertexIndex = child1.VertexIndex;
+                if (child0.Interpolation.HasValue && !child1.Interpolation.HasValue)
+                {
+                    Interpolation = child0.Interpolation.Value / 2;
+                    VertexIndex = child0.VertexIndex;
+                }
+                else if (!child0.Interpolation.HasValue && child1.Interpolation.HasValue)
+                {
+                    Interpolation = 0.5f + child1.Interpolation.Value / 2;
+                    VertexIndex = child1.VertexIndex;
+                }
             }
         }
 
