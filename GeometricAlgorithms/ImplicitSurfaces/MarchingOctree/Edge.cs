@@ -126,6 +126,12 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             return Children[childIndex];
         }
 
+        public IEnumerable<OrientedFunctionValue> GetFunctionValues(EdgeOrientation orientation)
+        {
+            yield return new OrientedFunctionValue(Minimum, orientation.GetValueOrientation(0));
+            yield return new OrientedFunctionValue(Maximum, orientation.GetValueOrientation(1));
+        }
+
         public static Edge Merge(IEnumerable<Edge> edges)
         {
             var edge = edges.FirstOrDefault(e => e.IsComplete);

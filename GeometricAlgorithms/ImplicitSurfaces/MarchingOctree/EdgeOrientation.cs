@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 {
-    class EdgeOrientation
+    struct EdgeOrientation
     {
         private const int XDirectionBitPosition = 0;
         private const int XPositiveBitPosition = 1 + XDirectionBitPosition;
@@ -50,7 +50,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             Index = (EdgeIndex)intex;
         }
 
-        private int SelectInDirectionBit(Dimension dimension)
+        private static int SelectInDirectionBit(Dimension dimension)
         {
             if (dimension == Dimension.X)
             {
@@ -70,9 +70,20 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             }
         }
 
-        private int SelectIsPositiveBit(Dimension dimension)
+        private static int SelectIsPositiveBit(Dimension dimension)
         {
             return SelectInDirectionBit(dimension) + 1;
+        }
+
+        public FunctionValueOrientation GetValueOrientation(int valueIndex)
+        {
+            var axis = GetAxis();
+            var other = Dimensions.All.Except(axis).Single();
+
+            return new FunctionValueOrientation(
+                axis[0], IsPositive(axis[0]), 
+                axis[1], IsPositive(axis[1]), 
+                other, valueIndex == 1);
         }
 
         public Dimension[] GetAxis()
@@ -161,22 +172,38 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                     throw new ArgumentException();
             }
         }
-    }
 
-    struct EdgeDirection
-    {
-        public readonly bool IsInDirection;
-        public readonly bool Negative;
-
-        public EdgeDirection(bool isInDirection, bool negative)
+        public static EdgeIndex GetEdgeIndex(int index)
         {
-            if (!isInDirection && negative)
+            switch (index)
             {
-                throw new ArgumentException("Can not be negative without being moved in direction");
+                case 0:
+                    return EdgeIndex._000x;
+                case 1:
+                    return EdgeIndex._100z;
+                case 2:
+                    return EdgeIndex._001x;
+                case 3:
+                    return EdgeIndex._000z;
+                case 4:
+                    return EdgeIndex._010x;
+                case 5:
+                    return EdgeIndex._110z;
+                case 6:
+                    return EdgeIndex._011x;
+                case 7:
+                    return EdgeIndex._010z;
+                case 8:
+                    return EdgeIndex._000y;
+                case 9:
+                    return EdgeIndex._100y;
+                case 10:
+                    return EdgeIndex._101y;
+                case 11:
+                    return EdgeIndex._001y;
+                default:
+                    throw new ArgumentException();
             }
-
-            IsInDirection = isInDirection;
-            Negative = negative;
         }
     }
 }

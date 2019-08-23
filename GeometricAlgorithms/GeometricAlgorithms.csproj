@@ -83,6 +83,8 @@
     <Compile Include="ImplicitSurfaces\MarchingOctree\FunctionValue.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\FunctionValueIndex.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\FunctionValueOrientation.cs" />
+    <Compile Include="ImplicitSurfaces\MarchingOctree\OrientedEdge.cs" />
+    <Compile Include="ImplicitSurfaces\MarchingOctree\OrientedFunctionValue.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\SideOffset.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\OctreeOffset.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\Side.cs" />

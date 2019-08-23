@@ -13,4 +13,9 @@ namespace GeometricAlgorithms.Domain
         Z = 2,
         Count = 3
     }
+
+    public static class Dimensions
+    {
+        public static readonly Dimension[] All = new Dimension[] { Dimension.X, Dimension.Y, Dimension.Y };
+    }
 }

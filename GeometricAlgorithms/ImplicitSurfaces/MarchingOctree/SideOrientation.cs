@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 {
-    class SideOrientation
+    struct SideOrientation
     {
         private const int XBit = 0;
         private const int YBit = 1;
@@ -40,7 +40,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             Index = (SideIndex)intex;
         }
 
-        private int SelectBit(Dimension dimension)
+        private static int SelectBit(Dimension dimension)
         {
             if (dimension == Dimension.X)
             {
@@ -108,6 +108,35 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                     return 4;
                 case SideIndex.maxZ:
                     return 5;
+                default:
+                    throw new ArgumentException();
+            }
+        }
+
+        public EdgeOrientation GetEdgeOrientation(int axisIndex, int minmax)
+        {
+            Dimension sideAxis = GetDirection();
+            Dimension[] rotationAxis = Dimensions.All.Where(d => d != sideAxis).ToArray();
+
+            return new EdgeOrientation(sideAxis, IsMax, rotationAxis[axisIndex], minmax == 1);
+        }
+
+        public static SideIndex GetSideIndex(int arrayIndex)
+        {
+            switch (arrayIndex)
+            {
+                case 0:
+                    return SideIndex.minX;
+                case 1:
+                    return SideIndex.maxX;
+                case 2:
+                    return SideIndex.minY;
+                case 3:
+                    return SideIndex.maxY;
+                case 4:
+                    return SideIndex.minZ;
+                case 5:
+                    return SideIndex.maxZ;
                 default:
                     throw new ArgumentException();
             }

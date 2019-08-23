@@ -123,6 +123,20 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             return Edges[index];
         }
 
+        public IEnumerable<OrientedEdge> GetEdges(SideOrientation orientation)
+        {
+            for (int axisIndex = 0; axisIndex < 2; axisIndex++)
+            {
+                for (int minmax = 0; minmax < 2; minmax++)
+                {
+                    EdgeOrientation edgeOrientation = orientation.GetEdgeOrientation(axisIndex, minmax);
+                    Edge edge = GetEdge(edgeOrientation);
+
+                    yield return new OrientedEdge(edge, edgeOrientation);
+                }
+            }
+        }
+
         public Side GetChildSide(SideOffset dimensionsWithoutSideAxis)
         {
             return GetChildSide(dimensionsWithoutSideAxis.A, dimensionsWithoutSideAxis.B);

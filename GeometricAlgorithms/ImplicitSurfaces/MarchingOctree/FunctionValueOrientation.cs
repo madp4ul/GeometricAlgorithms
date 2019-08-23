@@ -23,6 +23,71 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             Index = index;
         }
 
+        public FunctionValueOrientation(Dimension dim1, bool dim1Max, Dimension dim2, bool dim2Max, Dimension dim3, bool dim3Max)
+        {
+            int intex = 0;
+
+            if (dim1Max)
+            {
+                intex = BitCalculator.TurnOn(intex, SelectBitIndex(dim1));
+            }
+            if (dim2Max)
+            {
+                intex = BitCalculator.TurnOn(intex, SelectBitIndex(dim2));
+            }
+            if (dim3Max)
+            {
+                intex = BitCalculator.TurnOn(intex, SelectBitIndex(dim3));
+            }
+
+            Index = (FunctionValueIndex)intex;
+        }
+
+        private static int SelectBitIndex(Dimension dimension)
+        {
+            if (dimension == Dimension.X)
+            {
+                return XMaxPosition;
+            }
+            else if (dimension == Dimension.Y)
+            {
+                return YMaxPosition;
+            }
+            else if (dimension == Dimension.Z)
+            {
+                return ZMaxPosition;
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
+        }
+
+        public Vector3 GetCorner(BoundingBox box)
+        {
+            switch (Index)
+            {
+                case FunctionValueIndex._000:
+                    return box.Minimum;
+                case FunctionValueIndex._001:
+                    return box.Minimum + new Vector3(0, 0, box.Maximum.Z - box.Minimum.Z);
+                case FunctionValueIndex._010:
+                    return box.Minimum + new Vector3(0, box.Maximum.Y - box.Minimum.Y, 0);
+                case FunctionValueIndex._011:
+                    return box.Minimum + new Vector3(0, box.Maximum.Y - box.Minimum.Y, box.Maximum.Z - box.Minimum.Z);
+                case FunctionValueIndex._100:
+                    return box.Minimum + new Vector3(box.Maximum.X - box.Minimum.X, 0, 0);
+                case FunctionValueIndex._101:
+                    return box.Minimum + new Vector3(box.Maximum.X - box.Minimum.X, 0, box.Maximum.Z - box.Minimum.Z);
+                case FunctionValueIndex._110:
+                    return box.Minimum + new Vector3(box.Maximum.X - box.Minimum.X, box.Maximum.Y - box.Minimum.Y, 0);
+                case FunctionValueIndex._111:
+                    return box.Maximum;
+                default:
+                    throw new ArgumentException();
+            }
+        }
+
         public FunctionValueOrientation GetMirrored(Dimension dimension)
         {
             int togglePosition;
@@ -93,6 +158,11 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         public static int GetArrayIndex(FunctionValueIndex index)
         {
             return (int)index;
+        }
+
+        public static FunctionValueIndex GetFunctionValueIndex(int index)
+        {
+            return (FunctionValueIndex)index;
         }
     }
 }
