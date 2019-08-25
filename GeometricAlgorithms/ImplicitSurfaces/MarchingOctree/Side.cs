@@ -15,13 +15,18 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         /// Side is complete if all edges are there. If the side is incomplete
         /// its data cant be used but it still may contain complete children.
         /// </summary>
-        public bool IsComplete => Edges.Any(e => e == null);
+        public bool IsComplete => Edges.Any(e => e == null || !e.IsComplete);
 
         private readonly Side[,] Children;
 
         private readonly Edge[] Edges;
+        public Vector3 Middle => Edges[0].Minimum.Position
+            + (Edges[0].Maximum.Position - Edges[0].Minimum.Position) / 2
+            + (Edges[3].Maximum.Position - Edges[3].Minimum.Position) / 2;
+
 
         private readonly List<TriangleEdge> TriangleEdges = new List<TriangleEdge>();
+        private readonly SurfaceResult Result;
 
         /// <summary>
         /// Construct side from edges. Side has a main dimension which has to be
@@ -31,9 +36,10 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         /// <param name="smallerDimMax">Edge where the second dimension is the smaller of the two left dimensions and it is positive</param>
         /// <param name="biggerDimMin">Edge where the second dimension is the bigger of the two left dimensions and it is negative</param>
         /// <param name="biggerDimMax">Edge where the second dimension is the bigger of the two left dimensions and it is positive</param>
-        public Side(Dimension dimension, Edge smallerDimMin, Edge smallerDimMax, Edge biggerDimMin, Edge biggerDimMax)
+        public Side(Dimension dimension, Edge smallerDimMin, Edge smallerDimMax, Edge biggerDimMin, Edge biggerDimMax, SurfaceResult result)
         {
             Axis = dimension;
+            Result = result;
             Edges = new Edge[4]
             {
                 smallerDimMin,
@@ -154,12 +160,145 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             //only possible if parent data is complete
             if (Children[smallerDimIndex, biggerDimIndex] == null && IsComplete)
             {
-                //TODO add value approximated child
+                //Child will only be approximated if the side was created from 4 edges
+                Children[smallerDimIndex, biggerDimIndex] = ApproximateChildSide(smallerDimIndex, biggerDimIndex);
             }
 
             return Children[smallerDimIndex, biggerDimIndex];
         }
 
+        private Side ApproximateChildSide(int smallerDimIndex, int biggerDimIndex)
+        {
+            if (Children[smallerDimIndex, biggerDimIndex] == null)
+            {
+                Side side = null;
 
+                if (smallerDimIndex == 0 && biggerDimIndex == 0)
+                {
+                    side = new Side(Axis,
+                        smallerDimMin: Edges[0].GetChild(0),
+                        smallerDimMax: GetChildEdge(SideEdgeIndex.BiggerDimMin),
+                        biggerDimMin: Edges[2].GetChild(0),
+                        biggerDimMax: GetChildEdge(SideEdgeIndex.SmallerDimMin),
+                        result: Result);
+                }
+                else if (smallerDimIndex == 1 && biggerDimIndex == 0)
+                {
+                    side = new Side(Axis,
+                        smallerDimMin: GetChildEdge(SideEdgeIndex.BiggerDimMin),
+                        smallerDimMax: Edges[1].GetChild(0),
+                        biggerDimMin: Edges[2].GetChild(1),
+                        biggerDimMax: GetChildEdge(SideEdgeIndex.SmallerDimMax),
+                        result: Result);
+
+                }
+                else if (smallerDimIndex == 0 && biggerDimIndex == 1)
+                {
+                    side = new Side(Axis,
+                        smallerDimMin: Edges[0].GetChild(1),
+                        smallerDimMax: GetChildEdge(SideEdgeIndex.BiggerDimMax),
+                        biggerDimMin: GetChildEdge(SideEdgeIndex.SmallerDimMin),
+                        biggerDimMax: Edges[3].GetChild(0),
+                        result: Result);
+                }
+                else if (smallerDimIndex == 1 && biggerDimIndex == 1)
+                {
+                    side = new Side(Axis,
+                        smallerDimMin: GetChildEdge(SideEdgeIndex.BiggerDimMax),
+                        smallerDimMax: Edges[1].GetChild(1),
+                        biggerDimMin: GetChildEdge(SideEdgeIndex.SmallerDimMax),
+                        biggerDimMax: Edges[3].GetChild(1),
+                        result: Result);
+                }
+
+                //although the triangle edge wont belong to edges that are part of the child sides
+                //they will be able to compute intersections with their child edges
+                side.TriangleEdges.AddRange(this.TriangleEdges);
+
+                Children[smallerDimIndex, biggerDimIndex] = side;
+            }
+
+            return Children[smallerDimIndex, biggerDimIndex];
+
+
+        }
+
+        private FunctionValue MiddleValue => new FunctionValue(Middle, Edges.Average(e => e.Minimum.Value));
+        private readonly Edge[] MiddleEdges = new Edge[4];
+        private Edge GetChildEdge(SideEdgeIndex index)
+        {
+            if (MiddleEdges[(int)index] == null)
+            {
+                Edge edge = null;
+
+                if (index == SideEdgeIndex.SmallerDimMin)
+                {
+                    edge = ApproximateEdge(Edges[(int)SideEdgeIndex.SmallerDimMin].MiddleValue, MiddleValue);
+                }
+                else if (index == SideEdgeIndex.SmallerDimMax)
+                {
+                    edge = ApproximateEdge(MiddleValue, Edges[(int)SideEdgeIndex.SmallerDimMax].MiddleValue);
+                }
+                else if (index == SideEdgeIndex.BiggerDimMin)
+                {
+                    edge = ApproximateEdge(Edges[(int)SideEdgeIndex.BiggerDimMin].MiddleValue, MiddleValue);
+                }
+                else if (index == SideEdgeIndex.BiggerDimMax)
+                {
+                    edge = ApproximateEdge(MiddleValue, Edges[(int)SideEdgeIndex.BiggerDimMax].MiddleValue);
+                }
+
+                MiddleEdges[(int)index] = edge;
+            }
+
+            return MiddleEdges[(int)index];
+        }
+
+        private Edge ApproximateEdge(FunctionValue edgeStart, FunctionValue edgeEnd)
+        {
+            float? interpolationValue = TriangleEdgeIntersection(edgeStart.Position, edgeEnd.Position);
+
+            if (interpolationValue.HasValue)
+            {
+                var lazy = new Lazy<int>(() => Result.AddPosition(edgeStart.Position + (edgeEnd.Position - edgeStart.Position) * interpolationValue.Value));
+                return new Edge(edgeStart, edgeEnd, interpolationValue, lazy);
+            }
+            else
+            {
+                return new Edge(edgeStart, edgeEnd, null, null);
+            }
+        }
+
+        private float? TriangleEdgeIntersection(Vector3 edgeStart, Vector3 edgeEnd)
+        {
+            Line2 edgeLine = Line2.FromPointToPoint(edgeStart.WithoutDimension(Axis), edgeEnd.WithoutDimension(Axis));
+
+            float? interpolationValue = null;
+            foreach (var triangleEdge in TriangleEdges)
+            {
+                Line2 triangleLine = Line2.FromPointToPoint(
+                    triangleEdge.Edge1.VertexPosition.WithoutDimension(Axis),
+                    triangleEdge.Edge2.VertexPosition.WithoutDimension(Axis));
+
+                var intersection = Line2.Intersect(edgeLine, triangleLine);
+                if (intersection.HasValue)
+                {
+                    float newInterpolationValue = intersection.Value.DistanceFromLine1Position * edgeLine.Direction.Length;
+                    interpolationValue = !interpolationValue.HasValue
+                        ? newInterpolationValue
+                        : default;
+                }
+            }
+
+            return interpolationValue;
+        }
+
+        private enum SideEdgeIndex : int
+        {
+            SmallerDimMin = 0,
+            SmallerDimMax = 1,
+            BiggerDimMin = 2,
+            BiggerDimMax = 3
+        }
     }
 }

@@ -33,9 +33,10 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             ComputeMissingEdges(result);
 
             //6. for each side that wasnt found yet, compute it from edges and store it
-            ComputeMissingSides();
+            ComputeMissingSides(result);
 
             //7. TODO Compute triangles at the end and put them into result
+            ComputeTriangles(result);
         }
 
         private void ComputeTriangles(SurfaceResult result)
@@ -65,9 +66,9 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                 AddTriangleToSides(edgeIndex0, edgeIndex1, edgeIndex2);
 
                 Triangle triangle = new Triangle(
-                    Edges[edgeIndex0].VertexIndex.Value,
-                    Edges[edgeIndex1].VertexIndex.Value,
-                    Edges[edgeIndex2].VertexIndex.Value
+                    Edges[edgeIndex0].GetVertexIndex(),
+                    Edges[edgeIndex1].GetVertexIndex(),
+                    Edges[edgeIndex2].GetVertexIndex()
                 );
 
                 result.AddFace(triangle);
@@ -77,8 +78,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         private void AddTriangleToSides(int edgeIndex0, int edgeIndex1, int edgeIndex2)
         {
             var orientation1 = new EdgeOrientation(EdgeOrientation.GetEdgeIndex(edgeIndex0));
-            var orientation2 = new EdgeOrientation(EdgeOrientation.GetEdgeIndex(edgeIndex0));
-            var orientation3 = new EdgeOrientation(EdgeOrientation.GetEdgeIndex(edgeIndex0));
+            var orientation2 = new EdgeOrientation(EdgeOrientation.GetEdgeIndex(edgeIndex1));
+            var orientation3 = new EdgeOrientation(EdgeOrientation.GetEdgeIndex(edgeIndex2));
 
             void addTriangleEdge(EdgeOrientation edgeStart, EdgeOrientation edgeEnd)
             {
@@ -195,7 +196,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             }
         }
 
-        private void ComputeMissingSides()
+        private void ComputeMissingSides(SurfaceResult result)
         {
             for (int i = 0; i < Sides.Length; i++)
             {
@@ -209,7 +210,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                          smallerDimMin: getEdge(0, 0),
                          smallerDimMax: getEdge(0, 1),
                          biggerDimMin: getEdge(1, 0),
-                         biggerDimMax: getEdge(1, 1));
+                         biggerDimMax: getEdge(1, 1),
+                         result: result);
 
                     Sides[i] = side;
                 }
@@ -240,15 +242,6 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                 FunctionValues[valueIndex] = orientedFunctionValue.FunctionValue;
             }
         }
-
-        private FunctionValue FindFunctionValueInTree(FunctionValueOrientation functionValueOrientation)
-            => Parent.QueryFunctionValueForChild(functionValueOrientation, ParentOffset);
-
-        private Edge FindEdgeInTree(EdgeOrientation edgeOrientation)
-            => Parent.QueryEdgeForChild(edgeOrientation, ParentOffset);
-
-        private Side FindSideInTree(SideOrientation sideOrientation)
-            => Parent.QuerySideForChild(sideOrientation, ParentOffset);
 
         public override Edge QueryEdgeForParent(EdgeOrientation edgeOrientation)
         {

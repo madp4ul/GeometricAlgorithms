@@ -12,14 +12,16 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
     {
         readonly EdgeTreeNode Root;
         readonly SurfaceResult SurfaceResult;
+        readonly IImplicitSurface ImplicitSurface;
 
-        public EdgeTree(Octree octree)
+        public EdgeTree(Octree octree, IImplicitSurface surface)
         {
             if (octree.Configuration.MinimizeContainers)
             {
                 throw new ArgumentException();
             }
 
+            ImplicitSurface = surface;
             SurfaceResult = new SurfaceResult();
 
             Root = CreateNode(null, new OctreeOffset(0, 0, 0), octree.Root);
@@ -44,7 +46,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             }
             else if (octreeNode is TreeLeaf leaf)
             {
-                return new EdgeTreeLeaf(parent, parentOffset, leaf, SurfaceResult);
+                return new EdgeTreeLeaf(parent, parentOffset, leaf, ImplicitSurface, SurfaceResult);
             }
             else
             {

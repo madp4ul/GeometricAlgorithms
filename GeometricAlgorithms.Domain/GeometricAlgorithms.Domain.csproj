@@ -71,6 +71,7 @@
     <Compile Include="Drawables\IDrawableMesh.cs" />
     <Compile Include="Drawables\ToggleableDrawable.cs" />
     <Compile Include="Drawables\Transformation.cs" />
+    <Compile Include="Line2.cs" />
     <Compile Include="Line3.cs" />
     <Compile Include="Tasks\OperationProgressUpdater.cs" />
     <Compile Include="Triangle.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="Scene.cs" />
     <Compile Include="Tasks\IFuncExecutor.cs" />
     <Compile Include="Tasks\IProgressUpdater.cs" />
+    <Compile Include="Vector2.cs" />
     <Compile Include="Vector3.cs" />
   </ItemGroup>
   <ItemGroup />

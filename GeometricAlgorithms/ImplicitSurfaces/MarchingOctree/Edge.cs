@@ -11,6 +11,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
     {
         public FunctionValue Minimum;
         public FunctionValue Maximum;
+        public Vector3 Middle => Minimum.Position + (Maximum.Position - Minimum.Position) / 2;
+        public FunctionValue MiddleValue => new FunctionValue(Middle, (Minimum.Value + Maximum.Value) / 2);
 
         /// <summary>
         /// if the edge is not completed no valid function values can be retrieved from it.
@@ -23,15 +25,18 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         /// if function values cross zero (surface) on this edge
         /// </summary>
         public readonly float? Interpolation;
+        public bool HasVertex => Interpolation.HasValue;
+        public Vector3 VertexPosition => Minimum.Position + (Maximum.Position - Minimum.Position) * Interpolation.Value;
 
         /// <summary>
         /// Index of Vertex on this edge. only has a value
         /// if function values cross zero (surface) on this edge
         /// </summary>
-        public readonly int? VertexIndex;
+        private readonly Lazy<int> VertexIndex;
 
         private readonly Edge[] Children;
 
+        //Build Edge from function values
         public Edge(FunctionValue start, FunctionValue end, SurfaceResult result)
             : this(start, end)
         {
@@ -44,10 +49,11 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                 Interpolation = absMinValue / valueSum;
 
                 Vector3 vertex = Minimum.Position + (Maximum.Position - Minimum.Position) * Interpolation.Value;
-                VertexIndex = result.AddPosition(vertex);
+                VertexIndex = new Lazy<int>(() => result.AddPosition(vertex));
             }
         }
 
+        //Build edge from 2 children
         public Edge(Edge child0, Edge child1)
             : this(child0?.Minimum, child1?.Maximum)
         {
@@ -69,6 +75,14 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             }
         }
 
+        //Build child edge from parent
+        public Edge(FunctionValue start, FunctionValue end, float? interpolationValue, Lazy<int> vertexIndex)
+            : this(start, end)
+        {
+            Interpolation = interpolationValue;
+            VertexIndex = vertexIndex;
+        }
+
         /// <summary>
         /// Only use from other constructor because it doesnt compute vertex
         /// </summary>
@@ -82,11 +96,13 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             Children = new Edge[2];
         }
 
-        private Edge(FunctionValue start, FunctionValue end, float? interpolationValue, int? vertexIndex)
-            : this(start, end)
+        public int GetVertexIndex()
         {
-            Interpolation = interpolationValue;
-            VertexIndex = vertexIndex;
+            if (!HasVertex)
+            {
+                throw new InvalidOperationException();
+            }
+            return VertexIndex.Value;
         }
 
         /// <summary>
@@ -108,11 +124,11 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                     if (Interpolation.Value > 0.5)
                     {
                         Children[0] = new Edge(Minimum, middle, null, null);
-                        Children[1] = new Edge(middle, Maximum, 2 * (Interpolation.Value - 0.5f), VertexIndex.Value);
+                        Children[1] = new Edge(middle, Maximum, 2 * (Interpolation.Value - 0.5f), VertexIndex);
                     }
                     else
                     {
-                        Children[0] = new Edge(Minimum, middle, 2 * (Interpolation.Value), VertexIndex.Value);
+                        Children[0] = new Edge(Minimum, middle, 2 * (Interpolation.Value), VertexIndex);
                         Children[1] = new Edge(middle, Maximum, null, null);
                     }
                 }

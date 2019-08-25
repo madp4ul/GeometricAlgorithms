@@ -759,7 +759,7 @@ namespace GeometricAlgorithms.Domain
         /// <returns></returns>
         public float? IsLinearDependantOf(Vector3 other)
         {
-            float? defaultElem = default(float?);
+            float? defaultElem = default;
             float? scalarX = X == 0 ? defaultElem : other.X / X;
             float? scalarY = Y == 0 ? defaultElem : other.Y / Y;
             float? scalarZ = Z == 0 ? defaultElem : other.Z / Z;
@@ -796,6 +796,26 @@ namespace GeometricAlgorithms.Domain
             }
 
             return scalar;
+        }
+
+        public Vector2 WithoutDimension(Dimension dimension)
+        {
+            if (dimension == Dimension.X)
+            {
+                return new Vector2(Y, Z);
+            }
+            else if (dimension == Dimension.Y)
+            {
+                return new Vector2(X, Z);
+            }
+            else if (dimension == Dimension.Z)
+            {
+                return new Vector2(X, Y);
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
         }
     }
 }

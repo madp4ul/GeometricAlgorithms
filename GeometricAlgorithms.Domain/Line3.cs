@@ -17,6 +17,7 @@ namespace GeometricAlgorithms.Domain
             Direction = direction;
         }
 
+       
         public override bool Equals(object obj)
         {
             return obj is Line3 line &&
