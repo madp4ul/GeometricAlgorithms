@@ -60,7 +60,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
             set => OuterFunctionValuesDrawable.EnableDraw = value;
         }
 
-        public bool CanApproximate => Tree.Mesh.HasNormals;
+        public bool CanApproximate => Tree?.Mesh.HasNormals ?? false;
 
         public FaceApproximationModel(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {

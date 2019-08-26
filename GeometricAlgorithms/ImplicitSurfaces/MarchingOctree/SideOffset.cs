@@ -24,7 +24,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
         public override string ToString()
         {
-            return $"{{offset2: ({A}, {B})}}";
+            return $"{{offset2: {A} | {B} }}";
         }
     }
 }

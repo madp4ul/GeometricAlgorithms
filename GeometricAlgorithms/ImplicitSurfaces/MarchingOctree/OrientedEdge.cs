@@ -21,7 +21,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
         public override string ToString()
         {
-            return $"{{{Orientation.ToString()}, {Edge?.ToString()}}}";
+            return $"({Orientation.ToString()}, {Edge?.ToString()})";
         }
     }
 }

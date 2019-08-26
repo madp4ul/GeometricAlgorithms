@@ -16,6 +16,6 @@ namespace GeometricAlgorithms.Domain
 
     public static class Dimensions
     {
-        public static readonly Dimension[] All = new Dimension[] { Dimension.X, Dimension.Y, Dimension.Y };
+        public static readonly Dimension[] All = new Dimension[] { Dimension.X, Dimension.Y, Dimension.Z };
     }
 }

@@ -127,7 +127,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
             string dimString(Dimension d, SideOrientation o) => $"{d.ToString()}, " + (o.IsMax ? "is positive" : "is negative");
 
-            return $"{{edge orientation: {dimString(axis, this)} | {dimString(axis, this)}}}";
+            return $"(side orientation: {dimString(axis, this)})";
         }
 
         public static SideIndex GetSideIndex(int arrayIndex)

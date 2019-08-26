@@ -15,7 +15,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         /// Side is complete if all edges are there. If the side is incomplete
         /// its data cant be used but it still may contain complete children.
         /// </summary>
-        public bool IsComplete => Edges.Any(e => e == null || !e.IsComplete);
+        public bool IsComplete => !Edges.Any(e => e == null || !e.IsComplete);
 
         private readonly Side[,] Children;
 

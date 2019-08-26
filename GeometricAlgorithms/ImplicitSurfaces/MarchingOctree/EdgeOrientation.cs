@@ -56,11 +56,11 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             {
                 return XDirectionBitPosition;
             }
-            else if (dimension == Dimension.X)
+            else if (dimension == Dimension.Y)
             {
                 return YDirectionBitPosition;
             }
-            else if (dimension == Dimension.X)
+            else if (dimension == Dimension.Z)
             {
                 return ZDirectionBitPosition;
             }
@@ -72,7 +72,22 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
         private static int SelectIsPositiveBit(Dimension dimension)
         {
-            return SelectInDirectionBit(dimension) + 1;
+            if (dimension == Dimension.X)
+            {
+                return XPositiveBitPosition;
+            }
+            else if (dimension == Dimension.Y)
+            {
+                return YPositiveBitPosition;
+            }
+            else if (dimension == Dimension.Z)
+            {
+                return ZPositiveBitPosition;
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
         }
 
         public FunctionValueOrientation GetValueOrientation(int valueIndex)
@@ -141,7 +156,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
             string dimString(Dimension d, EdgeOrientation o) => $"{d.ToString()}, " + (o.IsPositive(d) ? "is positive" : "is negative");
 
-            return $"{{edge orientation: {dimString(axis[0], this)} | {dimString(axis[1], this)}}}";
+            return $"(edge orientation: {dimString(axis[0], this)} | {dimString(axis[1], this)})";
         }
 
         public int GetArrayIndex()

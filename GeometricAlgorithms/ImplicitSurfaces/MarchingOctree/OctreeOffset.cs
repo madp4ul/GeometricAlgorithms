@@ -180,7 +180,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
         public override string ToString()
         {
-            return $"{{offset3: ({X}, {Y}, {Z})}}";
+            return $"{{offset3: {X} | {Y} | {Z} }}";
         }
     }
 }
