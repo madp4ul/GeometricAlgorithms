@@ -177,5 +177,10 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             hashCode = hashCode * -1521134295 + Z.GetHashCode();
             return hashCode;
         }
+
+        public override string ToString()
+        {
+            return $"{{offset3: ({X}, {Y}, {Z})}}";
+        }
     }
 }

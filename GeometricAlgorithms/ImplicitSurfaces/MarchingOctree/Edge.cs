@@ -148,6 +148,11 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             yield return new OrientedFunctionValue(Maximum, orientation.GetValueOrientation(1));
         }
 
+        public override string ToString()
+        {
+            return $"{{edge: {Minimum?.ToString()}-{Maximum?.ToString()}}}";
+        }
+
         public static Edge Merge(IEnumerable<Edge> edges)
         {
             var edge = edges.FirstOrDefault(e => e.IsComplete);

@@ -150,6 +150,13 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             }
         }
 
+        public override string ToString()
+        {
+            string dimString(Dimension d, FunctionValueOrientation o) => $"{d.ToString()}, " + (o.IsMaximum(d) ? "is positive" : "is negative");
+
+            return $"{{fv orientation: {dimString(Dimension.X, this)} | {dimString(Dimension.Y, this)} | {dimString(Dimension.Z, this)}}}";
+        }
+
         public int GetArrayIndex()
         {
             return GetArrayIndex(Index);

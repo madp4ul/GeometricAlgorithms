@@ -135,6 +135,15 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                 || (dimension == Dimension.Z && IsZPositive);
         }
 
+        public override string ToString()
+        {
+            var axis = GetAxis();
+
+            string dimString(Dimension d, EdgeOrientation o) => $"{d.ToString()}, " + (o.IsPositive(d) ? "is positive" : "is negative");
+
+            return $"{{edge orientation: {dimString(axis[0], this)} | {dimString(axis[1], this)}}}";
+        }
+
         public int GetArrayIndex()
         {
             return GetArrayIndex(Index);

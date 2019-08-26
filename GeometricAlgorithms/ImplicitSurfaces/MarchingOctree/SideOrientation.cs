@@ -121,6 +121,15 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             return new EdgeOrientation(sideAxis, IsMax, rotationAxis[axisIndex], minmax == 1);
         }
 
+        public override string ToString()
+        {
+            var axis = GetDirection();
+
+            string dimString(Dimension d, SideOrientation o) => $"{d.ToString()}, " + (o.IsMax ? "is positive" : "is negative");
+
+            return $"{{edge orientation: {dimString(axis, this)} | {dimString(axis, this)}}}";
+        }
+
         public static SideIndex GetSideIndex(int arrayIndex)
         {
             switch (arrayIndex)

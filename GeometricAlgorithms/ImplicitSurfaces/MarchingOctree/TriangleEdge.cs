@@ -16,5 +16,10 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             Edge1 = edge1;
             Edge2 = edge2;
         }
+
+        public override string ToString()
+        {
+            return $"{{triangle edge: {Edge1.ToString()}-{Edge2.ToString()}}}";
+        }
     }
 }

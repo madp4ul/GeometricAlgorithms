@@ -18,5 +18,10 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         }
 
         public bool HasEdge => Edge != null;
+
+        public override string ToString()
+        {
+            return $"{{{Orientation.ToString()}, {Edge?.ToString()}}}";
+        }
     }
 }

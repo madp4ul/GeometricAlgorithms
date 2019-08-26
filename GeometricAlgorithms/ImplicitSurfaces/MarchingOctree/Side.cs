@@ -293,6 +293,13 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             return interpolationValue;
         }
 
+        public override string ToString()
+        {
+            string complete = IsComplete ? "is complete" : "is not complete";
+
+            return $"{{side: {Axis.ToString()}, {complete}}}";
+        }
+
         private enum SideEdgeIndex : int
         {
             SmallerDimMin = 0,

@@ -18,5 +18,10 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         }
 
         public bool HasFunctionValue => FunctionValue != null;
+
+        public override string ToString()
+        {
+            return $"{{{Orientation.ToString()}, {FunctionValue?.ToString()}}}";
+        }
     }
 }

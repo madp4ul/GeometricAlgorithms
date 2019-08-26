@@ -19,5 +19,10 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         }
 
         public bool IsInside => Value < 0;
+
+        public override string ToString()
+        {
+            return $"{{fv: {Position}=>{Value}}}";
+        }
     }
 }
