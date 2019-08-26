@@ -27,7 +27,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             QueryForFunctionValues();
 
             //4. for each function value that wasnt found yet, compute it and store it
-            ComputeMissingFunctionValues(surface);
+            ComputeMissingFunctionValues(surface, result);
 
             //5. for each edge that wasnt found yet, compute it from function values and store it
             ComputeMissingEdges(result);
@@ -107,7 +107,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             for (int i = 0; i < Sides.Length; i++)
             {
                 var sideOrientation = new SideOrientation(SideOrientation.GetSideIndex(i));
-                Side side = Parent.QuerySideForChild(sideOrientation, ParentOffset);
+                Side side = Parent?.QuerySideForChild(sideOrientation, ParentOffset);
 
                 if (side != null)
                 {
@@ -130,7 +130,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                 if (Edges[i] == null)
                 {
                     var edgeOrientation = new EdgeOrientation(EdgeOrientation.GetEdgeIndex(i));
-                    Edge edge = Parent.QueryEdgeForChild(edgeOrientation, ParentOffset);
+                    Edge edge = Parent?.QueryEdgeForChild(edgeOrientation, ParentOffset);
 
                     if (edge != null)
                     {
@@ -147,7 +147,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                 if (FunctionValues[i] == null)
                 {
                     var orientation = new FunctionValueOrientation(FunctionValueOrientation.GetFunctionValueIndex(i));
-                    FunctionValue value = Parent.QueryFunctionValueForChild(orientation, ParentOffset);
+                    FunctionValue value = Parent?.QueryFunctionValueForChild(orientation, ParentOffset);
 
                     if (value != null)
                     {
@@ -157,7 +157,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             }
         }
 
-        private void ComputeMissingFunctionValues(IImplicitSurface surface)
+        private void ComputeMissingFunctionValues(IImplicitSurface surface, SurfaceResult result)
         {
             for (int i = 0; i < FunctionValues.Length; i++)
             {
@@ -171,6 +171,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                     var functionValue = new FunctionValue(position, value);
 
                     FunctionValues[i] = functionValue;
+
+                    result.AddFunctionValue(functionValue);
                 }
             }
         }

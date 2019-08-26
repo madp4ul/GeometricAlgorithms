@@ -18,9 +18,6 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             Value = value;
         }
 
-        public bool IsInside()
-        {
-            return Value < 0;
-        }
+        public bool IsInside => Value < 0;
     }
 }

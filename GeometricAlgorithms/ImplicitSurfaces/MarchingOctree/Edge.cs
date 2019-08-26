@@ -12,7 +12,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         public FunctionValue Minimum;
         public FunctionValue Maximum;
         public Vector3 Middle => Minimum.Position + (Maximum.Position - Minimum.Position) / 2;
-        public FunctionValue MiddleValue => new FunctionValue(Middle, (Minimum.Value + Maximum.Value) / 2);
+        public FunctionValue MiddleValueApproximation => new FunctionValue(Middle, (Minimum.Value + Maximum.Value) / 2);
 
         /// <summary>
         /// if the edge is not completed no valid function values can be retrieved from it.

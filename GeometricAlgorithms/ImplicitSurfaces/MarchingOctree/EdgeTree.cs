@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 {
-    class EdgeTree
+    public class EdgeTree
     {
         readonly EdgeTreeNode Root;
         readonly SurfaceResult SurfaceResult;
@@ -82,6 +82,11 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                     }
                 }
             }
+        }
+
+        public SurfaceResult GetResult()
+        {
+            return SurfaceResult;
         }
 
         //private bool TryLoadEdge(EdgeTreeNode node, EdgeIndex edge)

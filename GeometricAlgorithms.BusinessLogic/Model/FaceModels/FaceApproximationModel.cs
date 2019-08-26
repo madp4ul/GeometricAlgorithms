@@ -111,6 +111,32 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
                 });
         }
 
+        public void CalculateApproximationWithOctree()
+        {
+            if (Tree == null)
+            {
+                throw new InvalidOperationException("update with tree first");
+            }
+
+            FuncExecutor.Execute(progress =>
+            {
+                var surface = new ScalarProductSurface(Tree, UsedNearestPointCount);
+                var octree = (Octree)Tree;
+
+                var edgeTree = new ImplicitSurfaces.MarchingOctree.EdgeTree(octree, surface);
+                return edgeTree.GetResult();
+            }).GetResult(result =>
+            {
+                FunctionValue[] convert(ImplicitSurfaces.MarchingOctree.FunctionValue[] values)
+                    => values.Select(fv => new FunctionValue(fv.Position, fv.Value)).ToArray();
+
+                SetInnerFunctionValuesDrawable(convert(result.GetInnerValues()));
+                SetOuterFunctionValuesDrawable(convert(result.GetouterValues()));
+
+                Faces.Update(new Mesh(result.GetPositions(), result.GetFaces()));
+            });
+        }
+
         private void SetInnerFunctionValuesDrawable(FunctionValue[] functionValues)
         {
             var innerValues = functionValues.Where(fv => fv.IsInside());

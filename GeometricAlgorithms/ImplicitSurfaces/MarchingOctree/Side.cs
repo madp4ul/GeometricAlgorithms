@@ -223,7 +223,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
         }
 
-        private FunctionValue MiddleValue => new FunctionValue(Middle, Edges.Average(e => e.Minimum.Value));
+        private FunctionValue MiddleValueApproximation => new FunctionValue(Middle, Edges.Average(e => e.Minimum.Value));
         private readonly Edge[] MiddleEdges = new Edge[4];
         private Edge GetChildEdge(SideEdgeIndex index)
         {
@@ -233,19 +233,19 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
                 if (index == SideEdgeIndex.SmallerDimMin)
                 {
-                    edge = ApproximateEdge(Edges[(int)SideEdgeIndex.SmallerDimMin].MiddleValue, MiddleValue);
+                    edge = ApproximateEdge(Edges[(int)SideEdgeIndex.SmallerDimMin].MiddleValueApproximation, MiddleValueApproximation);
                 }
                 else if (index == SideEdgeIndex.SmallerDimMax)
                 {
-                    edge = ApproximateEdge(MiddleValue, Edges[(int)SideEdgeIndex.SmallerDimMax].MiddleValue);
+                    edge = ApproximateEdge(MiddleValueApproximation, Edges[(int)SideEdgeIndex.SmallerDimMax].MiddleValueApproximation);
                 }
                 else if (index == SideEdgeIndex.BiggerDimMin)
                 {
-                    edge = ApproximateEdge(Edges[(int)SideEdgeIndex.BiggerDimMin].MiddleValue, MiddleValue);
+                    edge = ApproximateEdge(Edges[(int)SideEdgeIndex.BiggerDimMin].MiddleValueApproximation, MiddleValueApproximation);
                 }
                 else if (index == SideEdgeIndex.BiggerDimMax)
                 {
-                    edge = ApproximateEdge(MiddleValue, Edges[(int)SideEdgeIndex.BiggerDimMax].MiddleValue);
+                    edge = ApproximateEdge(MiddleValueApproximation, Edges[(int)SideEdgeIndex.BiggerDimMax].MiddleValueApproximation);
                 }
 
                 MiddleEdges[(int)index] = edge;
@@ -258,7 +258,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         {
             float? interpolationValue = TriangleEdgeIntersection(edgeStart.Position, edgeEnd.Position);
 
-            if (interpolationValue.HasValue)
+            if (interpolationValue.HasValue && 0 <= interpolationValue.Value && interpolationValue.Value <= 1)
             {
                 var lazy = new Lazy<int>(() => Result.AddPosition(edgeStart.Position + (edgeEnd.Position - edgeStart.Position) * interpolationValue.Value));
                 return new Edge(edgeStart, edgeEnd, interpolationValue, lazy);

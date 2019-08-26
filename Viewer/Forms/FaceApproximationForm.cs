@@ -77,7 +77,8 @@ namespace GeometricAlgorithms.Viewer.Forms
             if (ApproximatedFaceData.CanApproximate)
             {
                 PutFormValuesIntoModel();
-                ApproximatedFaceData.CalculateApproximation();
+                //ApproximatedFaceData.CalculateApproximation();
+                ApproximatedFaceData.CalculateApproximationWithOctree();
             }
         }
 

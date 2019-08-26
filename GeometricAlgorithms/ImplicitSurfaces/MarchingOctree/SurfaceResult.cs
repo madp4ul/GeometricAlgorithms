@@ -7,15 +7,16 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 {
-    class SurfaceResult
+    public class SurfaceResult
     {
-        private readonly List<Vector3> Positions;
-        private readonly List<Triangle> Faces;
+        private readonly List<Vector3> Positions = new List<Vector3>();
+        private readonly List<Triangle> Faces = new List<Triangle>();
+
+        private readonly List<FunctionValue> InnerValues = new List<FunctionValue>();
+        private readonly List<FunctionValue> OuterValues = new List<FunctionValue>();
 
         public SurfaceResult()
         {
-            Positions = new List<Vector3>();
-            Faces = new List<Triangle>();
         }
 
         /// <summary>
@@ -39,6 +40,12 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             Faces.AddRange(triangles);
         }
 
+        public void AddFunctionValue(FunctionValue value)
+        {
+            var list = value.IsInside ? InnerValues : OuterValues;
+            list.Add(value);
+        }
+
         public Vector3[] GetPositions()
         {
             return Positions.ToArray();
@@ -47,6 +54,16 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         public Triangle[] GetFaces()
         {
             return Faces.ToArray();
+        }
+
+        public FunctionValue[] GetInnerValues()
+        {
+            return InnerValues.ToArray();
+        }
+
+        public FunctionValue[] GetouterValues()
+        {
+            return OuterValues.ToArray();
         }
     }
 }

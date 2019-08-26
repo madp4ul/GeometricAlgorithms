@@ -85,7 +85,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                dim2: outsideDimension[1],
                dim2Positive: functionValueOrientation.IsMaximum(outsideDimension[1]));
 
-            Edge parentEdge = Parent.QueryEdgeForChild(edgeOrientation, ParentOffset);
+            Edge parentEdge = Parent?.QueryEdgeForChild(edgeOrientation, ParentOffset);
 
             if (parentEdge != null)
             {
@@ -101,7 +101,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             OctreeOffset childOffset)
         {
             //functionvalue is in the middle of children
-            return this.Where(otherChild => !otherChild.ParentOffset.Equals(childOffset))
+            return this.Where(otherChild => otherChild != null && !otherChild.ParentOffset.Equals(childOffset))
               .Select(otherChild =>
               {
                   var valueOrientationInOtherChild = functionValueOrientation;
@@ -126,7 +126,12 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             bool outsideAtMaximum = functionValueOrientation.IsMaximum(outsideAxis);
 
             SideOrientation sideOrientation = new SideOrientation(outsideAxis, outsideAtMaximum);
-            Side parentSide = Parent.QuerySideForChild(sideOrientation, ParentOffset);
+            Side parentSide = Parent?.QuerySideForChild(sideOrientation, ParentOffset);
+
+            if (parentSide == null)
+            {
+                return null;
+            }
 
             for (int a = 0; a < 2; a++)
             {
@@ -224,7 +229,12 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         {
             //no child shares the edge. Only query parent for its edge and get its child edge
 
-            var parentEdge = Parent.QueryEdgeForChild(edgeOrientation, ParentOffset);
+            var parentEdge = Parent?.QueryEdgeForChild(edgeOrientation, ParentOffset);
+
+            if (parentEdge == null)
+            {
+                return null;
+            }
 
             int childEdgeIndex = childOffset.ExcludeDimensions(edgeAxis);
 
@@ -240,23 +250,28 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             OctreeOffset mirroredChildOffset = childOffset.ToggleDimension(dimensionToMirror);
 
             var mirroredEdgeOrientation = edgeOrientation.GetMirrored(dimensionToMirror);
-            Edge mirroredEdge = this[mirroredChildOffset]?.QueryEdgeForParent(mirroredEdgeOrientation);
+            Edge edgeOfMirroredChild = this[mirroredChildOffset]?.QueryEdgeForParent(mirroredEdgeOrientation);
 
-            if (mirroredEdge.IsComplete)
+            if (edgeOfMirroredChild != null && edgeOfMirroredChild.IsComplete)
             {
-                return mirroredEdge;
+                return edgeOfMirroredChild;
             }
             else
             {
                 Dimension sideAxis = edgeAxis.Single(d => d != dimensionToMirror);
                 var sideOrientation = new SideOrientation(sideAxis, edgeOrientation.IsPositive(sideAxis));
 
-                Side side = Parent.QuerySideForChild(sideOrientation, ParentOffset);
+                Side side = Parent?.QuerySideForChild(sideOrientation, ParentOffset);
+
+                if (side == null)
+                {
+                    return null;
+                }
 
                 Edge edgeFromDirectChild = side.GetChildSide(childOffset.ExcludeDimension(sideAxis)).GetEdge(edgeOrientation);
                 Edge edgeFromMirroredChild = side.GetChildSide(mirroredChildOffset.ExcludeDimension(sideAxis)).GetEdge(mirroredEdgeOrientation);
 
-                var edges = new[] { mirroredEdge, edgeFromDirectChild, edgeFromMirroredChild }
+                var edges = new[] { edgeOfMirroredChild, edgeFromDirectChild, edgeFromMirroredChild }
                      .Where(edge => edge != null);
 
                 return Edge.Merge(edges);
@@ -306,8 +321,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
                 int[] dimensionValues = new int[]
                 {
-                edgeOrientation.IsPositive(edgeAxis[0]) ? 1 : 0,
-                edgeOrientation.IsPositive(edgeAxis[1]) ? 1 : 0
+                    edgeOrientation.IsPositive(edgeAxis[0]) ? 1 : 0,
+                    edgeOrientation.IsPositive(edgeAxis[1]) ? 1 : 0
                 };
 
                 OctreeOffset minOffset = OctreeOffset.WithValuesAtDimension(
@@ -356,18 +371,15 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
             if (isOutside)
             {
-                var parentSide = Parent.QuerySideForChild(sideOrientation, ParentOffset);
+                var parentSide = Parent?.QuerySideForChild(sideOrientation, ParentOffset);
 
-                if (parentSide != null)
-                {
-                    SideOffset childSidePosition = childOffset.ExcludeDimension(sideOrientation.GetDirection());
-
-                    return parentSide.GetChildSide(childSidePosition);
-                }
-                else
+                if (parentSide == null)
                 {
                     return null;
                 }
+
+                SideOffset childSidePosition = childOffset.ExcludeDimension(sideOrientation.GetDirection());
+                return parentSide.GetChildSide(childSidePosition);
             }
             else
             {
@@ -376,7 +388,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
                 SideOrientation oppositeOrientation = sideOrientation.GetMirrored();
 
-                return this[oppositeChildOffset].QuerySideForParent(oppositeOrientation);
+                return this[oppositeChildOffset]?.QuerySideForParent(oppositeOrientation);
             }
         }
 
