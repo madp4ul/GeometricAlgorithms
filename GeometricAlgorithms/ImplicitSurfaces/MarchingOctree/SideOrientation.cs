@@ -9,10 +9,10 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 {
     struct SideOrientation
     {
-        private const int XBit = 0;
-        private const int YBit = 1;
-        private const int ZBit = 2;
-        private const int MaxBit = 3;
+        private const int XBit = 3;
+        private const int YBit = 2;
+        private const int ZBit = 1;
+        private const int MaxBit = 0;
 
         public readonly SideIndex Index;
 

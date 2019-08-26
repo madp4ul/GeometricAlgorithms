@@ -9,9 +9,9 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 {
     struct FunctionValueOrientation
     {
-        private const int XMaxPosition = 0;
+        private const int XMaxPosition = 2;
         private const int YMaxPosition = 1;
-        private const int ZMaxPosition = 2;
+        private const int ZMaxPosition = 0;
 
         public readonly FunctionValueIndex Index;
         public bool IsXMaximum => BitCalculator.IsOn((int)Index, XMaxPosition);

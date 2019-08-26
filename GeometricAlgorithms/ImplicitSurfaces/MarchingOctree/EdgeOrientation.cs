@@ -9,12 +9,12 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 {
     struct EdgeOrientation
     {
-        private const int XDirectionBitPosition = 0;
-        private const int XPositiveBitPosition = 1 + XDirectionBitPosition;
-        private const int YDirectionBitPosition = 2;
-        private const int YPositiveBitPosition = 1 + YDirectionBitPosition;
-        private const int ZDirectionBitPosition = 4;
-        private const int ZPositiveBitPosition = 1 + ZDirectionBitPosition;
+        private const int XDirectionBitPosition = 1 + XPositiveBitPosition;
+        private const int XPositiveBitPosition = 4;
+        private const int YDirectionBitPosition = 1 + YPositiveBitPosition;
+        private const int YPositiveBitPosition = 2;
+        private const int ZDirectionBitPosition = 1 + ZPositiveBitPosition;
+        private const int ZPositiveBitPosition = 0;
 
         public readonly EdgeIndex Index;
         public bool IsInXDirection => BitCalculator.IsOn((int)Index, XDirectionBitPosition);
