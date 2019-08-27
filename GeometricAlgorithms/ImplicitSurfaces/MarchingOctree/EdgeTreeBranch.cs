@@ -52,7 +52,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             }
             else
             {
-                result = Parent.QueryFunctionValueForChild(functionValueOrientation, ParentOffset);
+                result = Parent?.QueryFunctionValueForChild(functionValueOrientation, ParentOffset);
             }
 
             if (result != null)
@@ -245,7 +245,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         {
             //query the 1 child that shares the edge then query for the side that contains the edge and get the edge from that
 
-            Dimension dimensionToMirror = edgeAxis.Single(axis => (edgeOrientation.IsPositive(axis) ? 1 : 0) == childOffset.GetValue(axis));
+            Dimension dimensionToMirror = edgeAxis.Single(axis => (edgeOrientation.IsPositive(axis) ? 0 : 1) == childOffset.GetValue(axis));
 
             OctreeOffset mirroredChildOffset = childOffset.ToggleDimension(dimensionToMirror);
 

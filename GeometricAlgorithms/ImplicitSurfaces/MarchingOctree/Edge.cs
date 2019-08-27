@@ -153,6 +153,11 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             return $"{{edge: {Minimum?.ToString()}-{Maximum?.ToString()}}}";
         }
 
+        /// <summary>
+        /// Select the most complete data from edge and its children
+        /// </summary>
+        /// <param name="edges"></param>
+        /// <returns></returns>
         public static Edge Merge(IEnumerable<Edge> edges)
         {
             var edge = edges.FirstOrDefault(e => e.IsComplete);
@@ -161,11 +166,19 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             {
                 return edge;
             }
+            else if (edges.Any())
+            {
+                Edge child0 = Merge(edges.Select(e => e.GetChild(0)).ToList());
+                Edge child1 = Merge(edges.Select(e => e.GetChild(1)).ToList());
 
-            Edge child0 = Merge(edges.Select(e => e.GetChild(0)).ToList());
-            Edge child1 = Merge(edges.Select(e => e.GetChild(1)).ToList());
+                //Only create an edge if there is any information that needs to be wrapped
+                if (child0 != null || child1 != null)
+                {
+                    return new Edge(child0, child1);
+                }
+            }
 
-            return new Edge(child0, child1);
+            return null;
         }
     }
 }

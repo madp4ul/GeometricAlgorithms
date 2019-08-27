@@ -46,11 +46,11 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             {
                 return XBit;
             }
-            else if (dimension == Dimension.X)
+            else if (dimension == Dimension.Y)
             {
                 return YBit;
             }
-            else if (dimension == Dimension.X)
+            else if (dimension == Dimension.Z)
             {
                 return ZBit;
             }
@@ -154,9 +154,9 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         public static bool TryGetContainingOrientation(EdgeOrientation edge1, EdgeOrientation edge2, out SideOrientation sideOrientation)
         {
             var axis1 = edge1.GetAxis().Select(d => new Axis { Dimension = d, Positive = edge1.IsPositive(d) });
-            var axis2 = edge2.GetAxis().Select(d => new Axis { Dimension = d, Positive = edge1.IsPositive(d) });
+            var axis2 = edge2.GetAxis().Select(d => new Axis { Dimension = d, Positive = edge2.IsPositive(d) });
 
-            var sideAxis = axis1.Union(axis2, new AxisComparer()).FirstOrDefault();
+            var sideAxis = axis1.Join(axis2, a => a, a => a, (a, b) => a, new AxisComparer()).FirstOrDefault();
 
             if (sideAxis != null)
             {

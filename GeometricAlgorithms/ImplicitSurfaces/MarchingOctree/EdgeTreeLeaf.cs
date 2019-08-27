@@ -35,7 +35,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             //6. for each side that wasnt found yet, compute it from edges and store it
             ComputeMissingSides(result);
 
-            //7. TODO Compute triangles at the end and put them into result
+            //7. Compute triangles at the end and put them into result
             ComputeTriangles(result);
         }
 
@@ -111,7 +111,10 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
                 if (side != null)
                 {
-                    Sides[i] = side;
+                    if (side.IsComplete)
+                    {
+                        Sides[i] = side;
+                    }
 
                     foreach (var orientedEdge in side.GetEdges(sideOrientation))
                     {
@@ -226,7 +229,10 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
             if (orientedEdge.HasEdge && Edges[edgeIndex] == null)
             {
-                Edges[edgeIndex] = orientedEdge.Edge;
+                if (orientedEdge.Edge.IsComplete)
+                {
+                    Edges[edgeIndex] = orientedEdge.Edge;
+                }
 
                 foreach (var functionValue in orientedEdge.Edge.GetFunctionValues(orientedEdge.Orientation))
                 {
