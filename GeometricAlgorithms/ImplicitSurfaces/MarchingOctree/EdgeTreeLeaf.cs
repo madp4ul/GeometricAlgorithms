@@ -10,6 +10,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 {
     class EdgeTreeLeaf : EdgeTreeNode
     {
+        private static int LeafsCreated = 0;
+
         public EdgeTreeLeaf(EdgeTreeBranch parent, OctreeOffset parentOffset, TreeLeaf leaf, IImplicitSurface surface, SurfaceResult result)
             : base(parent, parentOffset, leaf)
         {
@@ -37,6 +39,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
             //7. Compute triangles at the end and put them into result
             ComputeTriangles(result);
+
+            LeafsCreated++;
         }
 
         private void ComputeTriangles(SurfaceResult result)

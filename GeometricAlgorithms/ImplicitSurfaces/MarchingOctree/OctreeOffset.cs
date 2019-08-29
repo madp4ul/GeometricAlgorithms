@@ -120,9 +120,9 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
         public bool HasOnlyDifferencesOnDimensions(Dimension[] dimensions, OctreeOffset other)
         {
-            return (other.X != X && !dimensions.Contains(Dimension.X))
-                || (other.Y != Y && !dimensions.Contains(Dimension.Y))
-                || (other.Z != Z && !dimensions.Contains(Dimension.Z));
+            return !((other.X != X && !dimensions.Contains(Dimension.X))
+                    || (other.Y != Y && !dimensions.Contains(Dimension.Y))
+                    || (other.Z != Z && !dimensions.Contains(Dimension.Z)));
         }
 
         public static OctreeOffset WithValueAtDimension(Dimension dimension, int valueAtDimension, int otherValue1, int othervalue2)

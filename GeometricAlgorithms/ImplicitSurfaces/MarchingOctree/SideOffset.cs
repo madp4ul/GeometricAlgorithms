@@ -13,7 +13,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
         public SideOffset(int a, int b)
         {
-            if ((a != 0 && b != 1) || (b != 0 && b != 1))
+            if ((a != 0 && a != 1) || (b != 0 && b != 1))
             {
                 throw new ArgumentException();
             }

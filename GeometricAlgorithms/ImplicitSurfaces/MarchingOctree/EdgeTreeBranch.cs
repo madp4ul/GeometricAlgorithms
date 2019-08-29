@@ -26,41 +26,45 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
         public FunctionValue QueryFunctionValueForChild(FunctionValueOrientation functionValueOrientation, OctreeOffset childOffset)
         {
-            int index = functionValueOrientation.GetArrayIndex();
-
-            if (FunctionValues[index] != null)
-            {
-                return FunctionValues[index];
-            }
-
             Dimension[] insideAxis = functionValueOrientation.GetInsideDimensions(childOffset);
-
-            FunctionValue result;
 
             if (insideAxis.Length == 3)
             {
-
-                result = QueryInsideFunctionValueForChild(functionValueOrientation, childOffset);
+                return QueryInsideFunctionValueForChild(functionValueOrientation, childOffset);
             }
             else if (insideAxis.Length == 2)
             {
-                result = QueryOutsideAreaFunctionValueForChild(functionValueOrientation, childOffset, insideAxis);
+                return QueryOutsideAreaFunctionValueForChild(functionValueOrientation, childOffset, insideAxis);
             }
             else if (insideAxis.Length == 1)
             {
-                result = QueryFunctionValueOnEdgeForChild(functionValueOrientation, childOffset, insideAxis);
+                return QueryFunctionValueOnEdgeForChild(functionValueOrientation, childOffset, insideAxis);
             }
             else
             {
-                result = Parent?.QueryFunctionValueForChild(functionValueOrientation, ParentOffset);
+                return QueryFunctionValueOnCornerForChild(functionValueOrientation);
             }
+        }
 
-            if (result != null)
+        private FunctionValue QueryFunctionValueOnCornerForChild(FunctionValueOrientation functionValueOrientation)
+        {
+            int functionValueIndex = functionValueOrientation.GetArrayIndex();
+
+            if (FunctionValues[functionValueIndex] != null)
             {
-                FunctionValues[index] = result;
+                return FunctionValues[functionValueIndex];
             }
+            else
+            {
+                var valueFromParent = Parent?.QueryFunctionValueForChild(functionValueOrientation, ParentOffset);
 
-            return result;
+                if (valueFromParent != null)
+                {
+                    FunctionValues[functionValueIndex] = valueFromParent;
+                }
+
+                return valueFromParent;
+            }
         }
 
         private FunctionValue QueryFunctionValueOnEdgeForChild(
@@ -113,6 +117,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
                   return otherChild.QueryFunctionValueForParent(valueOrientationInOtherChild);
               })
+              .Where(fv => fv != null)
               .FirstOrDefault();
         }
 
@@ -188,13 +193,6 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
         public Edge QueryEdgeForChild(EdgeOrientation edgeOrientation, OctreeOffset childOffset)
         {
-            int index = edgeOrientation.GetArrayIndex();
-
-            if (Edges[index] != null)
-            {
-                return Edges[index];
-            }
-
             Dimension[] edgeAxis = edgeOrientation.GetAxis();
 
             int insideAxis = edgeAxis
@@ -202,43 +200,49 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                 .Where(axisInside => axisInside)
                 .Count();
 
-            Edge result;
-
             if (insideAxis == 2)
             {
-                result = QueryInsideEdgeForChild(edgeOrientation, childOffset, edgeAxis);
+                return QueryInsideEdgeForChild(edgeOrientation, childOffset, edgeAxis);
             }
             else if (insideAxis == 1)
             {
-                result = QueryOutsideAreaEdgeForChild(edgeOrientation, childOffset, edgeAxis);
+                return QueryOutsideAreaEdgeForChild(edgeOrientation, childOffset, edgeAxis);
             }
             else
             {
-                result = QueryOutsideEdgeForChild(edgeOrientation, childOffset, edgeAxis);
+                return QueryOutsideEdgeForChild(edgeOrientation, childOffset, edgeAxis);
             }
-
-            if (result?.IsComplete ?? false)
-            {
-                Edges[index] = result;
-            }
-
-            return result;
         }
 
         private Edge QueryOutsideEdgeForChild(EdgeOrientation edgeOrientation, OctreeOffset childOffset, Dimension[] edgeAxis)
         {
             //no child shares the edge. Only query parent for its edge and get its child edge
 
-            var parentEdge = Parent?.QueryEdgeForChild(edgeOrientation, ParentOffset);
+            int edgeIndex = edgeOrientation.GetArrayIndex();
 
-            if (parentEdge == null)
+            Edge currentEdge;
+            if (Edges[edgeIndex] != null)
             {
-                return null;
+                currentEdge = Edges[edgeIndex];
+            }
+            else
+            {
+                currentEdge = Parent?.QueryEdgeForChild(edgeOrientation, ParentOffset);
+
+                if (currentEdge == null)
+                {
+                    return null;
+                }
+
+                if (currentEdge.IsComplete)
+                {
+                    Edges[edgeIndex] = currentEdge;
+                }
             }
 
             int childEdgeIndex = childOffset.ExcludeDimensions(edgeAxis);
 
-            return parentEdge.GetChild(childEdgeIndex);
+            return currentEdge.GetChild(childEdgeIndex);
         }
 
         private Edge QueryOutsideAreaEdgeForChild(EdgeOrientation edgeOrientation, OctreeOffset childOffset, Dimension[] edgeAxis)
@@ -268,11 +272,10 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                     return null;
                 }
 
-                Edge edgeFromDirectChild = side.GetChildSide(childOffset.ExcludeDimension(sideAxis)).GetEdge(edgeOrientation);
-                Edge edgeFromMirroredChild = side.GetChildSide(mirroredChildOffset.ExcludeDimension(sideAxis)).GetEdge(mirroredEdgeOrientation);
+                Edge edgeFromDirectChild = side.GetChildSide(childOffset.ExcludeDimension(sideAxis))?.GetEdge(edgeOrientation);
+                Edge edgeFromMirroredChild = side.GetChildSide(mirroredChildOffset.ExcludeDimension(sideAxis))?.GetEdge(mirroredEdgeOrientation);
 
-                var edges = new[] { edgeOfMirroredChild, edgeFromDirectChild, edgeFromMirroredChild }
-                     .Where(edge => edge != null);
+                var edges = new[] { edgeOfMirroredChild, edgeFromDirectChild, edgeFromMirroredChild };
 
                 return Edge.Merge(edges);
             }
@@ -371,25 +374,50 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
             if (isOutside)
             {
-                var parentSide = Parent?.QuerySideForChild(sideOrientation, ParentOffset);
+                return QuerySideOnOutsideForChild(sideOrientation, childOffset);
+            }
+            else
+            {
+                return QuerySideOnInsideForChild(sideOrientation, childOffset);
+            }
+        }
 
-                if (parentSide == null)
+        private Side QuerySideOnOutsideForChild(SideOrientation sideOrientation, OctreeOffset childOffset)
+        {
+            int sideIndex = sideOrientation.GetArrayIndex();
+
+            Side currentSide;
+            if (Sides[sideIndex] != null)
+            {
+                currentSide = Sides[sideIndex];
+            }
+            else
+            {
+                currentSide = Parent?.QuerySideForChild(sideOrientation, ParentOffset);
+
+                if (currentSide == null)
                 {
                     return null;
                 }
 
-                SideOffset childSidePosition = childOffset.ExcludeDimension(sideOrientation.GetDirection());
-                return parentSide.GetChildSide(childSidePosition);
+                if (currentSide.IsComplete)
+                {
+                    Sides[sideIndex] = currentSide;
+                }
             }
-            else
-            {
-                Dimension sideDirection = sideOrientation.GetDirection();
-                OctreeOffset oppositeChildOffset = childOffset.ToggleDimension(sideDirection);
 
-                SideOrientation oppositeOrientation = sideOrientation.GetMirrored();
+            SideOffset childSidePosition = childOffset.ExcludeDimension(sideOrientation.GetDirection());
+            return currentSide.GetChildSide(childSidePosition);
+        }
 
-                return this[oppositeChildOffset]?.QuerySideForParent(oppositeOrientation);
-            }
+        private Side QuerySideOnInsideForChild(SideOrientation sideOrientation, OctreeOffset childOffset)
+        {
+            Dimension sideDirection = sideOrientation.GetDirection();
+            OctreeOffset oppositeChildOffset = childOffset.ToggleDimension(sideDirection);
+
+            SideOrientation oppositeOrientation = sideOrientation.GetMirrored();
+
+            return this[oppositeChildOffset]?.QuerySideForParent(oppositeOrientation);
         }
 
         public override Side QuerySideForParent(SideOrientation sideOrientation)
@@ -403,6 +431,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
                 Side[,] childSides = new Side[2, 2];
 
+                bool hasChildSide = false;
                 for (int i = 0; i < 2; i++)
                 {
                     for (int j = 0; j < 2; j++)
@@ -414,8 +443,16 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                         //the result side will not be complete. However it still may contain valid child sides.
                         //We dont return null because the caller of this method could be interested in a child side of 
                         //the result which could be complete.
-                        childSides[i, j] = childWithSide?.QuerySideForParent(sideOrientation);
+                        var childSide = childWithSide?.QuerySideForParent(sideOrientation);
+
+                        hasChildSide = hasChildSide || childSide != null;
+                        childSides[i, j] = childSide;
                     }
+                }
+
+                if (!hasChildSide)
+                {
+                    return null;
                 }
 
                 var sideFromCombinedChildSides = new Side(

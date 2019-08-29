@@ -50,6 +50,39 @@ namespace GeometricAlgorithms.Domain
             return new Line2Intersection(a, intersectionPoint);
         }
 
+        public Line2Intersection2? Intersect2(Line2 otherLine)
+        {
+            // if the lines intersect, the result contains the x and y of the intersection 
+            //(treating the lines as infinite) and booleans for whether line segment 1 or line segment 2 contain the point
+            float denominator = (otherLine.Direction.Y * Direction.X) - (otherLine.Direction.X * Direction.Y);
+            if (denominator == 0)
+            {
+                return null;
+            }
+
+            float a = Position.Y - otherLine.Position.Y;
+            float b = Position.X - otherLine.Position.X;
+
+            float numerator1 = (otherLine.Direction.X * a) - (otherLine.Direction.Y * b);
+            a = numerator1 / denominator;
+
+            // if we cast these lines infinitely in both directions, they intersect here:
+            var intersectionPosition = new Vector2(Position.X + (a * Direction.X), Position.Y + (a * Direction.Y));
+
+            return new Line2Intersection2(a, intersectionPosition);
+        }
+    }
+
+    public struct Line2Intersection2
+    {
+        public readonly float DirectionFactor;
+        public readonly Vector2 IntersectionPosition;
+
+        public Line2Intersection2(float directionFactor, Vector2 intersectionPosition)
+        {
+            DirectionFactor = directionFactor;
+            IntersectionPosition = intersectionPosition;
+        }
     }
 
     public struct Line2Intersection

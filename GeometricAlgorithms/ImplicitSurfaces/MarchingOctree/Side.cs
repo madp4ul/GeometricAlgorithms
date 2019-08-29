@@ -258,7 +258,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         {
             float? interpolationValue = TriangleEdgeIntersection(edgeStart.Position, edgeEnd.Position);
 
-            if (interpolationValue.HasValue && 0 <= interpolationValue.Value && interpolationValue.Value <= 1)
+            if (interpolationValue.HasValue)
             {
                 var lazy = new Lazy<int>(() => Result.AddPosition(edgeStart.Position + (edgeEnd.Position - edgeStart.Position) * interpolationValue.Value));
                 return new Edge(edgeStart, edgeEnd, interpolationValue, lazy);
@@ -280,12 +280,20 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                     triangleEdge.Edge1.VertexPosition.WithoutDimension(Axis),
                     triangleEdge.Edge2.VertexPosition.WithoutDimension(Axis));
 
-                var intersection = Line2.Intersect(edgeLine, triangleLine);
-                if (intersection.HasValue)
+                //var intersection = Line2.Intersect(edgeLine, triangleLine);
+                //if (intersection.HasValue)
+                //{
+                //    float newInterpolationValue = intersection.Value.DistanceFromLine1Position / edgeLine.Direction.Length;
+                //    interpolationValue = !interpolationValue.HasValue
+                //        ? newInterpolationValue
+                //        : default;
+                //}
+
+                var intersection = edgeLine.Intersect2(triangleLine);
+                if (intersection.HasValue && intersection.Value.DirectionFactor >= 0 && intersection.Value.DirectionFactor <= 1)
                 {
-                    float newInterpolationValue = intersection.Value.DistanceFromLine1Position * edgeLine.Direction.Length;
                     interpolationValue = !interpolationValue.HasValue
-                        ? newInterpolationValue
+                        ? intersection.Value.DirectionFactor
                         : default;
                 }
             }

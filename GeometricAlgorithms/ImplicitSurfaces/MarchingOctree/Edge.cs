@@ -160,6 +160,11 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         /// <returns></returns>
         public static Edge Merge(IEnumerable<Edge> edges)
         {
+            return MergeNonNullEdges(edges.Where(e => e != null));
+        }
+
+        private static Edge MergeNonNullEdges(IEnumerable<Edge> edges)
+        {
             var edge = edges.FirstOrDefault(e => e.IsComplete);
 
             if (edge != null)
@@ -168,8 +173,10 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             }
             else if (edges.Any())
             {
-                Edge child0 = Merge(edges.Select(e => e.GetChild(0)).ToList());
-                Edge child1 = Merge(edges.Select(e => e.GetChild(1)).ToList());
+                List<Edge> getChildren(int index) => edges.Select(e => e.GetChild(index)).ToList();
+
+                Edge child0 = Merge(getChildren(0));
+                Edge child1 = Merge(getChildren(1));
 
                 //Only create an edge if there is any information that needs to be wrapped
                 if (child0 != null || child1 != null)
