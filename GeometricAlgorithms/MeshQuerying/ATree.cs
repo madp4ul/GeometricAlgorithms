@@ -10,9 +10,20 @@ namespace GeometricAlgorithms.MeshQuerying
 {
     public abstract class ATree
     {
-        internal abstract ATreeNode Root { get; }
-        public abstract Mesh Mesh { get; }
-        public abstract BoundingBox MeshContainer { get; }
+        public readonly Mesh Mesh;
+        public readonly TreeConfiguration Configuration;
+
+        public ATreeNode Root { get; protected set; }
+        public BoundingBox MeshContainer { get; protected set; }
+
+        public ATree(Mesh mesh, TreeConfiguration configuration)
+        {
+            Mesh = mesh;
+            Configuration = configuration ?? new TreeConfiguration();
+
+            MeshContainer = BoundingBox.CreateContainer(mesh.Positions);
+            MeshContainer.ScaleAroundCenter(configuration.MeshContainerScale);
+        }
 
         public List<BoundingBox> GetLeafBoudingBoxes()
         {

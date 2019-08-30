@@ -82,7 +82,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             Edge smallerDimMin = child00 != null && child01 != null ? new Edge(child00.Edges[0], child01.Edges[0]) : null;
             Edge smallerDimMax = child10 != null && child11 != null ? new Edge(child10.Edges[1], child11.Edges[1]) : null;
             Edge biggerDimMin = child00 != null && child10 != null ? new Edge(child00.Edges[2], child10.Edges[2]) : null;
-            Edge biggerDimMax = child10 != null && child11 != null ? new Edge(child10.Edges[3], child11.Edges[3]) : null;
+            Edge biggerDimMax = child01 != null && child11 != null ? new Edge(child01.Edges[3], child11.Edges[3]) : null;
 
             //select the right side children for each outer edge and put to child edges together
             Edges = new Edge[4]
@@ -107,11 +107,6 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         /// <returns></returns>
         public Edge GetEdge(EdgeOrientation edgeOrientation)
         {
-            if (!IsComplete)
-            {
-                throw new InvalidOperationException("Side cant be used because it is not complete");
-            }
-
             var directions = edgeOrientation.GetAxis();
 
             if (directions[0] != Axis && directions[1] != Axis)
@@ -223,7 +218,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
         }
 
-        private FunctionValue MiddleValueApproximation => new FunctionValue(Middle, Edges.Average(e => e.Minimum.Value));
+        private Lazy<FunctionValue> MiddleValueApproximation => new Lazy<FunctionValue>(GetAverageMiddleFunctionValue);
         private readonly Edge[] MiddleEdges = new Edge[4];
         private Edge GetChildEdge(SideEdgeIndex index)
         {
@@ -233,19 +228,19 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
                 if (index == SideEdgeIndex.SmallerDimMin)
                 {
-                    edge = ApproximateEdge(Edges[(int)SideEdgeIndex.SmallerDimMin].MiddleValueApproximation, MiddleValueApproximation);
+                    edge = ApproximateEdge(Edges[(int)SideEdgeIndex.SmallerDimMin].MiddleValueApproximation, MiddleValueApproximation.Value);
                 }
                 else if (index == SideEdgeIndex.SmallerDimMax)
                 {
-                    edge = ApproximateEdge(MiddleValueApproximation, Edges[(int)SideEdgeIndex.SmallerDimMax].MiddleValueApproximation);
+                    edge = ApproximateEdge(MiddleValueApproximation.Value, Edges[(int)SideEdgeIndex.SmallerDimMax].MiddleValueApproximation);
                 }
                 else if (index == SideEdgeIndex.BiggerDimMin)
                 {
-                    edge = ApproximateEdge(Edges[(int)SideEdgeIndex.BiggerDimMin].MiddleValueApproximation, MiddleValueApproximation);
+                    edge = ApproximateEdge(Edges[(int)SideEdgeIndex.BiggerDimMin].MiddleValueApproximation, MiddleValueApproximation.Value);
                 }
                 else if (index == SideEdgeIndex.BiggerDimMax)
                 {
-                    edge = ApproximateEdge(MiddleValueApproximation, Edges[(int)SideEdgeIndex.BiggerDimMax].MiddleValueApproximation);
+                    edge = ApproximateEdge(MiddleValueApproximation.Value, Edges[(int)SideEdgeIndex.BiggerDimMax].MiddleValueApproximation);
                 }
 
                 MiddleEdges[(int)index] = edge;
@@ -276,20 +271,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             float? interpolationValue = null;
             foreach (var triangleEdge in TriangleEdges)
             {
-                Line2 triangleLine = Line2.FromPointToPoint(
-                    triangleEdge.Edge1.VertexPosition.WithoutDimension(Axis),
-                    triangleEdge.Edge2.VertexPosition.WithoutDimension(Axis));
-
-                //var intersection = Line2.Intersect(edgeLine, triangleLine);
-                //if (intersection.HasValue)
-                //{
-                //    float newInterpolationValue = intersection.Value.DistanceFromLine1Position / edgeLine.Direction.Length;
-                //    interpolationValue = !interpolationValue.HasValue
-                //        ? newInterpolationValue
-                //        : default;
-                //}
-
-                var intersection = edgeLine.Intersect2(triangleLine);
+                var intersection = edgeLine.Intersect(triangleEdge.TriangleLine);
                 if (intersection.HasValue && intersection.Value.DirectionFactor >= 0 && intersection.Value.DirectionFactor <= 1)
                 {
                     interpolationValue = !interpolationValue.HasValue
@@ -301,6 +283,116 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             return interpolationValue;
         }
 
+        private FunctionValue GetAverageMiddleFunctionValue()
+        {
+            if (!IsComplete)
+            {
+                throw new InvalidOperationException();
+            }
+
+            var fvMinMin = Edges[(int)SideEdgeIndex.SmallerDimMin].Minimum;
+            var fvMaxMax = Edges[(int)SideEdgeIndex.SmallerDimMax].Maximum;
+
+            float? diagValue1 = InterpolateMiddleWithDiagonal(fvMinMin, fvMaxMax);
+
+            var fvMinMax = Edges[(int)SideEdgeIndex.SmallerDimMin].Maximum;
+            var fvMaxMin = Edges[(int)SideEdgeIndex.SmallerDimMax].Minimum;
+
+            float? diagValue2 = InterpolateMiddleWithDiagonal(fvMinMax, fvMaxMin);
+
+            float middleValue;
+
+            if (diagValue1.HasValue && diagValue2.HasValue)
+            {
+                middleValue = (diagValue1.Value + diagValue2.Value) / 2f;
+            }
+            else if (diagValue1.HasValue)
+            {
+                middleValue = diagValue1.Value;
+            }
+            else if (diagValue2.HasValue)
+            {
+                middleValue = diagValue2.Value;
+            }
+            else
+            {
+                throw new Exception("Should not happen");
+            }
+
+            return new FunctionValue(Middle, middleValue);
+        }
+
+        private float? InterpolateMiddleWithDiagonal(FunctionValue start, FunctionValue end)
+        {
+            var minValue = new InterpolationValue(0, start.Value);
+            var maxValue = new InterpolationValue(1, end.Value);
+
+            Line2 diagonal = Line2.FromPointToPoint(
+                start.Position.WithoutDimension(Axis),
+                end.Position.WithoutDimension(Axis));
+
+            foreach (var triangleEdge in TriangleEdges)
+            {
+                var intersection = diagonal.Intersect(triangleEdge.TriangleLine);
+
+                if (intersection.HasValue)
+                {
+                    if (0 < intersection.Value.DirectionFactor && intersection.Value.DirectionFactor < 0.5f)
+                    {
+                        minValue = new InterpolationValue(intersection.Value.DirectionFactor, 0);
+                    }
+                    else if (0.5f < intersection.Value.DirectionFactor && intersection.Value.DirectionFactor < 1)
+                    {
+                        maxValue = new InterpolationValue(intersection.Value.DirectionFactor, 0);
+                    }
+                }
+            }
+
+            if (minValue.Value == 0 && maxValue.Value == 0)
+            {
+                return null;
+            }
+
+            const float interpolationAtMiddle = 0.5f;
+
+            float range = maxValue.Interpolation - minValue.Interpolation;
+            float valueRange = maxValue.Value - minValue.Value;
+
+            float middleInterpolationFactor = (interpolationAtMiddle - minValue.Interpolation) / range;
+
+            float middleValue = minValue.Value + middleInterpolationFactor * valueRange;
+
+            return middleValue;
+        }
+
+        private FunctionValue GetFunctionValue(SideFunctionValueIndex index)
+        {
+            if (index == SideFunctionValueIndex.SmallerDimMinBiggerDimMin)
+            {
+                return Edges[(int)SideEdgeIndex.SmallerDimMin]?.Minimum
+                    ?? Edges[(int)SideEdgeIndex.BiggerDimMin]?.Minimum;
+            }
+            else if (index == SideFunctionValueIndex.SmallerDimMinBiggerDimMax)
+            {
+                return Edges[(int)SideEdgeIndex.SmallerDimMin]?.Maximum
+                    ?? Edges[(int)SideEdgeIndex.BiggerDimMax]?.Minimum;
+            }
+            else if (index == SideFunctionValueIndex.SmallerDimMaxBiggerDimMin)
+            {
+                return Edges[(int)SideEdgeIndex.SmallerDimMax]?.Minimum
+                    ?? Edges[(int)SideEdgeIndex.BiggerDimMin]?.Maximum;
+            }
+            else if (index == SideFunctionValueIndex.SmallerDimMaxBiggerDimMax)
+            {
+                return Edges[(int)SideEdgeIndex.SmallerDimMax]?.Maximum
+                    ?? Edges[(int)SideEdgeIndex.BiggerDimMax]?.Maximum;
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
+        }
+
         public override string ToString()
         {
             string complete = IsComplete ? "is complete" : "is not complete";
@@ -308,12 +400,33 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             return $"{{side: {Axis.ToString()}, {complete}}}";
         }
 
+        private struct InterpolationValue
+        {
+            public readonly float Interpolation;
+            public readonly float Value;
+
+            public InterpolationValue(float interpolation, float value)
+            {
+                Interpolation = interpolation;
+                Value = value;
+            }
+        }
+
+
         private enum SideEdgeIndex : int
         {
             SmallerDimMin = 0,
             SmallerDimMax = 1,
             BiggerDimMin = 2,
             BiggerDimMax = 3
+        }
+
+        public enum SideFunctionValueIndex : int
+        {
+            SmallerDimMinBiggerDimMin = 0,
+            SmallerDimMaxBiggerDimMin = 1,
+            SmallerDimMinBiggerDimMax = 2,
+            SmallerDimMaxBiggerDimMax = 3,
         }
     }
 }

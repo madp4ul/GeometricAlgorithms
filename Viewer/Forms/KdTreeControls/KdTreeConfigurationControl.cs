@@ -28,6 +28,7 @@ namespace GeometricAlgorithms.Viewer.Forms.KdTreeControls
             {
                 //Take default values from model
                 numericPointsPerLeaf.Value = KdTree.Configuration.MaximumPointsPerLeaf;
+                numericContainerScale.Value = (decimal)KdTree.Configuration.MeshContainerScale;
                 cbMinimizeBranches.Checked = KdTree.Configuration.MinimizeContainers;
             }
         }
@@ -36,7 +37,8 @@ namespace GeometricAlgorithms.Viewer.Forms.KdTreeControls
         {
             var config = TreeConfiguration.CreateChange(KdTree.Configuration,
                 maximumPointsPerLeaf: (int)numericPointsPerLeaf.Value,
-                minimizeContainers: cbMinimizeBranches.Checked);
+                minimizeContainers: cbMinimizeBranches.Checked,
+                meshContainerScale: (float)numericContainerScale.Value);
 
             KdTree.Update(config);
         }

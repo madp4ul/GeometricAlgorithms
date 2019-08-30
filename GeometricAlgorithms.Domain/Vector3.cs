@@ -817,6 +817,26 @@ namespace GeometricAlgorithms.Domain
                 throw new ArgumentException();
             }
         }
+
+        public float SelectDimension(Dimension dimension)
+        {
+            if (dimension == Dimension.X)
+            {
+                return X;
+            }
+            else if (dimension == Dimension.Y)
+            {
+                return Y;
+            }
+            else if (dimension == Dimension.Z)
+            {
+                return Z;
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
+        }
     }
 }
 

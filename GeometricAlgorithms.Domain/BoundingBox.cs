@@ -12,6 +12,7 @@ namespace GeometricAlgorithms.Domain
         public Vector3 Maximum { get; private set; }
 
         public Vector3 Diagonal => Maximum - Minimum;
+        public Vector3 Center => Minimum + Diagonal / 2;
 
         public float Volume
         {
@@ -172,14 +173,33 @@ namespace GeometricAlgorithms.Domain
             }
         }
 
-        public static BoundingBox CreateCubicContainer(BoundingBox boundingBox)
+        public void ScaleAroundCenter(float scale)
         {
-            Vector3 halfDiagonal = boundingBox.Diagonal / 2;
-            Vector3 middle = boundingBox.Minimum + halfDiagonal;
+            if (scale <= 0)
+            {
+                throw new InvalidOperationException();
+            }
+
+            var center = Center;
+
+            Minimum = center - ((center - Minimum) * scale);
+            Maximum = center - ((center - Maximum) * scale);
+        }
+
+        /// <summary>
+        /// Increase size along smaller dimensions until their size matches the
+        /// size on the bigger dimension, making this a cube.
+        /// Growth will happen around the center of the cube so that it remains the same center.
+        /// </summary>
+        public void GrowToCube()
+        {
+            Vector3 halfDiagonal = this.Diagonal / 2;
+            Vector3 middle = this.Minimum + halfDiagonal;
 
             Vector3 newHalfDiagonal = new Vector3(halfDiagonal.MaximumComponent());
 
-            return new BoundingBox(middle - newHalfDiagonal, middle + newHalfDiagonal);
+            Minimum = middle - newHalfDiagonal;
+            Maximum = middle + newHalfDiagonal;
         }
     }
 }

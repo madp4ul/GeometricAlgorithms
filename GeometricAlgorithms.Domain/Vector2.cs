@@ -257,5 +257,25 @@ namespace GeometricAlgorithms.Domain
 
             return scalar;
         }
+
+        public Vector3 IncludeDimension(Dimension dimension, float value)
+        {
+            if (dimension == Dimension.X)
+            {
+                return new Vector3(value, X, Y);
+            }
+            else if (dimension == Dimension.Y)
+            {
+                return new Vector3(X, value, Y);
+            }
+            else if (dimension == Dimension.Z)
+            {
+                return new Vector3(X, Y, value);
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
+        }
     }
 }

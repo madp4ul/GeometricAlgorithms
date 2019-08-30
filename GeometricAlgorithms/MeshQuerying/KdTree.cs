@@ -10,26 +10,14 @@ namespace GeometricAlgorithms.MeshQuerying
 {
     public class KdTree : ATree
     {
-        private readonly ATreeNode _Root;
-        internal override ATreeNode Root => _Root;
-
-
-        private readonly Mesh _Mesh;
-        public override Mesh Mesh => _Mesh;
-
-
-        private readonly BoundingBox _MeshContainer;
-        public override BoundingBox MeshContainer => _MeshContainer;
-
-
         public KdTree(Mesh mesh, TreeConfiguration configuration = null, IProgressUpdater progressUpdater = null)
+            : base(mesh, configuration)
         {
             if (configuration == null)
             {
                 configuration = new TreeConfiguration();
             }
 
-            _Mesh = mesh;
 
             //Needs position mapping to preserve original indices because 
             //they are necessary to find the other related data in the model
@@ -38,7 +26,6 @@ namespace GeometricAlgorithms.MeshQuerying
                 .ToArray();
 
             var range = Range<PositionIndex>.FromArray(positionMapping, 0, mesh.VertexCount);
-            _MeshContainer = BoundingBox.CreateContainer(mesh.Positions);
 
             var updater = new OperationProgressUpdater(
                 progressUpdater,
@@ -47,11 +34,11 @@ namespace GeometricAlgorithms.MeshQuerying
 
             if (mesh.VertexCount > configuration.MaximumPointsPerLeaf)
             {
-                _Root = new KdTreeBranch(MeshContainer, range, configuration, updater, depth: 1);
+                Root = new KdTreeBranch(MeshContainer, range, configuration, updater, depth: 1);
             }
             else
             {
-                _Root = new TreeLeaf(MeshContainer, range, updater, depth: 1);
+                Root = new TreeLeaf(MeshContainer, range, updater, depth: 1);
             }
 
             updater.IsCompleted();

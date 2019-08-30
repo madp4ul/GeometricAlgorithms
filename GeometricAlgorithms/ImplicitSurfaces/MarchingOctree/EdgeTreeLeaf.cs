@@ -92,7 +92,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                     Sides[sideOrientation.GetArrayIndex()].AddTriangleEdge(
                         new TriangleEdge(
                             Edges[edgeStart.GetArrayIndex()],
-                            Edges[edgeEnd.GetArrayIndex()]));
+                            Edges[edgeEnd.GetArrayIndex()],
+                            sideOrientation.GetDirection()));
                 }
             }
 

@@ -94,7 +94,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             if (parentEdge != null)
             {
                 return parentEdge.GetChild(0)?.Maximum
-                    ?? parentEdge.GetChild(1).Minimum;
+                    ?? parentEdge.GetChild(1)?.Minimum;
             }
 
             return null;
