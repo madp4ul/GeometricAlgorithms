@@ -34,7 +34,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             }
             else if (insideAxis.Length == 2)
             {
-                return QueryOutsideAreaFunctionValueForChild(functionValueOrientation, childOffset, insideAxis);
+                return QueryOutsideAreaFunctionValueForChild(functionValueOrientation, childOffset);
             }
             else if (insideAxis.Length == 1)
             {
@@ -123,8 +123,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
         private FunctionValue QueryOutsideAreaFunctionValueForChild(
             FunctionValueOrientation functionValueOrientation,
-            OctreeOffset childOffset,
-            Dimension[] insideAxis)
+            OctreeOffset childOffset)
         {
             //function value is in middle of outside area
             Dimension outsideAxis = functionValueOrientation.GetOutsideDimensions(childOffset)[0];
@@ -138,47 +137,13 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                 return null;
             }
 
-            for (int a = 0; a < 2; a++)
-            {
-                for (int b = 0; b < 2; b++)
-                {
-                    Side childSide = parentSide.GetChildSide(a, b);
+            FunctionValue middleValue =
+                parentSide.GetChildSide(0, 0)?.GetFunctionValue(Side.SideFunctionValueIndex.SmallerDimMaxBiggerDimMax)
+                ?? parentSide.GetChildSide(1, 0)?.GetFunctionValue(Side.SideFunctionValueIndex.SmallerDimMinBiggerDimMax)
+                ?? parentSide.GetChildSide(0, 1)?.GetFunctionValue(Side.SideFunctionValueIndex.SmallerDimMaxBiggerDimMin)
+                ?? parentSide.GetChildSide(1, 1)?.GetFunctionValue(Side.SideFunctionValueIndex.SmallerDimMinBiggerDimMin);
 
-                    if (childSide == null)
-                    {
-                        continue;
-                    }
-
-                    FunctionValue value = getValue(a, b) ?? getValue(b, a);
-
-                    if (value != null)
-                    {
-                        return value;
-                    }
-
-                    FunctionValue getValue(int indexOfOrientedDimension, int indexOfUnOrientedDimension)
-                    {
-                        EdgeOrientation orientationOnChild = new EdgeOrientation(
-                            dim1: outsideAxis,
-                            dim1Positive: outsideAtMaximum,
-                            dim2: insideAxis[indexOfOrientedDimension],
-                            dim2Positive: indexOfOrientedDimension == 0);
-
-                        Edge childEdge = childSide.GetEdge(orientationOnChild);
-
-                        if (childEdge == null)
-                        {
-                            return null;
-                        }
-
-                        return indexOfUnOrientedDimension == 0
-                            ? childEdge.Maximum
-                            : childEdge.Minimum;
-                    }
-                }
-            }
-
-            return null;
+            return middleValue;
         }
 
         public override FunctionValue QueryFunctionValueForParent(FunctionValueOrientation functionValueOrientation)

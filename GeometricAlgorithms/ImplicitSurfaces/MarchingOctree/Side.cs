@@ -48,6 +48,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                 biggerDimMax,
             };
             Children = new Side[2, 2];
+
+            ValidateEdges();
         }
 
         /// <summary>
@@ -92,6 +94,19 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                 biggerDimMin,
                 biggerDimMax,
             };
+        }
+
+        private void ValidateEdges()
+        {
+            var dims = Dimensions.All.Where(d => d != Axis).ToArray();
+
+            Vector3 max = Edges[(int)SideEdgeIndex.SmallerDimMax].Maximum.Position;
+            Vector3 min = Edges[(int)SideEdgeIndex.SmallerDimMax].Minimum.Position;
+
+            if (min.SelectDimension(Axis) != max.SelectDimension(Axis) || min.SelectDimension(dims[0]) != max.SelectDimension(dims[0]))
+            {
+
+            }
         }
 
         public void AddTriangleEdge(TriangleEdge triangleEdge)
@@ -365,27 +380,31 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             return middleValue;
         }
 
-        private FunctionValue GetFunctionValue(SideFunctionValueIndex index)
+        public FunctionValue GetFunctionValue(SideFunctionValueIndex index)
         {
             if (index == SideFunctionValueIndex.SmallerDimMinBiggerDimMin)
             {
                 return Edges[(int)SideEdgeIndex.SmallerDimMin]?.Minimum
-                    ?? Edges[(int)SideEdgeIndex.BiggerDimMin]?.Minimum;
+                    ?? Edges[(int)SideEdgeIndex.BiggerDimMin]?.Minimum
+                    ?? Children[0, 0]?.GetFunctionValue(index);
             }
             else if (index == SideFunctionValueIndex.SmallerDimMinBiggerDimMax)
             {
                 return Edges[(int)SideEdgeIndex.SmallerDimMin]?.Maximum
-                    ?? Edges[(int)SideEdgeIndex.BiggerDimMax]?.Minimum;
+                    ?? Edges[(int)SideEdgeIndex.BiggerDimMax]?.Minimum
+                    ?? Children[0, 1]?.GetFunctionValue(index);
             }
             else if (index == SideFunctionValueIndex.SmallerDimMaxBiggerDimMin)
             {
                 return Edges[(int)SideEdgeIndex.SmallerDimMax]?.Minimum
-                    ?? Edges[(int)SideEdgeIndex.BiggerDimMin]?.Maximum;
+                    ?? Edges[(int)SideEdgeIndex.BiggerDimMin]?.Maximum
+                    ?? Children[1, 0]?.GetFunctionValue(index);
             }
             else if (index == SideFunctionValueIndex.SmallerDimMaxBiggerDimMax)
             {
                 return Edges[(int)SideEdgeIndex.SmallerDimMax]?.Maximum
-                    ?? Edges[(int)SideEdgeIndex.BiggerDimMax]?.Maximum;
+                    ?? Edges[(int)SideEdgeIndex.BiggerDimMax]?.Maximum
+                    ?? Children[1, 1]?.GetFunctionValue(index);
             }
             else
             {
