@@ -13,16 +13,19 @@ namespace GeometricAlgorithms.MeshQuerying
         public ATreeNode MinimumChild { get; private set; }
         public ATreeNode MaximumChild { get; private set; }
 
+        public override int ChildCount => 2;
+
         private readonly Func<Vector3, float> DimensionSelector;
 
         public KdTreeBranch(
+            ATreeNode parent,
             BoundingBox boundingBox,
             Range<PositionIndex> vertices,
             TreeConfiguration configuration,
             OperationProgressUpdater progressUpdater,
             int depth,
             Dimension halvedDimension = Dimension.X)
-            : base(boundingBox, vertices.Length, depth)
+            : base(parent, boundingBox, vertices.Length, depth)
         {
             int halfIndex = vertices.Length / 2;
 
@@ -52,14 +55,14 @@ namespace GeometricAlgorithms.MeshQuerying
             {
                 Dimension nextDimension = GetNextDimension(halvedDimension);
 
-                MinimumChild = new KdTreeBranch(minChildBox, minChildVertices, configuration, progressUpdater, depth, nextDimension);
-                MaximumChild = new KdTreeBranch(maxChildBox, maxChildVertices, configuration, progressUpdater, depth, nextDimension);
+                MinimumChild = new KdTreeBranch(this, minChildBox, minChildVertices, configuration, progressUpdater, depth, nextDimension);
+                MaximumChild = new KdTreeBranch(this, maxChildBox, maxChildVertices, configuration, progressUpdater, depth, nextDimension);
             }
             else //create leafs
             {
-                MinimumChild = new TreeLeaf(minChildBox, minChildVertices, progressUpdater, depth + 1);
+                MinimumChild = new TreeLeaf(this, minChildBox, minChildVertices, progressUpdater, depth + 1);
 
-                MaximumChild = new TreeLeaf(maxChildBox, maxChildVertices, progressUpdater, depth + 1);
+                MaximumChild = new TreeLeaf(this, maxChildBox, maxChildVertices, progressUpdater, depth + 1);
             }
 
             //Add self and children count

@@ -79,6 +79,7 @@
     <Compile Include="ImplicitSurfaces\MarchingOctree\EdgeOrientation.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\EdgeTree.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\EdgeTreeBranch.cs" />
+    <Compile Include="ImplicitSurfaces\MarchingOctree\EdgeTreeEnumerator.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\EdgeTreeLeaf.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\FunctionValue.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\FunctionValueIndex.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="MeshQuerying\ATreeBranch.cs" />
     <Compile Include="MeshQuerying\Octree.cs" />
     <Compile Include="MeshQuerying\OctreeBranch.cs" />
+    <Compile Include="MeshQuerying\TreeEnumerator.cs" />
     <Compile Include="MeshQuerying\TreeLeaf.cs" />
     <Compile Include="MeshQuerying\ATreeNode.cs" />
     <Compile Include="MeshQuerying\DistanceComparer.cs" />

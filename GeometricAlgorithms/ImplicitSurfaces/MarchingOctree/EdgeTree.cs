@@ -1,4 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.Domain.Trees;
 using GeometricAlgorithms.MeshQuerying;
 using System;
 using System.Collections.Generic;
@@ -8,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 {
-    public class EdgeTree
+    public class EdgeTree : IEnumerableTree
     {
-        readonly EdgeTreeNode Root;
+        internal readonly EdgeTreeNode Root;
         readonly SurfaceResult SurfaceResult;
         readonly IImplicitSurface ImplicitSurface;
 
@@ -89,17 +90,9 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             return SurfaceResult;
         }
 
-        //private bool TryLoadEdge(EdgeTreeNode node, EdgeIndex edge)
-        //{
-        //    //Nicht vergessen: kanten gibt es nur in leafs
-
-        //    //Wenn inside edge
-        //    //-> prüfe nur geschwisternodes
-        //    //wenn outsideedge am rand des parent
-        //    //-> suche nach position in aktuellem level und kindern von allen parents. Wenn längere kante passt, wähle passenden abschnitt daraus
-
-        //    //wenn outsideedge in mitte der außenfläche des parent
-        //    //->suche in kanten auf aktuellem level nach passender position, aber nicht nur in geschwistern, sondern in allen!
-        //}
+        public ITreeEnumerator GetTreeEnumerator()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

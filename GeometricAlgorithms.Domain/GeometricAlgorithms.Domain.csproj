@@ -69,11 +69,15 @@
     <Compile Include="Drawables\IDrawable.cs" />
     <Compile Include="Drawables\IDrawableFactory.cs" />
     <Compile Include="Drawables\IDrawableMesh.cs" />
+    <Compile Include="Drawables\IRefreshableView.cs" />
     <Compile Include="Drawables\ToggleableDrawable.cs" />
     <Compile Include="Drawables\Transformation.cs" />
     <Compile Include="Line2.cs" />
     <Compile Include="Line3.cs" />
     <Compile Include="Tasks\OperationProgressUpdater.cs" />
+    <Compile Include="Trees\IEnumerableTree.cs" />
+    <Compile Include="Trees\ITreeEnumerator.cs" />
+    <Compile Include="Trees\ITreeNode.cs" />
     <Compile Include="Triangle.cs" />
     <Compile Include="IVertex.cs" />
     <Compile Include="Matrix4x4.cs" />

@@ -1,4 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.Domain.Trees;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.MeshQuerying
 {
-    public abstract class ATreeNode
+    public abstract class ATreeNode : ITreeNode
     {
         public int Depth { get; private set; }
         public int VertexCount { get; private set; }
@@ -16,8 +17,14 @@ namespace GeometricAlgorithms.MeshQuerying
         public abstract int NodeCount { get; protected set; }
         public abstract int LeafCount { get; protected set; }
 
-        protected ATreeNode(BoundingBox boundingBox, int verticesCount, int depth)
+        public abstract int ChildCount { get; }
+
+        public readonly ATreeNode Parent;
+        public bool HasParent => Parent != null;
+
+        protected ATreeNode(ATreeNode parent, BoundingBox boundingBox, int verticesCount, int depth)
         {
+            Parent = parent;
             VertexCount = verticesCount;
             Depth = depth;
             BoundingBox = boundingBox ?? throw new ArgumentNullException(nameof(boundingBox));

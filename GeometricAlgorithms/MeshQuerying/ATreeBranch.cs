@@ -12,7 +12,8 @@ namespace GeometricAlgorithms.MeshQuerying
         public override int NodeCount { get; protected set; }
         public override int LeafCount { get; protected set; }
 
-        public ATreeBranch(BoundingBox boundingBox, int verticesCount, int depth) : base(boundingBox, verticesCount, depth)
+        public ATreeBranch(ATreeNode parent, BoundingBox boundingBox, int verticesCount, int depth)
+            : base(parent, boundingBox, verticesCount, depth)
         {
         }
 

@@ -48,8 +48,6 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                 biggerDimMax,
             };
             Children = new Side[2, 2];
-
-            ValidateEdges();
         }
 
         /// <summary>
@@ -94,19 +92,6 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                 biggerDimMin,
                 biggerDimMax,
             };
-        }
-
-        private void ValidateEdges()
-        {
-            var dims = Dimensions.All.Where(d => d != Axis).ToArray();
-
-            Vector3 max = Edges[(int)SideEdgeIndex.SmallerDimMax].Maximum.Position;
-            Vector3 min = Edges[(int)SideEdgeIndex.SmallerDimMax].Minimum.Position;
-
-            if (min.SelectDimension(Axis) != max.SelectDimension(Axis) || min.SelectDimension(dims[0]) != max.SelectDimension(dims[0]))
-            {
-
-            }
         }
 
         public void AddTriangleEdge(TriangleEdge triangleEdge)
@@ -187,18 +172,18 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                 {
                     side = new Side(Axis,
                         smallerDimMin: Edges[0].GetChild(0),
-                        smallerDimMax: GetChildEdge(SideEdgeIndex.BiggerDimMin),
+                        smallerDimMax: GetApproximatedEdgeOfChild(SideEdgeIndex.BiggerDimMin),
                         biggerDimMin: Edges[2].GetChild(0),
-                        biggerDimMax: GetChildEdge(SideEdgeIndex.SmallerDimMin),
+                        biggerDimMax: GetApproximatedEdgeOfChild(SideEdgeIndex.SmallerDimMin),
                         result: Result);
                 }
                 else if (smallerDimIndex == 1 && biggerDimIndex == 0)
                 {
                     side = new Side(Axis,
-                        smallerDimMin: GetChildEdge(SideEdgeIndex.BiggerDimMin),
+                        smallerDimMin: GetApproximatedEdgeOfChild(SideEdgeIndex.BiggerDimMin),
                         smallerDimMax: Edges[1].GetChild(0),
                         biggerDimMin: Edges[2].GetChild(1),
-                        biggerDimMax: GetChildEdge(SideEdgeIndex.SmallerDimMax),
+                        biggerDimMax: GetApproximatedEdgeOfChild(SideEdgeIndex.SmallerDimMax),
                         result: Result);
 
                 }
@@ -206,17 +191,17 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                 {
                     side = new Side(Axis,
                         smallerDimMin: Edges[0].GetChild(1),
-                        smallerDimMax: GetChildEdge(SideEdgeIndex.BiggerDimMax),
-                        biggerDimMin: GetChildEdge(SideEdgeIndex.SmallerDimMin),
+                        smallerDimMax: GetApproximatedEdgeOfChild(SideEdgeIndex.BiggerDimMax),
+                        biggerDimMin: GetApproximatedEdgeOfChild(SideEdgeIndex.SmallerDimMin),
                         biggerDimMax: Edges[3].GetChild(0),
                         result: Result);
                 }
                 else if (smallerDimIndex == 1 && biggerDimIndex == 1)
                 {
                     side = new Side(Axis,
-                        smallerDimMin: GetChildEdge(SideEdgeIndex.BiggerDimMax),
+                        smallerDimMin: GetApproximatedEdgeOfChild(SideEdgeIndex.BiggerDimMax),
                         smallerDimMax: Edges[1].GetChild(1),
-                        biggerDimMin: GetChildEdge(SideEdgeIndex.SmallerDimMax),
+                        biggerDimMin: GetApproximatedEdgeOfChild(SideEdgeIndex.SmallerDimMax),
                         biggerDimMax: Edges[3].GetChild(1),
                         result: Result);
                 }
@@ -235,7 +220,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
         private Lazy<FunctionValue> MiddleValueApproximation => new Lazy<FunctionValue>(GetAverageMiddleFunctionValue);
         private readonly Edge[] MiddleEdges = new Edge[4];
-        private Edge GetChildEdge(SideEdgeIndex index)
+        private Edge GetApproximatedEdgeOfChild(SideEdgeIndex index)
         {
             if (MiddleEdges[(int)index] == null)
             {

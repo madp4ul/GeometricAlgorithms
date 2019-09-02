@@ -1,5 +1,6 @@
 ﻿using GeometricAlgorithms.Domain;
 using GeometricAlgorithms.Domain.Tasks;
+using GeometricAlgorithms.Domain.Trees;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.MeshQuerying
 {
-    public abstract class ATree
+    public abstract class ATree : IEnumerableTree
     {
         public readonly Mesh Mesh;
         public readonly TreeConfiguration Configuration;
@@ -88,6 +89,11 @@ namespace GeometricAlgorithms.MeshQuerying
             kdTreeProgress.IsCompleted();
 
             return resultSet;
+        }
+
+        public ITreeEnumerator GetTreeEnumerator()
+        {
+            return new TreeEnumerator(this);
         }
     }
 }

@@ -30,11 +30,11 @@ namespace GeometricAlgorithms.MeshQuerying
 
             if (mesh.VertexCount > configuration.MaximumPointsPerLeaf)
             {
-                Root = new OctreeBranch(MeshContainer, range, configuration, updater, depth: 1);
+                Root = new OctreeBranch(parent: null, MeshContainer, range, configuration, updater, depth: 1);
             }
             else
             {
-                Root = new TreeLeaf(MeshContainer, range, updater, depth: 1);
+                Root = new TreeLeaf(parent: null, MeshContainer, range, updater, depth: 1);
             }
 
             updater.IsCompleted();

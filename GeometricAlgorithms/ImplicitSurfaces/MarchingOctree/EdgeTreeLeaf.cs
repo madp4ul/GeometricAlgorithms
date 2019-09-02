@@ -252,6 +252,16 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
             if (orientedFunctionValue.HasFunctionValue && FunctionValues[valueIndex] == null)
             {
+                var valuePosition = new Vector3(
+                     orientedFunctionValue.Orientation.IsXMaximum ? OctreeNode.BoundingBox.Maximum.X : OctreeNode.BoundingBox.Minimum.X,
+                     orientedFunctionValue.Orientation.IsYMaximum ? OctreeNode.BoundingBox.Maximum.Y : OctreeNode.BoundingBox.Minimum.Y,
+                     orientedFunctionValue.Orientation.IsZMaximum ? OctreeNode.BoundingBox.Maximum.Z : OctreeNode.BoundingBox.Minimum.Z);
+
+                if (orientedFunctionValue.FunctionValue.Position != valuePosition)
+                {
+                    throw new ApplicationException();
+                }
+
                 FunctionValues[valueIndex] = orientedFunctionValue.FunctionValue;
             }
         }

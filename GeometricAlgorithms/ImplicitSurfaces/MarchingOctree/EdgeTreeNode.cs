@@ -1,4 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.Domain.Trees;
 using GeometricAlgorithms.MeshQuerying;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 {
-    abstract class EdgeTreeNode
+    abstract class EdgeTreeNode : ITreeNode
     {
         public readonly EdgeTreeBranch Parent;
 
@@ -20,6 +21,11 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
         public readonly ATreeNode OctreeNode;
         public BoundingBox Boundaries => OctreeNode.BoundingBox;
+
+        public BoundingBox BoundingBox => throw new NotImplementedException();
+
+        public int ChildCount => OctreeNode.ChildCount;
+        public bool HasParent => Parent != null;
 
         protected readonly Edge[] Edges;
         protected readonly FunctionValue[] FunctionValues;

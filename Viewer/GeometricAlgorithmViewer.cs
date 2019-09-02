@@ -17,7 +17,7 @@ using GeometricAlgorithms.BusinessLogic;
 
 namespace GeometricAlgorithms.Viewer
 {
-    public partial class GeometricAlgorithmViewer : UserControl, IDrawableFactoryProvider
+    public partial class GeometricAlgorithmViewer : UserControl, IDrawableFactoryProvider, IRefreshableView
     {
         public const int AutoInvalidationMilliseconds = 500;
 
@@ -150,6 +150,11 @@ namespace GeometricAlgorithms.Viewer
                     (float)Display.Width / (float)Display.Height,
                     Camera.NearPlane,
                     Camera.FarPlane);
+        }
+
+        void IRefreshableView.Refresh()
+        {
+            Display.Invalidate();
         }
     }
 }

@@ -131,6 +131,12 @@
     <Compile Include="Forms\KdTreeQueriesForm.Designer.cs">
       <DependentUpon>KdTreeQueriesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\TreeNavigationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TreeNavigationForm.Designer.cs">
+      <DependentUpon>TreeNavigationForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\ModelData.cs" />
     <Compile Include="Model\ViewerConfiguration.cs" />
     <Compile Include="GeometricAlgorithmViewer.cs">

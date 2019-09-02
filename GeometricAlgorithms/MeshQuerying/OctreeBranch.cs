@@ -15,13 +15,16 @@ namespace GeometricAlgorithms.MeshQuerying
 
         public readonly Vector3 Middle;
 
+        public override int ChildCount => 8;
+
         public OctreeBranch(
+            ATreeNode parent,
             BoundingBox boundingBox,
             Range<PositionIndex> vertices,
             TreeConfiguration configuration,
             OperationProgressUpdater progressUpdater,
             int depth)
-            : base(boundingBox, vertices.Length, depth)
+            : base(parent, boundingBox, vertices.Length, depth)
         {
             Children = new ATreeNode[2, 2, 2];
             var childData = new ChildData[2, 2, 2];
@@ -41,8 +44,8 @@ namespace GeometricAlgorithms.MeshQuerying
                     {
                         ChildData data = childData[x, y, z];
                         var child = data.IsBranch
-                            ? new OctreeBranch(data.BoundingBox, data.Vertices, configuration, progressUpdater, depth + 1) as ATreeNode
-                            : new TreeLeaf(data.BoundingBox, data.Vertices, progressUpdater, depth + 1) as ATreeNode;
+                            ? new OctreeBranch(this, data.BoundingBox, data.Vertices, configuration, progressUpdater, depth + 1) as ATreeNode
+                            : new TreeLeaf(this, data.BoundingBox, data.Vertices, progressUpdater, depth + 1) as ATreeNode;
 
                         Children[x, y, z] = child;
                     }
