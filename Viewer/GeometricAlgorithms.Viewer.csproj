@@ -201,6 +201,9 @@
     <EmbeddedResource Include="Forms\TreeFaceApproximationForm.resx">
       <DependentUpon>TreeFaceApproximationForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TreeNavigationForm.resx">
+      <DependentUpon>TreeNavigationForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GeometricAlgorithmViewer.resx">
       <DependentUpon>GeometricAlgorithmViewer.cs</DependentUpon>
     </EmbeddedResource>

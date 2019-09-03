@@ -20,9 +20,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
 
         public readonly ATreeNode OctreeNode;
-        public BoundingBox Boundaries => OctreeNode.BoundingBox;
 
-        public BoundingBox BoundingBox => throw new NotImplementedException();
+        public BoundingBox BoundingBox => OctreeNode.BoundingBox;
 
         public int ChildCount => OctreeNode.ChildCount;
         public bool HasParent => Parent != null;
@@ -30,6 +29,9 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         protected readonly Edge[] Edges;
         protected readonly FunctionValue[] FunctionValues;
         protected readonly Side[] Sides;
+
+        private static int NextNodeId = 0;
+        private readonly int NodeId = NextNodeId++;
 
         public EdgeTreeNode(EdgeTreeBranch parent, OctreeOffset parentOffset, ATreeNode octreeNode)
         {

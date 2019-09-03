@@ -90,6 +90,7 @@
             this.btnInspectTree.TabIndex = 3;
             this.btnInspectTree.Text = "Inspect Tree";
             this.btnInspectTree.UseVisualStyleBackColor = true;
+            this.btnInspectTree.Click += new System.EventHandler(this.BtnInspectTree_Click);
             // 
             // btnUseFaces
             // 

@@ -18,6 +18,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model
 
         private ITreeEnumerator TreeEnumerator;
 
+        public string CurrentName => TreeEnumerator.Current?.ToString();
         public bool HasEnumerator => TreeEnumerator != null;
 
         public TreeEnumerationModel(IDrawableFactoryProvider drawableFactoryProvider, IRefreshableView refreshableView)

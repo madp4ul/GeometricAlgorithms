@@ -113,5 +113,25 @@ namespace GeometricAlgorithms.Viewer.Forms
         {
             PutFormValuesIntoModel();
         }
+
+        private TreeNavigationForm TreeNavigationForm { get; set; }
+        private void BtnInspectTree_Click(object sender, EventArgs e)
+        {
+            if (TreeNavigationForm == null)
+            {
+                TreeNavigationForm = new TreeNavigationForm(TreeFaceApproximation.EdgeTreeEnumeration);
+                TreeNavigationForm.FormClosed += (_, __) =>
+                {
+                    TreeNavigationForm.Dispose();
+                    TreeNavigationForm = null;
+                };
+
+                TreeNavigationForm.Show(this);
+            }
+            else
+            {
+                TreeNavigationForm.Focus();
+            }
+        }
     }
 }

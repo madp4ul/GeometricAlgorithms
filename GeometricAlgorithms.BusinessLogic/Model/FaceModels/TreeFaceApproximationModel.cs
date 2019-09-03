@@ -167,6 +167,11 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
         {
             yield return InnerFunctionValuesDrawable;
             yield return OuterFunctionValuesDrawable;
+
+            foreach (var item in EdgeTreeEnumeration.GetDrawables())
+            {
+                yield return item;
+            }
         }
     }
 }

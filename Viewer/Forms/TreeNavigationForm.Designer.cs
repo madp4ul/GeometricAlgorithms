@@ -28,12 +28,79 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.btnToRoot = new System.Windows.Forms.Button();
+            this.btnToParent = new System.Windows.Forms.Button();
+            this.lbCurrent = new System.Windows.Forms.Label();
+            this.pnChildren = new System.Windows.Forms.Panel();
+            this.SuspendLayout();
+            // 
+            // btnToRoot
+            // 
+            this.btnToRoot.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnToRoot.Location = new System.Drawing.Point(12, 12);
+            this.btnToRoot.Name = "btnToRoot";
+            this.btnToRoot.Size = new System.Drawing.Size(220, 23);
+            this.btnToRoot.TabIndex = 0;
+            this.btnToRoot.Text = "Go to root";
+            this.btnToRoot.UseVisualStyleBackColor = true;
+            this.btnToRoot.Click += new System.EventHandler(this.BtnToRoot_Click);
+            // 
+            // btnToParent
+            // 
+            this.btnToParent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnToParent.Location = new System.Drawing.Point(12, 41);
+            this.btnToParent.Name = "btnToParent";
+            this.btnToParent.Size = new System.Drawing.Size(220, 23);
+            this.btnToParent.TabIndex = 1;
+            this.btnToParent.Text = "Go to parent";
+            this.btnToParent.UseVisualStyleBackColor = true;
+            this.btnToParent.Click += new System.EventHandler(this.BtnToParent_Click);
+            // 
+            // lbCurrent
+            // 
+            this.lbCurrent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbCurrent.Location = new System.Drawing.Point(12, 67);
+            this.lbCurrent.Name = "lbCurrent";
+            this.lbCurrent.Size = new System.Drawing.Size(220, 26);
+            this.lbCurrent.TabIndex = 2;
+            this.lbCurrent.Text = "label1";
+            this.lbCurrent.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pnChildren
+            // 
+            this.pnChildren.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnChildren.AutoScroll = true;
+            this.pnChildren.Location = new System.Drawing.Point(12, 96);
+            this.pnChildren.Name = "pnChildren";
+            this.pnChildren.Size = new System.Drawing.Size(220, 338);
+            this.pnChildren.TabIndex = 3;
+            // 
+            // TreeNavigationForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(246, 456);
+            this.Controls.Add(this.pnChildren);
+            this.Controls.Add(this.lbCurrent);
+            this.Controls.Add(this.btnToParent);
+            this.Controls.Add(this.btnToRoot);
+            this.Name = "TreeNavigationForm";
             this.Text = "TreeNavigationForm";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TreeNavigationForm_FormClosed);
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private System.Windows.Forms.Button btnToRoot;
+        private System.Windows.Forms.Button btnToParent;
+        private System.Windows.Forms.Label lbCurrent;
+        private System.Windows.Forms.Panel pnChildren;
     }
 }

@@ -458,5 +458,10 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         {
             return GetEnumerator();
         }
+
+        public override string ToString()
+        {
+            return $"{{edgetree branch: parent offset {ParentOffset}}}";
+        }
     }
 }
