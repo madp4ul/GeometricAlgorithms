@@ -24,11 +24,15 @@ namespace GeometricAlgorithms.BusinessLogic.Model
         public readonly NormalApproximationModel ApproximatedNormals;
         public readonly NormalOrientationModel NormalOrientation;
         public readonly FacesModel Faces;
-        public readonly FaceApproximationModel ApproximatedFaces;
+
+        public readonly ImplicitSurfaceModel ImplicitSurface;
+        public readonly FaceApproximationModel FaceApproximation;
+        public readonly TreeFaceApproximationModel TreeFaceApproximation;
+        public readonly FacesModel ApproximatedFaces;
 
         public event Action Updated;
 
-        public Workspace(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
+        public Workspace(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor, IRefreshableView refreshableView)
         {
             DrawableFactoryProvider = drawableFactoryProvider;
 
@@ -40,10 +44,11 @@ namespace GeometricAlgorithms.BusinessLogic.Model
             ApproximatedNormals = new NormalApproximationModel(drawableFactoryProvider, funcExecutor);
             NormalOrientation = new NormalOrientationModel(funcExecutor);
             Faces = new FacesModel(drawableFactoryProvider);
-            KdTree = new KdTreeModels.KdTreeModel(drawableFactoryProvider, funcExecutor);
-            ApproximatedFaces = new FaceApproximationModel(drawableFactoryProvider, funcExecutor);
-
-
+            KdTree = new KdTreeModel(drawableFactoryProvider, funcExecutor);
+            ImplicitSurface = new ImplicitSurfaceModel();
+            FaceApproximation = new FaceApproximationModel(drawableFactoryProvider, funcExecutor);
+            TreeFaceApproximation = new TreeFaceApproximationModel(drawableFactoryProvider, funcExecutor, refreshableView);
+            ApproximatedFaces = new FacesModel(drawableFactoryProvider);
 
             SetUpdateDependencies();
         }
@@ -54,9 +59,24 @@ namespace GeometricAlgorithms.BusinessLogic.Model
             {
                 var kdTree = KdTree.Tree;
 
-                ApproximatedFaces.Update(kdTree);
+                ImplicitSurface.Update(kdTree);
+
+
                 NormalOrientation.Update(kdTree);
             };
+
+            ImplicitSurface.Updated += () =>
+            {
+                var surface = ImplicitSurface.ImplicitSurface;
+
+                FaceApproximation.Update(surface);
+                TreeFaceApproximation.Update(surface);
+            };
+
+            void updateApproximatedFaces(Mesh mesh) => ApproximatedFaces.Update(mesh);
+
+            FaceApproximation.MeshCalculated += updateApproximatedFaces;
+            TreeFaceApproximation.MeshCalculated += updateApproximatedFaces;
         }
 
         public void Update(Mesh mesh)
@@ -66,6 +86,10 @@ namespace GeometricAlgorithms.BusinessLogic.Model
             ApproximatedNormals.Update(mesh);//pos/face
             Faces.Update(mesh);//face
             KdTree.Update(mesh);//pos
+
+            TreeFaceApproximation.Update(mesh);
+
+            ApproximatedFaces.Update(Mesh.CreateEmpty());
 
             Updated?.Invoke();
         }
@@ -86,6 +110,8 @@ namespace GeometricAlgorithms.BusinessLogic.Model
                 .Concat(ApproximatedNormals.GetDrawables())
                 .Concat(Faces.GetDrawables())
                 .Concat(KdTree.GetDrawables())
+                .Concat(FaceApproximation.GetDrawables())
+                .Concat(TreeFaceApproximation.GetDrawables())
                 .Concat(ApproximatedFaces.GetDrawables())
                 )
             {

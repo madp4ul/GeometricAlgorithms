@@ -12,7 +12,5 @@ namespace GeometricAlgorithms.Domain.Trees
 
         int ChildCount { get; }
         bool HasParent { get; }
-
-        string ToString();
     }
 }

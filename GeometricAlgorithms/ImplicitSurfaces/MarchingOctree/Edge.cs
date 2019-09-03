@@ -12,7 +12,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         public FunctionValue Minimum;
         public FunctionValue Maximum;
         public Vector3 Middle => Minimum.Position + (Maximum.Position - Minimum.Position) / 2;
-        public FunctionValue MiddleValueApproximation => new FunctionValue(Middle, (Minimum.Value + Maximum.Value) / 2);
+        public Lazy<FunctionValue> MiddleValueApproximation;
 
         /// <summary>
         /// if the edge is not completed no valid function values can be retrieved from it.
@@ -75,10 +75,12 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             }
         }
 
+        public static List<float> diffs = new List<float>();
         //Build child edge from parent
         public Edge(FunctionValue start, FunctionValue end, float? interpolationValue, Lazy<int> vertexIndex)
             : this(start, end)
         {
+            
             Interpolation = interpolationValue;
             VertexIndex = vertexIndex;
         }
@@ -94,6 +96,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             Maximum = end;
 
             Children = new Edge[2];
+            MiddleValueApproximation = new Lazy<FunctionValue>(
+                () => new FunctionValue(Middle, (Minimum.Value + Maximum.Value) / 2));
         }
 
         public int GetVertexIndex()

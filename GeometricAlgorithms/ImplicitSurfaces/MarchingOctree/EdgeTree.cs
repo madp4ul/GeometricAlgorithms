@@ -92,7 +92,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
         public ITreeEnumerator GetTreeEnumerator()
         {
-            throw new NotImplementedException();
+            return new EdgeTreeEnumerator(this);
         }
     }
 }

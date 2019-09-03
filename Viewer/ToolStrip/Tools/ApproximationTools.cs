@@ -39,7 +39,7 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
 
 
         private FaceApproximationForm FaceApproximationForm = null;
-        public void OpenFaceApproximationForm(System.Windows.Forms.IWin32Window owner)
+        public void OpenMarchingCubesApproximationForm(System.Windows.Forms.IWin32Window owner)
         {
             if (FaceApproximationForm == null)
             {
@@ -53,9 +53,24 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
             }
         }
 
+        private TreeFaceApproximationForm TreeFaceApproximationForm = null;
+        public void OpenTreeFaceApproximationForm(System.Windows.Forms.IWin32Window owner)
+        {
+            if (TreeFaceApproximationForm == null)
+            {
+                TreeFaceApproximationForm = new TreeFaceApproximationForm(Workspace);
+                TreeFaceApproximationForm.FormClosed += (o, e) => TreeFaceApproximationForm = null;
+                TreeFaceApproximationForm.Show(owner);
+            }
+            else
+            {
+                TreeFaceApproximationForm.Focus();
+            }
+        }
+
         public bool EnableApproximateFaces()
         {
-            return Workspace.ApproximatedFaces.CanApproximate;
+            return Workspace.FaceApproximation.CanApproximate;
         }
     }
 }

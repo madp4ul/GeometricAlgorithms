@@ -34,17 +34,17 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
 
         public bool EnableOptionSetApproximatedFacesVisibility()
         {
-            return Workspace.ApproximatedFaces.Faces.HasFaces;
+            return Workspace.ApproximatedFaces.HasFaces;
         }
 
         public void SetApproximatedFacesVisiblity(bool showOriginalFaces)
         {
-            Workspace.ApproximatedFaces.Faces.DrawFaces = showOriginalFaces;
+            Workspace.ApproximatedFaces.DrawFaces = showOriginalFaces;
         }
 
         public void SetDrawApproximatedFacesAsWireframe(bool showWireframe)
         {
-            Workspace.ApproximatedFaces.Faces.DrawAsWireframe = showWireframe;
+            Workspace.ApproximatedFaces.DrawAsWireframe = showWireframe;
         }
 
         public void SetOriginalFacesVisiblity(bool showOriginalFaces)

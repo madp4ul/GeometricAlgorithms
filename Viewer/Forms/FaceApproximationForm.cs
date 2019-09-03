@@ -16,7 +16,7 @@ namespace GeometricAlgorithms.Viewer.Forms
     public partial class FaceApproximationForm : Form
     {
         private readonly Workspace Workspace;
-        private FaceApproximationModel ApproximatedFaceData => Workspace.ApproximatedFaces;
+        private FaceApproximationModel ApproximatedFaceData => Workspace.FaceApproximation;
 
         public FaceApproximationForm(Workspace workspace)
         {
@@ -26,7 +26,7 @@ namespace GeometricAlgorithms.Viewer.Forms
             {
                 Workspace = workspace;
                 ApproximatedFaceData.Updated += UpdateApproximationOptions;
-                ApproximatedFaceData.Faces.Updated += SetEnableButtonUseApproximatedFaces;
+                workspace.ApproximatedFaces.Updated += SetEnableButtonUseApproximatedFaces;
             }
         }
 
@@ -35,7 +35,7 @@ namespace GeometricAlgorithms.Viewer.Forms
             SetTotalSamplesLabelText();
             SetEnableButtonUseApproximatedFaces();
 
-            if (!ApproximatedFaceData.CanApproximate)
+            if (!Workspace.ImplicitSurface.CanApproximate)
             {
                 Close();
             }
@@ -54,17 +54,17 @@ namespace GeometricAlgorithms.Viewer.Forms
         {
             HideFunctionValues();
             ApproximatedFaceData.Updated -= UpdateApproximationOptions;
-            ApproximatedFaceData.Faces.Updated -= SetEnableButtonUseApproximatedFaces;
+            Workspace.ApproximatedFaces.Updated -= SetEnableButtonUseApproximatedFaces;
         }
 
         private void SetEnableButtonUseApproximatedFaces()
         {
-            btnUseApproximatedFaces.Enabled = ApproximatedFaceData.Faces.HasFaces;
+            btnUseApproximatedFaces.Enabled = Workspace.ApproximatedFaces.HasFaces;
         }
 
         private void PutFormValuesIntoModel()
         {
-            ApproximatedFaceData.UsedNearestPointCount = (int)neighboursPerValuenumericUpDown.Value;
+            Workspace.ImplicitSurface.UsedNearestPointCount = (int)neighboursPerValuenumericUpDown.Value;
             ApproximatedFaceData.SamplesOnLongestSideSide = (int)samplesNumericUpDown.Value;
 
             ApproximatedFaceData.DrawInnerFunctionValues = cbShowInsideSamples.Checked;
@@ -74,11 +74,10 @@ namespace GeometricAlgorithms.Viewer.Forms
 
         private void BtnStartMarchingCubes_Click(object sender, EventArgs e)
         {
-            if (ApproximatedFaceData.CanApproximate)
+            if (Workspace.ImplicitSurface.CanApproximate)
             {
                 PutFormValuesIntoModel();
-                //ApproximatedFaceData.CalculateApproximation();
-                ApproximatedFaceData.CalculateApproximationWithOctree();
+                ApproximatedFaceData.CalculateApproximation();
             }
         }
 
@@ -117,9 +116,9 @@ namespace GeometricAlgorithms.Viewer.Forms
 
         private void BtnUseApproximatedFaces_Click(object sender, EventArgs e)
         {
-            if (ApproximatedFaceData.Faces.HasFaces)
+            if (Workspace.ApproximatedFaces.HasFaces)
             {
-                Workspace.Update(ApproximatedFaceData.Faces.Mesh);
+                Workspace.Update(Workspace.ApproximatedFaces.Mesh);
             }
         }
     }

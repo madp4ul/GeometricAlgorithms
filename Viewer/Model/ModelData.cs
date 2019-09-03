@@ -1,5 +1,6 @@
 ﻿using GeometricAlgorithms.BusinessLogic;
 using GeometricAlgorithms.BusinessLogic.Model;
+using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.Domain.Tasks;
 using System;
 using System.Collections.Generic;
@@ -17,10 +18,11 @@ namespace GeometricAlgorithms.Viewer.Model
 
         public ModelData(
             IDrawableFactoryProvider drawableFactoryProvider,
-            IFuncExecutor funcExecutor)
+            IFuncExecutor funcExecutor,
+            IRefreshableView refreshableView)
         {
             ViewerConfiguration = new ViewerConfiguration();
-            Workspace = new Workspace(drawableFactoryProvider, funcExecutor);
+            Workspace = new Workspace(drawableFactoryProvider, funcExecutor, refreshableView);
         }
     }
 }

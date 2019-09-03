@@ -218,7 +218,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
         }
 
-        private Lazy<FunctionValue> MiddleValueApproximation => new Lazy<FunctionValue>(GetAverageMiddleFunctionValue);
+        private Lazy<FunctionValue> MiddleValueApproximation => new Lazy<FunctionValue>(ComputeMiddleValue);
         private readonly Edge[] MiddleEdges = new Edge[4];
         private Edge GetApproximatedEdgeOfChild(SideEdgeIndex index)
         {
@@ -228,19 +228,19 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
                 if (index == SideEdgeIndex.SmallerDimMin)
                 {
-                    edge = ApproximateEdge(Edges[(int)SideEdgeIndex.SmallerDimMin].MiddleValueApproximation, MiddleValueApproximation.Value);
+                    edge = ApproximateEdge(Edges[(int)SideEdgeIndex.SmallerDimMin].MiddleValueApproximation.Value, MiddleValueApproximation.Value);
                 }
                 else if (index == SideEdgeIndex.SmallerDimMax)
                 {
-                    edge = ApproximateEdge(MiddleValueApproximation.Value, Edges[(int)SideEdgeIndex.SmallerDimMax].MiddleValueApproximation);
+                    edge = ApproximateEdge(MiddleValueApproximation.Value, Edges[(int)SideEdgeIndex.SmallerDimMax].MiddleValueApproximation.Value);
                 }
                 else if (index == SideEdgeIndex.BiggerDimMin)
                 {
-                    edge = ApproximateEdge(Edges[(int)SideEdgeIndex.BiggerDimMin].MiddleValueApproximation, MiddleValueApproximation.Value);
+                    edge = ApproximateEdge(Edges[(int)SideEdgeIndex.BiggerDimMin].MiddleValueApproximation.Value, MiddleValueApproximation.Value);
                 }
                 else if (index == SideEdgeIndex.BiggerDimMax)
                 {
-                    edge = ApproximateEdge(MiddleValueApproximation.Value, Edges[(int)SideEdgeIndex.BiggerDimMax].MiddleValueApproximation);
+                    edge = ApproximateEdge(MiddleValueApproximation.Value, Edges[(int)SideEdgeIndex.BiggerDimMax].MiddleValueApproximation.Value);
                 }
 
                 MiddleEdges[(int)index] = edge;
@@ -363,6 +363,57 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             float middleValue = minValue.Value + middleInterpolationFactor * valueRange;
 
             return middleValue;
+        }
+
+        private FunctionValue ComputeMiddleValue()
+        {
+            if (!IsComplete)
+            {
+                throw new InvalidOperationException();
+            }
+
+            Vector3 middle3 = Middle;
+            Vector2 middle2 = middle3.WithoutDimension(Axis);
+
+            var listOfValues = Edges.Select(e => ComputeMiddleValueOverChildEdge(e.MiddleValueApproximation.Value, middle2))
+                .Where(v => v.HasValue)
+                .Select(v => v.Value)
+                .ToList();
+
+            if (listOfValues.Count == 0)
+            {
+                return GetAverageMiddleFunctionValue();
+            }
+            else if (listOfValues.Count == 1)
+            {
+                return new FunctionValue(middle3, listOfValues[0]);
+            }
+            else
+            {
+                return new FunctionValue(middle3, listOfValues.Average());
+            }
+        }
+
+        private float? ComputeMiddleValueOverChildEdge(FunctionValue middleValueOnOutsideEdge, Vector2 middle)
+        {
+            var edgeLine = Line2.FromPointToPoint(middleValueOnOutsideEdge.Position.WithoutDimension(Axis), middle);
+
+            foreach (var triangleEdge in TriangleEdges)
+            {
+                var intersection = edgeLine.Intersect(triangleEdge.TriangleLine);
+
+                if (intersection.HasValue && 0 < intersection.Value.DirectionFactor && intersection.Value.DirectionFactor < 1)
+                {
+                    float intersectionToMiddle = 1f - intersection.Value.DirectionFactor;
+
+                    float middleValue = -middleValueOnOutsideEdge.Value * (intersectionToMiddle / intersection.Value.DirectionFactor);
+
+                    return middleValue;
+
+                }
+            }
+
+            return null;
         }
 
         public FunctionValue GetFunctionValue(SideFunctionValueIndex index)

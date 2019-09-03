@@ -66,6 +66,8 @@
     <Compile Include="IUpdatable.cs" />
     <Compile Include="Model\FaceModels\FaceApproximationModel.cs" />
     <Compile Include="Model\FaceModels\FacesModel.cs" />
+    <Compile Include="Model\FaceModels\ImplicitSurfaceModel.cs" />
+    <Compile Include="Model\FaceModels\TreeFaceApproximationModel.cs" />
     <Compile Include="Model\KdTreeModels\KdTreeModel.cs" />
     <Compile Include="Model\KdTreeModels\KdTreeNearestQueryModel.cs" />
     <Compile Include="Model\KdTreeModels\KdTreeQueryResultModel.cs" />
@@ -75,6 +77,7 @@
     <Compile Include="Model\NormalModels\NormalModel.cs" />
     <Compile Include="Model\NormalModels\NormalOrientationModel.cs" />
     <Compile Include="Model\PositionModel.cs" />
+    <Compile Include="Model\TreeEnumerationModel.cs" />
     <Compile Include="Model\Workspace.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

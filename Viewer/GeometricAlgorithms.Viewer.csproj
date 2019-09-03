@@ -131,6 +131,12 @@
     <Compile Include="Forms\KdTreeQueriesForm.Designer.cs">
       <DependentUpon>KdTreeQueriesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\TreeFaceApproximationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TreeFaceApproximationForm.Designer.cs">
+      <DependentUpon>TreeFaceApproximationForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\TreeNavigationForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -191,6 +197,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\KdTreeQueriesForm.resx">
       <DependentUpon>KdTreeQueriesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TreeFaceApproximationForm.resx">
+      <DependentUpon>TreeFaceApproximationForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GeometricAlgorithmViewer.resx">
       <DependentUpon>GeometricAlgorithmViewer.cs</DependentUpon>

@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="ImplicitSurfaces\EmptySurface.cs" />
+    <Compile Include="ImplicitSurfaces\IFiniteImplicitSurface.cs" />
     <Compile Include="ImplicitSurfaces\MarchingCubes\Cube.cs" />
     <Compile Include="ImplicitSurfaces\IImplicitSurface.cs" />
     <Compile Include="ImplicitSurfaces\MarchingCubes\CubeMarcher.cs" />

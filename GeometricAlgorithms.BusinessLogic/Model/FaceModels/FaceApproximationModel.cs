@@ -14,34 +14,18 @@ using GeometricAlgorithms.MeshQuerying;
 
 namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
 {
-    public class FaceApproximationModel : IHasDrawables, IUpdatable<ATree>
+    public class FaceApproximationModel : IHasDrawables, IUpdatable<IFiniteImplicitSurface>
     {
         private const float RoomAroundModel = 0.02f;
 
         private readonly IDrawableFactoryProvider DrawableFactoryProvider;
         private readonly IFuncExecutor FuncExecutor;
 
-        public readonly FacesModel Faces;
-
-        public ATree Tree { get; private set; }
-
         public int FunctionValueRadius { get; set; }
-        public int UsedNearestPointCount
-        {
-            get => ImplicitSurface?.UsedNearestPointCount ?? 0; set
-            {
-                if (ImplicitSurface != null)
-                {
-                    ImplicitSurface.UsedNearestPointCount = value;
-                }
-            }
-        }
-        public int SamplesOnLongestSideSide { get => CubeMarcher.StepsAlongLongestSide; set => CubeMarcher?.SetSteps(value); }
-        public int TotalSamples => CubeMarcher.TotalValues;
+        public int SamplesOnLongestSideSide { get => CubeMarcher?.StepsAlongLongestSide ?? 0; set => CubeMarcher?.SetSteps(value); }
+        public int TotalSamples => CubeMarcher?.TotalValues ?? 0;
 
-        private ScalarProductSurface ImplicitSurface;
         private CubeMarcher CubeMarcher;
-
 
         private readonly ContainerDrawable InnerFunctionValuesDrawable;
         public bool DrawInnerFunctionValues
@@ -53,6 +37,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
         private readonly ContainerDrawable OuterFunctionValuesDrawable;
 
         public event Action Updated;
+        public event Action<Mesh> MeshCalculated;
 
         public bool DrawOuterFunctionValues
         {
@@ -60,38 +45,33 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
             set => OuterFunctionValuesDrawable.EnableDraw = value;
         }
 
-        public bool CanApproximate => Tree?.Mesh.HasNormals ?? false;
+        public bool CanApproximate => CubeMarcher != null;
 
         public FaceApproximationModel(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {
             DrawableFactoryProvider = drawableFactoryProvider;
             FuncExecutor = funcExecutor;
-            UsedNearestPointCount = 10;
             SamplesOnLongestSideSide = 16;
             FunctionValueRadius = 4;
             InnerFunctionValuesDrawable = new ContainerDrawable();
             OuterFunctionValuesDrawable = new ContainerDrawable();
-
-            CubeMarcher = CubeMarcher.CreateDummy();
-            Faces = new FacesModel(drawableFactoryProvider);
         }
 
-        public void Update(ATree tree)
+        public void Update(IFiniteImplicitSurface surface)
         {
-            Tree = tree;
-            ImplicitSurface = new ScalarProductSurface(tree, UsedNearestPointCount);
-            CubeMarcher = CubeMarcher.AroundBox(Tree.MeshContainer, RoomAroundModel, ImplicitSurface, SamplesOnLongestSideSide);
+            CubeMarcher = surface != null
+                ? CubeMarcher.AroundBox(surface.DefinedArea, RoomAroundModel, surface, SamplesOnLongestSideSide)
+                : null;
 
             InnerFunctionValuesDrawable.SwapDrawable(new EmptyDrawable());
             OuterFunctionValuesDrawable.SwapDrawable(new EmptyDrawable());
-            Faces.Update(Mesh.CreateEmpty());
 
             Updated?.Invoke();
         }
 
         public void CalculateApproximation()
         {
-            if (Tree == null)
+            if (!CanApproximate)
             {
                 throw new InvalidOperationException("update with tree first");
             }
@@ -107,34 +87,8 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
 
                     //Use function values to calculate surface
                     FuncExecutor.Execute(progress => currentCubeMarcher.GetSurface(functionValueGrid, progress))
-                        .GetResult(mesh => Faces.Update(mesh));
+                        .GetResult(mesh => MeshCalculated?.Invoke(mesh));
                 });
-        }
-
-        public void CalculateApproximationWithOctree()
-        {
-            if (Tree == null)
-            {
-                throw new InvalidOperationException("update with tree first");
-            }
-
-            FuncExecutor.Execute(progress =>
-            {
-                var surface = new ScalarProductSurface(Tree, UsedNearestPointCount);
-                var octree = (Octree)Tree;
-
-                var edgeTree = new ImplicitSurfaces.MarchingOctree.EdgeTree(octree, surface);
-                return edgeTree.GetResult();
-            }).GetResult(result =>
-            {
-                FunctionValue[] convert(ImplicitSurfaces.MarchingOctree.FunctionValue[] values)
-                    => values.Select(fv => new FunctionValue(fv.Position, fv.Value)).ToArray();
-
-                SetInnerFunctionValuesDrawable(convert(result.GetInnerValues()));
-                SetOuterFunctionValuesDrawable(convert(result.GetouterValues()));
-
-                Faces.Update(new Mesh(result.GetPositions(), result.GetFaces()));
-            });
         }
 
         private void SetInnerFunctionValuesDrawable(FunctionValue[] functionValues)
@@ -163,11 +117,6 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
         {
             yield return InnerFunctionValuesDrawable;
             yield return OuterFunctionValuesDrawable;
-
-            foreach (var drawable in Faces.GetDrawables())
-            {
-                yield return drawable;
-            }
         }
     }
 }

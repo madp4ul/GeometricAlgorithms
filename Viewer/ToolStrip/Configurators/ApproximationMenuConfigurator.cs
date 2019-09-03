@@ -33,8 +33,13 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Configurators
                 facesMenu.Enabled = approximationTools.EnableApproximateFaces();
             };
 
+            var marchingcubesMenu = GetMenu(facesMenu.DropDownItems, "marchingCubesToolStripMenuItem");
+            var alongOctreeMenu = GetMenu(facesMenu.DropDownItems, "alongOctreeToolStripMenuItem");
+
             MakeClickAction(normalMenu, () => approximationTools.OpenNormalApproximationForm(MainWindow));
-            MakeClickAction(facesMenu, () => approximationTools.OpenFaceApproximationForm(MainWindow));
+
+            MakeClickAction(marchingcubesMenu, () => approximationTools.OpenMarchingCubesApproximationForm(MainWindow));
+            MakeClickAction(alongOctreeMenu, () => approximationTools.OpenTreeFaceApproximationForm(MainWindow));
         }
     }
 }

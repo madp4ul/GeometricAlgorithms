@@ -8,7 +8,7 @@ using GeometricAlgorithms.MeshQuerying;
 
 namespace GeometricAlgorithms.ImplicitSurfaces
 {
-    public class ScalarProductSurface : IImplicitSurface
+    public class ScalarProductSurface : IFiniteImplicitSurface
     {
         public readonly ATree Tree;
         public int UsedNearestPointCount;
@@ -17,7 +17,11 @@ namespace GeometricAlgorithms.ImplicitSurfaces
         {
             Tree = tree ?? throw new ArgumentNullException(nameof(tree));
             UsedNearestPointCount = usedNearestPointCount;
+
+            DefinedArea = Tree.MeshContainer;
         }
+
+        public BoundingBox DefinedArea { get; private set; }
 
         public float GetApproximateSurfaceDistance(Vector3 position)
         {
