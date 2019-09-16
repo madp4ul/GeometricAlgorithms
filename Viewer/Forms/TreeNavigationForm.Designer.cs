@@ -32,6 +32,7 @@
             this.btnToParent = new System.Windows.Forms.Button();
             this.lbCurrent = new System.Windows.Forms.Label();
             this.pnChildren = new System.Windows.Forms.Panel();
+            this.btnDebug = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnToRoot
@@ -62,9 +63,9 @@
             // 
             this.lbCurrent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbCurrent.Location = new System.Drawing.Point(12, 67);
+            this.lbCurrent.Location = new System.Drawing.Point(12, 70);
             this.lbCurrent.Name = "lbCurrent";
-            this.lbCurrent.Size = new System.Drawing.Size(220, 26);
+            this.lbCurrent.Size = new System.Drawing.Size(157, 23);
             this.lbCurrent.TabIndex = 2;
             this.lbCurrent.Text = "label1";
             this.lbCurrent.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -75,16 +76,27 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnChildren.AutoScroll = true;
-            this.pnChildren.Location = new System.Drawing.Point(12, 96);
+            this.pnChildren.Location = new System.Drawing.Point(12, 99);
             this.pnChildren.Name = "pnChildren";
-            this.pnChildren.Size = new System.Drawing.Size(220, 338);
+            this.pnChildren.Size = new System.Drawing.Size(220, 335);
             this.pnChildren.TabIndex = 3;
+            // 
+            // btnDebug
+            // 
+            this.btnDebug.Location = new System.Drawing.Point(175, 70);
+            this.btnDebug.Name = "btnDebug";
+            this.btnDebug.Size = new System.Drawing.Size(56, 23);
+            this.btnDebug.TabIndex = 4;
+            this.btnDebug.Text = "Debug";
+            this.btnDebug.UseVisualStyleBackColor = true;
+            this.btnDebug.Click += new System.EventHandler(this.BtnDebug_Click);
             // 
             // TreeNavigationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(246, 456);
+            this.Controls.Add(this.btnDebug);
             this.Controls.Add(this.pnChildren);
             this.Controls.Add(this.lbCurrent);
             this.Controls.Add(this.btnToParent);
@@ -102,5 +114,6 @@
         private System.Windows.Forms.Button btnToParent;
         private System.Windows.Forms.Label lbCurrent;
         private System.Windows.Forms.Panel pnChildren;
+        private System.Windows.Forms.Button btnDebug;
     }
 }

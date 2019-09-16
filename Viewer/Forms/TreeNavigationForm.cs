@@ -119,5 +119,10 @@ namespace GeometricAlgorithms.Viewer.Forms
 
             RefreshControls();
         }
+
+        private void BtnDebug_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }
