@@ -10,11 +10,13 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
     {
         private EdgeTreeNode Root;
 
-        private readonly Surface Surface;
+        private readonly ImplicitSurfaceProvider ImplicitSurfaceProvider;
+        private readonly SurfaceApproximation SurfaceApproximation;
 
         public EdgeTree(IImplicitSurface implicitSurface)
         {
-            Surface = new Surface(implicitSurface);
+            ImplicitSurfaceProvider = new ImplicitSurfaceProvider(implicitSurface);
+            SurfaceApproximation = new SurfaceApproximation();
         }
     }
 }

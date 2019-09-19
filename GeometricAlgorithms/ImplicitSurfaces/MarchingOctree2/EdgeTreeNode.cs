@@ -10,7 +10,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
     {
         public readonly CubeOutsides Sides;
 
-        private readonly EdgeTreeNode[,,] Children = null;
+        public EdgeTreeNode[,,] Children { get; private set; }
         public bool HasChildren => Children != null;
 
         private EdgeTreeNode()
@@ -25,8 +25,13 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
             Sides = outsides;
         }
 
-        public IEnumerable<EdgeTreeNode> ComputeChildren()
+        public void CreateChildren()
         {
+            if (HasChildren)
+            {
+                throw new InvalidOperationException();
+            }
+
             var children = new EdgeTreeNode[2, 2, 2];
 
             for (int x = 0; x < 2; x++)
@@ -44,25 +49,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
                 }
             }
 
-
-            //TODO create all children from own data and return them
-
-
-            return GetChildren();
-        }
-
-        private IEnumerable<EdgeTreeNode> GetChildren()
-        {
-            for (int x = 0; x < 2; x++)
-            {
-                for (int y = 0; y < 2; y++)
-                {
-                    for (int z = 0; z < 2; z++)
-                    {
-                        yield return Children[x, y, z];
-                    }
-                }
-            }
+            Children = children;
         }
 
         public static EdgeTreeNode CreateRoot()

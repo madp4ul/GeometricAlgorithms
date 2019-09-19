@@ -837,6 +837,20 @@ namespace GeometricAlgorithms.Domain
                 throw new ArgumentException();
             }
         }
+
+        /// <summary>
+        /// Interpolate between two values
+        /// </summary>
+        /// <param name="first"></param>
+        /// <param name="second"></param>
+        /// <param name="interpolationFactor">value from 0 to 1. 0.5 means half of each is taken. 0 means first ist takes and so on</param>
+        /// <returns></returns>
+        public static Vector3 Interpolate(Vector3 first, Vector3 second, float interpolationFactor)
+        {
+            Vector3 diff = second - first;
+
+            return first + diff * interpolationFactor;
+        }
     }
 }
 
