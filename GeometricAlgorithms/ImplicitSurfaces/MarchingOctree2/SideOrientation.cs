@@ -87,6 +87,16 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
             }
         }
 
+        /// <summary>
+        /// if the side orientation is on the inside of a parent, given the offset of the child the side belong to
+        /// </summary>
+        /// <param name="parentOffset"></param>
+        /// <returns></returns>
+        public bool IsInside(OctreeOffset parentOffset)
+        {
+            return IsMax == (parentOffset.GetValue(GetAxis()) == 0);
+        }
+
         public int GetArrayIndex()
         {
             return GetArrayIndex(Index);

@@ -13,6 +13,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
         public readonly CubeOutsides Sides;
         public readonly OctreeNode OctreeNode;
 
+        public readonly int Depth;
+
         public EdgeTreeNode[,,] Children { get; private set; }
         public bool HasChildren => Children != null;
 
@@ -22,14 +24,15 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
         /// <param name="octreeNode"></param>
         /// <param name="implicitSurface"></param>
         /// <param name="boundingBox"></param>
-        private EdgeTreeNode(OctreeNode octreeNode, ImplicitSurfaceProvider implicitSurface)
-            : this(octreeNode, CubeOutsides.ForRoot(implicitSurface, octreeNode.BoundingBox))
+        private EdgeTreeNode(OctreeNode octreeNode, ImplicitSurfaceProvider implicitSurface, int depth)
+            : this(octreeNode, CubeOutsides.ForRoot(implicitSurface, octreeNode.BoundingBox), depth)
         { }
 
-        private EdgeTreeNode(OctreeNode octreeNode, CubeOutsides outsides)
+        private EdgeTreeNode(OctreeNode octreeNode, CubeOutsides outsides, int depth)
         {
             OctreeNode = octreeNode;
             Sides = outsides;
+            Depth = depth;
         }
 
         public void CreateChildren()
@@ -52,7 +55,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
                     {
                         children[x, y, z] = new EdgeTreeNode(
                             octreeNode: OctreeNode.Children[x, y, z],
-                            outsides: Sides.Children[x, y, z]);
+                            outsides: Sides.Children[x, y, z],
+                            depth: Depth + 1);
                     }
                 }
             }
@@ -60,9 +64,14 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
             Children = children;
         }
 
+        public void ComputeTriangulation()
+        {
+            //TODO
+        }
+
         public static EdgeTreeNode CreateRoot(OctreeNode octreeNode, ImplicitSurfaceProvider implicitSurface)
         {
-            return new EdgeTreeNode(octreeNode, implicitSurface);
+            return new EdgeTreeNode(octreeNode, implicitSurface, depth: 0);
         }
     }
 }

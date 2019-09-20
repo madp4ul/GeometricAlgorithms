@@ -35,13 +35,38 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
             var insides = new CubeInsides(ImplicitSurface, this);
 
             var children = new CubeOutsides[2, 2, 2];
-            //TODO get the right child sides and create filled container for child
+
+            //get the right child sides and create filled container for child
             //use inside container because it stores the child sides for later creations of siblings
+            for (int x = 0; x < 2; x++)
+            {
+                for (int y = 0; y < 2; y++)
+                {
+                    for (int z = 0; z < 2; z++)
+                    {
+                        var parentOffset = new OctreeOffset(x, y, z);
 
+                        var child = new CubeOutsides(ImplicitSurface);
 
+                        for (int i = 0; i < child.Sides.Length; i++)
+                        {
+                            SideOrientation orientation = new SideOrientation(SideOrientation.GetSideIndex(i));
 
-
-            throw new NotImplementedException();
+                            if (orientation.IsInside(parentOffset))
+                            {
+                                child[orientation] = insides[orientation, parentOffset];
+                            }
+                            else
+                            {
+                                SideOffset childSideOffset = parentOffset.ExcludeDimension(orientation.GetAxis());
+                                child[orientation] = Sides[orientation.GetArrayIndex()].Children[
+                                    childSideOffset.MinimumDimensionValue,
+                                    childSideOffset.MaximumDimensionValue];
+                            }
+                        }
+                    }
+                }
+            }
 
             Children = new CubeOutsideChildren(children);
         }
