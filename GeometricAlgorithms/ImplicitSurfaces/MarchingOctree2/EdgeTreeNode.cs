@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.PointPartitioning;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,19 +11,24 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
     class EdgeTreeNode
     {
         public readonly CubeOutsides Sides;
+        public readonly OctreeNode OctreeNode;
 
         public EdgeTreeNode[,,] Children { get; private set; }
         public bool HasChildren => Children != null;
 
-        private EdgeTreeNode()
-        {
-            //actual sides will be provides by parent
-            Sides = CubeOutsides.ForRoot();
-        }
+        /// <summary>
+        /// Private constructor only for creation of root node
+        /// </summary>
+        /// <param name="octreeNode"></param>
+        /// <param name="implicitSurface"></param>
+        /// <param name="boundingBox"></param>
+        private EdgeTreeNode(OctreeNode octreeNode, ImplicitSurfaceProvider implicitSurface)
+            : this(octreeNode, CubeOutsides.ForRoot(implicitSurface, octreeNode.BoundingBox))
+        { }
 
-        private EdgeTreeNode(CubeOutsides outsides)
+        private EdgeTreeNode(OctreeNode octreeNode, CubeOutsides outsides)
         {
-            //actual sides will be provides by parent
+            OctreeNode = octreeNode;
             Sides = outsides;
         }
 
@@ -32,6 +39,9 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
                 throw new InvalidOperationException();
             }
 
+            OctreeNode.CreateChildren();
+            Sides.CreateChildren();
+
             var children = new EdgeTreeNode[2, 2, 2];
 
             for (int x = 0; x < 2; x++)
@@ -40,11 +50,9 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
                 {
                     for (int z = 0; z < 2; z++)
                     {
-                        OctreeOffset offset = new OctreeOffset(x, y, z);
-
-                        var childOutsides = Sides.CreateChild(offset);
-
-                        children[x, y, z] = new EdgeTreeNode(childOutsides);
+                        children[x, y, z] = new EdgeTreeNode(
+                            octreeNode: OctreeNode.Children[x, y, z],
+                            outsides: Sides.Children[x, y, z]);
                     }
                 }
             }
@@ -52,9 +60,9 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
             Children = children;
         }
 
-        public static EdgeTreeNode CreateRoot()
+        public static EdgeTreeNode CreateRoot(OctreeNode octreeNode, ImplicitSurfaceProvider implicitSurface)
         {
-            return new EdgeTreeNode();
+            return new EdgeTreeNode(octreeNode, implicitSurface);
         }
     }
 }

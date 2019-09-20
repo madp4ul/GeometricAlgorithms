@@ -77,8 +77,10 @@
     <Compile Include="ImplicitSurfaces\MarchingCubes\Point.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\BitCalculator.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\CubeInsides.cs" />
+    <Compile Include="ImplicitSurfaces\MarchingOctree2\CubeOutsideChildren.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\CubeOutsides.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\Edge.cs" />
+    <Compile Include="ImplicitSurfaces\MarchingOctree2\EdgeChildren.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\EdgeIndex.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\EdgeOrientation.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\EdgeTree.cs" />
@@ -88,7 +90,14 @@
     <Compile Include="ImplicitSurfaces\MarchingOctree2\FunctionValueOrientation.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\ImplicitSurfaceProvider.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\OctreeOffset.cs" />
+    <Compile Include="ImplicitSurfaces\MarchingOctree2\PointPartitioning\OctreeNode.cs" />
+    <Compile Include="ImplicitSurfaces\MarchingOctree2\PointPartitioning\PositionIndex.cs" />
+    <Compile Include="ImplicitSurfaces\MarchingOctree2\PointPartitioning\PositionIndexComparer.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\Side.cs" />
+    <Compile Include="ImplicitSurfaces\MarchingOctree2\SideChildren.cs" />
+    <Compile Include="ImplicitSurfaces\MarchingOctree2\SideDimensions.cs" />
+    <Compile Include="ImplicitSurfaces\MarchingOctree2\SideInsideEdges.cs" />
+    <Compile Include="ImplicitSurfaces\MarchingOctree2\SideOutsideEdges.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\SideIndex.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\SideOffset.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\SideOrientation.cs" />
@@ -130,7 +139,6 @@
     <Compile Include="MeshQuerying\KdTreeBranch.cs" />
     <Compile Include="MeshQuerying\TreeConfiguration.cs" />
     <Compile Include="MeshQuerying\QueryState.cs" />
-    <Compile Include="MeshQuerying\Range.cs" />
     <Compile Include="MeshQuerying\PositionIndex.cs" />
     <Compile Include="MeshQuerying\PositionIndexComparer.cs" />
     <Compile Include="NormalApproximation\FromFaces\FaceNormalWeightByArea.cs" />

@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.MeshQuerying
+namespace GeometricAlgorithms.Domain
 {
     /// <summary>
     /// Provides partial access to an array. Can be further restricted
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    class Range<T> : IEnumerable<T>
+    public class Range<T> : IEnumerable<T>
     {
         private T[] Array { get; set; }
         private int Offset { get; set; }

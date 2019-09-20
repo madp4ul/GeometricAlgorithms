@@ -14,10 +14,9 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
     {
         private readonly IImplicitSurface ImplicitSurface;
 
-        private readonly List<FunctionValue> InnerValues = new List<FunctionValue>();
-        private readonly List<FunctionValue> OuterValues = new List<FunctionValue>();
+        private readonly List<FunctionValue> FunctionValues = new List<FunctionValue>();
 
-        public int FunctionValueCount => InnerValues.Count + OuterValues.Count;
+        public int FunctionValueCount => FunctionValues.Count;
 
         public ImplicitSurfaceProvider(IImplicitSurface implicitSurface)
         {
@@ -30,26 +29,14 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
 
             FunctionValue value = new FunctionValue(position, distance);
 
-            if (value.IsInside)
-            {
-                InnerValues.Add(value);
-            }
-            else
-            {
-                OuterValues.Add(value);
-            }
+            FunctionValues.Add(value);
 
             return value;
         }
 
-        public FunctionValue[] GetInnerValues()
+        public FunctionValue[] GetFunctionValues()
         {
-            return InnerValues.ToArray();
-        }
-
-        public FunctionValue[] GetouterValues()
-        {
-            return OuterValues.ToArray();
+            return FunctionValues.ToArray();
         }
     }
 }

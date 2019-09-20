@@ -19,10 +19,12 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
         /// Create insides for a cube from available data in outside container
         /// </summary>
         /// <param name="outsideContainer">outer sides of the cube</param>
-        public CubeInsides(CubeOutsides outsideContainer)
+        public CubeInsides(ImplicitSurfaceProvider implicitSurface, CubeOutsides outsideContainer)
         {
             //Todo create sides from available data and create all necessary edges and fv.
             //Create all insides
+
+
         }
 
         public Side this[SideOrientation orientation, OctreeOffset childOffset]
