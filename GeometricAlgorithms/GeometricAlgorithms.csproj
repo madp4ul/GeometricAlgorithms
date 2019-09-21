@@ -106,6 +106,7 @@
     <Compile Include="ImplicitSurfaces\MarchingOctree2\SideTriangulationTable.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\SurfaceApproximation.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\Triangulation\MergedTriangleLineSegment.cs" />
+    <Compile Include="ImplicitSurfaces\MarchingOctree2\Triangulation\PolynomReduction.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\Triangulation\TriangleLineSegment.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\Triangulation\TriangleLineSegmentNode.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\BitCalculator.cs" />

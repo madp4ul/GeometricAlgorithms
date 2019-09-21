@@ -28,9 +28,42 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.Triangulation
                 throw new InvalidOperationException();
             }
 
-            //TODO
+            //The start and end elements are duplicate at the start.
+            //Remove one and make the segment a real circle by connecting it.
+            TriangleLineSegmentNode.Connect(Last, First.Next);
 
-            throw new NotImplementedException();
+            var triangles = new List<Triangle>();
+
+            var reductions = MergedNodes.Select(PolynomReduction.CreateInitial).ToList();
+
+            if (reductions.Count == 0)
+            {
+                //This only happens flat for circles. These have to be comvex
+                reductions.Add(new PolynomReduction(Last));
+
+                //TODO handle non-convex flat circles by considering angles (hard because we only have indices and not the spacial data)
+            }
+
+            int reductionIndex = 0;
+            bool canReduce = true;
+
+            //Rotate reductions until last triangle was added
+            while (canReduce)
+            {
+                PolynomReduction current = reductions[reductionIndex];
+                canReduce = current.MoveToNextPoint(out Triangle triangle);
+                triangles.Add(triangle);
+
+                reductionIndex = (reductionIndex + 1) % reductions.Count;
+            }
+
+            return triangles;
+        }
+
+        private enum PointToSelect
+        {
+            Next,
+            Previous
         }
     }
 }

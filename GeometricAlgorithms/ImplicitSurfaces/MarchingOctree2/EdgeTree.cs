@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
 {
-    class EdgeTree
+    public class EdgeTree
     {
         private readonly EdgeTreeNode Root;
 
-        private readonly ImplicitSurfaceProvider ImplicitSurfaceProvider;
+        public readonly ImplicitSurfaceProvider ImplicitSurfaceProvider;
         private readonly Func<EdgeTreeNode, int> GetComparationFeature;
         private readonly PriorityQueue<ComparableEdgeTreeNode> TreeLeafsByRefinementPriority;
 
@@ -23,7 +23,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
         /// <param name="partitioning"></param>
         /// <param name="getComparableFeature">Function to extract a value from edge-tree-nodes by which they will be compared.
         /// Nodes with lowest extracted value will be refined first</param>
-        public EdgeTree(IImplicitSurface implicitSurface, OctreePartitioning partitioning, Func<EdgeTreeNode, int> getComparableFeature)
+        private EdgeTree(IImplicitSurface implicitSurface, OctreePartitioning partitioning, Func<EdgeTreeNode, int> getComparableFeature)
         {
             ImplicitSurfaceProvider = new ImplicitSurfaceProvider(implicitSurface);
 
@@ -35,7 +35,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
             TreeLeafsByRefinementPriority.Enqueue(new ComparableEdgeTreeNode(Root, getComparableFeature));
         }
 
-        public SurfaceApproximation CreateApproximation()
+        public Mesh CreateApproximation()
         {
             var treeLeafs = TreeLeafsByRefinementPriority.Select(cn => cn.Node).ToList();
             treeLeafs.Sort(CompareNodeDepth);
@@ -47,7 +47,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
                 treeLeaf.AddTriangulation(approximation);
             }
 
-            return approximation;
+            return new Mesh(approximation.GetPositions(), approximation.GetFaces());
         }
 
         private static int CompareNodeDepth(EdgeTreeNode node1, EdgeTreeNode node2)
@@ -79,6 +79,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
             }
         }
 
+
         public static EdgeTree CreateWithWithMostPointsFirst(IImplicitSurface implicitSurface, Mesh mesh, float containerScale = 1.3f)
         {
             int getFeature(EdgeTreeNode node) => -node.OctreeNode.VerticesCount;
@@ -87,6 +88,9 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
 
             return new EdgeTree(implicitSurface, partitioning, getFeature);
         }
+
+
+
 
         private class ComparableEdgeTreeNode : IComparable<ComparableEdgeTreeNode>
         {

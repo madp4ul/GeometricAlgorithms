@@ -10,7 +10,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
     /// <summary>
     /// Used to get function values and track which values were computed
     /// </summary>
-    class ImplicitSurfaceProvider
+    public class ImplicitSurfaceProvider
     {
         private readonly IImplicitSurface ImplicitSurface;
 

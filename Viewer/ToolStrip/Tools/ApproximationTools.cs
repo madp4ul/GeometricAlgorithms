@@ -53,12 +53,12 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Tools
             }
         }
 
-        private TreeFaceApproximationForm TreeFaceApproximationForm = null;
+        private OctreeRefinementApproximationForm TreeFaceApproximationForm = null;
         public void OpenTreeFaceApproximationForm(System.Windows.Forms.IWin32Window owner)
         {
             if (TreeFaceApproximationForm == null)
             {
-                TreeFaceApproximationForm = new TreeFaceApproximationForm(Workspace);
+                TreeFaceApproximationForm = new OctreeRefinementApproximationForm(Workspace);
                 TreeFaceApproximationForm.FormClosed += (o, e) => TreeFaceApproximationForm = null;
                 TreeFaceApproximationForm.Show(owner);
             }
