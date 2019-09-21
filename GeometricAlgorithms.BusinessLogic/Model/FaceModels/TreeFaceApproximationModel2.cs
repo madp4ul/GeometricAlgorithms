@@ -77,12 +77,10 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
 
         private void Reset()
         {
-            InnerFunctionValuesDrawable.SwapDrawable(new EmptyDrawable());
-            OuterFunctionValuesDrawable.SwapDrawable(new EmptyDrawable());
-
             if (ImplicitSurface != null && Mesh != null)
             {
                 EdgeTree = EdgeTree.CreateWithWithMostPointsFirst(ImplicitSurface, Mesh);
+                SetAllFunctionValueDrawables(EdgeTree?.ImplicitSurfaceProvider.GetFunctionValues());
             }
 
         }
@@ -114,15 +112,26 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
 
         private void SetApproximation(Mesh mesh, EdgeTree edgeTree)
         {
-            var fv = edgeTree.ImplicitSurfaceProvider.GetFunctionValues();
-
-            var innerFv = fv.Where(f => f.IsInside).ToArray();
-            var outerFv = fv.Where(f => !f.IsInside).ToArray();
-
-            SetInnerFunctionValuesDrawable(innerFv);
-            SetOuterFunctionValuesDrawable(outerFv);
+            SetAllFunctionValueDrawables(edgeTree.ImplicitSurfaceProvider.GetFunctionValues());
 
             MeshCalculated?.Invoke(mesh);
+        }
+
+        private void SetAllFunctionValueDrawables(FunctionValue[] functionValues)
+        {
+            if (functionValues != null)
+            {
+                var innerFv = functionValues.Where(f => f.IsInside).ToArray();
+                var outerFv = functionValues.Where(f => !f.IsInside).ToArray();
+
+                SetInnerFunctionValuesDrawable(innerFv);
+                SetOuterFunctionValuesDrawable(outerFv);
+            }
+            else
+            {
+                InnerFunctionValuesDrawable.SwapDrawable(new EmptyDrawable());
+                OuterFunctionValuesDrawable.SwapDrawable(new EmptyDrawable());
+            }
         }
 
         private void SetInnerFunctionValuesDrawable(FunctionValue[] functionValues)

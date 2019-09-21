@@ -53,7 +53,6 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
             child00Edges[1, 0] = insideEdges[0, 0];
             child00Edges[1, 1] = Edges[1, 1].Children[0];
             Side child01 = new Side(ImplicitSurface, child01Edges);
-            //TODO fix the numbers
 
             SideOutsideEdges child10Edges = new SideOutsideEdges(Dimensions.DirectionAxisFromCubeCenter);
             child00Edges[0, 0] = insideEdges[1, 0];
