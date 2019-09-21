@@ -16,5 +16,18 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.Triangulation
         {
             VertexIndex = vertexIndex;
         }
+
+        public static void Connect(TriangleLineSegmentNode first, TriangleLineSegmentNode second)
+        {
+            if (first != null)
+            {
+                first.Next = second;
+            }
+
+            if (second != null)
+            {
+                second.Previous = first;
+            }
+        }
     }
 }

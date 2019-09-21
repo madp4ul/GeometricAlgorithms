@@ -81,8 +81,12 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
                 throw new ApplicationException("Should not happen.");
             }
 
-            //TODO Triangulate polynom
-            throw new NotImplementedException();
+            foreach (var circle in mergedSegments.Cast<MergedTriangleLineSegment>())
+            {
+                var triangles = circle.TriangulateCircle();
+
+                approximation.AddFaces(triangles);
+            }
         }
 
         public static EdgeTreeNode CreateRoot(OctreeNode octreeNode, ImplicitSurfaceProvider implicitSurface)

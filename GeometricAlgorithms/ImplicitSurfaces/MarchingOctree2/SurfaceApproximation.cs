@@ -23,9 +23,9 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
             return Positions.Count - 1;
         }
 
-        public void AddFace(Triangle triangle)
+        public void AddFaces(IEnumerable<Triangle> triangle)
         {
-            Faces.Add(triangle);
+            Faces.AddRange(triangle);
         }
 
         public Vector3[] GetPositions()
