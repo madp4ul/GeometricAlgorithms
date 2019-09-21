@@ -1,4 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.Triangulation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,13 +50,13 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
             SideOutsideEdges child01Edges = new SideOutsideEdges(Dimensions.DirectionAxisFromCubeCenter);
             child00Edges[0, 0] = Edges[0, 0].Children[1];
             child00Edges[0, 1] = insideEdges[1, 1];
-            child00Edges[1, 0] = insideEdges[0, 0]; 
+            child00Edges[1, 0] = insideEdges[0, 0];
             child00Edges[1, 1] = Edges[1, 1].Children[0];
             Side child01 = new Side(ImplicitSurface, child01Edges);
             //TODO fix the numbers
 
             SideOutsideEdges child10Edges = new SideOutsideEdges(Dimensions.DirectionAxisFromCubeCenter);
-            child00Edges[0, 0] = insideEdges[1, 0]; 
+            child00Edges[0, 0] = insideEdges[1, 0];
             child00Edges[0, 1] = Edges[0, 1].Children[0];
             child00Edges[1, 0] = Edges[1, 0].Children[1];
             child00Edges[1, 1] = insideEdges[0, 1];
@@ -64,11 +65,66 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
             SideOutsideEdges child11Edges = new SideOutsideEdges(Dimensions.DirectionAxisFromCubeCenter);
             child00Edges[0, 0] = insideEdges[1, 1];
             child00Edges[0, 1] = Edges[0, 1].Children[1];
-            child00Edges[1, 0] = insideEdges[0, 1]; 
+            child00Edges[1, 0] = insideEdges[0, 1];
             child00Edges[1, 1] = Edges[1, 1].Children[1];
             Side child11 = new Side(ImplicitSurface, child11Edges);
 
             Children = new SideChildren(child00, child01, child10, child11);
+        }
+
+        public List<TriangleLineSegment> GetLineSegments(SurfaceApproximation approximation)
+        {
+            if (HasChildren)
+            {
+                return GetMergedChildLineSegments(approximation);
+            }
+            else
+            {
+                return GetLineSegmentsFromTriagulationTable(approximation);
+            }
+        }
+
+        private List<TriangleLineSegment> GetMergedChildLineSegments(SurfaceApproximation approximation)
+        {
+            var childSegments = new List<TriangleLineSegment>();
+            childSegments.AddRange(Children[0, 0].GetLineSegments(approximation));
+            childSegments.AddRange(Children[0, 1].GetLineSegments(approximation));
+            childSegments.AddRange(Children[1, 0].GetLineSegments(approximation));
+            childSegments.AddRange(Children[1, 1].GetLineSegments(approximation));
+
+            return TriangleLineSegment.Merge(childSegments);
+        }
+
+        private List<TriangleLineSegment> GetLineSegmentsFromTriagulationTable(SurfaceApproximation approximation)
+        {
+            Edge minEdge = Edges[0, 0];
+            Edge maxEdge = Edges[0, 1];
+
+            var lineSegmentDefinition = SideTriangulationTable.GetDefinition(
+                is00Inside: minEdge.MinValue.IsInside,
+                is01Inside: minEdge.MaxValue.IsInside,
+                is10Inside: maxEdge.MinValue.IsInside,
+                is11Inside: maxEdge.MaxValue.IsInside);
+
+            var result = new List<TriangleLineSegment>();
+
+            for (int i = 0; i < lineSegmentDefinition.Length; i++)
+            {
+                ref LineSegmentDefinition current = ref lineSegmentDefinition[i];
+
+                var startEdge = Edges[current.LineStart.DimensionIndex, current.LineStart.DirectionIndex];
+                var startNode = new TriangleLineSegmentNode(startEdge.GetInterpolatedPositionIndices(approximation).Single());
+
+                var endEdge = Edges[current.LineEnd.DimensionIndex, current.LineEnd.DirectionIndex];
+                var endNode = new TriangleLineSegmentNode(endEdge.GetInterpolatedPositionIndices(approximation).Single());
+
+                startNode.Next = endNode;
+                endNode.Previous = startNode;
+
+                result.Add(new TriangleLineSegment(startNode, endNode));
+            }
+
+            return result;
         }
     }
 }

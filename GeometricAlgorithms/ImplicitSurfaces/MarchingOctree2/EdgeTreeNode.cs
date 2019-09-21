@@ -1,5 +1,6 @@
 ﻿using GeometricAlgorithms.Domain;
 using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.PointPartitioning;
+using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.Triangulation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,9 +65,24 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
             Children = children;
         }
 
-        public void ComputeTriangulation()
+        public void AddTriangulation(SurfaceApproximation approximation)
         {
-            //TODO
+            var sideLineSegments = new List<TriangleLineSegment>();
+
+            foreach (var side in Sides)
+            {
+                sideLineSegments.AddRange(side.GetLineSegments(approximation));
+            }
+
+            var mergedSegments = TriangleLineSegment.Merge(sideLineSegments);
+
+            if (mergedSegments.Any(s => !s.IsCircle))
+            {
+                throw new ApplicationException("Should not happen.");
+            }
+
+            //TODO Triangulate polynom
+            throw new NotImplementedException();
         }
 
         public static EdgeTreeNode CreateRoot(OctreeNode octreeNode, ImplicitSurfaceProvider implicitSurface)

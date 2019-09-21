@@ -1,5 +1,6 @@
 ﻿using GeometricAlgorithms.Domain;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
     /// <summary>
     /// Cleaner access to sides of a cube by requiring orientation
     /// </summary>
-    class CubeOutsides
+    class CubeOutsides : IEnumerable<Side>
     {
         private readonly ImplicitSurfaceProvider ImplicitSurface;
 
@@ -118,6 +119,19 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
             }
 
             return rootOusides;
+        }
+
+        public IEnumerator<Side> GetEnumerator()
+        {
+            for (int i = 0; i < Sides.Length; i++)
+            {
+                yield return Sides[i];
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

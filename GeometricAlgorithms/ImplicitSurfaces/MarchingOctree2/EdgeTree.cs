@@ -1,4 +1,5 @@
-﻿using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.PointPartitioning;
+﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.PointPartitioning;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,10 +44,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
 
             foreach (var treeLeaf in treeLeafs)
             {
-                //todo create triagulation and add to approximation
+                treeLeaf.AddTriangulation(approximation);
             }
-
-            throw new NotImplementedException();
 
             return approximation;
         }
@@ -80,9 +79,11 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
             }
         }
 
-        public static EdgeTree CreateWithWithMostPointsFirst(IImplicitSurface implicitSurface, OctreePartitioning partitioning)
+        public static EdgeTree CreateWithWithMostPointsFirst(IImplicitSurface implicitSurface, Mesh mesh, float containerScale = 1.3f)
         {
             int getFeature(EdgeTreeNode node) => -node.OctreeNode.VerticesCount;
+
+            OctreePartitioning partitioning = new OctreePartitioning(mesh, containerScale);
 
             return new EdgeTree(implicitSurface, partitioning, getFeature);
         }

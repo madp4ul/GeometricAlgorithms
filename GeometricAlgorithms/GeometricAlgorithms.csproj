@@ -103,7 +103,10 @@
     <Compile Include="ImplicitSurfaces\MarchingOctree2\SideIndex.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\SideOffset.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\SideOrientation.cs" />
+    <Compile Include="ImplicitSurfaces\MarchingOctree2\SideTriangulationTable.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\SurfaceApproximation.cs" />
+    <Compile Include="ImplicitSurfaces\MarchingOctree2\Triangulation\TriangleLineSegment.cs" />
+    <Compile Include="ImplicitSurfaces\MarchingOctree2\Triangulation\TriangleLineSegmentNode.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\BitCalculator.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\EdgeIndex.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\EdgeOrientation.cs" />
