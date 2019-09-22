@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeometricAlgorithms.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,6 +37,25 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
         {
             get { return Sides[minDimensionIndex, maxDimensionIndex]; }
             private set { Sides[minDimensionIndex, maxDimensionIndex] = value; }
+        }
+
+        public Edge GetCrossEdge(int dimensionIndex, int directionIndex)
+        {
+            if (dimensionIndex == 0)
+            {
+                return this[directionIndex, 0].Edges[1, 1];
+            }
+            else
+            {
+                return this[0, directionIndex].Edges[0, 1];
+            }
+        }
+
+        public Edge GetCrossEdge(Dimension crossDimension, int directionIndex)
+        {
+            int dimensionIndex = Sides[0, 0].Dimensions.GetDimensionIndex(crossDimension);
+
+            return GetCrossEdge(dimensionIndex, directionIndex);
         }
     }
 }

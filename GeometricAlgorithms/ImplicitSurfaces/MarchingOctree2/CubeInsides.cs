@@ -48,19 +48,21 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
 
                         for (int edgeDimension = 0; edgeDimension < 2; edgeDimension++)
                         {
+                            int indexAtDimensionOfEdge = edgeDimension == 0 ? b : a;
+
                             for (int edgeDirection = 0; edgeDirection < 2; edgeDirection++)
                             {
-                                bool isEdgeInside = (edgeDimension == 0 && a != edgeDimension)
-                                    || (edgeDimension == 1 && b != edgeDimension);
+                                bool isEdgeInside = (edgeDimension == 0 && a != edgeDirection)
+                                    || (edgeDimension == 1 && b != edgeDirection);
 
                                 Edge selectedEdge;
 
                                 if (isEdgeInside)
                                 {
-                                    Dimension dimIndexOfInsideEdge = edgeDirectionsFromCubeCenter[edgeDimension == 0 ? 1 : 0];
-                                    bool directionIndexOfInsideEdge = (edgeDimension == 0 ? a : b) == 0;
+                                    int nonEdgeDimension = edgeDimension == 0 ? 1 : 0;
 
-                                    selectedEdge = insideEdges[dimIndexOfInsideEdge, directionIndexOfInsideEdge];
+                                    Dimension dimIndexOfInsideEdge = edgeDirectionsFromCubeCenter[nonEdgeDimension];
+                                    selectedEdge = insideEdges[dimIndexOfInsideEdge, indexAtDimensionOfEdge == 1];
                                 }
                                 else
                                 {
@@ -69,19 +71,10 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
                                         isMax: edgeDirection == 1);
                                     Side outsideToLookIn = outsideContainer[outsideOrientation];
 
-                                    //TODO improve
+                                    Dimension sharedDimension = SideDimensions.GetSharedAxis(outsideToLookIn.Dimensions, sideEdges.Dimensions);
+                                    int dimensionIndexInCreatedSide = sideEdges.Dimensions.GetDimensionIndex(sharedDimension);
 
-                                    var dimensionInOutside = outsideToLookIn.Dimensions.SideAxis
-                                         .Select((dimension, index) => new { dimension, index })
-                                         .First(d => sideEdges.Dimensions.SideAxis.Contains(d.dimension));
-
-                                    var dimensionInCreatedSide = sideEdges.Dimensions.SideAxis
-                                        .Select((dimension, index) => new { dimension, index })
-                                        .First(d => sideEdges.Dimensions.SideAxis.Contains(d.dimension));
-
-                                    int direction = dimensionInCreatedSide.index == 0 ? a : b;
-
-                                    selectedEdge = GetCrossEdge(outsideToLookIn, dimensionInOutside.index, direction);
+                                    selectedEdge = outsideToLookIn.Children.GetCrossEdge(sharedDimension, indexAtDimensionOfEdge);
                                 }
 
                                 sideEdges[edgeDimension, edgeDirection] = selectedEdge;
@@ -90,21 +83,6 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
                     }
                 }
 
-            }
-
-            //Todo create sides from available data and create all necessary edges and fv.
-
-        }
-
-        private Edge GetCrossEdge(Side side, int dimensionIndex, int directionIndex)
-        {
-            if (dimensionIndex == 0)
-            {
-                return side.Children[directionIndex, 0].Edges[1, 1];
-            }
-            else
-            {
-                return side.Children[0, directionIndex].Edges[0, 1];
             }
         }
 
