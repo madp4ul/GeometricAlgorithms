@@ -76,6 +76,7 @@
     <Compile Include="ImplicitSurfaces\MarchingCubes\IndexEnums.cs" />
     <Compile Include="ImplicitSurfaces\MarchingCubes\Point.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\BitCalculator.cs" />
+    <Compile Include="ImplicitSurfaces\MarchingOctree2\CubeInsideEdges.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\CubeInsides.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\CubeOutsideChildren.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\CubeOutsides.cs" />
