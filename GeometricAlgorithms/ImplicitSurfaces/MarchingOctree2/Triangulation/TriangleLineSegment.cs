@@ -46,6 +46,20 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.Triangulation
                         break;
                     }
 
+                    if (segment1.First.VertexIndex == segment2.First.VertexIndex)
+                    {
+                        var reversed1 = segment1.CreateReversed();
+                        combineSegments(reversed1, segment2);
+                        break;
+                    }
+
+                    if (segment1.Last.VertexIndex == segment2.Last.VertexIndex)
+                    {
+                        var reversed1 = segment1.CreateReversed();
+                        combineSegments(segment2, reversed1);
+                        break;
+                    }
+
                     void combineSegments(TriangleLineSegment first, TriangleLineSegment second)
                     {
                         //Replace segments with combination of them and break from current iteration
@@ -69,6 +83,24 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.Triangulation
             merged.AddRange(segments);
 
             return merged;
+        }
+
+        public TriangleLineSegment CreateReversed()
+        {
+            var reversedFirst = new TriangleLineSegmentNode(Last.VertexIndex);
+
+            var current = Last;
+            var currentReversed = reversedFirst;
+
+            while (current.Previous != null)
+            {
+                var nextReversed = new TriangleLineSegmentNode(current.Previous.VertexIndex);
+                TriangleLineSegmentNode.Connect(currentReversed, nextReversed);
+                currentReversed = currentReversed.Next;
+                current = current.Previous;
+            }
+
+            return new TriangleLineSegment(reversedFirst, currentReversed);
         }
 
         protected virtual string Name => "line segment";

@@ -10,7 +10,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.Triangulation
     {
         public TriangleLineSegmentNode Previous;
         public TriangleLineSegmentNode Next;
-        public int VertexIndex;
+        public readonly int VertexIndex;
 
         public TriangleLineSegmentNode(int vertexIndex)
         {
