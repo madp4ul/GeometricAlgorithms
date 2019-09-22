@@ -40,35 +40,45 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
 
             var insideEdges = new SideInsideEdges(ImplicitSurface, Edges);
 
-            SideOutsideEdges child00Edges = new SideOutsideEdges(Dimensions.DirectionAxisFromCubeCenter);
-            child00Edges[0, 0] = Edges[0, 0].Children[0];
-            child00Edges[0, 1] = insideEdges[1, 0];
-            child00Edges[1, 0] = Edges[1, 0].Children[0];
-            child00Edges[1, 1] = insideEdges[0, 0];
-            Side child00 = new Side(ImplicitSurface, child00Edges);
+            Side[,] childSides = new Side[2, 2];
 
-            SideOutsideEdges child01Edges = new SideOutsideEdges(Dimensions.DirectionAxisFromCubeCenter);
-            child00Edges[0, 0] = Edges[0, 0].Children[1];
-            child00Edges[0, 1] = insideEdges[1, 1];
-            child00Edges[1, 0] = insideEdges[0, 0];
-            child00Edges[1, 1] = Edges[1, 1].Children[0];
-            Side child01 = new Side(ImplicitSurface, child01Edges);
+            {
+                SideOutsideEdges childEdges = new SideOutsideEdges(Dimensions.DirectionAxisFromCubeCenter);
+                childEdges[0, 0] = Edges[0, 0].Children[0];
+                childEdges[0, 1] = insideEdges[1, 0];
+                childEdges[1, 0] = Edges[1, 0].Children[0];
+                childEdges[1, 1] = insideEdges[0, 0];
+                childSides[0, 0] = new Side(ImplicitSurface, childEdges);
+            }
 
-            SideOutsideEdges child10Edges = new SideOutsideEdges(Dimensions.DirectionAxisFromCubeCenter);
-            child00Edges[0, 0] = insideEdges[1, 0];
-            child00Edges[0, 1] = Edges[0, 1].Children[0];
-            child00Edges[1, 0] = Edges[1, 0].Children[1];
-            child00Edges[1, 1] = insideEdges[0, 1];
-            Side child10 = new Side(ImplicitSurface, child10Edges);
+            {
+                SideOutsideEdges childEdges = new SideOutsideEdges(Dimensions.DirectionAxisFromCubeCenter);
+                childEdges[0, 0] = Edges[0, 0].Children[1];
+                childEdges[0, 1] = insideEdges[1, 1];
+                childEdges[1, 0] = insideEdges[0, 0];
+                childEdges[1, 1] = Edges[1, 1].Children[0];
+                childSides[0, 1] = new Side(ImplicitSurface, childEdges);
+            }
 
-            SideOutsideEdges child11Edges = new SideOutsideEdges(Dimensions.DirectionAxisFromCubeCenter);
-            child00Edges[0, 0] = insideEdges[1, 1];
-            child00Edges[0, 1] = Edges[0, 1].Children[1];
-            child00Edges[1, 0] = insideEdges[0, 1];
-            child00Edges[1, 1] = Edges[1, 1].Children[1];
-            Side child11 = new Side(ImplicitSurface, child11Edges);
+            {
+                SideOutsideEdges childEdges = new SideOutsideEdges(Dimensions.DirectionAxisFromCubeCenter);
+                childEdges[0, 0] = insideEdges[1, 0];
+                childEdges[0, 1] = Edges[0, 1].Children[0];
+                childEdges[1, 0] = Edges[1, 0].Children[1];
+                childEdges[1, 1] = insideEdges[0, 1];
+                childSides[1, 0] = new Side(ImplicitSurface, childEdges);
+            }
 
-            Children = new SideChildren(child00, child01, child10, child11);
+            {
+                SideOutsideEdges childEdges = new SideOutsideEdges(Dimensions.DirectionAxisFromCubeCenter);
+                childEdges[0, 0] = insideEdges[1, 1];
+                childEdges[0, 1] = Edges[0, 1].Children[1];
+                childEdges[1, 0] = insideEdges[0, 1];
+                childEdges[1, 1] = Edges[1, 1].Children[1];
+                childSides[1, 1] = new Side(ImplicitSurface, childEdges);
+            }
+
+            Children = new SideChildren(childSides[0, 0], childSides[0, 1], childSides[1, 0], childSides[1, 1]);
         }
 
         public List<TriangleLineSegment> GetLineSegments(SurfaceApproximation approximation)
@@ -124,6 +134,13 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
             }
 
             return result;
+        }
+
+        public override string ToString()
+        {
+            string hasChildren = HasChildren ? "has children" : "no children";
+
+            return $"{{side: {Dimensions.DirectionAxisFromCubeCenter.ToString()}, {hasChildren}}}";
         }
     }
 }

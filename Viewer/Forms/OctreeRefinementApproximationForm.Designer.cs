@@ -63,7 +63,7 @@
             0,
             0});
             this.numericUpDownSampleLimit.Minimum = new decimal(new int[] {
-            100,
+            8,
             0,
             0,
             0});

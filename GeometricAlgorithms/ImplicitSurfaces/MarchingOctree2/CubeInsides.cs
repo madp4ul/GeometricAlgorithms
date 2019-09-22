@@ -32,12 +32,6 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
             for (int i = 0; i < (int)Dimension.Count; i++)
             {
                 Dimension current = (Dimension)i;
-                var edgeDirectionsFromCubeCenter = Dimensions.All.Where(d => d != current).ToArray();
-
-                var sideEdges00 = new SideOutsideEdges(current);
-                sideEdges00[0, 0] = outsideContainer[new SideOrientation(edgeDirectionsFromCubeCenter[0], false)]
-                    .Children[0, 0]
-                    .Edges[edgeDirectionsFromCubeCenter[0], true];
 
                 //iterate over all side indices
                 for (int a = 0; a < 2; a++)
@@ -61,13 +55,13 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
                                 {
                                     int nonEdgeDimension = edgeDimension == 0 ? 1 : 0;
 
-                                    Dimension dimIndexOfInsideEdge = edgeDirectionsFromCubeCenter[nonEdgeDimension];
+                                    Dimension dimIndexOfInsideEdge = sideEdges.Dimensions.SideAxis[nonEdgeDimension];
                                     selectedEdge = insideEdges[dimIndexOfInsideEdge, indexAtDimensionOfEdge == 1];
                                 }
                                 else
                                 {
                                     SideOrientation outsideOrientation = new SideOrientation(
-                                        dimension: edgeDirectionsFromCubeCenter[edgeDimension],
+                                        dimension: sideEdges.Dimensions.SideAxis[edgeDimension],
                                         isMax: edgeDirection == 1);
                                     Side outsideToLookIn = outsideContainer[outsideOrientation];
 
@@ -80,6 +74,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
                                 sideEdges[edgeDimension, edgeDirection] = selectedEdge;
                             }
                         }
+
+                        InnerCubeSides[ToIndex(current, a, b)] = new Side(implicitSurface, sideEdges);
                     }
                 }
 
@@ -109,10 +105,15 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
 
         private int ToIndex(Dimension orientationAxis, SideOffset childSideOffset)
         {
+            return ToIndex(orientationAxis, childSideOffset.MinimumDimensionValue, childSideOffset.MaximumDimensionValue);
+        }
+
+        private int ToIndex(Dimension orientationAxis, int minimumDimensionValue, int maximumDimensionValue)
+        {
             int index = (int)orientationAxis * 4;
 
-            index += childSideOffset.MinimumDimensionValue * 2;
-            index += childSideOffset.MaximumDimensionValue;
+            index += minimumDimensionValue * 2;
+            index += maximumDimensionValue;
 
             return index;
         }

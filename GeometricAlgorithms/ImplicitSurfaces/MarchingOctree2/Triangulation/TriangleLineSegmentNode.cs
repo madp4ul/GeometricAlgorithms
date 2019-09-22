@@ -17,6 +17,14 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.Triangulation
             VertexIndex = vertexIndex;
         }
 
+        public override string ToString()
+        {
+            string hasNext = Next != null ? "has next" : "";
+            string hasPrev = Previous != null ? "has previous" : "";
+
+            return $"{{node: {VertexIndex}, {hasPrev}, {hasNext} }}";
+        }
+
         public static void Connect(TriangleLineSegmentNode first, TriangleLineSegmentNode second)
         {
             if (first != null)

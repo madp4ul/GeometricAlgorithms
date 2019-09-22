@@ -65,6 +65,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
                                     childSideOffset.MaximumDimensionValue];
                             }
                         }
+
+                        children[x, y, z] = child;
                     }
                 }
             }

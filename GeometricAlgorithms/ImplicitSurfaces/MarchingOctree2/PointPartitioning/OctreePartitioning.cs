@@ -19,6 +19,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.PointPartitioning
 
             var range = Range<PositionIndex>.FromArray(positionMapping, 0, mesh.VertexCount);
             var boundingBox = BoundingBox.CreateContainer(mesh.Positions);
+            boundingBox.GrowToCube();
             boundingBox.ScaleAroundCenter(containerScale);
 
             Root = new OctreeNode(range, boundingBox);

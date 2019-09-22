@@ -71,6 +71,15 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.Triangulation
             return merged;
         }
 
+        protected virtual string Name => "line segment";
+
+        public override string ToString()
+        {
+            string isCircle = IsCircle ? "is circle" : "no circle";
+
+            return $"{{{Name}: {isCircle}, {First.ToString()} -> {Last.ToString()}}}";
+        }
+
         private static MergedTriangleLineSegment Connect(TriangleLineSegment first, TriangleLineSegment second)
         {
             //skip one of duplicate nodes

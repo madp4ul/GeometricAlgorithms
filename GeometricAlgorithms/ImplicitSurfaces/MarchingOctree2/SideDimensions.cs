@@ -34,6 +34,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
                 {
                     index = -1;
                 }
+
+                DimensionIndices[i] = index;
             }
         }
 

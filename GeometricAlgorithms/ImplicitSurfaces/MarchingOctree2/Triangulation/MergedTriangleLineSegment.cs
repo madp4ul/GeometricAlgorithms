@@ -60,6 +60,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.Triangulation
             return triangles;
         }
 
+        protected override string Name => "merged line segment";
+
         private enum PointToSelect
         {
             Next,

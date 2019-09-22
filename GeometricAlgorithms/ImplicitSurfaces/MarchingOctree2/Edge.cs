@@ -113,5 +113,12 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
 
             return combinedIndices;
         }
+
+        public override string ToString()
+        {
+            string axis = $"({DirectionAxisFromCubeCenter[0].ToString()}|{DirectionAxisFromCubeCenter[1].ToString()})";
+
+            return $"{{edge: {axis}, {MinValue.ToString()} - {MaxValue.ToString()}}}";
+        }
     }
 }
