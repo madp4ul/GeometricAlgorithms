@@ -20,8 +20,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
         public EdgeChildren Children { get; private set; }
         public bool HasChildren => Children != null;
 
-        private SurfaceApproximation LastUsedSurfaceApproximation = null;
-        private int[] LastComputedSurfaceApproximationIndices;
+        private EdgeIntersectionCache IntersectionCache = new EdgeIntersectionCache();
 
         public Edge(ImplicitSurfaceProvider implicitSurface, EdgeOrientation orientation, FunctionValue minValue, FunctionValue maxValue)
             : this(implicitSurface, orientation.GetAxis(), minValue, maxValue)
@@ -51,30 +50,44 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
                 maxEdge: new Edge(ImplicitSurface, DirectionAxisFromCubeCenter, middleValue, MaxValue));
         }
 
-        public IReadOnlyCollection<int> GetInterpolatedPositionIndices(SurfaceApproximation surfaceApproximation)
+        /// <summary>
+        /// Get cached position idices of surface intersections 
+        /// </summary>
+        /// <param name="surfaceApproximation"></param>
+        /// <returns></returns>
+        public EdgeSurfaceIntersections GetSurfaceIntersectionPositionIndices(SurfaceApproximation surfaceApproximation)
         {
-            int[] writeableIndices = GetWriteableInterpolatedPositionIndices(surfaceApproximation);
-            return new ReadOnlyCollection<int>(writeableIndices);
-        }
-
-        private int[] GetWriteableInterpolatedPositionIndices(SurfaceApproximation surfaceApproximation)
-        {
-            if (surfaceApproximation == LastUsedSurfaceApproximation)
+            if (IntersectionCache.TryGetIntersections(surfaceApproximation, out EdgeSurfaceIntersections intersections))
             {
-                return LastComputedSurfaceApproximationIndices;
+                return intersections;
             }
 
-            LastUsedSurfaceApproximation = surfaceApproximation;
-            LastComputedSurfaceApproximationIndices = ComputeInterpolatedPositionIndices(surfaceApproximation);
+            int[] writeableIndices = GetWriteableSurfaceIntersectionPositionIndices(surfaceApproximation);
 
-            return LastComputedSurfaceApproximationIndices;
+            intersections = new EdgeSurfaceIntersections(MinValue.IsInside, writeableIndices);
+            IntersectionCache.SetIntersections(surfaceApproximation, intersections);
+
+            return intersections;
         }
 
-        private int[] ComputeInterpolatedPositionIndices(SurfaceApproximation surfaceApproximation)
+        private int[] GetWriteableSurfaceIntersectionPositionIndices(SurfaceApproximation surfaceApproximation)
+        {
+            if (IntersectionCache.TryGetIntersectionIndices(surfaceApproximation, out int[] intersectionIndices))
+            {
+                return intersectionIndices;
+            }
+
+            intersectionIndices = ComputeSurfaceIntersectionPositionIndices(surfaceApproximation);
+            IntersectionCache.SetIntersectionIndices(surfaceApproximation, intersectionIndices);
+
+            return intersectionIndices;
+        }
+
+        private int[] ComputeSurfaceIntersectionPositionIndices(SurfaceApproximation surfaceApproximation)
         {
             if (HasChildren)
             {
-                return GetInterpolatedPositionIndicesFromChildren(surfaceApproximation);
+                return GetSurfaceIntersectionPositionIndicesFromChildren(surfaceApproximation);
             }
 
             if (MinValue.IsInside == MaxValue.IsInside)
@@ -92,10 +105,10 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
             };
         }
 
-        private int[] GetInterpolatedPositionIndicesFromChildren(SurfaceApproximation surfaceApproximation)
+        private int[] GetSurfaceIntersectionPositionIndicesFromChildren(SurfaceApproximation surfaceApproximation)
         {
-            var indicesFromMinChild = Children[0].GetWriteableInterpolatedPositionIndices(surfaceApproximation);
-            var indicesFromMaxChild = Children[1].GetWriteableInterpolatedPositionIndices(surfaceApproximation);
+            var indicesFromMinChild = Children[0].GetWriteableSurfaceIntersectionPositionIndices(surfaceApproximation);
+            var indicesFromMaxChild = Children[1].GetWriteableSurfaceIntersectionPositionIndices(surfaceApproximation);
 
             if (indicesFromMinChild.Length == 0)
             {

@@ -109,7 +109,9 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
             Edge minEdge = Edges[0, 0];
             Edge maxEdge = Edges[0, 1];
 
-            var lineSegmentDefinition = SideTriangulationTable.GetDefinition(
+
+
+            var lineSegmentDefinition = SideTriangulationTable.GetDefinitionByFunctionValue(
                 is00Inside: minEdge.MinValue.IsInside,
                 is01Inside: minEdge.MaxValue.IsInside,
                 is10Inside: maxEdge.MinValue.IsInside,
@@ -122,15 +124,24 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
                 ref LineSegmentDefinition current = ref lineSegmentDefinition[i];
 
                 var startEdge = Edges[current.LineStart.DimensionIndex, current.LineStart.DirectionIndex];
-                var startNode = new TriangleLineSegmentNode(startEdge.GetInterpolatedPositionIndices(approximation).Single());
+                var startEdgeIntersection = startEdge.GetSurfaceIntersectionPositionIndices(approximation);
+                var startNode = new TriangleLineSegmentNode(startEdgeIntersection.IntersectionIndex.Value);
 
                 var endEdge = Edges[current.LineEnd.DimensionIndex, current.LineEnd.DirectionIndex];
-                var endNode = new TriangleLineSegmentNode(endEdge.GetInterpolatedPositionIndices(approximation).Single());
+                var endEdgeIntersection = endEdge.GetSurfaceIntersectionPositionIndices(approximation);
+                var endNode = new TriangleLineSegmentNode(endEdgeIntersection.IntersectionIndex.Value);
 
                 startNode.Next = endNode;
                 endNode.Previous = startNode;
 
                 result.Add(new TriangleLineSegment(startNode, endNode));
+            }
+
+            foreach (var edge in Edges)
+            {
+                var edgeLines = edge.GetSurfaceIntersectionPositionIndices(approximation).EdgeLines;
+
+                result.AddRange(edgeLines);
             }
 
             return result;

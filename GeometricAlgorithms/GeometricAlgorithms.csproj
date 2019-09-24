@@ -84,6 +84,8 @@
     <Compile Include="ImplicitSurfaces\MarchingOctree2\EdgeChildren.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\EdgeIndex.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\EdgeOrientation.cs" />
+    <Compile Include="ImplicitSurfaces\MarchingOctree2\EdgeIntersectionCache.cs" />
+    <Compile Include="ImplicitSurfaces\MarchingOctree2\EdgeSurfaceIntersections.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\EdgeTree.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\EdgeTreeNode.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree2\FunctionValue.cs" />

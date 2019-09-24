@@ -42,10 +42,15 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
 
             var approximation = new SurfaceApproximation();
 
-            foreach (var treeLeaf in treeLeafs)
+            for (int i = 0; i < treeLeafs.Count; i++)
             {
-                treeLeaf.AddTriangulation(approximation);
+                treeLeafs[i].AddTriangulation(approximation);
             }
+
+            //foreach (var treeLeaf in treeLeafs)
+            //{
+            //    treeLeaf.AddTriangulation(approximation);
+            //}
 
             return new Mesh(approximation.GetPositions(), approximation.GetFaces());
         }

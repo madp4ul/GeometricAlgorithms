@@ -64,7 +64,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
 
             Children = children;
         }
-
+        private static int bla = 0;
         public void AddTriangulation(SurfaceApproximation approximation)
         {
             var sideLineSegments = new List<TriangleLineSegment>();
@@ -75,7 +75,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
             }
 
             var mergedSegments = TriangleLineSegment.Merge(sideLineSegments);
-
+            bla++;
             if (mergedSegments.Any(s => !s.IsCircle))
             {
                 throw new ApplicationException("Should not happen.");

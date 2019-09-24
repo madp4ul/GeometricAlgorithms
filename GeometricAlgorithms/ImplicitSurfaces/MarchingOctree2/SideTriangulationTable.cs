@@ -8,7 +8,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
 {
     static class SideTriangulationTable
     {
-        private static readonly LineSegmentDefinition[][] Values = new LineSegmentDefinition[16][]
+        private static readonly LineSegmentDefinition[][] ValuesByFunctionValueIndex = new LineSegmentDefinition[16][]
         {
   /*0  */          new LineSegmentDefinition[0],
 
@@ -38,7 +38,27 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
   /*15 */          new LineSegmentDefinition[0],
         };
 
-        public static LineSegmentDefinition[] GetDefinition(bool is00Inside, bool is10Inside, bool is01Inside, bool is11Inside)
+        private static readonly LineSegmentDefinition[][] ValuesByEdgeValueIndex = new LineSegmentDefinition[16][]
+{
+  /*0  */          ValuesByFunctionValueIndex[0],                  
+  /*1  */          null,
+  /*2  */          null,
+  /*3  */          ValuesByFunctionValueIndex[2],
+  /*4  */          null,
+  /*5  */          ValuesByFunctionValueIndex[6],
+  /*6  */          ValuesByFunctionValueIndex[4],
+  /*7  */          null,
+  /*8  */          null,
+  /*9 */           ValuesByFunctionValueIndex[1],
+  /*10 */          ValuesByFunctionValueIndex[3],
+  /*11 */          null,
+  /*12 */          ValuesByFunctionValueIndex[8],
+  /*13 */          null,
+  /*14 */          null,
+  /*15 */          ValuesByFunctionValueIndex[5]
+};
+
+        public static LineSegmentDefinition[] GetDefinitionByFunctionValue(bool is00Inside, bool is10Inside, bool is01Inside, bool is11Inside)
         {
             int index = 0;
             index |= is00Inside ? 1 : 0;
@@ -46,7 +66,22 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
             index |= is11Inside ? 4 : 0;
             index |= is01Inside ? 8 : 0;
 
-            return Values[index];
+            return ValuesByFunctionValueIndex[index];
+        }
+
+        public static LineSegmentDefinition[] GetDefinitionByEdge(
+            bool hasIntersection00,
+            bool hasIntersection10,
+            bool hasIntersection01,
+            bool hasIntersection11)
+        {
+            int index = 0;
+            index |= hasIntersection10 ? 1 : 0;
+            index |= hasIntersection01 ? 2 : 0;
+            index |= hasIntersection11 ? 4 : 0;
+            index |= hasIntersection00 ? 8 : 0;
+
+            return ValuesByEdgeValueIndex[index];
         }
     }
 
