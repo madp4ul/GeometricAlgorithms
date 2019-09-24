@@ -53,8 +53,9 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
             DrawableFactoryProvider = drawableFactoryProvider;
             FuncExecutor = funcExecutor;
             FunctionValueRadius = 4;
-            InnerFunctionValuesDrawable = new ContainerDrawable();
-            OuterFunctionValuesDrawable = new ContainerDrawable();
+            SampleLimit = 1000;
+            InnerFunctionValuesDrawable = new ContainerDrawable(enable: false);
+            OuterFunctionValuesDrawable = new ContainerDrawable(enable: false);
         }
 
         public void Update(Mesh mesh)

@@ -35,7 +35,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.Triangulation
 
             var triangles = new List<Triangle>();
 
-            var reductions = MergedNodes.Select(PolynomReduction.CreateInitial).ToList();
+            var reductions = MergedNodes.Select(n => new PolynomReduction(n)).ToList();
 
             //TODO handle non-convex flat circles by considering angles (hard because we only have indices and not the spacial data)
 
@@ -46,10 +46,23 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.Triangulation
             while (canReduce)
             {
                 PolynomReduction current = reductions[reductionIndex];
-                canReduce = current.MoveToNextPoint(out Triangle triangle);
-                triangles.Add(triangle);
+                
+                //A reduction can become invalid if multiple reduction exist for the same node
+                //and another reduction processed the node already.
+                //This will happen if the number of nodes gets reduced but the number of reductions stays the same.
+                if (!current.IsValid)
+                {
+                    reductions.RemoveAt(reductionIndex);
+                }
+                else
+                {
+                    canReduce = current.MoveToNextPoint(out Triangle triangle);
+                    triangles.Add(triangle);
 
-                reductionIndex = (reductionIndex + 1) % reductions.Count;
+                    reductionIndex++;
+                }
+
+                reductionIndex %= reductions.Count;
             }
 
             return triangles;

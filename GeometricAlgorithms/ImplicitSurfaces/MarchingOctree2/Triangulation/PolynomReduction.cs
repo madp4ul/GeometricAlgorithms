@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.Triangulation
 {
-    struct PolynomReduction
+    class PolynomReduction
     {
         public TriangleLineSegmentNode Node { get; private set; }
         private bool SelectNext;
+
+        public bool IsValid => Node != null && Node.Previous != null && Node.Next != null;
 
         public PolynomReduction(TriangleLineSegmentNode node)
         {
@@ -18,10 +20,6 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.Triangulation
             SelectNext = true;
         }
 
-        public static PolynomReduction CreateInitial(TriangleLineSegmentNode node)
-        {
-            return new PolynomReduction(node);
-        }
 
         /// <summary>
         /// 
@@ -38,10 +36,19 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.Triangulation
             }
 
             TriangleLineSegmentNode.Connect(Node.Previous, Node.Next);
+
+            var oldNode = Node;
             Node = SelectNext ? Node.Next : Node.Previous;
             SelectNext = !SelectNext;
 
+            oldNode.Detach();
+
             return true;
+        }
+
+        public override string ToString()
+        {
+            return $"{{reduction: {Node.ToString()}}}";
         }
     }
 }
