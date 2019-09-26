@@ -22,9 +22,9 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         public CubeInsides(ImplicitSurfaceProvider implicitSurface, CubeOutsides outsideContainer)
         {
             //Create all insides
-            foreach (var side in outsideContainer.Where(s => !s.HasChildren))
+            foreach (var side in outsideContainer.Where(s => !s.Value.HasChildren))
             {
-                side.CreateChildren();
+                side.Value.CreateChildren();
             }
 
             var insideEdges = new CubeInsideEdges(implicitSurface, outsideContainer);

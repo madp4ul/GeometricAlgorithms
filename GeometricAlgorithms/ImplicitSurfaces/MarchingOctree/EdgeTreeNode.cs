@@ -71,7 +71,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
             foreach (var side in Sides)
             {
-                sideLineSegments.AddRange(side.GetLineSegments(approximation));
+                sideLineSegments.AddRange(side.Value.GetLineSegments(approximation, side.Key.IsMax));
             }
 
             var mergedSegments = TriangleLineSegment.Merge(sideLineSegments);

@@ -11,7 +11,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
     /// <summary>
     /// Cleaner access to sides of a cube by requiring orientation
     /// </summary>
-    class CubeOutsides : IEnumerable<Side>
+    class CubeOutsides : IEnumerable<KeyValuePair<SideOrientation, Side>>
     {
         private readonly ImplicitSurfaceProvider ImplicitSurface;
 
@@ -123,11 +123,13 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             return rootOusides;
         }
 
-        public IEnumerator<Side> GetEnumerator()
+        public IEnumerator<KeyValuePair<SideOrientation, Side>> GetEnumerator()
         {
             for (int i = 0; i < Sides.Length; i++)
             {
-                yield return Sides[i];
+                yield return new KeyValuePair<SideOrientation, Side>(
+                    key: new SideOrientation(SideOrientation.GetSideIndex(i)),
+                    value: Sides[i]);
             }
         }
 

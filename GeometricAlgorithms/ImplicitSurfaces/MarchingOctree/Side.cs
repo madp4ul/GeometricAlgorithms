@@ -81,30 +81,30 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             Children = new SideChildren(childSides[0, 0], childSides[0, 1], childSides[1, 0], childSides[1, 1]);
         }
 
-        public List<TriangleLineSegment> GetLineSegments(SurfaceApproximation approximation)
+        public List<TriangleLineSegment> GetLineSegments(SurfaceApproximation approximation, bool positiveOfCube)
         {
             if (HasChildren)
             {
-                return GetMergedChildLineSegments(approximation);
+                return GetMergedChildLineSegments(approximation, positiveOfCube);
             }
             else
             {
-                return GetLineSegmentsFromTriagulationTable(approximation);
+                return GetLineSegmentsFromTriagulationTable(approximation, positiveOfCube);
             }
         }
 
-        private List<TriangleLineSegment> GetMergedChildLineSegments(SurfaceApproximation approximation)
+        private List<TriangleLineSegment> GetMergedChildLineSegments(SurfaceApproximation approximation, bool positiveOfCube)
         {
             var childSegments = new List<TriangleLineSegment>();
-            childSegments.AddRange(Children[0, 0].GetLineSegments(approximation));
-            childSegments.AddRange(Children[0, 1].GetLineSegments(approximation));
-            childSegments.AddRange(Children[1, 0].GetLineSegments(approximation));
-            childSegments.AddRange(Children[1, 1].GetLineSegments(approximation));
+            childSegments.AddRange(Children[0, 0].GetLineSegments(approximation, positiveOfCube));
+            childSegments.AddRange(Children[0, 1].GetLineSegments(approximation, positiveOfCube));
+            childSegments.AddRange(Children[1, 0].GetLineSegments(approximation, positiveOfCube));
+            childSegments.AddRange(Children[1, 1].GetLineSegments(approximation, positiveOfCube));
 
             return TriangleLineSegment.Merge(childSegments);
         }
 
-        private List<TriangleLineSegment> GetLineSegmentsFromTriagulationTable(SurfaceApproximation approximation)
+        private List<TriangleLineSegment> GetLineSegmentsFromTriagulationTable(SurfaceApproximation approximation, bool positiveOfCube)
         {
             Edge minEdge = Edges[0, 0];
             Edge maxEdge = Edges[0, 1];
@@ -129,10 +129,19 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                 var endEdgeIntersection = endEdge.GetSurfaceIntersectionPositionIndices(approximation);
                 var endNode = new TriangleLineSegmentNode(endEdgeIntersection.IntersectionIndex.Value);
 
-                startNode.Next = endNode;
-                endNode.Previous = startNode;
+                TriangleLineSegment resultSegment;
+                if (positiveOfCube != Dimensions.SideOnlookedFromMin)
+                {
+                    TriangleLineSegmentNode.Connect(startNode, endNode);
+                    resultSegment = new TriangleLineSegment(startNode, endNode);
+                }
+                else
+                {
+                    TriangleLineSegmentNode.Connect(endNode, startNode);
+                    resultSegment = new TriangleLineSegment(endNode, startNode);
+                }
 
-                result.Add(new TriangleLineSegment(startNode, endNode));
+                result.Add(resultSegment);
             }
 
             foreach (var edge in Edges)

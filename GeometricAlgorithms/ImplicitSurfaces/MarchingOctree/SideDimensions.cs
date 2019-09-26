@@ -13,20 +13,49 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         public readonly Dimension DirectionAxisFromCubeCenter;
         public readonly IReadOnlyList<Dimension> SideAxis;
 
+        /// <summary>
+        /// If when looking at the side in a way that sideaxis[0] goes to the right,
+        /// the sidesaxis[1] goes up.
+        /// </summary>
+        public readonly bool SideOnlookedFromMin;
+
         private readonly int[] DimensionIndices;
+
+
 
         private SideDimensions(Dimension directionAxisFromCubeCenter)
         {
             DirectionAxisFromCubeCenter = directionAxisFromCubeCenter;
             SideAxis = Dimensions.All.Where(d => d != directionAxisFromCubeCenter).ToArray();
 
-            DimensionIndices = new int[(int)Dimension.Count];
+            DimensionIndices = ComputeDimensionIndices();
+            SideOnlookedFromMin = GetSideOnlookedFromMin();
+        }
+
+        private bool GetSideOnlookedFromMin()
+        {
+            switch (DirectionAxisFromCubeCenter)
+            {
+                case Dimension.X:
+                    return true;
+                case Dimension.Y:
+                    return false;
+                case Dimension.Z:
+                    return true;
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        private int[] ComputeDimensionIndices()
+        {
+            var dimensionIndices = new int[(int)Dimension.Count];
 
             for (int i = 0; i < (int)Dimension.Count; i++)
             {
                 int index = i;
 
-                if (i > (int)directionAxisFromCubeCenter)
+                if (i > (int)DirectionAxisFromCubeCenter)
                 {
                     index--;
                 }
@@ -35,8 +64,10 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                     index = -1;
                 }
 
-                DimensionIndices[i] = index;
+                dimensionIndices[i] = index;
             }
+
+            return dimensionIndices;
         }
 
         public int GetDimensionIndex(Dimension dimension)
