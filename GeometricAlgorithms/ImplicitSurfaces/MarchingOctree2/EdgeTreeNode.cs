@@ -76,7 +76,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
 
             var mergedSegments = TriangleLineSegment.Merge(sideLineSegments);
             bla++;
-            if (mergedSegments.Any(s => !s.IsCircle))
+            if (mergedSegments.Any(s => !s.IsFirstSameAsLast))
             {
                 throw new ApplicationException("Should not happen.");
             }

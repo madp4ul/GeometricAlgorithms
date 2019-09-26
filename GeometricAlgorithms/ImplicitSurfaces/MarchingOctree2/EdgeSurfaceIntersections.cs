@@ -10,35 +10,44 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
 {
     class EdgeSurfaceIntersections
     {
+        private readonly int[] EdgeIntersectionIndices;
+
+        private readonly int EdgeLinesStart;
+        private readonly int EdgeLinesEnd;
+
         public readonly int? IntersectionIndex;
-        public readonly IReadOnlyCollection<TriangleLineSegment> EdgeLines;
 
         public EdgeSurfaceIntersections(bool isEdgeMinValueInside, int[] edgeIntersectionIndices)
         {
-            int edgeLinesStart = 0;
-            int edgeLinesEnd = edgeIntersectionIndices.Length;
+            EdgeIntersectionIndices = edgeIntersectionIndices;
+
+            EdgeLinesStart = 0;
+            EdgeLinesEnd = edgeIntersectionIndices.Length;
 
             if (edgeIntersectionIndices.Length % 2 != 0)
             {
                 if (isEdgeMinValueInside)
                 {
                     IntersectionIndex = edgeIntersectionIndices[0];
-                    edgeLinesStart = 1;
+                    EdgeLinesStart = 1;
                 }
                 else
                 {
                     IntersectionIndex = edgeIntersectionIndices[edgeIntersectionIndices.Length - 1];
-                    edgeLinesEnd = edgeIntersectionIndices.Length - 1;
+                    EdgeLinesEnd = edgeIntersectionIndices.Length - 1;
                 }
             }
+        }
 
-            var lineSegments = new TriangleLineSegment[(edgeLinesEnd - edgeLinesStart) / 2];
+        public TriangleLineSegment[] GetEdgeLines()
+        {
+            var lineSegments = new TriangleLineSegment[(EdgeLinesEnd - EdgeLinesStart) / 2];
 
             int lineIndex = 0;
-            for (int i = edgeLinesStart; i < edgeLinesEnd; i += 2)
+            for (int i = EdgeLinesStart; i < EdgeLinesEnd; i += 2)
             {
-                var startNode = new TriangleLineSegmentNode(edgeIntersectionIndices[i]);
-                var endNode = new TriangleLineSegmentNode(edgeIntersectionIndices[i + 1]);
+                var startNode = new TriangleLineSegmentNode(EdgeIntersectionIndices[i]);
+                var endNode = new TriangleLineSegmentNode(EdgeIntersectionIndices[i + 1]);
 
                 TriangleLineSegmentNode.Connect(startNode, endNode);
 
@@ -47,7 +56,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
                 lineIndex++;
             }
 
-            EdgeLines = new ReadOnlyCollection<TriangleLineSegment>(lineSegments);
+            return lineSegments;
         }
     }
 }

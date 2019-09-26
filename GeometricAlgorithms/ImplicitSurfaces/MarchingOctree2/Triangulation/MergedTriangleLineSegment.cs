@@ -23,7 +23,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.Triangulation
 
         public List<Triangle> TriangulateCircle()
         {
-            if (!IsCircle)
+            if (!IsFirstSameAsLast)
             {
                 throw new InvalidOperationException();
             }
@@ -46,7 +46,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.Triangulation
             while (canReduce)
             {
                 PolynomReduction current = reductions[reductionIndex];
-                
+
                 //A reduction can become invalid if multiple reduction exist for the same node
                 //and another reduction processed the node already.
                 //This will happen if the number of nodes gets reduced but the number of reductions stays the same.
@@ -68,7 +68,12 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.Triangulation
             return triangles;
         }
 
-        protected override string Name => "merged line segment";
+        protected override TriangleLineSegment CreateWithReversedNodes(TriangleLineSegmentNode first, TriangleLineSegmentNode last)
+        {
+            return new MergedTriangleLineSegment(first, last, MergedNodes);
+        }
+
+        protected override string GetName() => "merged line segment";
 
         private enum PointToSelect
         {

@@ -109,8 +109,6 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
             Edge minEdge = Edges[0, 0];
             Edge maxEdge = Edges[0, 1];
 
-
-
             var lineSegmentDefinition = SideTriangulationTable.GetDefinitionByFunctionValue(
                 is00Inside: minEdge.MinValue.IsInside,
                 is01Inside: minEdge.MaxValue.IsInside,
@@ -139,7 +137,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
 
             foreach (var edge in Edges)
             {
-                var edgeLines = edge.GetSurfaceIntersectionPositionIndices(approximation).EdgeLines;
+                var edgeLines = edge.GetSurfaceIntersectionPositionIndices(approximation).GetEdgeLines();
 
                 result.AddRange(edgeLines);
             }

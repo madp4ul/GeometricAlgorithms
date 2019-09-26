@@ -17,10 +17,12 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.Triangulation
             Last = last ?? throw new ArgumentNullException(nameof(last));
         }
 
-        public bool IsCircle => First.VertexIndex == Last.VertexIndex;
+        public bool IsFirstSameAsLast => First.VertexIndex == Last.VertexIndex;
 
         public static List<TriangleLineSegment> Merge(List<TriangleLineSegment> segments)
         {
+            segments = segments.ToList();
+
             var merged = new List<TriangleLineSegment>();
             ClearPreviousMerges(segments);
             MoveCircles(from: segments, to: merged);
@@ -64,7 +66,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.Triangulation
                     {
                         //Replace segments with combination of them and break from current iteration
                         MergedTriangleLineSegment combinedSegment = Connect(first, second);
-                        if (combinedSegment.IsCircle)
+                        if (combinedSegment.IsFirstSameAsLast)
                         {
                             merged.Add(combinedSegment);
                         }
@@ -100,17 +102,22 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.Triangulation
                 current = current.Previous;
             }
 
-            return new TriangleLineSegment(reversedFirst, currentReversed);
+            return CreateWithReversedNodes(reversedFirst, currentReversed);
         }
 
-        protected virtual string Name => "line segment";
+        protected virtual TriangleLineSegment CreateWithReversedNodes(TriangleLineSegmentNode first, TriangleLineSegmentNode last)
+        {
+            return new TriangleLineSegment(first, last);
+        }
 
         public override string ToString()
         {
-            string isCircle = IsCircle ? "is circle" : "no circle";
+            string isCircle = IsFirstSameAsLast ? "is circle" : "no circle";
 
-            return $"{{{Name}: {isCircle}, {First.ToString()} -> {Last.ToString()}}}";
+            return $"{{{GetName()}: {isCircle}, {First.ToString()} -> {Last.ToString()}}}";
         }
+
+        protected virtual string GetName() => "line segment";
 
         private static MergedTriangleLineSegment Connect(TriangleLineSegment first, TriangleLineSegment second)
         {
@@ -147,7 +154,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.Triangulation
             for (int i = 0; i < from.Count; i++)
             {
                 var segment = from[i];
-                if (segment.IsCircle)
+                if (segment.IsFirstSameAsLast)
                 {
                     to.Add(segment);
                     from.RemoveAt(i);
