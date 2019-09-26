@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
+namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 {
     struct EdgeIntersectionCache
     {

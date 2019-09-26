@@ -15,7 +15,7 @@ namespace GeometricAlgorithms.Viewer.Forms
     public partial class OctreeRefinementApproximationForm : Form
     {
         private readonly Workspace Workspace;
-        private TreeFaceApproximationModel2 TreeFaceApproximation => Workspace.TreeFaceApproximation2;
+        private TreeFaceApproximationModel TreeFaceApproximation => Workspace.TreeFaceApproximation;
 
         public OctreeRefinementApproximationForm(Workspace workspace)
         {

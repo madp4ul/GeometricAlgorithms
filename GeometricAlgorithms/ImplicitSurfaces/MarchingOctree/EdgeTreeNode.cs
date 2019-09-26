@@ -1,13 +1,13 @@
 ﻿using GeometricAlgorithms.Domain;
-using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.PointPartitioning;
-using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.Triangulation;
+using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.PointPartitioning;
+using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Triangulation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
+namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 {
     class EdgeTreeNode
     {

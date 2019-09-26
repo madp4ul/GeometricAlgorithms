@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
+namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 {
     /// <summary>
     /// Creates and provides all the inner sides of a cube (Those between two children of the cube)

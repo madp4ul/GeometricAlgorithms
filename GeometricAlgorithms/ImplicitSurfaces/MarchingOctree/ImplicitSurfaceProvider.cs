@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
+namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 {
     /// <summary>
     /// Used to get function values and track which values were computed

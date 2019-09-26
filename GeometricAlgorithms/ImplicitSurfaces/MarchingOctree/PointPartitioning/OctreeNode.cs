@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2.PointPartitioning
+namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.PointPartitioning
 {
     class OctreeNode
     {

@@ -3,7 +3,7 @@ using GeometricAlgorithms.Domain;
 using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.Domain.Tasks;
 using GeometricAlgorithms.ImplicitSurfaces;
-using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2;
+using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
 {
-    public class TreeFaceApproximationModel2 : IHasDrawables, IUpdatable<Mesh>, IUpdatable<IFiniteImplicitSurface>
+    public class TreeFaceApproximationModel : IHasDrawables, IUpdatable<Mesh>, IUpdatable<IFiniteImplicitSurface>
     {
         private readonly IDrawableFactoryProvider DrawableFactoryProvider;
         private readonly IFuncExecutor FuncExecutor;
@@ -46,7 +46,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
 
         public bool CanApproximate => Mesh?.HasNormals ?? false;
 
-        public TreeFaceApproximationModel2(
+        public TreeFaceApproximationModel(
             IDrawableFactoryProvider drawableFactoryProvider,
             IFuncExecutor funcExecutor)
         {

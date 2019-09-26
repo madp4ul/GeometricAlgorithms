@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree2
+namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 {
     /// <summary>
     /// Cleaner access to sides of a cube by requiring orientation
