@@ -27,13 +27,12 @@ namespace GeometricAlgorithms.BusinessLogic.Model
 
         public readonly ImplicitSurfaceModel ImplicitSurface;
         public readonly FaceApproximationModel FaceApproximation;
-        public readonly TreeFaceApproximationModel TreeFaceApproximation;
         public readonly TreeFaceApproximationModel2 TreeFaceApproximation2;
         public readonly FacesModel ApproximatedFaces;
 
         public event Action Updated;
 
-        public Workspace(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor, IRefreshableView refreshableView)
+        public Workspace(IDrawableFactoryProvider drawableFactoryProvider, IFuncExecutor funcExecutor)
         {
             DrawableFactoryProvider = drawableFactoryProvider;
 
@@ -48,7 +47,6 @@ namespace GeometricAlgorithms.BusinessLogic.Model
             KdTree = new KdTreeModel(drawableFactoryProvider, funcExecutor);
             ImplicitSurface = new ImplicitSurfaceModel();
             FaceApproximation = new FaceApproximationModel(drawableFactoryProvider, funcExecutor);
-            TreeFaceApproximation = new TreeFaceApproximationModel(drawableFactoryProvider, funcExecutor, refreshableView);
             TreeFaceApproximation2 = new TreeFaceApproximationModel2(drawableFactoryProvider, funcExecutor);
             ApproximatedFaces = new FacesModel(drawableFactoryProvider);
 
@@ -72,14 +70,12 @@ namespace GeometricAlgorithms.BusinessLogic.Model
                 var surface = ImplicitSurface.ImplicitSurface;
 
                 FaceApproximation.Update(surface);
-                TreeFaceApproximation.Update(surface);
                 TreeFaceApproximation2.Update(surface);
             };
 
             void updateApproximatedFaces(Mesh mesh) => ApproximatedFaces.Update(mesh);
 
             FaceApproximation.MeshCalculated += updateApproximatedFaces;
-            TreeFaceApproximation.MeshCalculated += updateApproximatedFaces;
             TreeFaceApproximation2.MeshCalculated += updateApproximatedFaces;
         }
 
@@ -91,7 +87,6 @@ namespace GeometricAlgorithms.BusinessLogic.Model
             Faces.Update(mesh);//face
             KdTree.Update(mesh);//pos
 
-            TreeFaceApproximation.Update(mesh);
             TreeFaceApproximation2.Update(mesh);
 
             ApproximatedFaces.Update(Mesh.CreateEmpty());
@@ -116,7 +111,6 @@ namespace GeometricAlgorithms.BusinessLogic.Model
                 .Concat(Faces.GetDrawables())
                 .Concat(KdTree.GetDrawables())
                 .Concat(FaceApproximation.GetDrawables())
-                .Concat(TreeFaceApproximation.GetDrawables())
                 .Concat(TreeFaceApproximation2.GetDrawables())
                 .Concat(ApproximatedFaces.GetDrawables())
                 )

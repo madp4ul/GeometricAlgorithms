@@ -67,7 +67,6 @@
     <Compile Include="Model\FaceModels\FaceApproximationModel.cs" />
     <Compile Include="Model\FaceModels\FacesModel.cs" />
     <Compile Include="Model\FaceModels\ImplicitSurfaceModel.cs" />
-    <Compile Include="Model\FaceModels\TreeFaceApproximationModel.cs" />
     <Compile Include="Model\FaceModels\TreeFaceApproximationModel2.cs" />
     <Compile Include="Model\KdTreeModels\KdTreeModel.cs" />
     <Compile Include="Model\KdTreeModels\KdTreeNearestQueryModel.cs" />

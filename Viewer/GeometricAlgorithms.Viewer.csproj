@@ -137,12 +137,6 @@
     <Compile Include="Forms\OctreeRefinementApproximationForm.Designer.cs">
       <DependentUpon>OctreeRefinementApproximationForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\TreeFaceApproximationForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\TreeFaceApproximationForm.Designer.cs">
-      <DependentUpon>TreeFaceApproximationForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\TreeNavigationForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -206,9 +200,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\OctreeRefinementApproximationForm.resx">
       <DependentUpon>OctreeRefinementApproximationForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\TreeFaceApproximationForm.resx">
-      <DependentUpon>TreeFaceApproximationForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TreeNavigationForm.resx">
       <DependentUpon>TreeNavigationForm.cs</DependentUpon>

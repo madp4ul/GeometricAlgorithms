@@ -32,8 +32,7 @@ namespace GeometricAlgorithms.Viewer
 
             Model = new ModelData(
                 drawableFactoryProvider: viewer,
-                FuncExecutor,
-                refreshableView: viewer);
+                FuncExecutor);
 
             viewer.Configuration = Model.ViewerConfiguration;
             viewer.Model = Model.Workspace;

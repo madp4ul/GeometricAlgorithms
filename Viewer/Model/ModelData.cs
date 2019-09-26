@@ -18,11 +18,10 @@ namespace GeometricAlgorithms.Viewer.Model
 
         public ModelData(
             IDrawableFactoryProvider drawableFactoryProvider,
-            IFuncExecutor funcExecutor,
-            IRefreshableView refreshableView)
+            IFuncExecutor funcExecutor)
         {
             ViewerConfiguration = new ViewerConfiguration();
-            Workspace = new Workspace(drawableFactoryProvider, funcExecutor, refreshableView);
+            Workspace = new Workspace(drawableFactoryProvider, funcExecutor);
         }
     }
 }
