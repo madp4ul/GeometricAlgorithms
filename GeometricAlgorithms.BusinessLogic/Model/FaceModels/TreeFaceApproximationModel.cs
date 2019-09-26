@@ -98,7 +98,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
 
             var refine = FuncExecutor.Execute(progress =>
             {
-                edgeTree.RefineEdgeTree(SampleLimit);
+                edgeTree.RefineEdgeTree(SampleLimit, progress);
 
                 return true;
             });

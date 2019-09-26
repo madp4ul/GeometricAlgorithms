@@ -1,4 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.Domain.Tasks;
 using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.PointPartitioning;
 using System;
 using System.Collections.Generic;
@@ -61,8 +62,13 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             return node2.Depth - node1.Depth;
         }
 
-        public void RefineEdgeTree(int sampleLimit)
+        public void RefineEdgeTree(int sampleLimit, IProgressUpdater progressUpdater)
         {
+            var operationUpdater = new OperationProgressUpdater(progressUpdater, sampleLimit, "Computing implicit surface samples");
+
+            int completedOperations = ImplicitSurfaceProvider.FunctionValueCount;
+            operationUpdater.UpdateAddOperation(completedOperations);
+
             while (ImplicitSurfaceProvider.FunctionValueCount < sampleLimit)
             {
                 var current = TreeLeafsByRefinementPriority.Dequeue();
@@ -81,7 +87,14 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                         }
                     }
                 }
+
+                int operationsFromInteration = ImplicitSurfaceProvider.FunctionValueCount - completedOperations;
+
+                operationUpdater.UpdateAddOperation(operationsFromInteration);
+                completedOperations += operationsFromInteration;
             }
+
+            operationUpdater.IsCompleted();
         }
 
 
