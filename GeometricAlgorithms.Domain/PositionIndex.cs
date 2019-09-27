@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.PointPartitioning
+namespace GeometricAlgorithms.Domain
 {
-    public class PositionIndex
+    public struct PositionIndex
     {
         /// <summary>
         /// Position of vertex
@@ -17,12 +17,17 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.PointPartitioning
         /// <summary>
         /// Index of related data in mesh this belongs to
         /// </summary>
-        public readonly int OriginalIndex;
+        public readonly int Index;
 
         public PositionIndex(Vector3 position, int originalIndex)
         {
             Position = position;
-            OriginalIndex = originalIndex;
+            Index = originalIndex;
+        }
+
+        public override string ToString()
+        {
+            return $"(position index: {Position.ToString()} at {Index})";
         }
     }
 }

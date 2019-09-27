@@ -28,7 +28,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Triangulation
         /// <returns>if further movements can be made</returns>
         public bool MoveToNextPoint(out Triangle triangle)
         {
-            triangle = new Triangle(Node.VertexIndex, Node.Previous.VertexIndex, Node.Next.VertexIndex);
+            triangle = new Triangle(Node.Vertex.Index, Node.Previous.Vertex.Index, Node.Next.Vertex.Index);
 
             if (Node.Previous.Previous == Node.Next)
             {

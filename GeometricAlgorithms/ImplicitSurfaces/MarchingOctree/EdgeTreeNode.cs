@@ -64,18 +64,20 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
             Children = children;
         }
-        private static int bla = 0;
         public void AddTriangulation(SurfaceApproximation approximation)
         {
             var sideLineSegments = new List<TriangleLineSegment>();
 
             foreach (var side in Sides)
             {
+                //TODO if any side already contains circles, use a different triangulation method for 
+                //polynoms in a plane
+
                 sideLineSegments.AddRange(side.Value.GetLineSegments(approximation, side.Key.IsMax));
             }
 
             var mergedSegments = TriangleLineSegment.Merge(sideLineSegments);
-            bla++;
+
             if (mergedSegments.Any(s => !s.IsFirstSameAsLast))
             {
                 throw new ApplicationException("Should not happen.");

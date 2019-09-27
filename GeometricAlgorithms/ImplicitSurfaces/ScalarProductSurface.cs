@@ -39,7 +39,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces
 
                 //dot product of neighbour normal and vector from neighbour to position to 
                 //get a value that represents how much the position is infront or behind the surface         
-                float side = Vector3.Dot(Tree.Mesh.UnitNormals[neighbour.Value.OriginalIndex], normalizedNeighbourToPosition);
+                float side = Vector3.Dot(Tree.Mesh.UnitNormals[neighbour.Value.Index], normalizedNeighbourToPosition);
 
                 float weight = GetWeight(furthestDistance, neighbour.Key);
                 sumOfWeights += weight;

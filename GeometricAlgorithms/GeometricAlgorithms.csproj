@@ -97,7 +97,6 @@
     <Compile Include="ImplicitSurfaces\MarchingOctree\OctreeOffset.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\PointPartitioning\OctreeNode.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\PointPartitioning\OctreePartitioning.cs" />
-    <Compile Include="ImplicitSurfaces\MarchingOctree\PointPartitioning\PositionIndex.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\PointPartitioning\PositionIndexComparer.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\PriorityQueue.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\Side.cs" />
@@ -127,7 +126,6 @@
     <Compile Include="MeshQuerying\KdTreeBranch.cs" />
     <Compile Include="MeshQuerying\TreeConfiguration.cs" />
     <Compile Include="MeshQuerying\QueryState.cs" />
-    <Compile Include="MeshQuerying\PositionIndex.cs" />
     <Compile Include="MeshQuerying\PositionIndexComparer.cs" />
     <Compile Include="NormalApproximation\FromFaces\FaceNormalWeightByArea.cs" />
     <Compile Include="NormalApproximation\FromFaces\FaceNormalWeightSum.cs" />

@@ -17,7 +17,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Triangulation
             Last = last ?? throw new ArgumentNullException(nameof(last));
         }
 
-        public bool IsFirstSameAsLast => First.VertexIndex == Last.VertexIndex;
+        public bool IsFirstSameAsLast => First.Vertex.Index == Last.Vertex.Index;
 
         public static List<TriangleLineSegment> Merge(List<TriangleLineSegment> segments)
         {
@@ -36,26 +36,26 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Triangulation
                 {
                     var segment2 = segments[j];
 
-                    if (segment1.Last.VertexIndex == segment2.First.VertexIndex)
+                    if (segment1.Last.Vertex.Index == segment2.First.Vertex.Index)
                     {
                         combineSegments(segment1, segment2);
                         break;
                     }
 
-                    if (segment2.Last.VertexIndex == segment1.First.VertexIndex)
+                    if (segment2.Last.Vertex.Index == segment1.First.Vertex.Index)
                     {
                         combineSegments(segment2, segment1);
                         break;
                     }
 
-                    if (segment1.First.VertexIndex == segment2.First.VertexIndex)
+                    if (segment1.First.Vertex.Index == segment2.First.Vertex.Index)
                     {
                         var reversed1 = segment1.CreateReversed();
                         combineSegments(reversed1, segment2);
                         break;
                     }
 
-                    if (segment1.Last.VertexIndex == segment2.Last.VertexIndex)
+                    if (segment1.Last.Vertex.Index == segment2.Last.Vertex.Index)
                     {
                         var reversed1 = segment1.CreateReversed();
                         combineSegments(segment2, reversed1);
@@ -77,7 +77,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Triangulation
 
                         segments.RemoveAt(j);
                         segments.RemoveAt(i);
-                        i--; //TODO check: does it change the outside captured variable? (it has to)
+                        i--;
                     }
                 }
             }
@@ -89,14 +89,14 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Triangulation
 
         public TriangleLineSegment CreateReversed()
         {
-            var reversedFirst = new TriangleLineSegmentNode(Last.VertexIndex);
+            var reversedFirst = new TriangleLineSegmentNode(Last.Vertex);
 
             var current = Last;
             var currentReversed = reversedFirst;
 
             while (current.Previous != null)
             {
-                var nextReversed = new TriangleLineSegmentNode(current.Previous.VertexIndex);
+                var nextReversed = new TriangleLineSegmentNode(current.Previous.Vertex);
                 TriangleLineSegmentNode.Connect(currentReversed, nextReversed);
                 currentReversed = currentReversed.Next;
                 current = current.Previous;

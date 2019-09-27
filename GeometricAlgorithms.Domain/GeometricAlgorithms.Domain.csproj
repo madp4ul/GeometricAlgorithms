@@ -74,6 +74,7 @@
     <Compile Include="Drawables\Transformation.cs" />
     <Compile Include="Line2.cs" />
     <Compile Include="Line3.cs" />
+    <Compile Include="PositionIndex.cs" />
     <Compile Include="Range.cs" />
     <Compile Include="Tasks\OperationProgressUpdater.cs" />
     <Compile Include="Trees\IEnumerableTree.cs" />

@@ -37,8 +37,6 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Triangulation
 
             var reductions = MergedNodes.Select(n => new PolynomReduction(n)).ToList();
 
-            //TODO handle non-convex flat circles by considering angles (hard because we only have indices and not the spacial data)
-
             int reductionIndex = 0;
             bool canReduce = true;
 

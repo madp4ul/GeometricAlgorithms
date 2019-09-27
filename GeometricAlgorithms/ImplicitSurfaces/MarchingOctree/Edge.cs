@@ -62,7 +62,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                 return intersections;
             }
 
-            int[] writeableIndices = GetWriteableSurfaceIntersectionPositionIndices(surfaceApproximation);
+            PositionIndex[] writeableIndices = GetWriteableSurfaceIntersectionPositionIndices(surfaceApproximation);
 
             intersections = new EdgeSurfaceIntersections(MinValue.IsInside, writeableIndices);
             IntersectionCache.SetIntersections(surfaceApproximation, intersections);
@@ -70,9 +70,9 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             return intersections;
         }
 
-        private int[] GetWriteableSurfaceIntersectionPositionIndices(SurfaceApproximation surfaceApproximation)
+        private PositionIndex[] GetWriteableSurfaceIntersectionPositionIndices(SurfaceApproximation surfaceApproximation)
         {
-            if (IntersectionCache.TryGetIntersectionIndices(surfaceApproximation, out int[] intersectionIndices))
+            if (IntersectionCache.TryGetIntersectionIndices(surfaceApproximation, out PositionIndex[] intersectionIndices))
             {
                 return intersectionIndices;
             }
@@ -83,7 +83,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             return intersectionIndices;
         }
 
-        private int[] ComputeSurfaceIntersectionPositionIndices(SurfaceApproximation surfaceApproximation)
+        private PositionIndex[] ComputeSurfaceIntersectionPositionIndices(SurfaceApproximation surfaceApproximation)
         {
             if (HasChildren)
             {
@@ -92,20 +92,20 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
             if (MinValue.IsInside == MaxValue.IsInside)
             {
-                return new int[0];
+                return new PositionIndex[0];
             }
 
             float surfaceZeroInterpolationFactor = Math.Abs(MinValue.Value / (MinValue.Value - MaxValue.Value));
 
             Vector3 interpolationPosition = Vector3.Interpolate(MinValue.Position, MaxValue.Position, surfaceZeroInterpolationFactor);
 
-            return new int[1]
+            return new PositionIndex[1]
             {
                 surfaceApproximation.AddPosition(interpolationPosition)
             };
         }
 
-        private int[] GetSurfaceIntersectionPositionIndicesFromChildren(SurfaceApproximation surfaceApproximation)
+        private PositionIndex[] GetSurfaceIntersectionPositionIndicesFromChildren(SurfaceApproximation surfaceApproximation)
         {
             var indicesFromMinChild = Children[0].GetWriteableSurfaceIntersectionPositionIndices(surfaceApproximation);
             var indicesFromMaxChild = Children[1].GetWriteableSurfaceIntersectionPositionIndices(surfaceApproximation);
@@ -119,7 +119,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                 return indicesFromMinChild;
             }
 
-            int[] combinedIndices = new int[indicesFromMinChild.Length + indicesFromMaxChild.Length];
+            PositionIndex[] combinedIndices = new PositionIndex[indicesFromMinChild.Length + indicesFromMaxChild.Length];
 
             Array.Copy(indicesFromMinChild, 0, combinedIndices, 0, indicesFromMinChild.Length);
             Array.Copy(indicesFromMaxChild, 0, combinedIndices, indicesFromMinChild.Length, indicesFromMaxChild.Length);

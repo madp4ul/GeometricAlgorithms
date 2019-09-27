@@ -47,6 +47,8 @@
             this.approximationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.normalApproximationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.approximateFacesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.marchingCubesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.alongOctreeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.normalOrientationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.automaticNormalOrientationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mirrorNormalsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,8 +56,7 @@
             this.backgroundWorkerProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.backgroundWorkerStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.viewer = new GeometricAlgorithms.Viewer.GeometricAlgorithmViewer();
-            this.marchingCubesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.alongOctreeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -207,7 +208,7 @@
             // normalApproximationToolStripMenuItem
             // 
             this.normalApproximationToolStripMenuItem.Name = "normalApproximationToolStripMenuItem";
-            this.normalApproximationToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.normalApproximationToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.normalApproximationToolStripMenuItem.Text = "Normals";
             // 
             // approximateFacesToolStripMenuItem
@@ -216,8 +217,20 @@
             this.marchingCubesToolStripMenuItem,
             this.alongOctreeToolStripMenuItem});
             this.approximateFacesToolStripMenuItem.Name = "approximateFacesToolStripMenuItem";
-            this.approximateFacesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.approximateFacesToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.approximateFacesToolStripMenuItem.Text = "Faces";
+            // 
+            // marchingCubesToolStripMenuItem
+            // 
+            this.marchingCubesToolStripMenuItem.Name = "marchingCubesToolStripMenuItem";
+            this.marchingCubesToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.marchingCubesToolStripMenuItem.Text = "Marching Cubes";
+            // 
+            // alongOctreeToolStripMenuItem
+            // 
+            this.alongOctreeToolStripMenuItem.Name = "alongOctreeToolStripMenuItem";
+            this.alongOctreeToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.alongOctreeToolStripMenuItem.Text = "Along Octree";
             // 
             // normalOrientationToolStripMenuItem
             // 
@@ -246,7 +259,8 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.backgroundWorkerProgressBar,
-            this.backgroundWorkerStatusLabel});
+            this.backgroundWorkerStatusLabel,
+            this.toolStripStatusLabel1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 519);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(1017, 22);
@@ -261,8 +275,9 @@
             // 
             // backgroundWorkerStatusLabel
             // 
+            this.backgroundWorkerStatusLabel.AutoSize = false;
             this.backgroundWorkerStatusLabel.Name = "backgroundWorkerStatusLabel";
-            this.backgroundWorkerStatusLabel.Size = new System.Drawing.Size(39, 17);
+            this.backgroundWorkerStatusLabel.Size = new System.Drawing.Size(250, 17);
             this.backgroundWorkerStatusLabel.Text = "Ready";
             // 
             // viewer
@@ -275,17 +290,11 @@
             this.viewer.Size = new System.Drawing.Size(1017, 496);
             this.viewer.TabIndex = 0;
             // 
-            // marchingCubesToolStripMenuItem
+            // toolStripStatusLabel1
             // 
-            this.marchingCubesToolStripMenuItem.Name = "marchingCubesToolStripMenuItem";
-            this.marchingCubesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.marchingCubesToolStripMenuItem.Text = "Marching Cubes";
-            // 
-            // alongOctreeToolStripMenuItem
-            // 
-            this.alongOctreeToolStripMenuItem.Name = "alongOctreeToolStripMenuItem";
-            this.alongOctreeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.alongOctreeToolStripMenuItem.Text = "Along Octree";
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(66, 17);
+            this.toolStripStatusLabel1.Text = "mesh info1";
             // 
             // MainWindow
             // 
@@ -339,6 +348,7 @@
         private System.Windows.Forms.ToolStripMenuItem showKdTreeLeavesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem marchingCubesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem alongOctreeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
     }
 }
 

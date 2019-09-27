@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeometricAlgorithms.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,17 +10,17 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
     struct EdgeIntersectionCache
     {
         private SurfaceApproximation UsedApproximation;
-        private int[] IntersectionIndices;
+        private PositionIndex[] IntersectionIndices;
         private EdgeSurfaceIntersections Intersections;
 
-        public void SetIntersectionIndices(SurfaceApproximation approximation, int[] writeableIndices)
+        public void SetIntersectionIndices(SurfaceApproximation approximation, PositionIndex[] writeableIndices)
         {
             SetUsedApproximation(approximation);
 
             IntersectionIndices = writeableIndices;
         }
 
-        public bool TryGetIntersectionIndices(SurfaceApproximation approximation, out int[] intersectionIndices)
+        public bool TryGetIntersectionIndices(SurfaceApproximation approximation, out PositionIndex[] intersectionIndices)
         {
             if (approximation == UsedApproximation)
             {

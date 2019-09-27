@@ -17,10 +17,10 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         /// </summary>
         /// <param name="position"></param>
         /// <returns>index of added position in result</returns>
-        public int AddPosition(Vector3 position)
+        public PositionIndex AddPosition(Vector3 position)
         {
             Positions.Add(position);
-            return Positions.Count - 1;
+            return new PositionIndex(position, Positions.Count - 1);
         }
 
         public void AddFaces(IEnumerable<Triangle> triangle)
