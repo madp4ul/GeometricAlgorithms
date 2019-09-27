@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.btnStartApproximation = new System.Windows.Forms.Button();
             this.numericUpDownSampleLimit = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
@@ -36,7 +37,13 @@
             this.cbShowOutsideSamples = new System.Windows.Forms.CheckBox();
             this.cbShowInsideSamples = new System.Windows.Forms.CheckBox();
             this.lbSamplesComputed = new System.Windows.Forms.Label();
+            this.btnToggleContinuousRefinement = new System.Windows.Forms.Button();
+            this.continuousStepSize = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.timerContinuousRefinement = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSampleLimit)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.continuousStepSize)).BeginInit();
             this.SuspendLayout();
             // 
             // btnStartApproximation
@@ -137,11 +144,75 @@
             this.lbSamplesComputed.TabIndex = 15;
             this.lbSamplesComputed.Text = "0 samples computed";
             // 
+            // btnToggleContinuousRefinement
+            // 
+            this.btnToggleContinuousRefinement.Location = new System.Drawing.Point(136, 273);
+            this.btnToggleContinuousRefinement.Name = "btnToggleContinuousRefinement";
+            this.btnToggleContinuousRefinement.Size = new System.Drawing.Size(122, 23);
+            this.btnToggleContinuousRefinement.TabIndex = 16;
+            this.btnToggleContinuousRefinement.Text = "Start refinement";
+            this.btnToggleContinuousRefinement.UseVisualStyleBackColor = true;
+            this.btnToggleContinuousRefinement.Click += new System.EventHandler(this.BtnToggleContinuousRefinement_Click);
+            // 
+            // continuousStepSize
+            // 
+            this.continuousStepSize.Increment = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.continuousStepSize.Location = new System.Drawing.Point(136, 247);
+            this.continuousStepSize.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.continuousStepSize.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.continuousStepSize.Name = "continuousStepSize";
+            this.continuousStepSize.Size = new System.Drawing.Size(120, 20);
+            this.continuousStepSize.TabIndex = 17;
+            this.continuousStepSize.Value = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(133, 220);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(112, 13);
+            this.label2.TabIndex = 18;
+            this.label2.Text = "Continuous refinement";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(21, 249);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(101, 13);
+            this.label4.TabIndex = 19;
+            this.label4.Text = "Samples per update";
+            // 
+            // timerContinuousRefinement
+            // 
+            this.timerContinuousRefinement.Interval = 500;
+            this.timerContinuousRefinement.Tick += new System.EventHandler(this.TimerContinuousRefinement_Tick);
+            // 
             // OctreeRefinementApproximationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(277, 202);
+            this.ClientSize = new System.Drawing.Size(277, 312);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.continuousStepSize);
+            this.Controls.Add(this.btnToggleContinuousRefinement);
             this.Controls.Add(this.lbSamplesComputed);
             this.Controls.Add(this.cbShowOutsideSamples);
             this.Controls.Add(this.cbShowInsideSamples);
@@ -155,6 +226,7 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.OctreeRefinementApproximationForm_FormClosed);
             this.Load += new System.EventHandler(this.OctreeRefinementApproximationForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSampleLimit)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.continuousStepSize)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -170,5 +242,10 @@
         private System.Windows.Forms.CheckBox cbShowOutsideSamples;
         private System.Windows.Forms.CheckBox cbShowInsideSamples;
         private System.Windows.Forms.Label lbSamplesComputed;
+        private System.Windows.Forms.Button btnToggleContinuousRefinement;
+        private System.Windows.Forms.NumericUpDown continuousStepSize;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Timer timerContinuousRefinement;
     }
 }

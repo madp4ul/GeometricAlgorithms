@@ -113,5 +113,32 @@ namespace GeometricAlgorithms.Viewer.Forms
         {
             PutFormValuesIntoModel();
         }
+
+        private void BtnToggleContinuousRefinement_Click(object sender, EventArgs e)
+        {
+            if (!timerContinuousRefinement.Enabled)
+            {
+                btnToggleContinuousRefinement.Text = "Stop refinement";
+                timerContinuousRefinement.Start();
+            }
+            else
+            {
+                btnToggleContinuousRefinement.Text = "Start refinement";
+                timerContinuousRefinement.Stop();
+            }
+        }
+
+        private void TimerContinuousRefinement_Tick(object sender, EventArgs e)
+        {
+            if (TreeFaceApproximation.CanCalculateImmediatly)
+            {
+                SetLabelSamplesComputed();
+
+                TreeFaceApproximation.SampleLimit += (int)continuousStepSize.Value;
+                numericUpDownSampleLimit.Value = TreeFaceApproximation.SampleLimit;
+
+                TreeFaceApproximation.CalculateApproximation();
+            }
+        }
     }
 }

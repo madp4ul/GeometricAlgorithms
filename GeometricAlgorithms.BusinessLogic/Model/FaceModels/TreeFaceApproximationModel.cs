@@ -26,6 +26,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
         public int FunctionValueRadius { get; set; }
         public int SampleLimit { get; set; }
 
+        public bool CanCalculateImmediatly => !FuncExecutor.IsWorking;
 
         private readonly ContainerDrawable InnerFunctionValuesDrawable;
         public bool DrawInnerFunctionValues

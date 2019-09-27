@@ -64,10 +64,12 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
         public void RefineEdgeTree(int sampleLimit, IProgressUpdater progressUpdater)
         {
-            var operationUpdater = new OperationProgressUpdater(progressUpdater, sampleLimit, "Computing implicit surface samples");
+            var operationUpdater = new OperationProgressUpdater(
+                progressUpdater,
+                totalOperations: sampleLimit - ImplicitSurfaceProvider.FunctionValueCount,
+                operationDescription: "Computing implicit surface samples");
 
             int completedOperations = ImplicitSurfaceProvider.FunctionValueCount;
-            operationUpdater.UpdateAddOperation(completedOperations);
 
             while (ImplicitSurfaceProvider.FunctionValueCount < sampleLimit)
             {
