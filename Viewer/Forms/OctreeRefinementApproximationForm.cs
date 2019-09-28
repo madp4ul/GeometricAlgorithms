@@ -34,6 +34,11 @@ namespace GeometricAlgorithms.Viewer.Forms
             SetEnableButtonUseApproximatedFaces();
             SetLabelSamplesComputed();
 
+            if (timerContinuousRefinement.Enabled)
+            {
+                ToggleContinuousRefinement();
+            }
+
             if (!TreeFaceApproximation.CanApproximate)
             {
                 Close();
@@ -115,6 +120,11 @@ namespace GeometricAlgorithms.Viewer.Forms
         }
 
         private void BtnToggleContinuousRefinement_Click(object sender, EventArgs e)
+        {
+            ToggleContinuousRefinement();
+        }
+
+        private void ToggleContinuousRefinement()
         {
             if (!timerContinuousRefinement.Enabled)
             {

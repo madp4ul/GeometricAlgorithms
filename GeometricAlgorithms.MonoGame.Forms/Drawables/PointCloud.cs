@@ -29,6 +29,10 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
 
         public PointCloud(PointEffect effect, Vector3[] positions, int pixelWidth = 2)
         {
+            if (effect.GraphicsDevice == null)
+            {
+                throw new ArgumentException();
+            }
             if (positions.Length == 0)
             {
                 throw new ArgumentException("Pointcloud needs at least 1 point");

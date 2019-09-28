@@ -21,6 +21,7 @@ namespace GeometricAlgorithms.Viewer.Utilities
         private bool IsDisposed;
 
         public bool IsWorking => Worker.IsBusy;
+        public int QueuedExecutionCount => FunctionQueue.Count;
 
         public BackgroundWorkerFuncExecutor(IProgressUpdater progressUpdater)
         {

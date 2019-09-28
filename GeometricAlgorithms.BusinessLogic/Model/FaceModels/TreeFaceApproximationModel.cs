@@ -27,7 +27,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
         public int FunctionValueRadius { get; set; }
         public int SampleLimit { get; set; }
 
-        public bool CanCalculateImmediatly => !FuncExecutor.IsWorking;
+        public bool CanCalculateImmediatly => FuncExecutor.QueuedExecutionCount == 0;
 
         private readonly ContainerDrawable InnerFunctionValuesDrawable;
         public bool DrawInnerFunctionValues
@@ -99,19 +99,17 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
             var surface = ImplicitSurface;
             var edgeTree = EdgeTree;
 
-            var refine = FuncExecutor.Execute(progress =>
+            var approximateRefined = FuncExecutor.Execute(progress =>
             {
                 edgeTree.RefineEdgeTree(SampleLimit, progress);
 
-                return true;
+                var approximation = edgeTree.CreateApproximation();
+
+
+                return approximation;
             });
 
-            refine.GetResult(_ =>
-            {
-                var approximate = FuncExecutor.Execute(progress => edgeTree.CreateApproximation());
-
-                approximate.GetResult(mesh => SetApproximation(mesh, edgeTree));
-            });
+            approximateRefined.GetResult(mesh => SetApproximation(mesh, edgeTree));
         }
 
         private void SetApproximation(Mesh mesh, IRefinementTree edgeTree)

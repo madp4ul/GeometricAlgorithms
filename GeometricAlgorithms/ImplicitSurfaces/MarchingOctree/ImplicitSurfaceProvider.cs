@@ -29,15 +29,19 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             float distance = ImplicitSurface.GetApproximateSurfaceDistance(position);
 
             FunctionValue value = new FunctionValue(position, distance);
-
-            FunctionValues.Add(value);
-
+            lock (FunctionValues)
+            {
+                FunctionValues.Add(value);
+            }
             return value;
         }
 
         public FunctionValue[] GetFunctionValues()
         {
-            return FunctionValues.ToArray();
+            lock (FunctionValues)
+            {
+                return FunctionValues.ToArray();
+            }
         }
     }
 }

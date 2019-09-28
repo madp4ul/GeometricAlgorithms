@@ -201,7 +201,7 @@
             // 
             // timerContinuousRefinement
             // 
-            this.timerContinuousRefinement.Interval = 500;
+            this.timerContinuousRefinement.Interval = 250;
             this.timerContinuousRefinement.Tick += new System.EventHandler(this.TimerContinuousRefinement_Tick);
             // 
             // OctreeRefinementApproximationForm
@@ -221,8 +221,14 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.numericUpDownSampleLimit);
             this.Controls.Add(this.btnStartApproximation);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "OctreeRefinementApproximationForm";
-            this.Text = "OctreeRefinementApproximationForm";
+            this.Opacity = 0.97D;
+            this.ShowIcon = false;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.Text = "Refinement Approximation";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.OctreeRefinementApproximationForm_FormClosed);
             this.Load += new System.EventHandler(this.OctreeRefinementApproximationForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSampleLimit)).EndInit();

@@ -21,5 +21,6 @@ namespace GeometricAlgorithms.Domain.Tasks
         IFuncExecution<T> Execute<T>(Func<IProgressUpdater, T> function);
 
         bool IsWorking { get; }
+        int QueuedExecutionCount { get; }
     }
 }
