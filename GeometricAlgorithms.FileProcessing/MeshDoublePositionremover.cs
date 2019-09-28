@@ -27,9 +27,9 @@ namespace GeometricAlgorithms.FileProcessing
 
             var newFaces = mesh.HasFaces
                ? mesh.Faces.Select(f => new Triangle(
+                 index0: getIndexMapping(f.Index0),
                  index1: getIndexMapping(f.Index1),
-                 index2: getIndexMapping(f.Index2),
-                 index3: getIndexMapping(f.Index3))).ToArray()
+                 index2: getIndexMapping(f.Index2))).ToArray()
                : null;
 
             return new Mesh(newPositions, newFaces, newNormals);

@@ -18,7 +18,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         }
 
         /// <summary>
-        /// This will 
+        /// This will only benefit the selection with many regular triangulations
         /// </summary>
         /// <param name="implicitSurface"></param>
         /// <param name="mesh"></param>
@@ -28,7 +28,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         {
             OctreePartitioning partitioning = new OctreePartitioning(mesh, containerScale);
 
-            return new EdgeTree<float>(implicitSurface, partitioning, GetMaximumVertexToSurfaceDistance);
+            return new TriangulationBasedPriorityEdgeTree<float>(implicitSurface, partitioning, GetMaximumVertexToSurfaceDistance);
         }
 
         static int GetVertexCount(EdgeTreeNode node) => -node.OctreeNode.Vertices.Length;
@@ -37,7 +37,9 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         {
             if (node.LastTriangulation == null)
             {
-                return GetVertexCount(node);
+                //Add penalty to vertex count method so that any node with 
+                //calculated triangulation will be preffered.
+                return 1000f + GetVertexCount(node);
             }
 
             float furthestDistance = float.NegativeInfinity;

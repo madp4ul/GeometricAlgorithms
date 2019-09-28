@@ -81,8 +81,8 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
         {
             if (ImplicitSurface != null && Mesh != null)
             {
-                EdgeTree = EdgeTreeFactory.CreateWithWithMostPointsFirst(ImplicitSurface, Mesh);
-                //EdgeTree = EdgeTreeFactory.CreateWithFurthestPointsFirst(ImplicitSurface, Mesh);
+                //EdgeTree = EdgeTreeFactory.CreateWithWithMostPointsFirst(ImplicitSurface, Mesh);
+                EdgeTree = EdgeTreeFactory.CreateWithFurthestPointsFirst(ImplicitSurface, Mesh);
                 SetAllFunctionValueDrawables(EdgeTree?.ImplicitSurfaceProvider.GetFunctionValues());
             }
 

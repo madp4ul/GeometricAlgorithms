@@ -9,22 +9,22 @@ namespace GeometricAlgorithms.Domain
 {
     public class Triangle : IEnumerable<int>
     {
+        public readonly int Index0;
         public readonly int Index1;
         public readonly int Index2;
-        public readonly int Index3;
 
-        public Triangle(int index1, int index2, int index3)
+        public Triangle(int index0, int index1, int index2)
         {
+            Index0 = index0;
             Index1 = index1;
             Index2 = index2;
-            Index3 = index3;
         }
 
         public IEnumerator<int> GetEnumerator()
         {
+            yield return Index0;
             yield return Index1;
             yield return Index2;
-            yield return Index3;
         }
 
         IEnumerator IEnumerable.GetEnumerator()

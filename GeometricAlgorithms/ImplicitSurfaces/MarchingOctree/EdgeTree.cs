@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 {
-    public class EdgeTree<TCompareNode> : IEdgeTree where TCompareNode : IComparable<TCompareNode>
+    internal class EdgeTree<TCompareNode> : IEdgeTree where TCompareNode : IComparable<TCompareNode>
     {
         private readonly EdgeTreeNode Root;
 
         public readonly ImplicitSurfaceProvider ImplicitSurfaceProvider;
         private readonly Func<EdgeTreeNode, TCompareNode> GetComparationFeature;
-        private readonly PriorityQueue<ComparableEdgeTreeNode<TCompareNode>> TreeLeafsByRefinementPriority;
+        protected PriorityQueue<ComparableEdgeTreeNode<TCompareNode>> TreeLeafsByRefinementPriority;
 
         ImplicitSurfaceProvider IEdgeTree.ImplicitSurfaceProvider => ImplicitSurfaceProvider;
 
@@ -38,7 +38,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             TreeLeafsByRefinementPriority.Enqueue(new ComparableEdgeTreeNode<TCompareNode>(Root, getComparableFeature));
         }
 
-        public Mesh CreateApproximation()
+        public virtual Mesh CreateApproximation()
         {
             var treeLeafs = TreeLeafsByRefinementPriority.Select(cn => cn.Node).ToList();
             treeLeafs.Sort(CompareNodeDepth);
@@ -75,22 +75,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
             while (ImplicitSurfaceProvider.FunctionValueCount < sampleLimit)
             {
-                var current = TreeLeafsByRefinementPriority.Dequeue();
-
-                current.Node.CreateChildren();
-
-                for (int x = 0; x < 2; x++)
-                {
-                    for (int y = 0; y < 2; y++)
-                    {
-                        for (int z = 0; z < 2; z++)
-                        {
-                            var child = current.Node.Children[x, y, z];
-
-                            TreeLeafsByRefinementPriority.Enqueue(new ComparableEdgeTreeNode<TCompareNode>(child, GetComparationFeature));
-                        }
-                    }
-                }
+                RefineNextNode();
 
                 int operationsFromInteration = ImplicitSurfaceProvider.FunctionValueCount - completedOperations;
 
@@ -101,20 +86,23 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             operationUpdater.IsCompleted();
         }
 
-        private class ComparableEdgeTreeNode<TCompare> : IComparable<ComparableEdgeTreeNode<TCompare>> where TCompare : IComparable<TCompare>
+        protected virtual void RefineNextNode()
         {
-            public readonly EdgeTreeNode Node;
-            public readonly TCompare ComparationFeature;
+            var current = TreeLeafsByRefinementPriority.Dequeue();
 
-            public ComparableEdgeTreeNode(EdgeTreeNode node, Func<EdgeTreeNode, TCompare> getComparationFeature)
-            {
-                Node = node ?? throw new ArgumentNullException(nameof(node));
-                ComparationFeature = getComparationFeature(node);
-            }
+            current.Node.CreateChildren();
 
-            public int CompareTo(ComparableEdgeTreeNode<TCompare> other)
+            for (int x = 0; x < 2; x++)
             {
-                return ComparationFeature.CompareTo(other.ComparationFeature);
+                for (int y = 0; y < 2; y++)
+                {
+                    for (int z = 0; z < 2; z++)
+                    {
+                        var child = current.Node.Children[x, y, z];
+
+                        TreeLeafsByRefinementPriority.Enqueue(new ComparableEdgeTreeNode<TCompareNode>(child, GetComparationFeature));
+                    }
+                }
             }
         }
     }

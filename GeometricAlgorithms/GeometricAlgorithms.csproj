@@ -77,7 +77,9 @@
     <Compile Include="ImplicitSurfaces\MarchingCubes\Point.cs" />
     <Compile Include="ImplicitSurfaces\MarchingCubes\Tables.cs" />
     <Compile Include="ImplicitSurfaces\MarchingCubes\TripleEdge.cs" />
+    <Compile Include="ImplicitSurfaces\MarchingOctree\TriangulationBasedPriorityEdgeTree.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\BitCalculator.cs" />
+    <Compile Include="ImplicitSurfaces\MarchingOctree\ComparableEdgeTreeNode.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\CubeInsideEdges.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\CubeInsides.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\CubeOutsideChildren.cs" />

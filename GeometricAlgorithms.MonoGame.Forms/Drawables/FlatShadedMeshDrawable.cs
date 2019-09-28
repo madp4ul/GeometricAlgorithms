@@ -129,9 +129,9 @@ namespace GeometricAlgorithms.MonoGame.Forms.Drawables
             public TriangleNormal(Domain.Triangle triangle, IReadOnlyList<Domain.Vector3> positions)
             {
                 Triangle = triangle;
-                Corner1 = positions[triangle.Index1].ToXna();
-                Corner2 = positions[triangle.Index2].ToXna();
-                Corner3 = positions[triangle.Index3].ToXna();
+                Corner1 = positions[triangle.Index0].ToXna();
+                Corner2 = positions[triangle.Index1].ToXna();
+                Corner3 = positions[triangle.Index2].ToXna();
 
                 Normal = Vector3.Cross(Corner2 - Corner1, Corner3 - Corner1);
                 Normal.Normalize();
