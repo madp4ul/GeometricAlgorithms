@@ -15,8 +15,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.PointPartitioning
         public OctreeNode[,,] Children { get; private set; }
         public bool HasChildren => Children != null;
 
-        private readonly Range<PositionIndex> Vertices;
-        public int VerticesCount => Vertices.Length;
+        public readonly Range<PositionIndex> Vertices;
 
         public readonly BoundingBox BoundingBox;
 

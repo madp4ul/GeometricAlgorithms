@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 {
+    /// <summary>
+    /// Takes smallest value first
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class PriorityQueue<T> : IEnumerable<T> where T : IComparable<T>
     {
         private readonly List<T> Data = new List<T>();

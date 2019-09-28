@@ -21,7 +21,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
         private IImplicitSurface ImplicitSurface;
 
         public Mesh Mesh { get; private set; }
-        public EdgeTree EdgeTree { get; private set; }
+        public IEdgeTree EdgeTree { get; private set; }
 
         public int FunctionValueRadius { get; set; }
         public int SampleLimit { get; set; }
@@ -81,7 +81,8 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
         {
             if (ImplicitSurface != null && Mesh != null)
             {
-                EdgeTree = EdgeTree.CreateWithWithMostPointsFirst(ImplicitSurface, Mesh);
+                EdgeTree = EdgeTreeFactory.CreateWithWithMostPointsFirst(ImplicitSurface, Mesh);
+                //EdgeTree = EdgeTreeFactory.CreateWithFurthestPointsFirst(ImplicitSurface, Mesh);
                 SetAllFunctionValueDrawables(EdgeTree?.ImplicitSurfaceProvider.GetFunctionValues());
             }
 
@@ -112,7 +113,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
             });
         }
 
-        private void SetApproximation(Mesh mesh, EdgeTree edgeTree)
+        private void SetApproximation(Mesh mesh, IEdgeTree edgeTree)
         {
             SetAllFunctionValueDrawables(edgeTree.ImplicitSurfaceProvider.GetFunctionValues());
 

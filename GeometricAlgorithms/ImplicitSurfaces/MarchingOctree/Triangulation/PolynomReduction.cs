@@ -26,9 +26,9 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Triangulation
         /// </summary>
         /// <param name="triangle">triangle that covers the space removed by this operation</param>
         /// <returns>if further movements can be made</returns>
-        public bool MoveToNextPoint(out Triangle triangle)
+        public bool MoveToNextPoint(out PositionTriangle triangle)
         {
-            triangle = new Triangle(Node.Vertex.Index, Node.Previous.Vertex.Index, Node.Next.Vertex.Index);
+            triangle = new PositionTriangle(Node.Vertex, Node.Previous.Vertex, Node.Next.Vertex);
 
             if (Node.Previous.Previous == Node.Next)
             {

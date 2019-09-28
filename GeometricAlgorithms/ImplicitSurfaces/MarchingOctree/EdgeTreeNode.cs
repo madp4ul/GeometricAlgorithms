@@ -19,6 +19,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         public EdgeTreeNode[,,] Children { get; private set; }
         public bool HasChildren => Children != null;
 
+        public IList<PositionTriangle> LastTriangulation { get; private set; }
+
         /// <summary>
         /// Private constructor only for creation of root node
         /// </summary>
@@ -83,12 +85,18 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                 throw new ApplicationException("Should not happen.");
             }
 
+            var triangulation = new List<PositionTriangle>();
+
             foreach (var circle in mergedSegments.Cast<MergedTriangleLineSegment>())
             {
                 var triangles = circle.TriangulateCircle();
 
-                approximation.AddFaces(triangles);
+                triangulation.AddRange(triangles);
             }
+
+            LastTriangulation = triangulation;
+
+            approximation.AddFaces(triangulation);
         }
 
         public static EdgeTreeNode CreateRoot(OctreeNode octreeNode, ImplicitSurfaceProvider implicitSurface)

@@ -89,10 +89,12 @@
     <Compile Include="ImplicitSurfaces\MarchingOctree\EdgeOrientation.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\EdgeSurfaceIntersections.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\EdgeTree.cs" />
+    <Compile Include="ImplicitSurfaces\MarchingOctree\EdgeTreeFactory.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\EdgeTreeNode.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\FunctionValue.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\FunctionValueIndex.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\FunctionValueOrientation.cs" />
+    <Compile Include="ImplicitSurfaces\MarchingOctree\IEdgeTree.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\ImplicitSurfaceProvider.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\OctreeOffset.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\PointPartitioning\OctreeNode.cs" />
@@ -111,6 +113,7 @@
     <Compile Include="ImplicitSurfaces\MarchingOctree\SurfaceApproximation.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\Triangulation\MergedTriangleLineSegment.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\Triangulation\PolynomReduction.cs" />
+    <Compile Include="ImplicitSurfaces\MarchingOctree\Triangulation\PositionTriangle.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\Triangulation\TriangleLineSegment.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\Triangulation\TriangleLineSegmentNode.cs" />
     <Compile Include="ImplicitSurfaces\ScalarProductSurface.cs" />

@@ -9,13 +9,15 @@ using System.Threading.Tasks;
 
 namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 {
-    public class EdgeTree
+    public class EdgeTree<TCompareNode> : IEdgeTree where TCompareNode : IComparable<TCompareNode>
     {
         private readonly EdgeTreeNode Root;
 
         public readonly ImplicitSurfaceProvider ImplicitSurfaceProvider;
-        private readonly Func<EdgeTreeNode, int> GetComparationFeature;
-        private readonly PriorityQueue<ComparableEdgeTreeNode> TreeLeafsByRefinementPriority;
+        private readonly Func<EdgeTreeNode, TCompareNode> GetComparationFeature;
+        private readonly PriorityQueue<ComparableEdgeTreeNode<TCompareNode>> TreeLeafsByRefinementPriority;
+
+        ImplicitSurfaceProvider IEdgeTree.ImplicitSurfaceProvider => ImplicitSurfaceProvider;
 
         /// <summary>
         /// 
@@ -24,7 +26,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
         /// <param name="partitioning"></param>
         /// <param name="getComparableFeature">Function to extract a value from edge-tree-nodes by which they will be compared.
         /// Nodes with lowest extracted value will be refined first</param>
-        private EdgeTree(IImplicitSurface implicitSurface, OctreePartitioning partitioning, Func<EdgeTreeNode, int> getComparableFeature)
+        internal EdgeTree(IImplicitSurface implicitSurface, OctreePartitioning partitioning, Func<EdgeTreeNode, TCompareNode> getComparableFeature)
         {
             ImplicitSurfaceProvider = new ImplicitSurfaceProvider(implicitSurface);
 
@@ -32,8 +34,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
             GetComparationFeature = getComparableFeature ?? throw new ArgumentNullException(nameof(getComparableFeature));
 
-            TreeLeafsByRefinementPriority = new PriorityQueue<ComparableEdgeTreeNode>();
-            TreeLeafsByRefinementPriority.Enqueue(new ComparableEdgeTreeNode(Root, getComparableFeature));
+            TreeLeafsByRefinementPriority = new PriorityQueue<ComparableEdgeTreeNode<TCompareNode>>();
+            TreeLeafsByRefinementPriority.Enqueue(new ComparableEdgeTreeNode<TCompareNode>(Root, getComparableFeature));
         }
 
         public Mesh CreateApproximation()
@@ -85,7 +87,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
                         {
                             var child = current.Node.Children[x, y, z];
 
-                            TreeLeafsByRefinementPriority.Enqueue(new ComparableEdgeTreeNode(child, GetComparationFeature));
+                            TreeLeafsByRefinementPriority.Enqueue(new ComparableEdgeTreeNode<TCompareNode>(child, GetComparationFeature));
                         }
                     }
                 }
@@ -99,33 +101,20 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
             operationUpdater.IsCompleted();
         }
 
-
-        public static EdgeTree CreateWithWithMostPointsFirst(IImplicitSurface implicitSurface, Mesh mesh, float containerScale = 1.3f)
-        {
-            int getFeature(EdgeTreeNode node) => -node.OctreeNode.VerticesCount;
-
-            OctreePartitioning partitioning = new OctreePartitioning(mesh, containerScale);
-
-            return new EdgeTree(implicitSurface, partitioning, getFeature);
-        }
-
-
-
-
-        private class ComparableEdgeTreeNode : IComparable<ComparableEdgeTreeNode>
+        private class ComparableEdgeTreeNode<TCompare> : IComparable<ComparableEdgeTreeNode<TCompare>> where TCompare : IComparable<TCompare>
         {
             public readonly EdgeTreeNode Node;
-            public readonly int ComparationFeature;
+            public readonly TCompare ComparationFeature;
 
-            public ComparableEdgeTreeNode(EdgeTreeNode node, Func<EdgeTreeNode, int> getComparationFeature)
+            public ComparableEdgeTreeNode(EdgeTreeNode node, Func<EdgeTreeNode, TCompare> getComparationFeature)
             {
                 Node = node ?? throw new ArgumentNullException(nameof(node));
                 ComparationFeature = getComparationFeature(node);
             }
 
-            public int CompareTo(ComparableEdgeTreeNode other)
+            public int CompareTo(ComparableEdgeTreeNode<TCompare> other)
             {
-                return ComparationFeature - other.ComparationFeature;
+                return ComparationFeature.CompareTo(other.ComparationFeature);
             }
         }
     }

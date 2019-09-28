@@ -21,7 +21,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Triangulation
             MergedNodes = mergedNodes ?? throw new ArgumentNullException(nameof(mergedNodes));
         }
 
-        public List<Triangle> TriangulateCircle()
+        public List<PositionTriangle> TriangulateCircle()
         {
             if (!IsFirstSameAsLast)
             {
@@ -33,7 +33,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Triangulation
             TriangleLineSegmentNode.Connect(Last, First.Next);
             MergedNodes.Add(Last);
 
-            var triangles = new List<Triangle>();
+            var triangles = new List<PositionTriangle>();
 
             var reductions = MergedNodes.Select(n => new PolynomReduction(n)).ToList();
 
@@ -54,7 +54,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Triangulation
                 }
                 else
                 {
-                    canReduce = current.MoveToNextPoint(out Triangle triangle);
+                    canReduce = current.MoveToNextPoint(out PositionTriangle triangle);
                     triangles.Add(triangle);
 
                     reductionIndex++;
