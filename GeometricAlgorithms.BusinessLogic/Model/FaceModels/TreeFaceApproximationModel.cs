@@ -4,6 +4,7 @@ using GeometricAlgorithms.Domain.Drawables;
 using GeometricAlgorithms.Domain.Tasks;
 using GeometricAlgorithms.ImplicitSurfaces;
 using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree;
+using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.FunctionValues;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -21,7 +22,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
         private IImplicitSurface ImplicitSurface;
 
         public Mesh Mesh { get; private set; }
-        public IEdgeTree EdgeTree { get; private set; }
+        public IRefinementTree EdgeTree { get; private set; }
 
         public int FunctionValueRadius { get; set; }
         public int SampleLimit { get; set; }
@@ -82,7 +83,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
             if (ImplicitSurface != null && Mesh != null)
             {
                 //EdgeTree = EdgeTreeFactory.CreateWithWithMostPointsFirst(ImplicitSurface, Mesh);
-                EdgeTree = EdgeTreeFactory.CreateWithFurthestPointsFirst(ImplicitSurface, Mesh);
+                EdgeTree = RefinementTreeFactory.CreateWithFurthestPointsFirst(ImplicitSurface, Mesh);
                 SetAllFunctionValueDrawables(EdgeTree?.ImplicitSurfaceProvider.GetFunctionValues());
             }
 
@@ -113,7 +114,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
             });
         }
 
-        private void SetApproximation(Mesh mesh, IEdgeTree edgeTree)
+        private void SetApproximation(Mesh mesh, IRefinementTree edgeTree)
         {
             SetAllFunctionValueDrawables(edgeTree.ImplicitSurfaceProvider.GetFunctionValues());
 

@@ -1,4 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.FunctionValues;
 using System;
 using System.Collections.Generic;
 using System.Linq;
