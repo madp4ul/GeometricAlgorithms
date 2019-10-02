@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace GeometricAlgorithms.Domain
 {
     /// <summary>
-    /// Takes smallest value first
+    /// Returns smallest value first
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class PriorityQueue<T> : IEnumerable<T> where T : IComparable<T>
@@ -80,6 +80,11 @@ namespace GeometricAlgorithms.Domain
         {
             T frontItem = Data[0];
             return frontItem;
+        }
+
+        public bool Remove(T element)
+        {
+            return Data.Remove(element);
         }
 
         public override string ToString()

@@ -58,7 +58,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
         {
             var buildKdTree = FuncExecutor.Execute((progress) =>
             {
-                return new Octree(mesh, Configuration, progress);
+                return new KdTree(mesh, Configuration, progress);
             });
 
             buildKdTree.GetResult(tree =>
