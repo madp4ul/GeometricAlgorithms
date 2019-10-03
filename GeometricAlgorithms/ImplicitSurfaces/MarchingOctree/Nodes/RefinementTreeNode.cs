@@ -1,4 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Approximation;
 using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Cubes;
 using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.PointPartitioning;
 using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Triangulation;
@@ -12,6 +13,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Nodes
 {
     class RefinementTreeNode
     {
+        private readonly RefiningApproximation Approximation;
+
         public readonly CubeOutsides Sides;
         public readonly OctreeNode OctreeNode;
 
@@ -20,7 +23,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Nodes
         public RefinementTreeNode[,,] Children { get; private set; }
         public bool HasChildren => Children != null;
 
-        public IList<PositionTriangle> LastTriangulation { get; private set; }
+        public NodeTriangulation Triangulation { get; private set; }
 
         /// <summary>
         /// Private constructor only for creation of root node
@@ -28,15 +31,37 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Nodes
         /// <param name="octreeNode"></param>
         /// <param name="implicitSurface"></param>
         /// <param name="boundingBox"></param>
-        private RefinementTreeNode(OctreeNode octreeNode, ImplicitSurfaceProvider implicitSurface, int depth)
-            : this(octreeNode, CubeOutsides.ForRoot(implicitSurface, octreeNode.BoundingBox), depth)
+        private RefinementTreeNode(OctreeNode octreeNode, RefiningApproximation approximation, ImplicitSurfaceProvider implicitSurface, int depth)
+            : this(octreeNode, approximation, CubeOutsides.ForRoot(approximation, implicitSurface, octreeNode.BoundingBox), depth)
         { }
 
-        private RefinementTreeNode(OctreeNode octreeNode, CubeOutsides outsides, int depth)
+        private RefinementTreeNode(OctreeNode octreeNode, RefiningApproximation approximation, CubeOutsides outsides, int depth)
         {
             OctreeNode = octreeNode;
+            Approximation = approximation;
             Sides = outsides;
             Depth = depth;
+
+            AddSelfToSideEdges();
+            CreateTriangulation();
+            RetriangulateLessRefinedNeighbours();
+        }
+
+        private void AddSelfToSideEdges()
+        {
+            foreach (var orientedSide in Sides)
+            {
+                for (int axisIndex = 0; axisIndex < 2; axisIndex++)
+                {
+                    for (int axisDirection = 0; axisDirection < 2; axisDirection++)
+                    {
+                        var edgeOrientation = orientedSide.Orientation.GetEdgeOrientation(axisIndex, axisDirection);
+                        var edgeAtOrientation = orientedSide.Side.Edges[axisIndex, axisDirection];
+
+                        edgeAtOrientation.UsingCubes[edgeOrientation] = this;
+                    }
+                }
+            }
         }
 
         public void CreateChildren()
@@ -59,6 +84,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Nodes
                     {
                         children[x, y, z] = new RefinementTreeNode(
                             octreeNode: OctreeNode.Children[x, y, z],
+                            approximation: Approximation,
                             outsides: Sides.Children[x, y, z],
                             depth: Depth + 1);
                     }
@@ -66,17 +92,31 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Nodes
             }
 
             Children = children;
+
+            Triangulation.Dispose();
+            Triangulation = null;
         }
-        public void AddTriangulation(SurfaceApproximation approximation)
+        public void CreateTriangulation()
         {
+            if (HasChildren)
+            {
+                throw new InvalidOperationException();
+            }
+
+            if (Triangulation != null)
+            {
+                Triangulation.Dispose();
+                Triangulation = null;
+            }
+
             var sideLineSegments = new List<TriangleLineSegment>();
 
-            foreach (var side in Sides)
+            foreach (var orientedSide in Sides)
             {
                 //TODO if any side already contains circles, use a different triangulation method for 
                 //polynoms in a plane
 
-                sideLineSegments.AddRange(side.Value.GetLineSegments(approximation, side.Key.IsMax));
+                sideLineSegments.AddRange(orientedSide.Side.GetLineSegments(orientedSide.Orientation.IsMax));
             }
 
             var mergedSegments = TriangleLineSegment.Merge(sideLineSegments);
@@ -86,7 +126,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Nodes
                 throw new ApplicationException("Should not happen.");
             }
 
-            var triangulation = new List<PositionTriangle>();
+            var triangulation = new List<EditableIndexTriangle>();
 
             foreach (var circle in mergedSegments.Cast<MergedTriangleLineSegment>())
             {
@@ -95,14 +135,42 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Nodes
                 triangulation.AddRange(triangles);
             }
 
-            LastTriangulation = triangulation;
-
-            approximation.AddFaces(triangulation);
+            Triangulation = Approximation.AddTriangulation(triangulation);
         }
 
-        public static RefinementTreeNode CreateRoot(OctreeNode octreeNode, ImplicitSurfaceProvider implicitSurface)
+        private void RetriangulateLessRefinedNeighbours()
         {
-            return new RefinementTreeNode(octreeNode, implicitSurface, depth: 0);
+            var lessRefinedNeighbours = GetLessRefinedNeighbours();
+
+            foreach (var neighbour in lessRefinedNeighbours)
+            {
+                neighbour.CreateTriangulation();
+            }
+        }
+
+        /// <summary>
+        /// Get unique neighbours, whoose depth is less than depth of current node
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerable<RefinementTreeNode> GetLessRefinedNeighbours()
+        {
+            var distinctEdges = Sides
+                .Select(s => s.Side)
+                .SelectMany(s => s.Edges)
+                .Distinct()
+                .ToList();
+
+            var distinctNeighbours = distinctEdges
+                 .SelectMany(e => e.UsingCubes.GetLessRefinedNeighboursForNode(this))
+                 .Distinct()
+                 .ToList();
+
+            return distinctNeighbours;
+        }
+
+        public static RefinementTreeNode CreateRoot(OctreeNode octreeNode, RefiningApproximation approximation, ImplicitSurfaceProvider implicitSurface)
+        {
+            return new RefinementTreeNode(octreeNode, approximation, implicitSurface, depth: 0);
         }
     }
 }

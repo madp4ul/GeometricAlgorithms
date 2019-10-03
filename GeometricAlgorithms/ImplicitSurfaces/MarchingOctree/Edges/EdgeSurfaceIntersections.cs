@@ -1,4 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Approximation;
 using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Triangulation;
 using System;
 using System.Collections.Generic;
@@ -11,14 +12,14 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Edges
 {
     class EdgeSurfaceIntersections
     {
-        private readonly PositionIndex[] EdgeIntersectionIndices;
+        private readonly EdgeIntersection[] EdgeIntersectionIndices;
 
         private readonly int EdgeLinesStart;
         private readonly int EdgeLinesEnd;
 
-        public readonly PositionIndex? IntersectionIndex;
+        public readonly EdgeIntersection IntersectionIndex;
 
-        public EdgeSurfaceIntersections(bool isEdgeMinValueInside, PositionIndex[] edgeIntersectionIndices)
+        public EdgeSurfaceIntersections(bool isEdgeMinValueInside, EdgeIntersection[] edgeIntersectionIndices)
         {
             EdgeIntersectionIndices = edgeIntersectionIndices;
 

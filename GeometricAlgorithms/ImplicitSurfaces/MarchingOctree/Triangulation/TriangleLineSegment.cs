@@ -17,7 +17,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Triangulation
             Last = last ?? throw new ArgumentNullException(nameof(last));
         }
 
-        public bool IsFirstSameAsLast => First.Vertex.Index == Last.Vertex.Index;
+        public bool IsFirstSameAsLast => First.Intersection == Last.Intersection;
 
         public static List<TriangleLineSegment> Merge(List<TriangleLineSegment> segments)
         {
@@ -36,26 +36,26 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Triangulation
                 {
                     var segment2 = segments[j];
 
-                    if (segment1.Last.Vertex.Index == segment2.First.Vertex.Index)
+                    if (segment1.Last.Intersection == segment2.First.Intersection)
                     {
                         combineSegments(segment1, segment2);
                         break;
                     }
 
-                    if (segment2.Last.Vertex.Index == segment1.First.Vertex.Index)
+                    if (segment2.Last.Intersection == segment1.First.Intersection)
                     {
                         combineSegments(segment2, segment1);
                         break;
                     }
 
-                    if (segment1.First.Vertex.Index == segment2.First.Vertex.Index)
+                    if (segment1.First.Intersection == segment2.First.Intersection)
                     {
                         var reversed1 = segment1.CreateReversed();
                         combineSegments(reversed1, segment2);
                         break;
                     }
 
-                    if (segment1.Last.Vertex.Index == segment2.Last.Vertex.Index)
+                    if (segment1.Last.Intersection == segment2.Last.Intersection)
                     {
                         var reversed1 = segment1.CreateReversed();
                         combineSegments(segment2, reversed1);
@@ -89,14 +89,14 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Triangulation
 
         public TriangleLineSegment CreateReversed()
         {
-            var reversedFirst = new TriangleLineSegmentNode(Last.Vertex);
+            var reversedFirst = new TriangleLineSegmentNode(Last.Intersection);
 
             var current = Last;
             var currentReversed = reversedFirst;
 
             while (current.Previous != null)
             {
-                var nextReversed = new TriangleLineSegmentNode(current.Previous.Vertex);
+                var nextReversed = new TriangleLineSegmentNode(current.Previous.Intersection);
                 TriangleLineSegmentNode.Connect(currentReversed, nextReversed);
                 currentReversed = currentReversed.Next;
                 current = current.Previous;

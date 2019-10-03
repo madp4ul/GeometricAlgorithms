@@ -1,4 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Approximation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +12,11 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Triangulation
     {
         public TriangleLineSegmentNode Previous;
         public TriangleLineSegmentNode Next;
-        public readonly PositionIndex Vertex;
+        public readonly EdgeIntersection Intersection;
 
-        public TriangleLineSegmentNode(PositionIndex vertex)
+        public TriangleLineSegmentNode(EdgeIntersection intersection)
         {
-            Vertex = vertex;
+            Intersection = intersection;
         }
 
         public void Detach()
@@ -35,10 +36,10 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Triangulation
 
         public override string ToString()
         {
-            string next = Next != null ? Next.Vertex.ToString() : "_";
-            string prev = Previous != null ? Previous.Vertex.ToString() : "_";
+            string next = Next != null ? Next.Intersection.ToString() : "_";
+            string prev = Previous != null ? Previous.Intersection.ToString() : "_";
 
-            return $"{{node: {prev}<-(({Vertex}))->{next} }}";
+            return $"{{node: {prev}<-(({Intersection}))->{next} }}";
         }
 
         public static void Connect(TriangleLineSegmentNode first, TriangleLineSegmentNode second)

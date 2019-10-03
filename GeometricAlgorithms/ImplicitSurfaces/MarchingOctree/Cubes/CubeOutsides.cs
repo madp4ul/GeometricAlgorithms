@@ -1,4 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Approximation;
 using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Edges;
 using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.FunctionValues;
 using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Sides;
@@ -14,17 +15,19 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Cubes
     /// <summary>
     /// Cleaner access to sides of a cube by requiring orientation
     /// </summary>
-    class CubeOutsides : IEnumerable<KeyValuePair<SideOrientation, Side>>
+    class CubeOutsides : IEnumerable<OrientedSide>
     {
         private readonly ImplicitSurfaceProvider ImplicitSurface;
+        private readonly RefiningApproximation Approximation;
 
         private readonly Side[] Sides = new Side[6];
 
         public CubeOutsideChildren Children { get; private set; }
         public bool HasChildren => Children != null;
 
-        private CubeOutsides(ImplicitSurfaceProvider implicitSurface)
+        private CubeOutsides(RefiningApproximation approximation, ImplicitSurfaceProvider implicitSurface)
         {
+            Approximation = approximation;
             ImplicitSurface = implicitSurface;
         }
 
@@ -36,7 +39,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Cubes
 
         public void CreateChildren()
         {
-            var insides = new CubeInsides(ImplicitSurface, this);
+            var insides = new CubeInsides(Approximation, ImplicitSurface, this);
 
             var children = new CubeOutsides[2, 2, 2];
 
@@ -50,7 +53,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Cubes
                     {
                         var parentOffset = new CubeOffset(x, y, z);
 
-                        var child = new CubeOutsides(ImplicitSurface);
+                        var child = new CubeOutsides(Approximation, ImplicitSurface);
 
                         for (int i = 0; i < child.Sides.Length; i++)
                         {
@@ -77,7 +80,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Cubes
             Children = new CubeOutsideChildren(children);
         }
 
-        public static CubeOutsides ForRoot(ImplicitSurfaceProvider implicitSurface, BoundingBox boundingBox)
+        public static CubeOutsides ForRoot(RefiningApproximation approximation, ImplicitSurfaceProvider implicitSurface, BoundingBox boundingBox)
         {
             FunctionValue[] cornerValues = new FunctionValue[8];
 
@@ -99,10 +102,10 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Cubes
                 FunctionValue minValue = cornerValues[orientation.GetValueOrientation(0).GetArrayIndex()];
                 FunctionValue maxValue = cornerValues[orientation.GetValueOrientation(1).GetArrayIndex()];
 
-                edges[i] = new Edge(implicitSurface, orientation.GetAxis(), minValue, maxValue);
+                edges[i] = new Edge(approximation, implicitSurface, orientation.GetAxis(), minValue, maxValue);
             }
 
-            CubeOutsides rootOusides = new CubeOutsides(implicitSurface);
+            CubeOutsides rootOusides = new CubeOutsides(approximation, implicitSurface);
 
             for (int i = 0; i < rootOusides.Sides.Length; i++)
             {
@@ -120,19 +123,19 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Cubes
                     }
                 }
 
-                rootOusides[orientation] = new Side(implicitSurface, sideEdges);
+                rootOusides[orientation] = new Side(approximation, implicitSurface, sideEdges);
             }
 
             return rootOusides;
         }
 
-        public IEnumerator<KeyValuePair<SideOrientation, Side>> GetEnumerator()
+        public IEnumerator<OrientedSide> GetEnumerator()
         {
             for (int i = 0; i < Sides.Length; i++)
             {
-                yield return new KeyValuePair<SideOrientation, Side>(
-                    key: new SideOrientation(SideOrientation.GetSideIndex(i)),
-                    value: Sides[i]);
+                yield return new OrientedSide(
+                    orientation: new SideOrientation(SideOrientation.GetSideIndex(i)),
+                    side: Sides[i]);
             }
         }
 

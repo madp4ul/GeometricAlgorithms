@@ -37,36 +37,38 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
 
         static float GetMaximumVertexToSurfaceDistance(RefinementTreeNode node)
         {
-            if (node.LastTriangulation == null)
-            {
-                //Add penalty to vertex count method so that any node with 
-                //calculated triangulation will be preffered.
-                return 1000f + GetVertexCount(node);
-            }
+            throw new NotImplementedException();
 
-            float furthestDistance = float.NegativeInfinity;
+            //if (node.LastTriangulation == null)
+            //{
+            //    //Add penalty to vertex count method so that any node with 
+            //    //calculated triangulation will be preffered.
+            //    return 1000f + GetVertexCount(node);
+            //}
 
-            foreach (var vertex in node.OctreeNode.Vertices)
-            {
-                float closestTriangleDistance = float.PositiveInfinity;
+            //float furthestDistance = float.NegativeInfinity;
 
-                foreach (var triangle in node.LastTriangulation)
-                {
-                    float triangleDistance = triangle.GetDistance(vertex.Position);
+            //foreach (var vertex in node.OctreeNode.Vertices)
+            //{
+            //    float closestTriangleDistance = float.PositiveInfinity;
 
-                    if (triangleDistance < closestTriangleDistance)
-                    {
-                        closestTriangleDistance = triangleDistance;
-                    }
-                }
+            //    foreach (var triangle in node.LastTriangulation)
+            //    {
+            //        float triangleDistance = triangle.GetDistance(vertex.Position);
 
-                if (closestTriangleDistance > furthestDistance)
-                {
-                    furthestDistance = closestTriangleDistance;
-                }
-            }
+            //        if (triangleDistance < closestTriangleDistance)
+            //        {
+            //            closestTriangleDistance = triangleDistance;
+            //        }
+            //    }
 
-            return -furthestDistance;
+            //    if (closestTriangleDistance > furthestDistance)
+            //    {
+            //        furthestDistance = closestTriangleDistance;
+            //    }
+            //}
+
+            //return -furthestDistance;
         }
     }
 }

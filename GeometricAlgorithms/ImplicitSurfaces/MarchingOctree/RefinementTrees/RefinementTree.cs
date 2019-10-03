@@ -1,5 +1,6 @@
 ﻿using GeometricAlgorithms.Domain;
 using GeometricAlgorithms.Domain.Tasks;
+using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Approximation;
 using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Nodes;
 using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.PointPartitioning;
 using System;
@@ -13,6 +14,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.RefinementTrees
     internal class RefinementTree<TCompareNode> : IRefinementTree where TCompareNode : IComparable<TCompareNode>
     {
         private readonly RefinementTreeNode Root;
+        private readonly RefiningApproximation Approximation;
 
         public readonly ImplicitSurfaceProvider ImplicitSurfaceProvider;
         private readonly Func<RefinementTreeNode, TCompareNode> GetComparationFeature;
@@ -30,8 +32,9 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.RefinementTrees
         internal RefinementTree(IImplicitSurface implicitSurface, OctreePartitioning partitioning, Func<RefinementTreeNode, TCompareNode> getComparableFeature)
         {
             ImplicitSurfaceProvider = new ImplicitSurfaceProvider(implicitSurface);
+            Approximation = new RefiningApproximation();
 
-            Root = RefinementTreeNode.CreateRoot(partitioning.Root, ImplicitSurfaceProvider);
+            Root = RefinementTreeNode.CreateRoot(partitioning.Root, Approximation, ImplicitSurfaceProvider);
 
             GetComparationFeature = getComparableFeature ?? throw new ArgumentNullException(nameof(getComparableFeature));
 
@@ -41,23 +44,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.RefinementTrees
 
         public virtual Mesh CreateApproximation()
         {
-            var treeLeafs = TreeLeafsByRefinementPriority.Select(cn => cn.Node).ToList();
-            treeLeafs.Sort(CompareNodeDepth);
-
-            var approximation = new SurfaceApproximation();
-
-            foreach (var treeLeaf in treeLeafs)
-            {
-                treeLeaf.AddTriangulation(approximation);
-            }
-
-            return new Mesh(approximation.GetPositions(), approximation.GetFaces());
-        }
-
-        private static int CompareNodeDepth(RefinementTreeNode node1, RefinementTreeNode node2)
-        {
-            //invert sorting. Biggest first
-            return node2.Depth - node1.Depth;
+            return Approximation.GetApproximation();
         }
 
         public void RefineEdgeTree(int sampleLimit, IProgressUpdater progressUpdater)

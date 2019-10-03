@@ -1,4 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Approximation;
 using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Edges;
 using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Sides;
 using System;
@@ -21,15 +22,15 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Cubes
         /// Create insides for a cube from available data in outside container
         /// </summary>
         /// <param name="outsideContainer">outer sides of the cube</param>
-        public CubeInsides(ImplicitSurfaceProvider implicitSurface, CubeOutsides outsideContainer)
+        public CubeInsides(RefiningApproximation approximation, ImplicitSurfaceProvider implicitSurface, CubeOutsides outsideContainer)
         {
             //Create all insides
-            foreach (var side in outsideContainer.Where(s => !s.Value.HasChildren))
+            foreach (var orientedSide in outsideContainer.Where(os => !os.Side.HasChildren))
             {
-                side.Value.CreateChildren();
+                orientedSide.Side.CreateChildren();
             }
 
-            var insideEdges = new CubeInsideEdges(implicitSurface, outsideContainer);
+            var insideEdges = new CubeInsideEdges(approximation, implicitSurface, outsideContainer);
 
             for (int i = 0; i < (int)Dimension.Count; i++)
             {
@@ -77,7 +78,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Cubes
                             }
                         }
 
-                        InnerCubeSides[ToIndex(current, a, b)] = new Side(implicitSurface, sideEdges);
+                        InnerCubeSides[ToIndex(current, a, b)] = new Side(approximation, implicitSurface, sideEdges);
                     }
                 }
 

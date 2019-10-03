@@ -1,4 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Approximation;
 using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.FunctionValues;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Edges
     class Edge
     {
         private readonly ImplicitSurfaceProvider ImplicitSurface;
+        private readonly RefiningApproximation Approximation;
 
         public readonly Dimension[] DirectionAxisFromCubeCenter;
 
@@ -21,19 +23,30 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Edges
         public EdgeChildren Children { get; private set; }
         public bool HasChildren => Children != null;
 
-        private EdgeIntersectionCache IntersectionCache = new EdgeIntersectionCache();
+        private EdgeIntersection EdgeIntersection;
 
-        public Edge(ImplicitSurfaceProvider implicitSurface, EdgeOrientation orientation, FunctionValue minValue, FunctionValue maxValue)
-            : this(implicitSurface, orientation.GetAxis(), minValue, maxValue)
-        { }
+        /// <summary>
+        /// Cubes that are using this edge
+        /// </summary>
+        public EdgeNodes UsingCubes;
 
-        public Edge(ImplicitSurfaceProvider implicitSurface, Dimension[] directionAxisFromCubeCenter, FunctionValue minValue, FunctionValue maxValue)
+
+        public Edge(Edge parent, ImplicitSurfaceProvider implicitSurface, Dimension[] directionAxisFromCubeCenter, FunctionValue minValue, FunctionValue maxValue)
+            : this(parent.Approximation, implicitSurface, directionAxisFromCubeCenter, minValue, maxValue)
         {
+            UsingCubes = new EdgeNodes(parent.UsingCubes);
+        }
+
+        public Edge(RefiningApproximation approximation, ImplicitSurfaceProvider implicitSurface, Dimension[] directionAxisFromCubeCenter, FunctionValue minValue, FunctionValue maxValue)
+        {
+            Approximation = approximation;
             ImplicitSurface = implicitSurface;
             DirectionAxisFromCubeCenter = directionAxisFromCubeCenter;
 
             MinValue = minValue;
             MaxValue = maxValue;
+
+            ComputeEdgeIntersection();
         }
 
         public void CreateChildren()
@@ -47,8 +60,12 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Edges
             FunctionValue middleValue = ImplicitSurface.CreateFunctionValue(middlePosition);
 
             Children = new EdgeChildren(
-                minEdge: new Edge(ImplicitSurface, DirectionAxisFromCubeCenter, MinValue, middleValue),
-                maxEdge: new Edge(ImplicitSurface, DirectionAxisFromCubeCenter, middleValue, MaxValue));
+                minEdge: new Edge(parent: this, ImplicitSurface, DirectionAxisFromCubeCenter, MinValue, middleValue),
+                maxEdge: new Edge(parent: this, ImplicitSurface, DirectionAxisFromCubeCenter, middleValue, MaxValue));
+
+            //Intersections now have to be gathered from children
+            EdgeIntersection.Dispose();
+            EdgeIntersection = null;
         }
 
         /// <summary>
@@ -56,60 +73,46 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Edges
         /// </summary>
         /// <param name="surfaceApproximation"></param>
         /// <returns></returns>
-        public EdgeSurfaceIntersections GetSurfaceIntersectionPositionIndices(SurfaceApproximation surfaceApproximation)
+        public EdgeSurfaceIntersections GetSurfaceIntersections()
         {
-            if (IntersectionCache.TryGetIntersections(surfaceApproximation, out EdgeSurfaceIntersections intersections))
-            {
-                return intersections;
-            }
+            EdgeIntersection[] intersectionArray = ComputeSurfaceIntersections();
 
-            PositionIndex[] writeableIndices = GetWriteableSurfaceIntersectionPositionIndices(surfaceApproximation);
-
-            intersections = new EdgeSurfaceIntersections(MinValue.IsInside, writeableIndices);
-            IntersectionCache.SetIntersections(surfaceApproximation, intersections);
+            var intersections = new EdgeSurfaceIntersections(MinValue.IsInside, intersectionArray);
 
             return intersections;
         }
 
-        private PositionIndex[] GetWriteableSurfaceIntersectionPositionIndices(SurfaceApproximation surfaceApproximation)
-        {
-            if (IntersectionCache.TryGetIntersectionIndices(surfaceApproximation, out PositionIndex[] intersectionIndices))
-            {
-                return intersectionIndices;
-            }
-
-            intersectionIndices = ComputeSurfaceIntersectionPositionIndices(surfaceApproximation);
-            IntersectionCache.SetIntersectionIndices(surfaceApproximation, intersectionIndices);
-
-            return intersectionIndices;
-        }
-
-        private PositionIndex[] ComputeSurfaceIntersectionPositionIndices(SurfaceApproximation surfaceApproximation)
+        private EdgeIntersection[] ComputeSurfaceIntersections()
         {
             if (HasChildren)
             {
-                return GetSurfaceIntersectionPositionIndicesFromChildren(surfaceApproximation);
+                return GetSurfaceIntersectionPositionIndicesFromChildren();
             }
-
-            if (MinValue.IsInside == MaxValue.IsInside)
+            else
             {
-                return new PositionIndex[0];
+                return new[] { EdgeIntersection };
             }
-
-            float surfaceZeroInterpolationFactor = Math.Abs(MinValue.Value / (MinValue.Value - MaxValue.Value));
-
-            Vector3 interpolationPosition = Vector3.Interpolate(MinValue.Position, MaxValue.Position, surfaceZeroInterpolationFactor);
-
-            return new PositionIndex[1]
-            {
-                surfaceApproximation.AddPosition(interpolationPosition)
-            };
         }
 
-        private PositionIndex[] GetSurfaceIntersectionPositionIndicesFromChildren(SurfaceApproximation surfaceApproximation)
+        /// <summary>
+        /// use this in constructor only
+        /// </summary>
+        private void ComputeEdgeIntersection()
         {
-            var indicesFromMinChild = Children[0].GetWriteableSurfaceIntersectionPositionIndices(surfaceApproximation);
-            var indicesFromMaxChild = Children[1].GetWriteableSurfaceIntersectionPositionIndices(surfaceApproximation);
+            if (MinValue.IsInside != MaxValue.IsInside)
+            {
+                float surfaceZeroInterpolationFactor = Math.Abs(MinValue.Value / (MinValue.Value - MaxValue.Value));
+
+                Vector3 interpolationPosition = Vector3.Interpolate(MinValue.Position, MaxValue.Position, surfaceZeroInterpolationFactor);
+
+                EdgeIntersection = Approximation.AddIntersection(interpolationPosition);
+            }
+        }
+
+        private EdgeIntersection[] GetSurfaceIntersectionPositionIndicesFromChildren()
+        {
+            var indicesFromMinChild = Children[0].ComputeSurfaceIntersections();
+            var indicesFromMaxChild = Children[1].ComputeSurfaceIntersections();
 
             if (indicesFromMinChild.Length == 0)
             {
@@ -120,7 +123,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Edges
                 return indicesFromMinChild;
             }
 
-            PositionIndex[] combinedIndices = new PositionIndex[indicesFromMinChild.Length + indicesFromMaxChild.Length];
+            EdgeIntersection[] combinedIndices = new EdgeIntersection[indicesFromMinChild.Length + indicesFromMaxChild.Length];
 
             Array.Copy(indicesFromMinChild, 0, combinedIndices, 0, indicesFromMinChild.Length);
             Array.Copy(indicesFromMaxChild, 0, combinedIndices, indicesFromMinChild.Length, indicesFromMaxChild.Length);

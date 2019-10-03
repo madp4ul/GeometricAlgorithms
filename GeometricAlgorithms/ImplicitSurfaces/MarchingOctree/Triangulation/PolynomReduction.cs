@@ -1,4 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Approximation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,9 +27,9 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Triangulation
         /// </summary>
         /// <param name="triangle">triangle that covers the space removed by this operation</param>
         /// <returns>if further movements can be made</returns>
-        public bool MoveToNextPoint(out PositionTriangle triangle)
+        public bool MoveToNextPoint(out EditableIndexTriangle triangle)
         {
-            triangle = new PositionTriangle(Node.Vertex, Node.Previous.Vertex, Node.Next.Vertex);
+            triangle = new EditableIndexTriangle(Node.Intersection, Node.Previous.Intersection, Node.Next.Intersection);
 
             if (Node.Previous.Previous == Node.Next)
             {

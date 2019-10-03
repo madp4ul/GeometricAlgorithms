@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree
+namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Approximation
 {
     class SurfaceApproximation
     {

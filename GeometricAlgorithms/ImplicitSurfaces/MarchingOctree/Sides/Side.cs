@@ -1,4 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Approximation;
 using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Edges;
 using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Triangulation;
 using System;
@@ -12,6 +13,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Sides
     class Side
     {
         private readonly ImplicitSurfaceProvider ImplicitSurface;
+        private readonly RefiningApproximation Approximation;
 
         public readonly SideDimensions Dimensions;
 
@@ -20,13 +22,14 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Sides
         public SideChildren Children { get; private set; }
         public bool HasChildren => Children != null;
 
-        public Side(ImplicitSurfaceProvider implicitSurface, SideOutsideEdges edges)
+        public Side(RefiningApproximation approximation, ImplicitSurfaceProvider implicitSurface, SideOutsideEdges edges)
         {
             if (edges.IsEdgeMissing)
             {
                 throw new ArgumentException("Side can only be constructed from 4 edges.");
             }
 
+            Approximation = approximation;
             ImplicitSurface = implicitSurface;
             Edges = edges;
             Dimensions = edges.Dimensions;
@@ -39,7 +42,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Sides
                 throw new InvalidOperationException("Cant compute children twice.");
             }
 
-            var insideEdges = new SideInsideEdges(ImplicitSurface, Edges);
+            var insideEdges = new SideInsideEdges(Approximation, ImplicitSurface, Edges);
 
             Side[,] childSides = new Side[2, 2];
 
@@ -49,7 +52,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Sides
                 childEdges[0, 1] = insideEdges[1, 0];
                 childEdges[1, 0] = Edges[1, 0].Children[0];
                 childEdges[1, 1] = insideEdges[0, 0];
-                childSides[0, 0] = new Side(ImplicitSurface, childEdges);
+                childSides[0, 0] = new Side(Approximation, ImplicitSurface, childEdges);
             }
 
             {
@@ -58,7 +61,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Sides
                 childEdges[0, 1] = insideEdges[1, 1];
                 childEdges[1, 0] = insideEdges[0, 0];
                 childEdges[1, 1] = Edges[1, 1].Children[0];
-                childSides[0, 1] = new Side(ImplicitSurface, childEdges);
+                childSides[0, 1] = new Side(Approximation, ImplicitSurface, childEdges);
             }
 
             {
@@ -67,7 +70,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Sides
                 childEdges[0, 1] = Edges[0, 1].Children[0];
                 childEdges[1, 0] = Edges[1, 0].Children[1];
                 childEdges[1, 1] = insideEdges[0, 1];
-                childSides[1, 0] = new Side(ImplicitSurface, childEdges);
+                childSides[1, 0] = new Side(Approximation, ImplicitSurface, childEdges);
             }
 
             {
@@ -76,36 +79,36 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Sides
                 childEdges[0, 1] = Edges[0, 1].Children[1];
                 childEdges[1, 0] = insideEdges[0, 1];
                 childEdges[1, 1] = Edges[1, 1].Children[1];
-                childSides[1, 1] = new Side(ImplicitSurface, childEdges);
+                childSides[1, 1] = new Side(Approximation, ImplicitSurface, childEdges);
             }
 
             Children = new SideChildren(childSides[0, 0], childSides[0, 1], childSides[1, 0], childSides[1, 1]);
         }
 
-        public List<TriangleLineSegment> GetLineSegments(SurfaceApproximation approximation, bool positiveOfCube)
+        public List<TriangleLineSegment> GetLineSegments(bool positiveOfCube)
         {
             if (HasChildren)
             {
-                return GetMergedChildLineSegments(approximation, positiveOfCube);
+                return GetMergedChildLineSegments(positiveOfCube);
             }
             else
             {
-                return GetLineSegmentsFromTriagulationTable(approximation, positiveOfCube);
+                return GetLineSegmentsFromTriagulationTable(positiveOfCube);
             }
         }
 
-        private List<TriangleLineSegment> GetMergedChildLineSegments(SurfaceApproximation approximation, bool positiveOfCube)
+        private List<TriangleLineSegment> GetMergedChildLineSegments(bool positiveOfCube)
         {
             var childSegments = new List<TriangleLineSegment>();
-            childSegments.AddRange(Children[0, 0].GetLineSegments(approximation, positiveOfCube));
-            childSegments.AddRange(Children[0, 1].GetLineSegments(approximation, positiveOfCube));
-            childSegments.AddRange(Children[1, 0].GetLineSegments(approximation, positiveOfCube));
-            childSegments.AddRange(Children[1, 1].GetLineSegments(approximation, positiveOfCube));
+            childSegments.AddRange(Children[0, 0].GetLineSegments(positiveOfCube));
+            childSegments.AddRange(Children[0, 1].GetLineSegments(positiveOfCube));
+            childSegments.AddRange(Children[1, 0].GetLineSegments(positiveOfCube));
+            childSegments.AddRange(Children[1, 1].GetLineSegments(positiveOfCube));
 
             return TriangleLineSegment.Merge(childSegments);
         }
 
-        private List<TriangleLineSegment> GetLineSegmentsFromTriagulationTable(SurfaceApproximation approximation, bool positiveOfCube)
+        private List<TriangleLineSegment> GetLineSegmentsFromTriagulationTable(bool positiveOfCube)
         {
             Edge minEdge = Edges[0, 0];
             Edge maxEdge = Edges[0, 1];
@@ -123,12 +126,12 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Sides
                 ref LineSegmentDefinition current = ref lineSegmentDefinition[i];
 
                 var startEdge = Edges[current.LineStart.DimensionIndex, current.LineStart.DirectionIndex];
-                var startEdgeIntersection = startEdge.GetSurfaceIntersectionPositionIndices(approximation);
-                var startNode = new TriangleLineSegmentNode(startEdgeIntersection.IntersectionIndex.Value);
+                var startEdgeIntersection = startEdge.GetSurfaceIntersections();
+                var startNode = new TriangleLineSegmentNode(startEdgeIntersection.IntersectionIndex);
 
                 var endEdge = Edges[current.LineEnd.DimensionIndex, current.LineEnd.DirectionIndex];
-                var endEdgeIntersection = endEdge.GetSurfaceIntersectionPositionIndices(approximation);
-                var endNode = new TriangleLineSegmentNode(endEdgeIntersection.IntersectionIndex.Value);
+                var endEdgeIntersection = endEdge.GetSurfaceIntersections();
+                var endNode = new TriangleLineSegmentNode(endEdgeIntersection.IntersectionIndex);
 
                 TriangleLineSegment resultSegment;
                 if (positiveOfCube != Dimensions.SideOnlookedFromMin)
@@ -147,7 +150,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Sides
 
             foreach (var edge in Edges)
             {
-                var edgeLines = edge.GetSurfaceIntersectionPositionIndices(approximation).GetEdgeLines();
+                var edgeLines = edge.GetSurfaceIntersections().GetEdgeLines();
 
                 result.AddRange(edgeLines);
             }

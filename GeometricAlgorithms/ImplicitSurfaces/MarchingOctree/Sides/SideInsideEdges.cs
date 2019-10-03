@@ -1,4 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Approximation;
 using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Edges;
 using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.FunctionValues;
 using System;
@@ -13,7 +14,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Sides
     {
         private readonly Edge[,] Edges;
 
-        public SideInsideEdges(ImplicitSurfaceProvider implicitSurface, SideOutsideEdges outsideEdges)
+        public SideInsideEdges(RefiningApproximation approximation, ImplicitSurfaceProvider implicitSurface, SideOutsideEdges outsideEdges)
         {
             Edges = new Edge[2, 2];
 
@@ -39,8 +40,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Sides
                 outsideEdges.Dimensions.SideAxis[0]
             };
 
-            this[0, 0] = new Edge(implicitSurface, minDimensionsForEdges, minDimensionMinDirectionMiddleValue, sideMiddleValue);
-            this[0, 1] = new Edge(implicitSurface, minDimensionsForEdges, sideMiddleValue, minDimensionMaxDirectionMiddleValue);
+            this[0, 0] = new Edge(approximation, implicitSurface, minDimensionsForEdges, minDimensionMinDirectionMiddleValue, sideMiddleValue);
+            this[0, 1] = new Edge(approximation, implicitSurface, minDimensionsForEdges, sideMiddleValue, minDimensionMaxDirectionMiddleValue);
 
             Dimension[] maxDimensionsForEdges = new Dimension[2]
             {
@@ -48,8 +49,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Sides
                 outsideEdges.Dimensions.SideAxis[1]
             };
 
-            this[1, 0] = new Edge(implicitSurface, maxDimensionsForEdges, maxDimensionMinDirectionMiddleValue, sideMiddleValue);
-            this[1, 1] = new Edge(implicitSurface, maxDimensionsForEdges, sideMiddleValue, maxDimensionMaxDirectionMiddleValue);
+            this[1, 0] = new Edge(approximation, implicitSurface, maxDimensionsForEdges, maxDimensionMinDirectionMiddleValue, sideMiddleValue);
+            this[1, 1] = new Edge(approximation, implicitSurface, maxDimensionsForEdges, sideMiddleValue, maxDimensionMaxDirectionMiddleValue);
         }
 
         /// <summary>

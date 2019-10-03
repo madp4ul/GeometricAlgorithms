@@ -1,4 +1,5 @@
 ﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Approximation;
 using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Edges;
 using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.FunctionValues;
 using GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Sides;
@@ -14,7 +15,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Cubes
     {
         private readonly Edge[] Edges = new Edge[6];
 
-        public CubeInsideEdges(ImplicitSurfaceProvider implicitSurface, CubeOutsides outsideContainer)
+        public CubeInsideEdges(RefiningApproximation approximation, ImplicitSurfaceProvider implicitSurface, CubeOutsides outsideContainer)
         {
             var middleFunctionValue = CreateMiddleFunctionValue(implicitSurface, outsideContainer);
 
@@ -26,8 +27,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Cubes
                 FunctionValue minValue = GetSideMiddleValue(outsideContainer, new SideOrientation(current, false));
                 FunctionValue maxValue = GetSideMiddleValue(outsideContainer, new SideOrientation(current, true));
 
-                Edge minEdge = new Edge(implicitSurface, edgeDirectionsFromCubeCenter, minValue, middleFunctionValue);
-                Edge maxEdge = new Edge(implicitSurface, edgeDirectionsFromCubeCenter, middleFunctionValue, maxValue);
+                Edge minEdge = new Edge(approximation, implicitSurface, edgeDirectionsFromCubeCenter, minValue, middleFunctionValue);
+                Edge maxEdge = new Edge(approximation, implicitSurface, edgeDirectionsFromCubeCenter, middleFunctionValue, maxValue);
 
                 this[current, false] = minEdge;
                 this[current, true] = maxEdge;
