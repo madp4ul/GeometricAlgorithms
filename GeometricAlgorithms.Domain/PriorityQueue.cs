@@ -82,9 +82,32 @@ namespace GeometricAlgorithms.Domain
             return frontItem;
         }
 
-        public bool Remove(T element)
+        public List<T> RemoveWhere(Predicate<T> predicate)
         {
-            return Data.Remove(element);
+            var newData = new List<T>(capacity: Data.Capacity);
+            var removed = new List<T>();
+
+            foreach (var item in Data)
+            {
+                if (predicate(item))
+                {
+                    removed.Add(item);
+                }
+                else
+                {
+                    newData.Add(item);
+                }
+            }
+
+            Data.Clear();
+
+            //TODO can you maintain the heap if you just remove the items?
+            foreach (var item in newData)
+            {
+                Enqueue(item);
+            }
+
+            return removed;
         }
 
         public override string ToString()
@@ -101,15 +124,15 @@ namespace GeometricAlgorithms.Domain
             // is the heap property true for all data?
             if (Data.Count == 0)
                 return true;
-            int li = Data.Count - 1; // last index
-            for (int pi = 0; pi < Data.Count; ++pi)
-            { // each parent index
-                int lci = 2 * pi + 1; // left child index
-                int rci = 2 * pi + 2; // right child index
+            int lastIndex = Data.Count - 1;
+            for (int parentIndex = 0; parentIndex < Data.Count; parentIndex++)
+            {
+                int leftChildIndex = 2 * parentIndex + 1;
+                int rightChildIndex = 2 * parentIndex + 2;
 
-                if (lci <= li && Data[pi].CompareTo(Data[lci]) > 0)
+                if (leftChildIndex <= lastIndex && Data[parentIndex].CompareTo(Data[leftChildIndex]) > 0)
                     return false; // if lc exists and it's greater than parent then bad.
-                if (rci <= li && Data[pi].CompareTo(Data[rci]) > 0)
+                if (rightChildIndex <= lastIndex && Data[parentIndex].CompareTo(Data[rightChildIndex]) > 0)
                     return false; // check the right child too.
             }
             return true; // passed all checks

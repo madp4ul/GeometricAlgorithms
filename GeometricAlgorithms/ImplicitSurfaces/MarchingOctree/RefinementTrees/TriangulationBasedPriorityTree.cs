@@ -31,6 +31,22 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.RefinementTrees
             return approximation;
         }
 
+        protected override void RefineNextNode()
+        {
+            var current = TreeLeafsByRefinementPriority.Dequeue();
+
+            var retriangulatedNeighbours = current.Node.CreateChildren();
+            var removed = TreeLeafsByRefinementPriority.RemoveWhere(i => retriangulatedNeighbours.Contains(i.Node));
+
+            foreach (var compareItem in removed)
+            {
+                compareItem.RecalculatePriority();
+                TreeLeafsByRefinementPriority.Enqueue(compareItem);
+            }
+
+            EnqueueChildren(current);
+        }
+
         public void RecalculatePriorities()
         {
             var recalculatedQueue = new PriorityQueue<ComparableRefinementTreeNode<TCompareNode>>();

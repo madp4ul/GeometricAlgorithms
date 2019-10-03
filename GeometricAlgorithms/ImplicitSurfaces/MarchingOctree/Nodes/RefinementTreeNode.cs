@@ -44,7 +44,6 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Nodes
 
             AddSelfToSideEdges();
             CreateTriangulation();
-            RetriangulateLessRefinedNeighbours();
         }
 
         private void AddSelfToSideEdges()
@@ -64,7 +63,11 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Nodes
             }
         }
 
-        public void CreateChildren()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>Influenced neighbouring nodes</returns>
+        public List<RefinementTreeNode> CreateChildren()
         {
             if (HasChildren)
             {
@@ -75,6 +78,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Nodes
             Sides.CreateChildren();
 
             var children = new RefinementTreeNode[2, 2, 2];
+
+            var lessRefinedNeighbours = new List<RefinementTreeNode>();
 
             for (int x = 0; x < 2; x++)
             {
@@ -87,15 +92,24 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Nodes
                             approximation: Approximation,
                             outsides: Sides.Children[x, y, z],
                             depth: Depth + 1);
+
+                        var retriangulatedNeighbours = children[x, y, z].GetLessRefinedNeighbours();
+                        lessRefinedNeighbours.AddRange(retriangulatedNeighbours);
                     }
                 }
             }
+
+            lessRefinedNeighbours = lessRefinedNeighbours.Distinct().ToList();
+            RetriangulateLessRefinedNeighbours(lessRefinedNeighbours);
 
             Children = children;
 
             Triangulation.Dispose();
             Triangulation = null;
+
+            return lessRefinedNeighbours;
         }
+
         public void CreateTriangulation()
         {
             if (HasChildren)
@@ -138,10 +152,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Nodes
             Triangulation = Approximation.AddTriangulation(triangulation);
         }
 
-        private void RetriangulateLessRefinedNeighbours()
+        private void RetriangulateLessRefinedNeighbours(List<RefinementTreeNode> lessRefinedNeighbours)
         {
-            var lessRefinedNeighbours = GetLessRefinedNeighbours();
-
             foreach (var neighbour in lessRefinedNeighbours)
             {
                 neighbour.CreateTriangulation();
@@ -152,7 +164,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Nodes
         /// Get unique neighbours, whoose depth is less than depth of current node
         /// </summary>
         /// <returns></returns>
-        private IEnumerable<RefinementTreeNode> GetLessRefinedNeighbours()
+        private List<RefinementTreeNode> GetLessRefinedNeighbours()
         {
             var distinctEdges = Sides
                 .Select(s => s.Side)

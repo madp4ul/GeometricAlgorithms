@@ -17,7 +17,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.RefinementTrees
         private readonly RefiningApproximation Approximation;
 
         public readonly ImplicitSurfaceProvider ImplicitSurfaceProvider;
-        private readonly Func<RefinementTreeNode, TCompareNode> GetComparationFeature;
+        protected readonly Func<RefinementTreeNode, TCompareNode> GetComparationFeature;
         protected PriorityQueue<ComparableRefinementTreeNode<TCompareNode>> TreeLeafsByRefinementPriority;
 
         ImplicitSurfaceProvider IRefinementTree.ImplicitSurfaceProvider => ImplicitSurfaceProvider;
@@ -75,6 +75,11 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.RefinementTrees
 
             current.Node.CreateChildren();
 
+            EnqueueChildren(current);
+        }
+
+        protected void EnqueueChildren(ComparableRefinementTreeNode<TCompareNode> current)
+        {
             for (int x = 0; x < 2; x++)
             {
                 for (int y = 0; y < 2; y++)
