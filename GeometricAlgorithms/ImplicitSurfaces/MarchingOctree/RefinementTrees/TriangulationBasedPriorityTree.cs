@@ -36,6 +36,9 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.RefinementTrees
             var current = TreeLeafsByRefinementPriority.Dequeue();
 
             var retriangulatedNeighbours = current.Node.CreateChildren();
+
+            //ValidateTriangulation(Root);
+
             var removed = TreeLeafsByRefinementPriority.RemoveWhere(i => retriangulatedNeighbours.Contains(i.Node));
 
             foreach (var compareItem in removed)
@@ -45,6 +48,34 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.RefinementTrees
             }
 
             EnqueueChildren(current);
+        }
+
+        private void ValidateTriangulation(RefinementTreeNode node)
+        {
+            if (node.Triangulation != null)
+            {
+                foreach (var triangle in node.Triangulation)
+                {
+                    if (!triangle.IsValid)
+                    {
+
+                    }
+                }
+            }
+
+            if (node.HasChildren)
+            {
+                for (int x = 0; x < 2; x++)
+                {
+                    for (int y = 0; y < 2; y++)
+                    {
+                        for (int z = 0; z < 2; z++)
+                        {
+                            ValidateTriangulation(node.Children[x, y, z]);
+                        }
+                    }
+                }
+            }
         }
 
         public void RecalculatePriorities()

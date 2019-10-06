@@ -186,6 +186,10 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Nodes
                  .Distinct()
                  .ToList();
 
+            //TODO
+            //Not every bordering cube has to share an edge with current cube.
+            //Add using cubes to sides and query sides for less refined cubes too.
+
             return distinctNeighbours;
         }
 

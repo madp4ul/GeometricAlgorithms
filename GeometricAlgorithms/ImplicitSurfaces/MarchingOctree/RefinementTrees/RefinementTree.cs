@@ -13,7 +13,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.RefinementTrees
 {
     internal class RefinementTree<TCompareNode> : IRefinementTree where TCompareNode : IComparable<TCompareNode>
     {
-        private readonly RefinementTreeNode Root;
+        protected readonly RefinementTreeNode Root;
         private readonly RefiningApproximation Approximation;
 
         public readonly ImplicitSurfaceProvider ImplicitSurfaceProvider;

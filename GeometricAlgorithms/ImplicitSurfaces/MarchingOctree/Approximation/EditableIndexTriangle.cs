@@ -17,6 +17,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Approximation
         public Vector3 Position1 => Intersection1.VertexIndex.Position;
         public Vector3 Position2 => Intersection2.VertexIndex.Position;
 
+        public bool IsValid => !Intersection0.IsDisposed && !Intersection1.IsDisposed && !Intersection2.IsDisposed;
+
         public EditableIndexTriangle(EdgeIntersection position0, EdgeIntersection position1, EdgeIntersection position2)
         {
             Intersection0 = position0 ?? throw new ArgumentNullException(nameof(position0));

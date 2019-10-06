@@ -36,10 +36,11 @@ namespace GeometricAlgorithms.Viewer.ToolStrip.Configurators
             //Set enabled on open menu
             menu.DropDownOpening += (o, e) =>
             {
-                showNormals.Enabled = viewerMenuTools.EnableOptionSetNormalVisiblity();
-                showFaceApproximatedNormals.Enabled = viewerMenuTools.EnableOptionSetApproximatedNormalVisiblity();
-                showFaces.Enabled = viewerMenuTools.EnableOptionSetOriginalFacesVisiblity();
-                showApproximatedFaces.Enabled = viewerMenuTools.EnableOptionSetApproximatedFacesVisibility();
+                //comment in to disallow viewer config for data that was not approximated yet
+                //showNormals.Enabled = viewerMenuTools.EnableOptionSetNormalVisiblity();
+                //showFaceApproximatedNormals.Enabled = viewerMenuTools.EnableOptionSetApproximatedNormalVisiblity();
+                //showFaces.Enabled = viewerMenuTools.EnableOptionSetOriginalFacesVisiblity();
+                //showApproximatedFaces.Enabled = viewerMenuTools.EnableOptionSetApproximatedFacesVisibility();
             };
 
             //Configure action on click
