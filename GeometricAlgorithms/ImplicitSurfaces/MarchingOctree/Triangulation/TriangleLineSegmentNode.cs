@@ -14,6 +14,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Triangulation
         public TriangleLineSegmentNode Next;
         public readonly EdgeIntersection Intersection;
 
+
+
         public TriangleLineSegmentNode(EdgeIntersection intersection)
         {
             Intersection = intersection;
@@ -36,10 +38,10 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Triangulation
 
         public override string ToString()
         {
-            string next = Next != null ? Next.Intersection.ToString() : "_";
-            string prev = Previous != null ? Previous.Intersection.ToString() : "_";
+            string next = Next != null ? Next.Intersection.InstanceId.ToString() : "_";
+            string prev = Previous != null ? Previous.Intersection.InstanceId.ToString() : "_";
 
-            return $"{{node: {prev}<-(({Intersection}))->{next} }}";
+            return $"{{node: {prev}<-(({Intersection.InstanceId}))->{next} }}";
         }
 
         public static void Connect(TriangleLineSegmentNode first, TriangleLineSegmentNode second)

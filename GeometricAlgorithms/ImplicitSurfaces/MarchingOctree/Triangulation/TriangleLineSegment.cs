@@ -114,7 +114,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Triangulation
         {
             string isCircle = IsFirstSameAsLast ? "is circle" : "no circle";
 
-            return $"{{{GetName()}: {isCircle}, {First.ToString()} -> {Last.ToString()}}}";
+            return $"{{{GetName()}: {isCircle}, {First.Intersection.InstanceId} -> {Last.Intersection.InstanceId}}}";
         }
 
         protected virtual string GetName() => "line segment";

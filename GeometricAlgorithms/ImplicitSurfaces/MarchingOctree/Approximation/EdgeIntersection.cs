@@ -10,6 +10,9 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Approximation
     {
         private readonly LinkedListNode<EditableIndexVertex> Intersection;
 
+        private static int NextInstanceId = 0;
+        public readonly int InstanceId;
+
         public EditableIndexVertex VertexIndex => !IsDisposed ? Intersection.Value : throw new InvalidOperationException();
 
         public bool IsDisposed { get; private set; }
@@ -17,6 +20,9 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Approximation
         public EdgeIntersection(LinkedListNode<EditableIndexVertex> intersection)
         {
             Intersection = intersection ?? throw new ArgumentNullException(nameof(intersection));
+
+            InstanceId = NextInstanceId;
+            NextInstanceId = (NextInstanceId + 1) % int.MaxValue;
 
             IsDisposed = false;
         }
