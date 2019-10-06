@@ -113,8 +113,11 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Nodes
             return lessRefinedNeighbours;
         }
 
+        private static int count = 0;
         public void CreateTriangulation()
         {
+            count++;
+
             if (HasChildren)
             {
                 throw new InvalidOperationException();

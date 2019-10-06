@@ -24,6 +24,11 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Edges
             set => Nodes[ToIndex(orientation)] = value;
         }
 
+        /// <summary>
+        /// Get node at index. if no node available, ask parent at index
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         private RefinementTreeNode GetNode(int index)
         {
             var currentNodes = this;
@@ -31,8 +36,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Edges
 
             while (result == null && currentNodes.ParentEdgeNodes != null)
             {
-                currentNodes = ParentEdgeNodes;
-                result = Nodes[index];
+                currentNodes = currentNodes.ParentEdgeNodes;
+                result = currentNodes.Nodes[index];
             }
 
             return result;

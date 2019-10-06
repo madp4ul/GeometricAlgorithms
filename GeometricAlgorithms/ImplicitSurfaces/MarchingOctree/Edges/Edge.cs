@@ -102,9 +102,13 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Edges
             {
                 return GetSurfaceIntersectionPositionIndicesFromChildren();
             }
-            else
+            else if (EdgeIntersection != null)
             {
                 return new[] { EdgeIntersection };
+            }
+            else
+            {
+                return new EdgeIntersection[0];
             }
         }
 
