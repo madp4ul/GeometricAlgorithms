@@ -31,13 +31,22 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Edges
         public EdgeNodes UsingCubes;
 
 
-        public Edge(Edge parent, ImplicitSurfaceProvider implicitSurface, Dimension[] directionAxisFromCubeCenter, FunctionValue minValue, FunctionValue maxValue)
+        public Edge(
+            Edge parent,
+            ImplicitSurfaceProvider implicitSurface,
+            Dimension[] directionAxisFromCubeCenter,
+            FunctionValue minValue,
+            FunctionValue maxValue)
             : this(parent.Approximation, implicitSurface, directionAxisFromCubeCenter, minValue, maxValue)
         {
             UsingCubes = new EdgeNodes(parent.UsingCubes);
         }
 
-        public Edge(RefiningApproximation approximation, ImplicitSurfaceProvider implicitSurface, Dimension[] directionAxisFromCubeCenter, FunctionValue minValue, FunctionValue maxValue)
+        public Edge(
+            RefiningApproximation approximation,
+            ImplicitSurfaceProvider implicitSurface,
+            Dimension[] directionAxisFromCubeCenter,
+            FunctionValue minValue, FunctionValue maxValue)
         {
             Approximation = approximation;
             ImplicitSurface = implicitSurface;
@@ -47,6 +56,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Edges
             MaxValue = maxValue;
 
             ComputeEdgeIntersection();
+
+            UsingCubes = new EdgeNodes(null);
         }
 
         public void CreateChildren()
@@ -64,8 +75,11 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Edges
                 maxEdge: new Edge(parent: this, ImplicitSurface, DirectionAxisFromCubeCenter, middleValue, MaxValue));
 
             //Intersections now have to be gathered from children
-            EdgeIntersection.Dispose();
-            EdgeIntersection = null;
+            if (EdgeIntersection != null)
+            {
+                EdgeIntersection.Dispose();
+                EdgeIntersection = null;
+            }
         }
 
         /// <summary>

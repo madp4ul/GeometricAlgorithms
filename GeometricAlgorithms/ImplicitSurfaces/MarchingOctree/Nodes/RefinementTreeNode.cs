@@ -104,8 +104,11 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Nodes
 
             Children = children;
 
-            Triangulation.Dispose();
-            Triangulation = null;
+            if (Triangulation != null)
+            {
+                Triangulation.Dispose();
+                Triangulation = null;
+            }
 
             return lessRefinedNeighbours;
         }
@@ -149,7 +152,10 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Nodes
                 triangulation.AddRange(triangles);
             }
 
-            Triangulation = Approximation.AddTriangulation(triangulation);
+            if (triangulation.Count > 0)
+            {
+                Triangulation = Approximation.AddTriangulation(triangulation);
+            }
         }
 
         private void RetriangulateLessRefinedNeighbours(List<RefinementTreeNode> lessRefinedNeighbours)

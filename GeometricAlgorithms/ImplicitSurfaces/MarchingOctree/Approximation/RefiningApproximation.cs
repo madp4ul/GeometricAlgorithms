@@ -31,7 +31,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Approximation
             var firstNode = Triangles.AddLast(triangles[0]);
 
             var lastNode = firstNode;
-            foreach (var triangle in Triangles.Skip(1))
+            foreach (var triangle in triangles.Skip(1))
             {
                 lastNode = Triangles.AddLast(triangle);
             }

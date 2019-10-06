@@ -121,16 +121,16 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Sides
 
             var result = new List<TriangleLineSegment>();
 
+            var intersections = GetEdgeIntersections();
+
             for (int i = 0; i < lineSegmentDefinition.Length; i++)
             {
                 ref LineSegmentDefinition current = ref lineSegmentDefinition[i];
 
-                var startEdge = Edges[current.LineStart.DimensionIndex, current.LineStart.DirectionIndex];
-                var startEdgeIntersection = startEdge.GetSurfaceIntersections();
+                var startEdgeIntersection = intersections[current.LineStart.DimensionIndex, current.LineStart.DirectionIndex];
                 var startNode = new TriangleLineSegmentNode(startEdgeIntersection.IntersectionIndex);
 
-                var endEdge = Edges[current.LineEnd.DimensionIndex, current.LineEnd.DirectionIndex];
-                var endEdgeIntersection = endEdge.GetSurfaceIntersections();
+                var endEdgeIntersection = intersections[current.LineEnd.DimensionIndex, current.LineEnd.DirectionIndex];
                 var endNode = new TriangleLineSegmentNode(endEdgeIntersection.IntersectionIndex);
 
                 TriangleLineSegment resultSegment;
@@ -148,14 +148,31 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Sides
                 result.Add(resultSegment);
             }
 
-            foreach (var edge in Edges)
+            for (int i = 0; i < 2; i++)
             {
-                var edgeLines = edge.GetSurfaceIntersections().GetEdgeLines();
+                for (int j = 0; j < 2; j++)
+                {
+                    var edgeLines = intersections[i, j].GetEdgeLines();
 
-                result.AddRange(edgeLines);
+                    result.AddRange(edgeLines);
+                }
             }
 
             return result;
+        }
+
+        private EdgeSurfaceIntersections[,] GetEdgeIntersections()
+        {
+            EdgeSurfaceIntersections[,] intersections = new EdgeSurfaceIntersections[2, 2];
+            for (int i = 0; i < 2; i++)
+            {
+                for (int j = 0; j < 2; j++)
+                {
+                    intersections[i, j] = Edges[i, j].GetSurfaceIntersections();
+                }
+            }
+
+            return intersections;
         }
 
         public override string ToString()

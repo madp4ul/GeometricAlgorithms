@@ -21,6 +21,11 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Approximation
             IsDisposed = false;
         }
 
+        public override string ToString()
+        {
+            return $"{{edge intersection: {Intersection?.Value}}}";
+        }
+
         public void Dispose()
         {
             if (IsDisposed)
