@@ -31,7 +31,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces
             //If a vertex with distance 0 exists, the position is on the surface.
             //Also a few calculations below dont work in that case but we already know that the distance 
             //must be 0, so return.
-            if (nearestPositions.ContainsKey(0))
+            if (nearestPositions.Keys.Any(key => key == 0))
             {
                 return 0;
             }
@@ -40,7 +40,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces
 
             float weightedAverageFunctionValue = 0;
             float sumOfWeights = 0;
-                       
+
             foreach (var neighbour in nearestPositions)
             {
                 Vector3 normalizedNeighbourToPosition = (position - neighbour.Value.Position) / neighbour.Key;
@@ -59,6 +59,11 @@ namespace GeometricAlgorithms.ImplicitSurfaces
 
             sumOfWeights /= UsedNearestPointCount;
             weightedAverageFunctionValue /= sumOfWeights;
+
+            if (float.IsNaN(weightedAverageFunctionValue))
+            {
+                throw new ApplicationException();
+            }
 
             return weightedAverageFunctionValue;
         }

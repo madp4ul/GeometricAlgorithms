@@ -75,7 +75,7 @@ namespace GeometricAlgorithms.MeshQuerying
             int pointAmount,
             IProgressUpdater progressUpdater = null)
         {
-            var resultSet = new SortedList<float, PositionIndex>(new DistanceComparer());
+            var resultSet = new SortedList<float, PositionIndex>(capacity: pointAmount, new DistanceComparer());
 
             var kdTreeProgress = new OperationProgressUpdater(progressUpdater, Root.LeafCount, "Looking for nearest points");
 
