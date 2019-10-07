@@ -42,14 +42,17 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Nodes
             Sides = outsides;
             Depth = depth;
 
-            AddSelfToSideEdges();
+            AddSelfToSides();
             CreateTriangulation();
         }
 
-        private void AddSelfToSideEdges()
+        private void AddSelfToSides()
         {
             foreach (var orientedSide in Sides)
             {
+                orientedSide.Side.UsingNodes[orientedSide.Orientation] = this;
+
+                //add self to edges of the side
                 for (int axisIndex = 0; axisIndex < 2; axisIndex++)
                 {
                     for (int axisDirection = 0; axisDirection < 2; axisDirection++)
@@ -57,7 +60,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Nodes
                         var edgeOrientation = orientedSide.Orientation.GetEdgeOrientation(axisIndex, axisDirection);
                         var edgeAtOrientation = orientedSide.Side.Edges[axisIndex, axisDirection];
 
-                        edgeAtOrientation.UsingCubes[edgeOrientation] = this;
+                        edgeAtOrientation.UsingNodes[edgeOrientation] = this;
                     }
                 }
             }
@@ -181,16 +184,14 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Nodes
                 .Distinct()
                 .ToList();
 
-            var distinctNeighbours = distinctEdges
-                 .SelectMany(e => e.UsingCubes.GetLessRefinedNeighboursForNode(this))
-                 .Distinct()
+            var edgeSharingNodes = distinctEdges.Select(e => e.UsingNodes.GetLessRefinedLeafAtMirroredPosition(this));
+            var sideSharingNodes = Sides.Select(s => s.Side.UsingNodes.GetLessRefinedNodeAtMirroredPosition(this));
+
+            var neighbours = edgeSharingNodes.Concat(sideSharingNodes)
+                 .Where(n => n != null)
                  .ToList();
 
-            //TODO
-            //Not every bordering cube has to share an edge with current cube.
-            //Add using cubes to sides and query sides for less refined cubes too.
-
-            return distinctNeighbours;
+            return neighbours;
         }
 
         public static RefinementTreeNode CreateRoot(OctreeNode octreeNode, RefiningApproximation approximation, ImplicitSurfaceProvider implicitSurface)

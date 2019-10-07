@@ -28,11 +28,19 @@ namespace GeometricAlgorithms.ImplicitSurfaces
             //All the neighbours are assumed to be on the surface
             var nearestPositions = Tree.FindNearestVertices(position, UsedNearestPointCount);
 
+            //If a vertex with distance 0 exists, the position is on the surface.
+            //Also a few calculations below dont work in that case but we already know that the distance 
+            //must be 0, so return.
+            if (nearestPositions.ContainsKey(0))
+            {
+                return 0;
+            }
+
             float furthestDistance = nearestPositions.Keys[nearestPositions.Count - 1];
 
             float weightedAverageFunctionValue = 0;
             float sumOfWeights = 0;
-
+                       
             foreach (var neighbour in nearestPositions)
             {
                 Vector3 normalizedNeighbourToPosition = (position - neighbour.Value.Position) / neighbour.Key;
@@ -45,8 +53,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces
                 sumOfWeights += weight;
 
                 //multiply side with distance because of the distance is high the neighbour must be further away.
-                weightedAverageFunctionValue += side * neighbour.Key * weight;
-
+                float addedFunctionValue = side * neighbour.Key * weight;
+                weightedAverageFunctionValue += addedFunctionValue;
             }
 
             sumOfWeights /= UsedNearestPointCount;

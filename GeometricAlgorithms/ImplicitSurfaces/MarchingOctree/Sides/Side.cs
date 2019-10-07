@@ -22,6 +22,17 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Sides
         public SideChildren Children { get; private set; }
         public bool HasChildren => Children != null;
 
+        /// <summary>
+        /// Nodes that are using this side
+        /// </summary>
+        public readonly SideNodes UsingNodes;
+
+        public Side(Side parent, ImplicitSurfaceProvider implicitSurface, SideOutsideEdges edges)
+            : this(parent.Approximation, implicitSurface, edges)
+        {
+            UsingNodes = new SideNodes(parent.UsingNodes);
+        }
+
         public Side(RefiningApproximation approximation, ImplicitSurfaceProvider implicitSurface, SideOutsideEdges edges)
         {
             if (edges.IsEdgeMissing)
@@ -33,6 +44,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Sides
             ImplicitSurface = implicitSurface;
             Edges = edges;
             Dimensions = edges.Dimensions;
+
+            UsingNodes = new SideNodes(null);
         }
 
         public void CreateChildren()
@@ -52,7 +65,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Sides
                 childEdges[0, 1] = insideEdges[1, 0];
                 childEdges[1, 0] = Edges[1, 0].Children[0];
                 childEdges[1, 1] = insideEdges[0, 0];
-                childSides[0, 0] = new Side(Approximation, ImplicitSurface, childEdges);
+                childSides[0, 0] = new Side(this, ImplicitSurface, childEdges);
             }
 
             {
@@ -61,7 +74,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Sides
                 childEdges[0, 1] = insideEdges[1, 1];
                 childEdges[1, 0] = insideEdges[0, 0];
                 childEdges[1, 1] = Edges[1, 1].Children[0];
-                childSides[0, 1] = new Side(Approximation, ImplicitSurface, childEdges);
+                childSides[0, 1] = new Side(this, ImplicitSurface, childEdges);
             }
 
             {
@@ -70,7 +83,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Sides
                 childEdges[0, 1] = Edges[0, 1].Children[0];
                 childEdges[1, 0] = Edges[1, 0].Children[1];
                 childEdges[1, 1] = insideEdges[0, 1];
-                childSides[1, 0] = new Side(Approximation, ImplicitSurface, childEdges);
+                childSides[1, 0] = new Side(this, ImplicitSurface, childEdges);
             }
 
             {
@@ -79,7 +92,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Sides
                 childEdges[0, 1] = Edges[0, 1].Children[1];
                 childEdges[1, 0] = insideEdges[0, 1];
                 childEdges[1, 1] = Edges[1, 1].Children[1];
-                childSides[1, 1] = new Side(Approximation, ImplicitSurface, childEdges);
+                childSides[1, 1] = new Side(this, ImplicitSurface, childEdges);
             }
 
             Children = new SideChildren(childSides[0, 0], childSides[0, 1], childSides[1, 0], childSides[1, 1]);

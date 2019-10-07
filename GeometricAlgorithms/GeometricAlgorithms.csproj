@@ -113,6 +113,7 @@
     <Compile Include="ImplicitSurfaces\MarchingOctree\Sides\SideDimensions.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\Sides\SideIndex.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\Sides\SideInsideEdges.cs" />
+    <Compile Include="ImplicitSurfaces\MarchingOctree\Sides\SideNodes.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\Sides\SideOffset.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\Sides\SideOrientation.cs" />
     <Compile Include="ImplicitSurfaces\MarchingOctree\Sides\SideOutsideEdges.cs" />

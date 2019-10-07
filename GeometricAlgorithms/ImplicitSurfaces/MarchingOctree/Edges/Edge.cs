@@ -26,9 +26,9 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Edges
         private EdgeIntersection EdgeIntersection;
 
         /// <summary>
-        /// Cubes that are using this edge
+        /// Nodes that are using this edge
         /// </summary>
-        public EdgeNodes UsingCubes;
+        public readonly EdgeNodes UsingNodes;
 
 
         public Edge(
@@ -39,7 +39,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Edges
             FunctionValue maxValue)
             : this(parent.Approximation, implicitSurface, directionAxisFromCubeCenter, minValue, maxValue)
         {
-            UsingCubes = new EdgeNodes(parent.UsingCubes);
+            UsingNodes = new EdgeNodes(parent.UsingNodes);
         }
 
         public Edge(
@@ -57,7 +57,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Edges
 
             ComputeEdgeIntersection();
 
-            UsingCubes = new EdgeNodes(null);
+            UsingNodes = new EdgeNodes(null);
         }
 
         public void CreateChildren()
