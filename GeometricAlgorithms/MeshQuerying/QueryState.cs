@@ -12,7 +12,7 @@ namespace GeometricAlgorithms.MeshQuerying
     {
         public readonly Vector3 SearchPosition;
         public readonly int PointAmount;
-        public readonly SortedList<float, PositionIndex> ResultSet;
+        public readonly PriorityQueue<PositionIndexDistance> ResultSet;
         public readonly OperationProgressUpdater ProgressUpdater;
 
         public float MaxSearchRadius = float.PositiveInfinity;
@@ -20,13 +20,32 @@ namespace GeometricAlgorithms.MeshQuerying
         public NearestVerticesQuery(
             Vector3 searchPosition,
             int pointAmount,
-            SortedList<float, PositionIndex> resultSet,
+            PriorityQueue<PositionIndexDistance> resultSet,
             OperationProgressUpdater progressUpdater)
         {
             SearchPosition = searchPosition;
             PointAmount = pointAmount;
             ResultSet = resultSet ?? throw new ArgumentNullException(nameof(resultSet));
             ProgressUpdater = progressUpdater ?? throw new ArgumentNullException(nameof(progressUpdater));
+        }
+    }
+
+    public class PositionIndexDistance : IComparable<PositionIndexDistance>
+    {
+        public readonly float Distance;
+        public readonly PositionIndex PositionIndex;
+
+        public PositionIndexDistance(float distance, PositionIndex positionIndex)
+        {
+            Distance = distance;
+            PositionIndex = positionIndex;
+        }
+
+        public int CompareTo(PositionIndexDistance other)
+        {
+            float diff = Distance - other.Distance;
+            //order descending
+            return diff > 0 ? -1 : (diff < 0 ? 1 : 0);
         }
     }
 

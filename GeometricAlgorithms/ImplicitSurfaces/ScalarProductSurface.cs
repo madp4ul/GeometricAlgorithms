@@ -26,34 +26,35 @@ namespace GeometricAlgorithms.ImplicitSurfaces
         public float GetApproximateSurfaceDistance(Vector3 position)
         {
             //All the neighbours are assumed to be on the surface
-            var nearestPositions = Tree.FindNearestVertices(position, UsedNearestPointCount);
+            var nearestPositionQueue = Tree.FindNearestVertices(position, UsedNearestPointCount);
+            var unorderedPositions = nearestPositionQueue.GetMinHeap();
 
             //If a vertex with distance 0 exists, the position is on the surface.
             //Also a few calculations below dont work in that case but we already know that the distance 
             //must be 0, so return.
-            if (nearestPositions.Keys.Any(key => key == 0))
+            if (unorderedPositions.Any(pid => pid.Distance == 0))
             {
                 return 0;
             }
 
-            float furthestDistance = nearestPositions.Keys[nearestPositions.Count - 1];
+            float furthestDistance = nearestPositionQueue.Peek().Distance;
 
             float weightedAverageFunctionValue = 0;
             float sumOfWeights = 0;
 
-            foreach (var neighbour in nearestPositions)
+            foreach (var neighbour in unorderedPositions)
             {
-                Vector3 normalizedNeighbourToPosition = (position - neighbour.Value.Position) / neighbour.Key;
+                Vector3 normalizedNeighbourToPosition = (position - neighbour.PositionIndex.Position) / neighbour.Distance;
 
                 //dot product of neighbour normal and vector from neighbour to position to 
                 //get a value that represents how much the position is infront or behind the surface         
-                float side = Vector3.Dot(Tree.Mesh.UnitNormals[neighbour.Value.Index], normalizedNeighbourToPosition);
+                float side = Vector3.Dot(Tree.Mesh.UnitNormals[neighbour.PositionIndex.Index], normalizedNeighbourToPosition);
 
-                float weight = GetWeight(furthestDistance, neighbour.Key);
+                float weight = GetWeight(furthestDistance, neighbour.Distance);
                 sumOfWeights += weight;
 
                 //multiply side with distance because of the distance is high the neighbour must be further away.
-                float addedFunctionValue = side * neighbour.Key * weight;
+                float addedFunctionValue = side * neighbour.Distance * weight;
                 weightedAverageFunctionValue += addedFunctionValue;
             }
 

@@ -54,18 +54,18 @@ namespace GeometricAlgorithms.MeshQuerying
                 float distance = (vertex.Position - query.SearchPosition).Length;
                 if (distance < query.MaxSearchRadius)
                 {
-                    //If list is full, remove last element to be replaced with new point
+                    //If list is full, remove element with furthest distance to be replaced with new point
                     if (query.ResultSet.Count == query.PointAmount)
                     {
-                        query.ResultSet.RemoveAt(query.ResultSet.Count - 1);
+                        query.ResultSet.Dequeue();
                     }
 
-                    query.ResultSet.Add(distance, vertex);
+                    query.ResultSet.Enqueue(new PositionIndexDistance(distance, vertex));
 
-                    //If list is full after adding point refresh max search radius with last
+                    //If list is full after adding point recalculate max search radius with furthest distance
                     if (query.ResultSet.Count == query.PointAmount)
                     {
-                        query.MaxSearchRadius = query.ResultSet.Keys[query.ResultSet.Count - 1];
+                        query.MaxSearchRadius = query.ResultSet.Peek().Distance;
                     }
                 }
             }

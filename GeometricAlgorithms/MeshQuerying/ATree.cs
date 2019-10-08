@@ -70,12 +70,12 @@ namespace GeometricAlgorithms.MeshQuerying
         /// <param name="pointAmount"></param>
         /// <param name="progressUpdater"></param>
         /// <returns></returns>
-        public SortedList<float, PositionIndex> FindNearestVertices(
+        public PriorityQueue<PositionIndexDistance> FindNearestVertices(
             Vector3 queryPosition,
             int pointAmount,
             IProgressUpdater progressUpdater = null)
         {
-            var resultSet = new SortedList<float, PositionIndex>(capacity: pointAmount, new DistanceComparer());
+            var resultSet = new PriorityQueue<PositionIndexDistance>(capacity: pointAmount);
 
             var kdTreeProgress = new OperationProgressUpdater(progressUpdater, Root.LeafCount, "Looking for nearest points");
 

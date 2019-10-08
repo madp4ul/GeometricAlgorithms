@@ -11,11 +11,21 @@ namespace GeometricAlgorithms.Domain
     /// Returns smallest value first
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class PriorityQueue<T> : IEnumerable<T> where T : IComparable<T>
+    public class PriorityQueue<T> where T : IComparable<T>
     {
-        private readonly List<T> Data = new List<T>();
+        private readonly List<T> Data;
 
         public int Count => Data.Count;
+
+        public PriorityQueue()
+        {
+            Data = new List<T>();
+        }
+
+        public PriorityQueue(int capacity)
+        {
+            Data = new List<T>(capacity);
+        }
 
         public void Enqueue(T item)
         {
@@ -26,7 +36,7 @@ namespace GeometricAlgorithms.Domain
                 int parentIndex = (childIndex - 1) / 2;
                 if (Data[childIndex].CompareTo(Data[parentIndex]) >= 0)
                 {
-                    break; // child item is larger than (or equal) parent so we're done
+                    return; // child item is larger than (or equal) parent so we're done
                 }
 
                 T temp = Data[childIndex];
@@ -110,6 +120,16 @@ namespace GeometricAlgorithms.Domain
             return removed;
         }
 
+        /// <summary>
+        /// Get elements in queue. They are in a min heap and
+        /// not strictly ordered
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<T> GetMinHeap()
+        {
+            return Data.AsEnumerable();
+        }
+
         public override string ToString()
         {
             string s = "";
@@ -136,16 +156,6 @@ namespace GeometricAlgorithms.Domain
                     return false; // check the right child too.
             }
             return true; // passed all checks
-        }
-
-        public IEnumerator<T> GetEnumerator()
-        {
-            return Data.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
     }
 }

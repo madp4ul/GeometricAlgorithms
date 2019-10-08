@@ -24,13 +24,6 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.RefinementTrees
         {
         }
 
-        public override Mesh CreateApproximation()
-        {
-            var approximation = base.CreateApproximation();
-            RecalculatePriorities();
-            return approximation;
-        }
-
         protected override void RefineNextNode()
         {
             var current = TreeLeafsByRefinementPriority.Dequeue();
@@ -58,7 +51,7 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.RefinementTrees
                 {
                     if (!triangle.IsValid)
                     {
-
+                        throw new ApplicationException("Tried to use invalid triangle.");
                     }
                 }
             }
@@ -76,19 +69,6 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.RefinementTrees
                     }
                 }
             }
-        }
-
-        public void RecalculatePriorities()
-        {
-            var recalculatedQueue = new PriorityQueue<ComparableRefinementTreeNode<TCompareNode>>();
-
-            foreach (var item in TreeLeafsByRefinementPriority)
-            {
-                item.RecalculatePriority();
-                recalculatedQueue.Enqueue(item);
-            }
-
-            TreeLeafsByRefinementPriority = recalculatedQueue;
         }
     }
 }

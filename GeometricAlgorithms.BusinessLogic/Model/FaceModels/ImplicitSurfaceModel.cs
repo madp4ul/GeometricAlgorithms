@@ -1,4 +1,5 @@
-﻿using GeometricAlgorithms.ImplicitSurfaces;
+﻿using GeometricAlgorithms.Domain;
+using GeometricAlgorithms.ImplicitSurfaces;
 using GeometricAlgorithms.MeshQuerying;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
 {
     public class ImplicitSurfaceModel : IUpdatable<ATree>
     {
-
-        private ScalarProductSurface ScalarProductSurface;
-
-        public IFiniteImplicitSurface ImplicitSurface => ScalarProductSurface;
-
+        public IFiniteImplicitSurface ImplicitSurface { get; private set; }
 
         public bool CanApproximate { get; private set; }
 
@@ -31,9 +28,10 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
             set
             {
                 _UsedNearestPointCount = value;
-                if (ImplicitSurface != null)
+                if (ImplicitSurface != null
+                    && ImplicitSurface is ScalarProductSurface scalarProductSurface)
                 {
-                    ScalarProductSurface.UsedNearestPointCount = value;
+                    scalarProductSurface.UsedNearestPointCount = value;
                 }
             }
         }
@@ -44,11 +42,55 @@ namespace GeometricAlgorithms.BusinessLogic.Model.FaceModels
         {
             CanApproximate = tree.Mesh.HasNormals;
 
-            ScalarProductSurface = CanApproximate
+            ImplicitSurface = CanApproximate
                 ? new ScalarProductSurface(tree, UsedNearestPointCount)
                 : null;
 
+            if (ImplicitSurface != null)
+            {
+                ImplicitSurface = new DebugTimeSurface(ImplicitSurface);
+            }
+
+
             Updated?.Invoke();
+        }
+
+        private class DebugTimeSurface : IFiniteImplicitSurface
+        {
+            private readonly IFiniteImplicitSurface Surface;
+            private readonly System.Diagnostics.Stopwatch StopWatch;
+
+            public DebugTimeSurface(IFiniteImplicitSurface surface)
+            {
+                Surface = surface ?? throw new ArgumentNullException(nameof(surface));
+                StopWatch = new System.Diagnostics.Stopwatch();
+            }
+
+            public int CalculationCount { get; private set; }
+            public TimeSpan CalculationTime => StopWatch.Elapsed;
+
+
+            public BoundingBox DefinedArea => Surface.DefinedArea;
+
+            public float GetApproximateSurfaceDistance(Vector3 position)
+            {
+                StopWatch.Start();
+
+                var pos = Surface.GetApproximateSurfaceDistance(position);
+
+                StopWatch.Stop();
+
+                CalculationCount++;
+
+                if (CalculationCount % 1000 == 0)
+                {
+                    double average = CalculationTime.TotalSeconds / CalculationCount;
+
+                    Console.WriteLine($"{CalculationCount} calculations took {CalculationTime.TotalSeconds:N3} seconds. The average calculation takes {average:N7} seconds");
+                }
+
+                return pos;
+            }
         }
     }
 }

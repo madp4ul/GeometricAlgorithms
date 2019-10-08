@@ -79,7 +79,7 @@ namespace GeometricAlgorithms.BusinessLogic.Model.KdTreeModels
 
             radiusQuery.GetResult((vertexIndices) =>
             {
-                QueryResult.Update(vertexIndices.Values.Select(pi => pi.Position));
+                QueryResult.Update(vertexIndices.GetMinHeap().Select(pid => pid.PositionIndex.Position));
                 IsCalculating = false;
             });
         }
