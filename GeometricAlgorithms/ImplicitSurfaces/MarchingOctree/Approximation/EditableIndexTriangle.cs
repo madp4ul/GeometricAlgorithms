@@ -24,6 +24,8 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Approximation
             Intersection0 = position0 ?? throw new ArgumentNullException(nameof(position0));
             Intersection1 = position1 ?? throw new ArgumentNullException(nameof(position1));
             Intersection2 = position2 ?? throw new ArgumentNullException(nameof(position2));
+
+            //TODO disallow triangles with multiple corners in same location and prevent their creation
         }
 
         public Triangle GetTriangle()
@@ -51,6 +53,12 @@ namespace GeometricAlgorithms.ImplicitSurfaces.MarchingOctree.Approximation
             float det = a00 * a11 - a01 * a01;
             float t0 = a01 * b1 - a11 * b0;
             float t1 = a01 * b0 - a00 * b1;
+
+            //if multiple triangle corners are in the same place, det seems to become null
+            //if (det == 0)
+            //{
+            //    return (Position0 - point).Length;
+            //}
 
             if (t0 + t1 <= det)
             {

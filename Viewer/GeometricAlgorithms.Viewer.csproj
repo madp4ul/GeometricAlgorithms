@@ -49,10 +49,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>97B2AF3EA2B60D3F31CC69F3C953678F6C37F6F2</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>A8AE9B8F173EED175712B59485CA0C7AD294014E</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>GeometricAlgorithms.Viewer_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>GeometricAlgorithms.Viewer_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -220,7 +220,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="GeometricAlgorithms.Viewer_TemporaryKey.pfx" />
+    <None Include="GeometricAlgorithms.Viewer_1_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
